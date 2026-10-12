@@ -28,6 +28,12 @@ const sourceFiles = [
   "apps/web/app/auth/login/page.tsx",
   "apps/web/app/layout.tsx",
   "apps/web/app/globals.css",
+  "apps/web/components/lumina/lumina-bubble.tsx",
+  "apps/web/components/lumina/companion-chat.tsx",
+  "packages/design-system/src/companion.module.css",
+  "apps/web/hooks/use-provider.ts",
+  "apps/web/lib/ai/provider-preferences.ts",
+  "apps/web/lib/chat/error-message.ts",
   "TASTE.md",
 ];
 
@@ -155,7 +161,13 @@ async function main() {
       ),
     );
   }
-  async function capture(target, name, reason, locator) {
+  async function capture(
+    target,
+    name,
+    reason,
+    locator,
+    readingPosition = true,
+  ) {
     await target.evaluate(async () => {
       await document.fonts.ready;
     });
@@ -163,11 +175,13 @@ async function main() {
     const breadcrumb = await target
       .getByRole("navigation", { name: "Breadcrumb", exact: true })
       .boundingBox();
-    assert.ok(breadcrumb && breadcrumb.y + breadcrumb.height <= 0);
+    assert.ok(breadcrumb);
+    if (readingPosition) assert.ok(breadcrumb.y + breadcrumb.height <= 0);
     receipt.readingBreadcrumbs = [
       ...(receipt.readingBreadcrumbs || []),
       {
         capture: name,
+        readingPosition,
         top: breadcrumb.y,
         bottom: breadcrumb.y + breadcrumb.height,
       },
@@ -214,6 +228,128 @@ async function main() {
       sha256: record.captureSha256,
       reason,
     });
+  }
+  const companionTrigger = (target) =>
+    target.getByRole("button", { name: "Open Arcanea companion", exact: true });
+  const companionDialog = (target) =>
+    target.getByRole("dialog", { name: "Arcanea companion", exact: true });
+  async function exerciseReadingCompanion(target, mobile) {
+    const trigger = companionTrigger(target);
+    await expect(trigger).toHaveCount(1);
+    await expect(trigger).toHaveCSS("position", "static");
+    const minimum = await trigger.evaluate((element) => {
+      const wrapper = element.parentElement;
+      const empty = wrapper.cloneNode(false);
+      empty.setAttribute("aria-hidden", "true");
+      wrapper.parentElement.appendChild(empty);
+      try {
+        return {
+          minimum: getComputedStyle(wrapper).minHeight,
+          emptyHeight: empty.getBoundingClientRect().height,
+        };
+      } finally {
+        empty.remove();
+      }
+    });
+    assert.equal(minimum.minimum, "44px");
+    assert.ok(minimum.emptyHeight >= 44);
+    receipt.companionMinimum = [
+      ...(receipt.companionMinimum || []),
+      {
+        mobile,
+        ...minimum,
+        scope:
+          "Controlled empty clone in the actual compiled header; no simulated Auth state",
+      },
+    ];
+    await trigger.scrollIntoViewIfNeeded();
+    const box = await trigger.boundingBox();
+    assert.ok(box && box.height >= 44 && box.width >= 44);
+    await capture(
+      target,
+      mobile ? "mobile-companion-entry" : "desktop-companion-entry",
+      "One 44px companion entry sits in the article header, outside the prose, without a floating reading overlay.",
+      trigger,
+      false,
+    );
+    const geometry = (control) =>
+      control.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        const header = element.closest("header").getBoundingClientRect();
+        const article = document
+          .getElementById("library-reading-text")
+          .getBoundingClientRect();
+        return {
+          top: rect.top + scrollY,
+          height: rect.height,
+          headerTop: header.top + scrollY,
+          headerHeight: header.height,
+          articleTop: article.top + scrollY,
+          insideProse: !!element.closest("article#library-reading-text"),
+        };
+      });
+    const before = await geometry(trigger);
+    assert.equal(before.insideProse, false);
+    const unchanged = async (control, phase) => {
+      const actual = await geometry(control);
+      assert.equal(actual.insideProse, false);
+      for (const key of [
+        "top",
+        "height",
+        "headerTop",
+        "headerHeight",
+        "articleTop",
+      ])
+        assert.ok(
+          Math.abs(actual[key] - before[key]) <= 1,
+          `${phase}: ${key} shifted`,
+        );
+      receipt.companionGeometry = [
+        ...(receipt.companionGeometry || []),
+        { mobile, phase, before, actual },
+      ];
+    };
+    if (mobile) await trigger.tap();
+    else {
+      await trigger.focus();
+      await target.keyboard.press("Enter");
+    }
+    const dialog = companionDialog(target);
+    await expect(dialog).toBeVisible();
+    await unchanged(button(target, "Close Arcanea companion"), "open");
+    const prompt = dialog.getByLabel("Your message", { exact: true });
+    await expect(prompt).toBeFocused();
+    await expect(prompt).toHaveValue("");
+    await prompt.fill(
+      mobile ? "Private mobile fixture draft" : "Private A fixture draft",
+    );
+    if (mobile)
+      await capture(
+        target,
+        "mobile-companion-open",
+        "Touch opens the existing account-scoped companion at 375px; a synthetic unsent draft is editable and Escape returns focus.",
+        dialog,
+        false,
+      );
+    await target.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(companionTrigger(target)).toBeFocused();
+    await expect(companionTrigger(target)).toHaveCSS("position", "static");
+    await unchanged(companionTrigger(target), "escape");
+    if (mobile) await companionTrigger(target).tap();
+    else await target.keyboard.press("Enter");
+    await expect(prompt).toHaveValue(
+      mobile ? "Private mobile fixture draft" : "Private A fixture draft",
+    );
+    await dialog
+      .getByRole("button", { name: "Close companion", exact: true })
+      .click();
+    await expect(dialog).toBeHidden();
+    await expect(companionTrigger(target)).toBeFocused();
+    await unchanged(companionTrigger(target), "close");
+    receipt.checks.push(
+      `${mobile ? "Mobile touch" : "Desktop keyboard"} opens one in-flow companion; draft survives close/reopen, Escape and Close restore focus, and the closed trigger cannot float over prose`,
+    );
   }
   const ownerRows = () =>
     clients[0]
@@ -289,29 +425,35 @@ async function main() {
       }
     });
     await login(page, config.accounts[0]);
+    stage = "desktop-reading-companion";
+    await exerciseReadingCompanion(page, false);
+    stage = "committed-upsert-lost-acknowledgement";
     await expect(button(page, "Mark as read")).toBeEnabled();
     const articleEnd = page.locator(
       'article#library-reading-text > div[aria-hidden="true"]',
     );
     await expect(articleEnd).toHaveCount(1);
-    await button(page, "Mark as read").scrollIntoViewIfNeeded();
-    // The tall sticky sidebar may reach the article end while its button scrolls
-    // into view. Let that real observer request the first save; a second click
-    // could already be the user's retry after the dropped acknowledgement.
-    const endVisible = await page.evaluate(async () => {
-      await new Promise((resolve) =>
-        requestAnimationFrame(() => requestAnimationFrame(resolve)),
-      );
-      const rect = document
-        .getElementById("library-reading-text")
-        .getBoundingClientRect();
-      return rect.bottom >= 1 && rect.bottom <= innerHeight;
+    // Use the actual sentinel for one initial save. A pointer click on the sticky
+    // sidebar can race an observer request that has not reached interception yet.
+    receipt.desktopArticleEnd = await articleEnd.evaluate((element) => {
+      element.scrollIntoView({ block: "center", behavior: "instant" });
+      const rect = element.getBoundingClientRect();
+      return {
+        top: rect.top,
+        bottom: rect.bottom,
+        height: rect.height,
+        width: rect.width,
+        viewportHeight: innerHeight,
+      };
     });
-    const automaticSave = endVisible || saves.length > 0;
-    receipt.desktopInitialSaveTrigger = automaticSave
-      ? "article-end"
-      : "manual";
-    if (!automaticSave) await button(page, "Mark as read").click();
+    assert.ok(receipt.desktopArticleEnd.height > 0);
+    assert.ok(receipt.desktopArticleEnd.width > 0);
+    assert.ok(
+      receipt.desktopArticleEnd.top >= 0 &&
+        receipt.desktopArticleEnd.bottom <=
+          receipt.desktopArticleEnd.viewportHeight,
+    );
+    receipt.desktopInitialSaveTrigger = "article-end";
     await expect(button(page, "Try saving again")).toBeEnabled({
       timeout: 15000,
     });
@@ -454,6 +596,17 @@ async function main() {
     await expect(readStatus(page)).toHaveCount(0);
     await expect(button(page, "Mark as read")).toBeEnabled();
     assert.equal(saves.length, 2);
+    await expect(companionDialog(page)).toHaveCount(0);
+    await companionTrigger(page).click();
+    await expect(
+      companionDialog(page).getByLabel("Your message", { exact: true }),
+    ).toHaveValue("");
+    await companionDialog(page)
+      .getByRole("button", { name: "Close companion", exact: true })
+      .click();
+    receipt.checks.push(
+      "Real cross-tab account change retires the old companion and its unsent A draft; B opens a fresh empty draft",
+    );
     assert.equal((await checkedRows()).id, firstRow.id);
     receipt.checks.push(
       "Actual second password login in the same browser context retires A's Read in the old tab; B's incomplete row is shown without a write",
@@ -496,6 +649,7 @@ async function main() {
       "375px reduced-motion Library restores the real authenticated owner's completion.",
       readStatus(mobile),
     );
+    await exerciseReadingCompanion(mobile, true);
     const mobileRetryContext = await makeContext(true);
     const mobileRetry = await mobileRetryContext.newPage();
     page = mobileRetry;
@@ -651,6 +805,21 @@ async function main() {
     await expect(guest.locator("article#library-reading-text")).toBeVisible();
     await expect(button(guest, "Mark as read")).toHaveCount(0);
     await expect(readStatus(guest)).toHaveCount(0);
+    await expect(companionTrigger(guest)).toHaveCount(1);
+    await expect(companionTrigger(guest)).toHaveCSS("position", "static");
+    await guest.goto(config.base + "/library/" + collectionSlug);
+    await expect(companionTrigger(guest)).toHaveCount(1);
+    await expect(companionTrigger(guest)).toHaveCSS("position", "fixed");
+    await guest.locator(`a[href="${article}"]`).first().click();
+    await guest.waitForURL((url) => url.pathname === article);
+    await expect(companionTrigger(guest)).toHaveCount(1);
+    await expect(companionTrigger(guest)).toHaveCSS("position", "static");
+    receipt.checks.push(
+      "Anonymous mobile Library keeps its in-flow companion; collection retains the floating entry, and actual client navigation back to the article leaves one static trigger",
+    );
+    receipt.checks.push(
+      "Actual compiled desktop/mobile CSS reserves 44px for a controlled empty header container; open/Escape/Close keep article and header geometry within one pixel. No-JavaScript delivery and pre-hydration execution are unverified",
+    );
     receipt.checks.push(
       "Mobile password login restores Read; signed-out Library exposes no completion action or private progress",
     );
