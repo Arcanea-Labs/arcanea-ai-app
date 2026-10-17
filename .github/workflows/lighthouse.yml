@@ -42,7 +42,7 @@ jobs:
       - name: Resolve Vercel Preview URL
         if: github.event_name == 'workflow_dispatch'
         id: preview
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           WAIT_URL: ${{ steps.vercel.outputs.url }}
         with:

@@ -42,7 +42,7 @@ jobs:
 
       - name: Resolve preview URL
         id: resolve-url
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           INPUT_PREVIEW_URL: ${{ inputs.preview_url }}
         with:
@@ -457,7 +457,7 @@ jobs:
       - name: Confirm preview binding after capture
         id: confirm-source
         if: ${{ always() && steps.resolve-url.outcome == 'success' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('node:fs');
@@ -479,7 +479,7 @@ jobs:
 
       - name: Post Visual QA report on PR
         if: ${{ always() && github.event_name == 'pull_request' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
