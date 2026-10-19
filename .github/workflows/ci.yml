@@ -19,8 +19,6 @@ on:
         description: Full first-parent hash of that handover commit
         type: string
         default: ""
-  push:
-    branches: [main]
   pull_request:
     # Validate stacked PRs too; each proposed merge needs its own checks.
     # 'edited' is required: it is the only pull_request activity type that fires
