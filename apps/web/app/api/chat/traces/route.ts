@@ -10,6 +10,7 @@
  * Uses RLS — users never see another user's traces.
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { formatNextTraceCursor, parseTraceCursor } from '@/lib/chat/trace-cursor';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -20,6 +21,11 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(Math.max(Number(url.searchParams.get('limit') ?? '20'), 1), 100);
   const cursor = url.searchParams.get('cursor');
   const mode = url.searchParams.get('mode');
+
+  const parsedCursor = parseTraceCursor(cursor);
+  if (!parsedCursor.valid) {
+    return NextResponse.json({ error: parsedCursor.error }, { status: 400 });
+  }
 
   const client = await resolveClient(req);
   if (!client) {
@@ -33,10 +39,13 @@ export async function GET(req: NextRequest) {
       'id, mode, planner_source, plan_luminors, total_ms, total_tokens, input, synthesis, created_at',
     )
     .order('created_at', { ascending: false })
+    .order('id', { ascending: false })
     .limit(limit);
 
-  if (cursor) {
-    query = query.lt('created_at', cursor);
+  if (parsedCursor.kind === 'composite') {
+    query = query.or(parsedCursor.orFilter);
+  } else if (parsedCursor.kind === 'legacy') {
+    query = query.lt('created_at', parsedCursor.createdAt);
   }
   if (mode === 'solo' || mode === 'swarm') {
     query = query.eq('mode', mode);
@@ -73,8 +82,7 @@ export async function GET(req: NextRequest) {
     created_at: r.created_at,
   }));
 
-  const nextCursor =
-    rows.length === limit ? rows[rows.length - 1].created_at : null;
+  const nextCursor = formatNextTraceCursor(rows, limit);
 
   return NextResponse.json({ traces, nextCursor });
 }
