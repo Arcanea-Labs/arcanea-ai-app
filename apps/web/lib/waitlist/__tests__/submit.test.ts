@@ -5,6 +5,50 @@ import test from "node:test";
 import { submitWaitlist } from "../submit";
 import { joinWaitlist } from "../join";
 
+test("footer uses the existing subscribe endpoint and exact source", async () => {
+  const result = await submitWaitlist(" Reader@Example.com ", "footer", {
+    endpoint: "/api/subscribe",
+    request: async (url, options) => {
+      assert.equal(url, "/api/subscribe");
+      assert.deepEqual(JSON.parse(String(options?.body)), {
+        email: "Reader@Example.com",
+        source: "footer",
+      });
+      return Response.json({ success: true });
+    },
+  });
+  assert.deepEqual(result, { success: true });
+});
+
+test("only the known invalid-email receipt marks the field invalid", async () => {
+  const message = "Please enter a valid email address.";
+  assert.deepEqual(
+    await submitWaitlist("a@b", "footer", {
+      endpoint: "/api/subscribe",
+      request: async () =>
+        Response.json({ success: false, error: message }, { status: 400 }),
+    }),
+    { success: false, error: message, invalidEmail: true },
+  );
+  for (const [status, body] of [
+    [400, { success: true, error: message }],
+    [400, { success: false, error: "private diagnostic" }],
+    [503, { success: false, error: message }],
+  ] as const) {
+    const result = await submitWaitlist("a@b", "footer", {
+      request: async () => Response.json(body, { status }),
+    });
+    assert.equal(result.success, false);
+    if (!result.success) {
+      assert.equal(result.invalidEmail, undefined);
+      assert.equal(
+        result.error,
+        "We couldn't confirm your signup. Please try again.",
+      );
+    }
+  }
+});
+
 test("sends only the current email/source contract and accepts explicit success", async () => {
   const result = await submitWaitlist(
     "  Reader@Example.com  ",
