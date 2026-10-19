@@ -406,6 +406,9 @@ jobs:
       - name: Verify health and media readiness
         run: pnpm test:health-media-readiness
 
+      - name: Verify Arcanea API operator and local guidance contracts
+        run: pnpm --dir apps/web exec tsx --test lib/media/__tests__/operator-role.test.ts lib/apl/__tests__/local-guidance.test.ts
+
       - name: Verify saved media URL contracts
         run: pnpm --dir apps/web exec tsx --test lib/media/__tests__/creation-url.test.ts lib/media/__tests__/creation-media-route.test.ts lib/media/__tests__/creation-upload-route.test.ts
 
