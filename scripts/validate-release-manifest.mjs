@@ -50,6 +50,14 @@ function inspect(value, schemaNode, path) {
       errors.push(`${path}: shorter than ${schemaNode.minLength}`);
     }
   }
+  if (Array.isArray(value)) {
+    if (schemaNode.items) {
+      for (let i = 0; i < value.length; i++) {
+        errors.push(...inspect(value[i], schemaNode.items, `${path}[${i}]`));
+      }
+    }
+  }
+
   if (value !== null && typeof value === "object" && !Array.isArray(value)) {
     for (const key of schemaNode.required ?? []) {
       if (!Object.hasOwn(value, key)) errors.push(`${path}.${key}: required`);
@@ -79,7 +87,11 @@ export function validateReleaseManifest(value, label = "manifest") {
       `Validation failed for ${label}:\n- ${errors.join("\n- ")}`,
     );
   }
-  return true;
+  return {
+    valid: true,
+    timestamp: new Date().toISOString(),
+    data: value
+  };
 }
 
 // Ensure the schema itself is superficially valid json schema

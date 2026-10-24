@@ -10,11 +10,40 @@ const FIXTURES_DIR = path.join(
   "fixtures/release-manifest",
 );
 
-test("Valid release manifest passes", () => {
+test("Valid release manifest passes and returns receipt", () => {
   const validData = JSON.parse(
     readFileSync(path.join(FIXTURES_DIR, "valid.json"), "utf8"),
   );
-  assert.doesNotThrow(() => validateReleaseManifest(validData, "valid"));
+  const receipt = validateReleaseManifest(validData, "valid");
+  assert.equal(receipt.valid, true);
+  assert.ok(receipt.timestamp);
+  assert.deepEqual(receipt.data, validData);
+});
+
+test("Private ARC-REL-001 fixture passes", () => {
+  const arcRelData = JSON.parse(
+    readFileSync(path.join(FIXTURES_DIR, "arc-rel-001.json"), "utf8"),
+  );
+  const receipt = validateReleaseManifest(arcRelData, "arc-rel-001");
+  assert.equal(receipt.valid, true);
+});
+
+test("Non-canon OSS fixture passes", () => {
+  const ossData = JSON.parse(
+    readFileSync(path.join(FIXTURES_DIR, "oss-fixture.json"), "utf8"),
+  );
+  const receipt = validateReleaseManifest(ossData, "oss-fixture");
+  assert.equal(receipt.valid, true);
+});
+
+test("Missing approval fixture fails", () => {
+  const missingApprovalData = JSON.parse(
+    readFileSync(path.join(FIXTURES_DIR, "missing-approval.json"), "utf8"),
+  );
+  assert.throws(
+    () => validateReleaseManifest(missingApprovalData, "missing-approval"),
+    /missing-approval\.approvals\.human: required/,
+  );
 });
 
 test("Missing rights fixture fails", () => {

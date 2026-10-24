@@ -1,0 +1,42 @@
+{
+  "schema": "arcanea.release_manifest.v1",
+  "canonStatus": "LOCKED",
+  "identity": {
+    "worldId": "w-studio",
+    "seriesId": "s-zero",
+    "workId": "wk-one",
+    "releaseId": "ARC-REL-001",
+    "editionId": "e-first",
+    "channelId": "ch-private"
+  },
+  "references": {
+    "manuscriptId": "ms-final",
+    "lockedCanonCommit": "deadbeef1234"
+  },
+  "rights": {
+    "commercialCleared": true,
+    "licenseType": "Arcanea Internal",
+    "territory": "Earth",
+    "aiGeneratedDisclosure": false,
+    "aiAssistedDisclosure": true
+  },
+  "approvals": {
+    "editorial": true,
+    "continuity": true,
+    "epubCheck": true,
+    "preview": true,
+    "human": true
+  },
+  "artifacts": {
+    "epub": "arc-rel-001.epub",
+    "printPdf": "arc-rel-001-print.pdf",
+    "web": "https://arcanea.ai/read/arc-rel-001"
+  },
+  "evidence": {
+    "distributionLinks": ["https://github.com/frankxai/arcanea-ai-app"],
+    "operationsLinks": ["https://linear.app/arcanea/issue/REL-1"]
+  },
+  "metrics": {
+    "baseline": "0 reads"
+  }
+}

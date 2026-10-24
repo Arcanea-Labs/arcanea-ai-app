@@ -1,5 +1,19 @@
 {
   "schema": "arcanea.release_manifest.v1",
-  "releaseId": "rel-002",
-  "canonStatus": "LOCKED"
+  "canonStatus": "LOCKED",
+  "identity": {
+    "worldId": "w-123",
+    "seriesId": "s-456",
+    "workId": "wk-789",
+    "releaseId": "rel-002",
+    "editionId": "e-101",
+    "channelId": "ch-202"
+  },
+  "references": {
+    "manuscriptId": "ms-303",
+    "lockedCanonCommit": "a1b2c3d4e5f6"
+  },
+  "approvals": {
+    "human": true
+  }
 }
