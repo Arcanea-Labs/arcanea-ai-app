@@ -247,7 +247,7 @@ Rollback: (how to undo if it breaks)
 
 ```text
 pnpm run verify:project-workspaces
-pnpm --dir apps/web test:media
+pnpm --filter @arcanea/web run test:media
 ```
 
 ## Planning With Files

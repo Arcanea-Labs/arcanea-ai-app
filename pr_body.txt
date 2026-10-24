@@ -1,0 +1,16 @@
+Class: Documentation / Environment Setup
+
+* **What changed:**
+  * Updated `docs/guides/ENVIRONMENT_SETUP.md` to use the correct `pnpm` workspace filters (`pnpm --filter @arcanea/web run check:env`) and `pnpm dev` instead of `pnpm run dev`.
+  * Added missing variables (NextAuth, Stripe, Sentry, Anthropic, OpenAI, Stability AI) to `apps/web/.env.example` as required by the documentation.
+  * Corrected the verification command `pnpm --dir apps/web test:media` to `pnpm --filter @arcanea/web run test:media` in `AGENTS.md`.
+  * Corrected `pnpm dev:web` to `pnpm dev` in `README.md`.
+
+* **How I verified it:**
+  * `pnpm --filter @arcanea/web run check:env` now correctly executes the validation script.
+  * `pnpm --filter @arcanea/web run test:media` successfully executes the media tests.
+  * `pnpm dev` successfully starts the dev servers.
+
+* **What I deliberately left alone:**
+  * Pre-existing test failures in `pnpm run test` (e.g. `@arcanea/voice#test`, `@arcanea/product-kernel:test`, and OOM in `@arcanea/web` typecheck during `pnpm run verify:project-workspaces`) are pre-existing issues on `main` and not related to the environment variables configuration.
+  * Did not modify `vercel.json` or `.github/workflows` as explicitly requested.
