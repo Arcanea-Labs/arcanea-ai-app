@@ -47,7 +47,7 @@ GEMINI_API_KEY=AIzaSyYourKeyHere
 
 ```bash
 # Run environment check
-pnpm run check:env
+pnpm --filter @arcanea/web run check:env
 
 # Expected output:
 # ✅ All required environment variables are set
@@ -58,7 +58,7 @@ pnpm run check:env
 
 ```bash
 # Start dev server
-pnpm run dev
+pnpm dev
 
 # Open browser
 # http://localhost:3001
@@ -251,7 +251,7 @@ vercel --prod
 - ✅ **Rotate API keys regularly** - Every 90 days or when team members leave
 - ✅ **Set rate limits on AI APIs** - Prevent unexpected costs
 - ✅ **Use different keys for dev/prod** - Stripe test mode, separate Supabase projects
-- ✅ **Audit environment variables** - Run `pnpm run check:env` before deployment
+- ✅ **Audit environment variables** - Run `pnpm --filter @arcanea/web run check:env` before deployment
 - ✅ **Monitor API usage** - Set up billing alerts
 
 ### ❌ DON'T
@@ -336,7 +336,7 @@ nano apps/web/.env.local
 grep GEMINI_API_KEY apps/web/.env.local
 
 # Restart dev server
-pnpm run dev
+pnpm dev
 ```
 
 ### Vercel Deployment Fails
@@ -369,7 +369,7 @@ vercel env add GEMINI_API_KEY production
 **Solution**:
 ```bash
 # Run validation script
-pnpm run check:env
+pnpm --filter @arcanea/web run check:env
 
 # Fix errors shown in output
 # Common issues:
@@ -413,8 +413,8 @@ pnpm run check:env
 
 If you encounter issues:
 
-1. **Run environment check**: `pnpm run check:env`
-2. **Check logs**: `pnpm run dev` (look for warning messages)
+1. **Run environment check**: `pnpm --filter @arcanea/web run check:env`
+2. **Check logs**: `pnpm dev` (look for warning messages)
 3. **Verify API keys**: Test each key individually
 4. **Review .env.example**: Ensure you have all required variables
 5. **Check documentation**: Each service's API documentation
