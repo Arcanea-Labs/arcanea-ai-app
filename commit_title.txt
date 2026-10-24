@@ -1,0 +1,1 @@
+test(security): add test for InputValidator in @arcanea/security

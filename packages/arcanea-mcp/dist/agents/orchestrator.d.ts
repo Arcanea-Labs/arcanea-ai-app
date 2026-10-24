@@ -34,7 +34,7 @@ export declare function executeTasks(tasks: AgentTask[], parallel: boolean): Pro
  */
 export declare function synthesizeResults(tasks: AgentTask[], worldState: WorldState): {
     success: boolean;
-    results: any[];
+    results: unknown[];
     synthesis: string;
     suggestions: string[];
 };
@@ -44,7 +44,7 @@ export declare function synthesizeResults(tasks: AgentTask[], worldState: WorldS
  */
 export declare function orchestrateCreativeSession(request: string, sessionId?: string): Promise<{
     session: CreativeSession;
-    result: any;
+    result: unknown;
 }>;
 /**
  * Get status of a running session

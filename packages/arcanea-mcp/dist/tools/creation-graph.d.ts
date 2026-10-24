@@ -1,4 +1,5 @@
 import { CreationRef } from "../memory/index.js";
+import { type CreationMetadata } from "./graph-validation.js";
 export interface CreationNode {
     id: string;
     type: CreationRef["type"];
@@ -6,7 +7,7 @@ export interface CreationNode {
     element?: string;
     gate?: number;
     createdAt: string;
-    metadata: Record<string, any>;
+    metadata: CreationMetadata;
 }
 export interface CreationEdge {
     id: string;
@@ -14,13 +15,15 @@ export interface CreationEdge {
     targetId: string;
     relationship: RelationshipType;
     strength: number;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
 }
 export type RelationshipType = "created_by" | "mentored_by" | "located_at" | "wields" | "inhabits" | "guards" | "opposes" | "allies_with" | "transforms_into" | "derived_from" | "part_of" | "same_element" | "same_house" | "same_gate";
 export declare function getGraphNodes(sessionId: string): CreationNode[];
 export declare function getGraphEdges(sessionId: string): CreationEdge[];
-export declare function addCreationToGraph(sessionId: string, creation: CreationRef, metadata?: Record<string, any>): CreationNode;
-export declare function linkCreations(sessionId: string, sourceId: string, targetId: string, relationship: RelationshipType, strength?: number, metadata?: Record<string, any>): CreationEdge | null;
+/** Replace one world only after the complete snapshot passes validation. */
+export declare function restoreGraph(sessionId: string, nodes: unknown, edges: unknown): void;
+export declare function addCreationToGraph(sessionId: string, creation: CreationRef, metadata?: CreationMetadata): CreationNode;
+export declare function linkCreations(sessionId: string, sourceId: string, targetId: string, relationship: RelationshipType, strength?: number, metadata?: Record<string, unknown>): CreationEdge | null;
 export declare function getRelatedCreations(sessionId: string, creationId: string, relationshipFilter?: RelationshipType): Array<{
     node: CreationNode;
     relationship: RelationshipType;

@@ -5,6 +5,7 @@ import { WorldMaturity, matchCreativeSkill, } from "./types.js";
 import { getAgent } from "./definitions.js";
 import { getGraphSummary } from "../tools/creation-graph.js";
 import { getSessionSummary, getOrCreateSession } from "../memory/index.js";
+import { createRuntimeIdentifier } from "../runtime-identifiers.js";
 // Task queue for background execution
 const taskQueue = new Map();
 const activeSessions = new Map();
@@ -134,7 +135,7 @@ export function createAgentTasks(decision, request, sessionId) {
         if (!agent)
             continue;
         const task = {
-            id: `${sessionId}-${agentId}-${Date.now()}`,
+            id: createRuntimeIdentifier("task"),
             agentId,
             type: decision.action,
             input: {
@@ -175,7 +176,7 @@ export async function executeAgentTask(task) {
             model: agent.model,
             action: task.type,
             message: `[${agent.displayName}] would process: "${task.input.request}"`,
-            capabilities: agent.capabilities.map(c => c.name),
+            capabilities: agent.capabilities.map((c) => c.name),
             wouldDelegate: agent.role === "orchestrator",
         };
         task.status = "completed";
@@ -194,7 +195,7 @@ export async function executeAgentTask(task) {
  */
 export async function executeTasks(tasks, parallel) {
     if (parallel) {
-        return Promise.all(tasks.map(t => executeAgentTask(t)));
+        return Promise.all(tasks.map((t) => executeAgentTask(t)));
     }
     else {
         const results = [];
@@ -209,9 +210,9 @@ export async function executeTasks(tasks, parallel) {
  * Combine results from multiple agents
  */
 export function synthesizeResults(tasks, worldState) {
-    const completedTasks = tasks.filter(t => t.status === "completed");
-    const failedTasks = tasks.filter(t => t.status === "failed");
-    const results = completedTasks.map(t => t.result);
+    const completedTasks = tasks.filter((t) => t.status === "completed");
+    const failedTasks = tasks.filter((t) => t.status === "failed");
+    const results = completedTasks.map((t) => t.result);
     // Generate synthesis based on what was accomplished
     let synthesis = "";
     const suggestions = [];
@@ -253,7 +254,7 @@ export function synthesizeResults(tasks, worldState) {
 export async function orchestrateCreativeSession(request, sessionId = "default") {
     // Create session
     const session = {
-        id: `session-${Date.now()}`,
+        id: createRuntimeIdentifier("session"),
         goal: request,
         orchestrator: "creator",
         agents: [],
@@ -319,7 +320,7 @@ export function getSessionStatus(sessionId) {
  * Get all active sessions
  */
 export function getActiveSessions() {
-    return Array.from(activeSessions.values()).filter(s => s.state !== "complete" && s.state !== "failed");
+    return Array.from(activeSessions.values()).filter((s) => s.state !== "complete" && s.state !== "failed");
 }
 /**
  * Get task by ID

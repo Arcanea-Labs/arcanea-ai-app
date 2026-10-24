@@ -1,4 +1,4 @@
-export type AgentModel = "claude-opus-4-5" | "claude-sonnet-4-5" | "gemini-3-pro" | "gemini-3-flash" | "gpt-5" | "grok-code";
+export type AgentModel = "claude-opus-5-5" | "claude-sonnet-5-5" | "gemini-3-pro" | "gemini-3-flash" | "gpt-5" | "grok-code";
 export type AgentRole = "orchestrator" | "coach" | "generator" | "narrator" | "researcher";
 export type AgentStatus = "idle" | "thinking" | "working" | "waiting" | "completed" | "failed";
 export interface AgentCapability {

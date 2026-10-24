@@ -1,5 +1,6 @@
 // Creation Graph - Relationship Network for Generated Content
 // Inspired by Qdrant vector patterns and knowledge graphs
+import { validateCreationGraph, } from "./graph-validation.js";
 // In-memory graph store
 const graphs = new Map();
 function getOrCreateGraph(sessionId) {
@@ -19,6 +20,14 @@ export function getGraphEdges(sessionId) {
     const graph = getOrCreateGraph(sessionId);
     return [...graph.edges];
 }
+/** Replace one world only after the complete snapshot passes validation. */
+export function restoreGraph(sessionId, nodes, edges) {
+    const snapshot = validateCreationGraph(nodes, edges);
+    graphs.set(sessionId, {
+        nodes: new Map(snapshot.nodes.map((node) => [node.id, node])),
+        edges: snapshot.edges,
+    });
+}
 export function addCreationToGraph(sessionId, creation, metadata = {}) {
     const graph = getOrCreateGraph(sessionId);
     const node = {
@@ -29,7 +38,7 @@ export function addCreationToGraph(sessionId, creation, metadata = {}) {
         gate: creation.gate,
         createdAt: creation.createdAt instanceof Date
             ? creation.createdAt.toISOString()
-            : creation.createdAt ?? new Date().toISOString(),
+            : (creation.createdAt ?? new Date().toISOString()),
         metadata,
     };
     graph.nodes.set(creation.id, node);
@@ -233,7 +242,10 @@ export function findPath(sessionId, sourceId, targetId, maxDepth = 5) {
             if (nextId && !visited.has(nextId)) {
                 queue.push({
                     nodeId: nextId,
-                    path: [...current.path, { nodeId: nextId, relationship: edge.relationship }],
+                    path: [
+                        ...current.path,
+                        { nodeId: nextId, relationship: edge.relationship },
+                    ],
                 });
             }
         }
