@@ -6,13 +6,10 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import navLogo from "@/assets/brand/arcanea-mark.jpg";
 import type { V3BelowFoldProps } from "./v3-below-fold";
-import { HeroShowcase } from "./hero-showcase";
 import { HeroChatBox } from "./hero-chat-box";
 import { SovereigntyBadge } from "@/components/premium/sovereignty-pillars";
 import { NumberTicker } from "@/components/motion/number-ticker";
-import { FACTS } from "@/lib/facts";
-import { Sparkle, Diamond, Code, ShieldStar } from "@/lib/phosphor-icons";
-import { PUBLIC_REPO_SUMMARY } from "@/lib/public-repo-registry";
+import { ShieldStar } from "@/lib/phosphor-icons";
 
 // ---------------------------------------------------------------------------
 // The chat box (imported above) is the hero's primary CTA, so it is
@@ -35,6 +32,11 @@ const V3BelowFold = dynamic(
       </div>
     ),
   },
+);
+
+const HeroShowcase = dynamic(
+  () => import("./hero-showcase").then((mod) => mod.HeroShowcase),
+  { ssr: false }
 );
 
 // ---------------------------------------------------------------------------
@@ -128,7 +130,7 @@ function HeroPortal() {
           fill
           priority
           fetchPriority="high"
-          sizes="100vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
           className="object-cover object-[50%_42%] opacity-95"
         />
         {showVideo && (
