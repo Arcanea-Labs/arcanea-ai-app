@@ -150,7 +150,7 @@ export function HeroChatBox() {
               disabled={!hasText}
               className={`inline-flex h-11 w-11 items-center justify-center rounded-xl transition-[box-shadow,transform,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--arc-brand-atlantean-teal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--arc-cosmic-void)] ${
                 hasText
-                  ? "bg-[var(--arc-brand-atlantean-teal)] shadow-[0_2px_16px_color-mix(in_srgb,var(--arc-brand-atlantean-teal)_35%,transparent)] hover:shadow-[0_4px_24px_color-mix(in_srgb,var(--arc-brand-atlantean-teal)_50%,transparent)] active:scale-95"
+                  ? "bg-[var(--arc-brand-atlantean-teal)] shadow-[0_2px_16px_color-mix(in_srgb,var(--arc-brand-atlantean-teal)_35%,transparent)] hover:shadow-[0_4px_24px_color-mix(in_srgb,var(--arc-brand-atlantean-teal)_50%,transparent)] motion-safe:active:scale-95 motion-reduce:transform-none"
                   : "bg-white/[0.04] cursor-default"
               }`}
               aria-label={
@@ -189,8 +189,8 @@ export function HeroChatBox() {
               key={card.label}
               type="button"
               onClick={handleClick}
-              className="group flex min-h-[44px] items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-[12px] sm:text-[13px] text-white/70 hover:text-white/90 bg-white/[0.04] hover:bg-gradient-to-r hover:from-[var(--arc-brand-atlantean-teal)]/[0.06] hover:to-transparent border border-white/[0.08] hover:border-[var(--arc-brand-atlantean-teal)]/20 hover:shadow-[0_0_16px_color-mix(in_srgb,var(--arc-brand-atlantean-teal)_6%,transparent)] active:scale-[0.98] transition-[color,background-color,border-color,box-shadow,transform] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--arc-brand-atlantean-teal)]"
-              aria-label={`${card.label}: ${card.prompt}`}
+              className="group flex min-h-[44px] items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-[12px] sm:text-[13px] text-white/70 hover:text-white/90 bg-white/[0.04] hover:bg-gradient-to-r hover:from-[var(--arc-brand-atlantean-teal)]/[0.06] hover:to-transparent border border-white/[0.08] hover:border-[var(--arc-brand-atlantean-teal)]/20 hover:shadow-[0_0_16px_color-mix(in_srgb,var(--arc-brand-atlantean-teal)_6%,transparent)] motion-safe:active:scale-[0.98] motion-reduce:transform-none transition-[color,background-color,border-color,box-shadow,transform] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--arc-brand-atlantean-teal)]"
+              aria-label={`${card.label}: ${card.prompt}`} title={card.label}
             >
               <Icon
                 aria-hidden="true"

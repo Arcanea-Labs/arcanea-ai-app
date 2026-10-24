@@ -193,7 +193,7 @@ function HeroPortal() {
           </h1>
 
           {/* Value prop */}
-          <p className="max-w-2xl mx-auto text-base md:text-lg text-white/55 leading-relaxed mb-5 md:mb-9 font-body">
+          <p className="max-w-2xl mx-auto text-base md:text-lg text-white/70 leading-relaxed mb-5 md:mb-9 font-body">
             Turn one idea into a persistent world graph: lore, characters,
             rules, media briefs, and agent tasks stay connected across sessions.
           </p>
@@ -225,7 +225,7 @@ function HeroPortal() {
                   color={color}
                   className="opacity-70"
                 />
-                <span className="text-[11px] font-display font-semibold text-white/55">
+                <span className="text-[11px] font-display font-semibold text-white/70">
                   {fixed ? (
                     num > 0 ? (
                       `${num}${suffix}`
@@ -240,14 +240,14 @@ function HeroPortal() {
                     />
                   )}
                 </span>
-                <span className="text-[10px] text-white/34 font-body">
+                <span className="text-[10px] text-white/60 font-body">
                   {label}
                 </span>
               </div>
             ))}
           </div>
 
-          <div className="mt-4 flex flex-col items-center justify-center gap-2 text-[11px] text-white/35 sm:flex-row md:mt-5 md:gap-3">
+          <div className="mt-4 flex flex-col items-center justify-center gap-2 text-[11px] text-white/60 sm:flex-row md:mt-5 md:gap-3">
             <SovereigntyBadge />
             <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:block" />
             <span className="font-body">BYOK / your IP / no lock-in</span>
@@ -262,7 +262,7 @@ function HeroPortal() {
               sizes="28px"
               className="object-contain"
             />
-            <span className="text-[11px] text-white/35">
+            <span className="text-[11px] text-white/60">
               Lumina routes the first brief to the right creation agents.
             </span>
           </div>
