@@ -65,3 +65,23 @@ test("Stale canon fixture fails", () => {
     /must be one of LOCKED, STAGING/,
   );
 });
+
+test("__proto__ as schema version fails", () => {
+  const protoData = JSON.parse(
+    readFileSync(path.join(FIXTURES_DIR, "proto-pollution.json"), "utf8"),
+  );
+  assert.throws(
+    () => validateReleaseManifest(protoData, "proto-pollution"),
+    /unsupported schema version/,
+  );
+});
+
+test("constructor as schema version fails", () => {
+  const constructorData = JSON.parse(
+    readFileSync(path.join(FIXTURES_DIR, "constructor-pollution.json"), "utf8"),
+  );
+  assert.throws(
+    () => validateReleaseManifest(constructorData, "constructor-pollution"),
+    /unsupported schema version/,
+  );
+});

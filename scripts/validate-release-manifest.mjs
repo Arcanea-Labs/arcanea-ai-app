@@ -95,7 +95,11 @@ export function validateReleaseManifest(value, label = "manifest") {
   }
 
   const schemaVersion = value.schema;
-  const schema = schemas[schemaVersion];
+  let schema = null;
+
+  if (Object.hasOwn(schemas, schemaVersion)) {
+    schema = schemas[schemaVersion];
+  }
 
   if (!schema) {
     throw new Error(`Validation failed for ${label}:\n- unsupported schema version: ${schemaVersion}`);
