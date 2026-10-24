@@ -1,5 +1,5 @@
 {
-  "schema": "arcanea.release_manifest.v1",
+  "schema": "arcanea.release_manifest.v2",
   "canonStatus": "NON_CANON",
   "identity": {
     "worldId": "w-oss",

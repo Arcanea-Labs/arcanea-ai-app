@@ -1,5 +1,5 @@
 {
-  "schema": "arcanea.release_manifest.v1",
+  "schema": "arcanea.release_manifest.v2",
   "canonStatus": "LOCKED",
   "identity": {
     "worldId": "w-studio",

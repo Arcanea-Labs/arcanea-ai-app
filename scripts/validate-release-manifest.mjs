@@ -3,16 +3,25 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SCHEMA_PATH = path.join(
+
+// Load all schemas
+const SCHEMA_V1_PATH = path.join(
   ROOT,
   "schemas/release-manifest/arcanea.release_manifest.v1.schema.json",
+);
+const SCHEMA_V2_PATH = path.join(
+  ROOT,
+  "schemas/release-manifest/arcanea.release_manifest.v2.schema.json",
 );
 
 function readJson(file) {
   return JSON.parse(readFileSync(file, "utf8"));
 }
 
-const schema = readJson(SCHEMA_PATH);
+const schemas = {
+  "arcanea.release_manifest.v1": readJson(SCHEMA_V1_PATH),
+  "arcanea.release_manifest.v2": readJson(SCHEMA_V2_PATH)
+};
 
 function typeMatches(value, type) {
   if (type === "null") return value === null;
@@ -81,6 +90,17 @@ function inspect(value, schemaNode, path) {
 }
 
 export function validateReleaseManifest(value, label = "manifest") {
+  if (!value || typeof value !== 'object') {
+    throw new Error(`Validation failed for ${label}:\n- manifest must be an object`);
+  }
+
+  const schemaVersion = value.schema;
+  const schema = schemas[schemaVersion];
+
+  if (!schema) {
+    throw new Error(`Validation failed for ${label}:\n- unsupported schema version: ${schemaVersion}`);
+  }
+
   const errors = inspect(value, schema, label);
   if (errors.length > 0) {
     throw new Error(
@@ -94,7 +114,9 @@ export function validateReleaseManifest(value, label = "manifest") {
   };
 }
 
-// Ensure the schema itself is superficially valid json schema
-if (schema.$schema !== "https://json-schema.org/draft/2020-12/schema") {
-  throw new Error(`Schema declaration is incomplete`);
+// Ensure the schemas are superficially valid json schema
+for (const schema of Object.values(schemas)) {
+  if (schema.$schema !== "https://json-schema.org/draft/2020-12/schema") {
+    throw new Error(`Schema declaration is incomplete`);
+  }
 }
