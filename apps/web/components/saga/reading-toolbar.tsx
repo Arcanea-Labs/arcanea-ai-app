@@ -164,7 +164,7 @@ export function ReadingToolbar({
         >
           A<sup>-</sup>
         </button>
-        <span className={styles.fontSize} aria-label="Font size">
+        <span className={styles.fontSize} title="Font size">
           {FONT_SIZE_LABELS[fontSize]}
         </span>
         <button
