@@ -717,7 +717,7 @@ function GuardianCouncilSection() {
                   <p className="text-2xl font-display font-semibold text-[var(--arc-brand-arcanean-gold)]">
                     {stat.value}
                   </p>
-                  <p className="mt-1 text-xs font-body text-white/36">
+                  <p className="mt-1 text-xs font-body text-white/50">
                     {stat.label}
                   </p>
                 </div>
@@ -854,7 +854,7 @@ function DragonRiderScaleSection() {
                       <p className="mt-3 text-sm font-display font-semibold text-white/82">
                         {label}
                       </p>
-                      <p className="mt-1 text-xs font-body text-white/36">
+                      <p className="mt-1 text-xs font-body text-white/50">
                         {body}
                       </p>
                     </div>
@@ -916,7 +916,7 @@ function WhyArcaneaSection() {
           <ComparisonMatrix />
         </Reveal>
         <Reveal y={10} delay={0.3}>
-          <p className="mt-8 text-center text-sm text-white/32">
+          <p className="mt-8 text-center text-sm text-white/50">
             Not a knock on alternatives — a clear statement of what Arcanea is
             built for.
           </p>
@@ -1104,7 +1104,7 @@ function PersonaOrb({ accent }: { accent: string }) {
   return (
     <div className="relative w-12 h-12 shrink-0">
       <div
-        className="absolute inset-0 rounded-full blur-[10px] opacity-70 animate-[breathe_3s_ease-in-out_infinite]"
+        className="absolute inset-0 rounded-full blur-[10px] opacity-70 motion-safe:animate-[breathe_3s_ease-in-out_infinite]"
         style={{
           background: `radial-gradient(circle, ${accent}55, transparent 70%)`,
         }}
@@ -1535,7 +1535,7 @@ function FAQInline() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <p className="mb-4 font-editorial text-lg italic leading-none text-white/35">
+          <p className="mb-4 font-editorial text-lg italic leading-none text-white/50">
             Questions
           </p>
           <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight">
@@ -1713,7 +1713,7 @@ export function V3BelowFold({
                         />
                       )}
                     </p>
-                    <p className="mt-1 text-xs font-body text-white/35">
+                    <p className="mt-1 text-xs font-body text-white/50">
                       {label}
                     </p>
                   </div>
@@ -1724,7 +1724,7 @@ export function V3BelowFold({
             {/* Featured GitHub Repositories Grid */}
             <Reveal y={16} delay={0.75}>
               <div className="text-left mt-12 mb-16 max-w-4xl mx-auto">
-                <p className="mb-6 text-center font-editorial text-lg italic leading-none text-white/30">
+                <p className="mb-6 text-center font-editorial text-lg italic leading-none text-white/50">
                   Featured open-source repositories
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -1747,7 +1747,7 @@ export function V3BelowFold({
                           {repo.name}
                         </span>
                         <svg
-                          className="w-3.5 h-3.5 text-white/20 shrink-0 group-hover:text-white/40 transition-colors"
+                          className="w-3.5 h-3.5 text-white/45 shrink-0 group-hover:text-white/40 transition-colors"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -1764,7 +1764,7 @@ export function V3BelowFold({
                         {repo.description}
                       </p>
                       <div className="flex items-center justify-between">
-                        <span className="flex items-center gap-1.5 text-[10px] text-white/25">
+                        <span className="flex items-center gap-1.5 text-[10px] text-white/45">
                           <span className="w-1.5 h-1.5 rounded-full bg-[var(--arc-brand-atlantean-teal)]/60" />
                           {repo.language}
                         </span>
@@ -1785,7 +1785,7 @@ export function V3BelowFold({
 
             <Reveal y={12} delay={1.0}>
               <div className="mt-4 mb-10">
-                <p className="mb-4 text-center font-editorial text-lg italic leading-none text-white/30">
+                <p className="mb-4 text-center font-editorial text-lg italic leading-none text-white/50">
                   The stack that makes it possible
                 </p>
                 <Marquee duration={40}>
