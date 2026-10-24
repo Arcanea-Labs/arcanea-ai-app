@@ -1,0 +1,32 @@
+{
+  "schema": "arcanea.release_manifest.v2",
+  "canonStatus": "NON_CANON",
+  "identity": {
+    "worldId": "w-oss",
+    "seriesId": "s-oss",
+    "workId": "wk-oss",
+    "releaseId": "OSS-FIXTURE-1",
+    "editionId": "e-oss",
+    "channelId": "ch-public"
+  },
+  "references": {
+    "manuscriptId": "ms-oss",
+    "lockedCanonCommit": "111111111111"
+  },
+  "rights": {
+    "commercialCleared": true,
+    "licenseType": "MIT",
+    "territory": "Worldwide",
+    "aiGeneratedDisclosure": true,
+    "aiAssistedDisclosure": true
+  },
+  "approvals": {
+    "human": true
+  },
+  "artifacts": {
+    "web": "https://github.com/frankxai/arcanea"
+  },
+  "sources": {
+    "approvedExportHashes": ["a34bc1"]
+  }
+}

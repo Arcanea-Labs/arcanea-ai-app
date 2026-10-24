@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arcanea.ai/schemas/arcanea.release_manifest.v2.schema.json",
+  "type": "object",
+  "required": [
+    "schema",
+    "canonStatus",
+    "identity",
+    "references",
+    "rights",
+    "approvals"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "arcanea.release_manifest.v2"
+    },
+    "canonStatus": {
+      "type": "string",
+      "enum": ["LOCKED", "STAGING", "NON_CANON"],
+      "description": "Must be an active canon status. Stale canon (e.g. STALE) is rejected."
+    },
+    "identity": {
+      "type": "object",
+      "required": ["releaseId"],
+      "additionalProperties": false,
+      "properties": {
+        "worldId": { "type": "string", "minLength": 1 },
+        "seriesId": { "type": "string", "minLength": 1 },
+        "workId": { "type": "string", "minLength": 1 },
+        "releaseId": { "type": "string", "minLength": 3 },
+        "editionId": { "type": "string", "minLength": 1 },
+        "channelId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "references": {
+      "type": "object",
+      "required": ["manuscriptId", "lockedCanonCommit"],
+      "additionalProperties": false,
+      "properties": {
+        "manuscriptId": { "type": "string", "minLength": 1 },
+        "lockedCanonCommit": { "type": "string", "minLength": 1 }
+      }
+    },
+    "rights": {
+      "type": "object",
+      "required": ["commercialCleared", "licenseType"],
+      "additionalProperties": false,
+      "properties": {
+        "commercialCleared": {
+          "type": "boolean",
+          "const": true,
+          "description": "Rights must be cleared for release."
+        },
+        "licenseType": { "type": "string", "minLength": 1 },
+        "territory": { "type": "string", "minLength": 1 },
+        "aiGeneratedDisclosure": { "type": "boolean" },
+        "aiAssistedDisclosure": { "type": "boolean" }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "epub": { "type": "string" },
+        "printPdf": { "type": "string" },
+        "web": { "type": "string" },
+        "cover": { "type": "string" },
+        "audio": { "type": "string" },
+        "video": { "type": "string" },
+        "campaign": { "type": "string" }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "figmaId": { "type": "string" },
+        "canvaId": { "type": "string" },
+        "approvedExportHashes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "required": ["human"],
+      "additionalProperties": false,
+      "properties": {
+        "editorial": { "type": "boolean", "const": true },
+        "continuity": { "type": "boolean", "const": true },
+        "epubCheck": { "type": "boolean", "const": true },
+        "preview": { "type": "boolean", "const": true },
+        "human": { "type": "boolean", "const": true }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "distributionLinks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "commerceLinks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "operationsLinks": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "baseline": { "type": "string" },
+        "postmortem": { "type": "string" }
+      }
+    }
+  }
+}

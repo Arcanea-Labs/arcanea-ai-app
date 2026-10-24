@@ -1,0 +1,24 @@
+{
+  "schema": "arcanea.release_manifest.v2",
+  "canonStatus": "LOCKED",
+  "identity": {
+    "worldId": "w-studio",
+    "seriesId": "s-zero",
+    "workId": "wk-one",
+    "releaseId": "ARC-REL-002",
+    "editionId": "e-first",
+    "channelId": "ch-private"
+  },
+  "references": {
+    "manuscriptId": "ms-final",
+    "lockedCanonCommit": "deadbeef1234"
+  },
+  "rights": {
+    "commercialCleared": true,
+    "licenseType": "Arcanea Internal",
+    "territory": "Earth"
+  },
+  "approvals": {
+    "editorial": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "constructor",
+  "canonStatus": "LOCKED",
+  "identity": {
+    "worldId": "w-1",
+    "seriesId": "s-1",
+    "workId": "wk-1",
+    "releaseId": "R-01",
+    "editionId": "e-1",
+    "channelId": "ch-1"
+  },
+  "references": {
+    "manuscriptId": "m-1",
+    "lockedCanonCommit": "c1"
+  },
+  "rights": {
+    "commercialCleared": true,
+    "licenseType": "MIT"
+  },
+  "approvals": {
+    "human": true
+  }
+}
