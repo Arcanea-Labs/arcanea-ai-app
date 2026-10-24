@@ -1,9 +1,38 @@
 // Canon Validation Tool
 const canonicalNames = {
-    guardians: ["Lyssandria", "Leyla", "Draconia", "Maylinn", "Alera", "Lyria", "Aiyami", "Elara", "Ino", "Shinkami"],
-    godbeasts: ["Kaelith", "Veloura", "Draconis", "Laeylinn", "Otome", "Yumiko", "Sol", "Vaelith", "Kyuro"],
+    guardians: [
+        "Lyssandria",
+        "Leyla",
+        "Draconia",
+        "Maylinn",
+        "Alera",
+        "Lyria",
+        "Aiyami",
+        "Elara",
+        "Ino",
+        "Shinkami",
+    ],
+    godbeasts: [
+        "Kaelith",
+        "Veloura",
+        "Draconis",
+        "Laeylinn",
+        "Otome",
+        "Yumiko",
+        "Sol",
+        "Vaelith",
+        "Kyuro",
+    ],
     elements: ["Fire", "Water", "Earth", "Wind", "Void", "Spirit"],
-    houses: ["Lumina", "Nero", "Pyros", "Aqualis", "Terra", "Ventus", "Synthesis"],
+    houses: [
+        "Lumina",
+        "Nero",
+        "Pyros",
+        "Aqualis",
+        "Terra",
+        "Ventus",
+        "Synthesis",
+    ],
 };
 const incorrectTerms = {
     "light element": "Fire's creation aspect (Light is not a separate element)",
@@ -12,13 +41,22 @@ const incorrectTerms = {
     "dark side": "Consider using 'Shadow' or 'Corrupted Void' for evil aspects",
 };
 const guardianGateMap = {
-    lyssandria: 1, leyla: 2, draconia: 3, maylinn: 4, alera: 5,
-    lyria: 6, aiyami: 7, elara: 8, ino: 9, shinkami: 10,
+    lyssandria: 1,
+    leyla: 2,
+    draconia: 3,
+    maylinn: 4,
+    alera: 5,
+    lyria: 6,
+    aiyami: 7,
+    elara: 8,
+    ino: 9,
+    shinkami: 10,
 };
 export async function validateCanon(content, contentType) {
     const issues = [];
     const suggestions = [];
     const lowerContent = content.toLowerCase();
+    let checkedAssociations = 0;
     // Check for incorrect terms
     for (const [incorrect, correct] of Object.entries(incorrectTerms)) {
         if (lowerContent.includes(incorrect)) {
@@ -29,28 +67,38 @@ export async function validateCanon(content, contentType) {
             });
         }
     }
-    // Check for Nero being portrayed as evil
-    if (lowerContent.includes("nero") && (lowerContent.includes("evil") || lowerContent.includes("villain"))) {
+    // Only screen explicit positive declarations. Co-occurrence with a villain,
+    // visits to another Gate and negated statements do not assert these roles.
+    const neroDeclaration = /\bnero\b\s+(?:is|was|became)\s+(?:(?:an?|the)\s+)?(?:evil|villain)\b/gi;
+    for (const match of content.matchAll(neroDeclaration)) {
+        const start = match.index ?? 0;
         issues.push({
             type: "error",
-            message: "Nero should not be portrayed as evil",
-            suggestion: "Nero is the Primordial Darkness, necessary and balanced. Malachar and Shadow are the evil forces.",
+            message: "The explicit Nero declaration conflicts with the configured balance rule",
+            suggestion: "Nero is the Primordial Darkness, necessary and balanced. Review the declaration in context.",
+            evidence: { start, end: start + match[0].length },
         });
     }
-    // Check Guardian-Gate associations
-    for (const [guardian, gate] of Object.entries(guardianGateMap)) {
-        if (lowerContent.includes(guardian)) {
-            const guardianIndex = lowerContent.indexOf(guardian);
-            const nearbyText = lowerContent.substring(Math.max(0, guardianIndex - 50), Math.min(lowerContent.length, guardianIndex + 50));
-            for (let i = 1; i <= 10; i++) {
-                if (i !== gate && (nearbyText.includes(`gate ${i}`) || nearbyText.includes(`${i}th gate`))) {
-                    issues.push({
-                        type: "error",
-                        message: `${guardian.charAt(0).toUpperCase() + guardian.slice(1)} is Guardian of Gate ${gate}, not Gate ${i}`,
-                    });
-                }
-            }
+    const guardianNames = Object.keys(guardianGateMap).join("|");
+    const forward = new RegExp(`\\b(${guardianNames})\\b(?:\\s*,\\s*|\\s+)(?:(?:(?:is|was|serves\\s+as)\\s+)?(?:the\\s+)?guardian\\s+of|guards)\\s+(?:the\\s+)?(?:gate\\s+(\\d{1,3})\\b|(\\d{1,3})(?:st|nd|rd|th)\\s+gate\\b)`, "gi");
+    const reverse = new RegExp(`\\bgate\\s+(\\d{1,3})\\b\\s+(?:(?:is|was)\\s+)?guarded\\s+by\\s+(${guardianNames})\\b`, "gi");
+    const checkAssociation = (guardian, observed, match) => {
+        checkedAssociations += 1;
+        const expected = guardianGateMap[guardian.toLowerCase()];
+        if (observed !== expected) {
+            const start = match.index ?? 0;
+            issues.push({
+                type: "error",
+                message: `${guardian.charAt(0).toUpperCase() + guardian.slice(1).toLowerCase()} declaration assigns Gate ${observed}; the configured association is Gate ${expected}`,
+                evidence: { start, end: start + match[0].length },
+            });
         }
+    };
+    for (const match of content.matchAll(forward)) {
+        checkAssociation(match[1], Number(match[2] ?? match[3]), match);
+    }
+    for (const match of content.matchAll(reverse)) {
+        checkAssociation(match[2], Number(match[1]), match);
     }
     // Content-type specific suggestions
     if (contentType === "story") {
@@ -61,18 +109,24 @@ export async function validateCanon(content, contentType) {
     }
     const isValid = issues.filter((i) => i.type === "error").length === 0;
     return {
-        content: [{
+        content: [
+            {
                 type: "text",
                 text: JSON.stringify({
                     valid: isValid,
                     issueCount: issues.length,
                     issues,
                     suggestions,
+                    checkedAssociations,
+                    validationScope: "configured-term-and-explicit-association-heuristics",
+                    canonApproval: false,
+                    humanReviewRequired: true,
                     summary: isValid
-                        ? "Content appears canon-compliant. Review suggestions for polish."
-                        : `Found ${issues.filter((i) => i.type === "error").length} canon violations to fix.`,
+                        ? "No configured screening errors found. Human canon review remains required."
+                        : `Found ${issues.filter((i) => i.type === "error").length} configured screening errors. Review the evidence spans in context.`,
                 }, null, 2),
-            }],
+            },
+        ],
     };
 }
 //# sourceMappingURL=validate.js.map

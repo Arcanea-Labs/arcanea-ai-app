@@ -2,11 +2,11 @@
 // Keeps the in-memory Map as the fast cache; .arcanea/worlds/{sessionId}.json as durability.
 import * as fs from "fs";
 import * as path from "path";
-// Resolve the worlds directory relative to the repo root.
-// __dirname is packages/arcanea-mcp/src/tools at runtime, so walk up 4 levels.
+import { randomUUID } from "node:crypto";
+import { getDataDirectory } from "../storage-paths.js";
+import { validateCreationGraph } from "./graph-validation.js";
 function getWorldsDir() {
-    const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1")), "../../../../");
-    return path.join(repoRoot, ".arcanea", "worlds");
+    return path.join(getDataDirectory(), "worlds");
 }
 function ensureWorldsDir() {
     const dir = getWorldsDir();
@@ -16,23 +16,42 @@ function ensureWorldsDir() {
     return dir;
 }
 function worldFilePath(sessionId) {
-    // Sanitize sessionId to prevent directory traversal
-    const safe = sessionId.replace(/[^a-zA-Z0-9_-]/g, "_");
-    return path.join(getWorldsDir(), `${safe}.json`);
+    // Reject ambiguous names rather than mapping different ids to the same file.
+    if (!/^[a-zA-Z0-9_-]{1,128}$/.test(sessionId) ||
+        /^(?:con|prn|aux|nul|com[0-9]|lpt[0-9])$/i.test(sessionId)) {
+        throw new Error("World session id must be 1–128 letters, digits, underscores or hyphens and not a reserved filename.");
+    }
+    return path.join(getWorldsDir(), `${sessionId}.json`);
 }
 // -------------------------------------------------------------------------
 // Save
 // -------------------------------------------------------------------------
 export function saveWorldToDisk(sessionId, nodes, edges) {
-    ensureWorldsDir();
     const filePath = worldFilePath(sessionId);
+    const snapshot = validateCreationGraph(nodes, edges);
+    // In particular, two ids differing only by case share a path on Windows.
+    // Never replace a corrupt file or a snapshot belonging to a different id.
+    if (fs.existsSync(filePath))
+        loadWorldFromDisk(sessionId);
+    ensureWorldsDir();
     const payload = {
         sessionId,
         savedAt: new Date().toISOString(),
-        nodes,
-        edges,
+        ...snapshot,
     };
-    fs.writeFileSync(filePath, JSON.stringify(payload, null, 2), "utf-8");
+    const temporaryPath = `${filePath}.${randomUUID()}.tmp`;
+    try {
+        fs.writeFileSync(temporaryPath, JSON.stringify(payload, null, 2), {
+            encoding: "utf-8",
+            flag: "wx",
+            mode: 0o600,
+        });
+        fs.renameSync(temporaryPath, filePath);
+    }
+    finally {
+        if (fs.existsSync(temporaryPath))
+            fs.unlinkSync(temporaryPath);
+    }
     return { filePath, nodeCount: nodes.length, edgeCount: edges.length };
 }
 // -------------------------------------------------------------------------
@@ -45,44 +64,42 @@ export function loadWorldFromDisk(sessionId) {
     }
     try {
         const raw = fs.readFileSync(filePath, "utf-8");
-        return JSON.parse(raw);
+        const graph = JSON.parse(raw);
+        if (!graph ||
+            graph.sessionId !== sessionId ||
+            typeof graph.savedAt !== "string" ||
+            !Array.isArray(graph.nodes) ||
+            !Array.isArray(graph.edges)) {
+            throw new Error("World file identity or structure is invalid.");
+        }
+        return { ...graph, ...validateCreationGraph(graph.nodes, graph.edges) };
     }
     catch {
-        // Corrupt file — treat as empty world
-        return null;
+        throw new Error(`Cannot load saved world ${sessionId}: the file is unreadable or invalid. It has not been modified.`);
     }
 }
 // -------------------------------------------------------------------------
 // List saved worlds
 // -------------------------------------------------------------------------
 export function listSavedWorlds() {
-    try {
-        const dir = getWorldsDir();
-        if (!fs.existsSync(dir))
-            return [];
-        return fs
-            .readdirSync(dir)
-            .filter((f) => f.endsWith(".json"))
-            .map((f) => {
-            try {
-                const raw = fs.readFileSync(path.join(dir, f), "utf-8");
-                const g = JSON.parse(raw);
-                return {
-                    sessionId: g.sessionId,
-                    savedAt: g.savedAt,
-                    nodeCount: g.nodes.length,
-                    edgeCount: g.edges.length,
-                };
-            }
-            catch {
-                return null;
-            }
-        })
-            .filter((x) => x !== null);
-    }
-    catch {
+    const dir = getWorldsDir();
+    if (!fs.existsSync(dir))
         return [];
-    }
+    return fs
+        .readdirSync(dir)
+        .filter((file) => file.endsWith(".json"))
+        .sort()
+        .map((file) => {
+        const saved = loadWorldFromDisk(file.slice(0, -5));
+        if (!saved)
+            throw new Error("A saved world disappeared while listing. Retry the request.");
+        return {
+            sessionId: saved.sessionId,
+            savedAt: saved.savedAt,
+            nodeCount: saved.nodes.length,
+            edgeCount: saved.edges.length,
+        };
+    });
 }
 // -------------------------------------------------------------------------
 // Debounce helper — module-level so it persists across calls

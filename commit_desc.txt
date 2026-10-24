@@ -1,0 +1,12 @@
+Adds `input-validator.test.mjs` for the pure utility class `InputValidator` in `@arcanea/security`.
+The new test verifies string validation constraints, sanitization of null bytes and whitespace, injection pattern warnings, and passes with the repository's test runner (`node --test tests/*.test.mjs`). Fails if expectations are flipped.
+
+Pre-existing failures:
+- `@arcanea/sona-learner#test`
+- `@arcanea/author-council#test`
+- `@arcanea/agent-bus#test`
+- `@arcanea/rituals#test`
+- `@arcanea/world-sdk#test`
+- `@arcanea/intelligence-bridge#test`
+
+These were failing on the main branch before this change and are unrelated to the current PR. The newly added tests run independently and verify the behavior of `InputValidator` correctly.
