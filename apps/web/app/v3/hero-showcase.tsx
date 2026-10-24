@@ -121,7 +121,7 @@ function ShowcaseCard({ card }: { card: (typeof CARDS)[number] }) {
   return (
     <Link href={card.href} className="block">
       {/* Hover lift is CSS only and is skipped under reduced motion. */}
-      <div className="group relative w-full sm:w-[280px] rounded-2xl overflow-hidden cursor-pointer transition-transform duration-200 ease-out motion-safe:hover:-translate-y-1 motion-safe:hover:scale-[1.04] motion-safe:active:scale-[0.97]">
+      <div className="group relative w-full sm:w-[280px] rounded-2xl overflow-hidden cursor-pointer transition-transform duration-200 ease-out motion-safe:hover:-translate-y-1 motion-safe:hover:scale-[1.04] motion-safe:active:scale-[0.97] motion-reduce:transform-none">
         <div
           className="absolute inset-0 rounded-2xl z-0"
           style={{
@@ -141,7 +141,7 @@ function ShowcaseCard({ card }: { card: (typeof CARDS)[number] }) {
             alt={`${card.title} preview`}
             fill
             sizes="280px"
-            className="object-cover opacity-78 transition-transform duration-700 motion-safe:group-hover:scale-110"
+            className="object-cover opacity-78 transition-transform duration-700 motion-safe:group-hover:scale-110 motion-reduce:transform-none"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--arc-cosmic-void)]/55 via-transparent to-transparent" />
           {/* Vignette overlay */}
@@ -180,7 +180,7 @@ function ShowcaseCard({ card }: { card: (typeof CARDS)[number] }) {
                   ))}
                 </div>
               )}
-              <span className="text-[10px] text-white/30 font-body">
+              <span className="text-[10px] text-white/60 font-body">
                 {card.subtitle}
               </span>
             </div>
@@ -205,7 +205,7 @@ export function HeroShowcase() {
   return (
     <section className="relative py-16 md:py-20 px-6">
       {/* Section heading */}
-      <p className="mb-10 text-center font-editorial text-xl italic leading-none text-white/30">
+      <p className="mb-10 text-center font-editorial text-xl italic leading-none text-white/60">
         Every prompt becomes a connected artifact
       </p>
 
@@ -217,7 +217,7 @@ export function HeroShowcase() {
       </div>
 
       {/* Caption */}
-      <p className="text-center mt-10 text-sm text-white/20 font-body">
+      <p className="text-center mt-10 text-sm text-white/60 font-body">
         Portals, godbeasts, dragon-rider sagas, cinema, and agent workflows
         share one creation layer.
       </p>

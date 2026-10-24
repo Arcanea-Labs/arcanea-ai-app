@@ -616,7 +616,7 @@ function PortalAtlasSection() {
                           ? "(max-width: 1024px) 100vw, 58vw"
                           : "(max-width: 1024px) 100vw, 30vw"
                       }
-                      className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-[1.04]"
+                      className="object-cover opacity-70 transition-transform duration-700 motion-safe:group-hover:scale-[1.04] motion-reduce:transform-none"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--arc-cosmic-void)] via-[var(--arc-cosmic-void)]/56 to-[var(--arc-cosmic-void)]/12" />
                     <div
@@ -632,14 +632,14 @@ function PortalAtlasSection() {
                           weight="duotone"
                           color={portal.accent}
                         />
-                        <span className="font-editorial text-sm italic leading-none text-white/55">
+                        <span className="font-editorial text-sm italic leading-none text-white/70">
                           {portal.label}
                         </span>
                       </div>
                       <h3 className="max-w-xl text-2xl md:text-3xl font-display font-semibold tracking-tight text-white">
                         {portal.title}
                       </h3>
-                      <p className="mt-3 max-w-xl text-sm md:text-base leading-relaxed text-white/48">
+                      <p className="mt-3 max-w-xl text-sm md:text-base leading-relaxed text-white/70">
                         {portal.body}
                       </p>
                     </div>
@@ -698,7 +698,7 @@ function GuardianCouncilSection() {
             <h2 className="text-3xl md:text-5xl font-display font-bold tracking-[-0.03em] leading-[1.08] text-white">
               Magical intelligence compiled at the speed of thought.
             </h2>
-            <p className="mt-6 text-base md:text-lg leading-relaxed text-white/45">
+            <p className="mt-6 text-base md:text-lg leading-relaxed text-white/70">
               Your system guardians are active runtimes. In Arcanea, each
               specialist model acts as a validation node, enforcing creative
               consistency, custom styling, and agent actions. Spawn their logic;
@@ -759,7 +759,7 @@ function GuardianCouncilSection() {
                       alt=""
                       fill
                       sizes="(max-width: 1024px) 33vw, 180px"
-                      className="object-cover object-center opacity-82 transition-transform duration-700 group-hover:scale-[1.06]"
+                      className="object-cover object-center opacity-82 transition-transform duration-700 motion-safe:group-hover:scale-[1.06] motion-reduce:transform-none"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--arc-cosmic-void)]/35 lg:bg-gradient-to-r" />
                   </div>
@@ -773,7 +773,7 @@ function GuardianCouncilSection() {
                     <h3 className="mt-2 text-lg md:text-xl font-display font-semibold text-white">
                       {item.name}
                     </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-white/45">
+                    <p className="mt-3 text-sm leading-relaxed text-white/70">
                       {item.body}
                     </p>
                   </div>
@@ -825,7 +825,7 @@ function DragonRiderScaleSection() {
                 <h2 className="mt-5 text-3xl md:text-5xl font-display font-bold tracking-[-0.03em] leading-[1.05] text-white">
                   World-building at anime scale, direct to runtime.
                 </h2>
-                <p className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-white/45">
+                <p className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-white/70">
                   Forge dragon-rider sagas, compose cinematic score briefs, and
                   map agent handoffs in a single unified workspace. The cinema
                   lane is a preview surface today: strongest for shot lists,
@@ -1184,7 +1184,7 @@ function VoicePresenceSection() {
                           live
                         </span>
                       </div>
-                      <p className="mt-1 text-xs text-white/45 font-body leading-snug">
+                      <p className="mt-1 text-xs text-white/70 font-body leading-snug">
                         {p.tagline}
                       </p>
                     </div>
@@ -1498,9 +1498,9 @@ function FAQItem({
         </span>
         <span className="flex-shrink-0 mt-0.5 w-8 h-8 rounded-full border border-white/[0.10] flex items-center justify-center group-hover:border-white/[0.20] transition-colors">
           {open ? (
-            <Minus className="w-3.5 h-3.5 text-white/40" />
+            <Minus className="w-3.5 h-3.5 text-white/70" />
           ) : (
-            <Plus className="w-3.5 h-3.5 text-white/40" />
+            <Plus className="w-3.5 h-3.5 text-white/70" />
           )}
         </span>
       </button>
@@ -1514,7 +1514,7 @@ function FAQItem({
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="overflow-hidden"
       >
-        <p className="py-5 text-sm text-white/45 leading-relaxed max-w-2xl font-body">
+        <p className="py-5 text-sm text-white/70 leading-relaxed max-w-2xl font-body">
           {item.a}
         </p>
       </m.div>
@@ -1535,7 +1535,7 @@ function FAQInline() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <p className="mb-4 font-editorial text-lg italic leading-none text-white/35">
+          <p className="mb-4 font-editorial text-lg italic leading-none text-white/60">
             Questions
           </p>
           <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight">
@@ -1667,7 +1667,7 @@ export function V3BelowFold({
             </h2>
 
             <Reveal y={12} delay={0.4}>
-              <p className="text-lg text-white/45 max-w-2xl mx-auto mb-12 leading-relaxed">
+              <p className="text-lg text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed">
                 We track {PUBLIC_REPO_SUMMARY.active} active repositories, with{" "}
                 {PUBLIC_REPO_SUMMARY.public} public on GitHub under the MIT
                 license. Pull the code, run components locally, interface via
@@ -1713,7 +1713,7 @@ export function V3BelowFold({
                         />
                       )}
                     </p>
-                    <p className="mt-1 text-xs font-body text-white/35">
+                    <p className="mt-1 text-xs font-body text-white/60">
                       {label}
                     </p>
                   </div>
@@ -1724,7 +1724,7 @@ export function V3BelowFold({
             {/* Featured GitHub Repositories Grid */}
             <Reveal y={16} delay={0.75}>
               <div className="text-left mt-12 mb-16 max-w-4xl mx-auto">
-                <p className="mb-6 text-center font-editorial text-lg italic leading-none text-white/30">
+                <p className="mb-6 text-center font-editorial text-lg italic leading-none text-white/60">
                   Featured open-source repositories
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -1747,7 +1747,7 @@ export function V3BelowFold({
                           {repo.name}
                         </span>
                         <svg
-                          className="w-3.5 h-3.5 text-white/20 shrink-0 group-hover:text-white/40 transition-colors"
+                          className="w-3.5 h-3.5 text-white/60 shrink-0 group-hover:text-white/70 transition-colors"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -1760,7 +1760,7 @@ export function V3BelowFold({
                           <line x1="10" y1="14" x2="21" y2="3" />
                         </svg>
                       </div>
-                      <p className="text-[11px] text-white/40 leading-relaxed mb-4 min-h-[32px] line-clamp-2 font-body">
+                      <p className="text-[11px] text-white/70 leading-relaxed mb-4 min-h-[32px] line-clamp-2 font-body">
                         {repo.description}
                       </p>
                       <div className="flex items-center justify-between">
@@ -1785,7 +1785,7 @@ export function V3BelowFold({
 
             <Reveal y={12} delay={1.0}>
               <div className="mt-4 mb-10">
-                <p className="mb-4 text-center font-editorial text-lg italic leading-none text-white/30">
+                <p className="mb-4 text-center font-editorial text-lg italic leading-none text-white/60">
                   The stack that makes it possible
                 </p>
                 <Marquee duration={40}>
@@ -1809,7 +1809,7 @@ export function V3BelowFold({
                     return (
                       <span
                         key={t.name}
-                        className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/[0.03] border border-white/[0.06] text-xs font-body text-white/55 whitespace-nowrap hover:bg-white/[0.06] hover:text-white/80 transition-colors duration-300"
+                        className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/[0.03] border border-white/[0.06] text-xs font-body text-white/70 whitespace-nowrap hover:bg-white/[0.06] hover:text-white/80 transition-colors duration-300"
                         style={{ ["--tier-color" as string]: tierColor }}
                       >
                         <span
