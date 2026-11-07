@@ -382,6 +382,17 @@ alter table public.notes disable row level security;
   );
 });
 
+test("a long comment does not hide an ALTER TABLE column drop", () => {
+  const filler = "x".repeat(310);
+  const sql = `alter table public.members /* ${filler} */ drop column email;`;
+  assert.equal(
+    scanSql(sql, "long-alter.sql").filter(
+      (finding) => finding.rule === "destructive-statement",
+    ).length,
+    1,
+  );
+});
+
 test("two destructive statements in one file fingerprint separately", () => {
   const sql = `
 delete from public.a where id = 1;

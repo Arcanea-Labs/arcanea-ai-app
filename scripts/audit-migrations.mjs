@@ -191,10 +191,11 @@ export function scanSql(source, file) {
     findings.push({ rule, severity, file, line: lineOf(code, index), message });
   };
 
-  // `drop`/`truncate`/`delete`, plus the column and constraint drops that hide
-  // inside ALTER TABLE.
+  // `drop`/`truncate`/`delete` at a statement boundary, plus column and
+  // constraint drops anywhere inside a complete ALTER TABLE statement. A fixed
+  // character window would let a long comment hide the second case.
   for (const match of code.matchAll(
-    /(?:^|;)\s*(drop\s+(?:table|schema|column)|truncate\b|delete\s+from)|alter\s+table[^;]{0,300}?\bdrop\s+(?:column|constraint)\b/gim,
+    /(?:^|;)\s*(drop\s+(?:table|schema|column)|truncate\b|delete\s+from)/gim,
   )) {
     const statement = code
       .slice(
@@ -209,6 +210,21 @@ export function scanSql(source, file) {
       "high",
       match.index ?? 0,
       `Destructive statement: ${statement}`,
+    );
+  }
+
+  for (const start of code.matchAll(/\balter\s+table\s+/gi)) {
+    const index = start.index ?? 0;
+    const statement = code.slice(
+      index,
+      index + statementEnd(code.slice(index)),
+    );
+    if (!/\bdrop\s+(?:column|constraint)\b/i.test(statement)) continue;
+    add(
+      "destructive-statement",
+      "high",
+      index,
+      `Destructive statement: ${statement.replace(/\s+/g, " ").trim().slice(0, 120)}`,
     );
   }
 
