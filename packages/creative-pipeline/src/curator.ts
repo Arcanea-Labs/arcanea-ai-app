@@ -14,6 +14,41 @@ const DEFAULT_CRITERIA: CurationCriteria = {
 };
 
 /**
+ * RENAISSANCE_CURATION_CRITERIA — Strict fail-closed threshold for public/canon release.
+ * Requires >=85 quality and alignment, Guardian domain fit, and disables auto-approval
+ * (autoApproveThreshold: 101) so human review is mandatory before publication.
+ */
+export const RENAISSANCE_CURATION_CRITERIA: CurationCriteria = {
+  minQuality: 85,
+  minAlignment: 85,
+  requireGuardianFit: true,
+  autoApproveThreshold: 101,
+};
+
+const BANNED_PUBLIC_PATTERNS: Array<{ code: string; pattern: RegExp; reason: string }> = [
+  {
+    code: 'TASTE_HZ_LEAK',
+    pattern: /\b(174|285|396|417|528|639|741|852|963|1111)\s*Hz\b/i,
+    reason: 'Raw Solfeggio Hz frequencies are backend-only and must not appear in user-facing copy.',
+  },
+  {
+    code: 'CANON_GATE8_SHIFT',
+    pattern: /\bGate\s+of\s+Shift\b|\bgate:\s*["']Shift["']/i,
+    reason: 'Gate 8 is locked as Starweave in CANON_LOCKED.md (never Shift).',
+  },
+  {
+    code: 'IP_LIGHTBRINGER_CONTAMINATION',
+    pattern: /\b(luxin|sub-red|super-violet|paryl|halo-burn|lightbringer)\b/i,
+    reason: 'Third-party Lightbringer terminology is quarantined; use native Arcanean Spectrum Weaving terms (Destello, Refracted Glass, Iris Resonance Ring).',
+  },
+  {
+    code: 'VOICE_AI_SLOP',
+    pattern: /\b(delve into|rich tapestry|in the realm of|embark on a journey|unlock your potential)\b/i,
+    reason: 'Banned AI-slop phrase detected per .arcanea/config/voice.yaml and TASTE.md.',
+  },
+];
+
+/**
  * Curator — Quality curation system for Arcanea assets.
  * Evaluates assets across quality, alignment, originality, and Guardian fit.
  */
@@ -81,6 +116,38 @@ export class Curator {
 
   getRejected(results: CurationResult[]): CurationResult[] {
     return results.filter((r) => !r.approved);
+  }
+
+  /**
+   * Evaluates an asset against the strict Creative Renaissance fail-closed gate:
+   * - Quality >= 85, Alignment >= 85, GuardianFit >= 50
+   * - Zero banned AI-slop phrases, zero raw Hz UI leaks, zero third-party IP terms
+   * - Never auto-approves without human sign-off (`requiresHumanApproval: true`)
+   */
+  evaluateRenaissanceGate(asset: Asset): CurationResult & {
+    violations: Array<{ code: string; reason: string }>;
+    requiresHumanApproval: true;
+  } {
+    const base = this.evaluate(asset, RENAISSANCE_CURATION_CRITERIA);
+    const combinedText = `${asset.name ?? ''} ${asset.description ?? ''} ${asset.content ?? ''}`;
+    const violations: Array<{ code: string; reason: string }> = [];
+
+    for (const rule of BANNED_PUBLIC_PATTERNS) {
+      if (rule.pattern.test(combinedText)) {
+        violations.push({ code: rule.code, reason: rule.reason });
+      }
+    }
+
+    const feedback = [...base.feedback, ...violations.map((v) => `[${v.code}] ${v.reason}`)];
+    const approved = base.approved && violations.length === 0;
+
+    return {
+      ...base,
+      feedback,
+      approved,
+      violations,
+      requiresHumanApproval: true,
+    };
   }
 
   // ─── Stats ──────────────────────────────────────────────────────────────

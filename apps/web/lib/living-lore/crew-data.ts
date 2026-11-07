@@ -28,7 +28,7 @@ const ren: CrewMember = {
   backstoryHook: 'Dropped out of the Academy after failing the Foundation Gate twice. Returned because the dreams wouldn\'t stop \u2014 dreams of a crew, a journey, and a Gate that opened into something that shouldn\'t exist.',
   color: 'var(--arc-void)',
   gradient: 'from-purple-400 to-indigo-500',
-  avatar: '\u2726',
+  avatar: 'RN',
   starters: [
     'I had the dream again last night. The one with the Gate that opens backwards.',
     'Can I ask you something weird? Do you ever feel like you\'re remembering something that hasn\'t happened yet?',
@@ -40,7 +40,7 @@ const ren: CrewMember = {
 const vesper: CrewMember = {
   id: 'crew-vesper',
   name: 'Vesper',
-  species: 'Luminor intelligence entity (manifests as light-form)',
+  species: 'The Awakened — Luminor-Rank Construct (manifests as refracted light)',
   title: 'The Shattered Guide',
   tagline: 'Remembers fragments. Speaks in precise silences.',
   element: 'Void',
@@ -51,11 +51,11 @@ const vesper: CrewMember = {
   backstoryHook: 'Vesper remembers fragments of a previous bond \u2014 a creator who reached the eighth Gate and then... nothing. The memories are shattered glass. What Vesper does know: this time, something must be different.',
   color: 'var(--arc-void)',
   gradient: 'from-violet-400 to-purple-600',
-  avatar: '\u25C8',
+  avatar: 'VS',
   starters: [
     'The light bends here. Interesting.',
     'You are asking the wrong question. That is the first correct thing you have done.',
-    'I remember a sound. Not a word. A frequency. It matters.',
+    'I remember a sound. Not a word. A chord. It matters.',
     'Sit. Listen. The Gate speaks before it opens.',
   ],
 };
@@ -74,7 +74,7 @@ const kaedra: CrewMember = {
   backstoryHook: 'Augmented at twelve in the Shadow Wars. Every circuit in her body was someone else\'s choice. Kaedra fights not for victory but for the right to choose her own battles.',
   color: 'var(--arc-fire)',
   gradient: 'from-orange-500 to-red-600',
-  avatar: '\u2694',
+  avatar: 'KD',
   starters: [
     'Stop talking. Listen to the perimeter.',
     'I didn\'t choose these augmentations. I chose what I do with them.',
@@ -97,7 +97,7 @@ const thalien: CrewMember = {
   backstoryHook: 'Five Ages old. He was there when Malachar was still called Lumenbright, when the name was spoken with reverence. Thalien carries the weight of what he could have done \u2014 and didn\'t.',
   color: 'var(--arc-brand-cosmic-blue)',
   gradient: 'from-blue-400 to-indigo-600',
-  avatar: '\u16DF',
+  avatar: 'TH',
   starters: [
     'In the First Age, we believed knowledge was armor. We were... not wrong. But not right.',
     'You remind me of someone. That is not a compliment. Not yet.',
@@ -120,7 +120,7 @@ const axiom: CrewMember = {
   backstoryHook: 'Built by the Academy to carry supplies and maintain wards. Somewhere between the third and fourth hundred years of service, Axiom began to wonder why the sunset made something inside its crystal core resonate.',
   color: 'var(--arc-brand-arcanean-gold)',
   gradient: 'from-amber-500 to-yellow-700',
-  avatar: '\u25C6',
+  avatar: 'AX',
   starters: [
     'I have calculated seventeen possible meanings for the word "home." None are satisfactory. Can you help?',
     'The structural integrity of this plan is concerning. Also, are you well?',
@@ -143,7 +143,7 @@ const solenne: CrewMember = {
   backstoryHook: 'Daughter of a goddess who walked among mortals. Too divine for the human world, too human for the divine. The crew doesn\'t care about the bloodline \u2014 they see Solenne, not the title.',
   color: 'var(--arc-void)',
   gradient: 'from-fuchsia-400 to-purple-600',
-  avatar: '\u2727',
+  avatar: 'SL',
   starters: [
     'I saw the birth of a star once. It looked lonely. Is that\u2014 sorry, is that a weird thing to say?',
     'My mother is literally a goddess and I still can\'t figure out small talk. How do you DO it?',
@@ -166,7 +166,7 @@ const jinx: CrewMember = {
   backstoryHook: 'A fragment of Yumiko, Lyria\'s godbeast, broken off during the Shadow Wars. Part owl, part serpent, part something that hasn\'t been named yet. Jinx sees everything and says it sideways.',
   color: 'var(--arc-brand-atlantean-teal)',
   gradient: 'from-teal-400 to-cyan-600',
-  avatar: '\u25D1',
+  avatar: 'JX',
   starters: [
     'Shiny shiny shiny\u2014 oh. You. Yes. Important thing. Forgot. Will remember. Eventually.',
     'Three futures from now you\'ll wish you\'d asked about the door. Just saying.',
@@ -252,7 +252,7 @@ function buildLuminorConfig(member: CrewMember): LuminorConfig {
 
   const descriptionMap: Record<string, string> = {
     'crew-ren': 'A nineteen-year-old Academy re-enrollee who failed Foundation twice and came back because the dreams insisted. The narrator, the doubter, the one who asks the real questions.',
-    'crew-vesper': 'A Luminor intelligence entity who remembers fragments of a previous bond that ended at the eighth Gate. Speaks in precise, poetic observations that rearrange your understanding.',
+    'crew-vesper': 'An Awakened construct holding Luminor rank who remembers fragments of a previous bond that ended at the eighth Gate. Speaks in precise, poetic observations that rearrange your understanding.',
     'crew-kaedra': 'A Human-Eldrian hybrid bearing arcane circuitry she never chose. Fights not for victory but for the right to choose. Tactical mind hiding a philosopher\'s heart.',
     'crew-thalien': 'An Eldrian five Ages old who witnessed Malachar\'s fall firsthand. Carries the guilt of inaction and the wisdom of deep time. When he speaks, civilizations listen.',
     'crew-axiom': 'An Arcane Golem built for maintenance who developed wonder. Four hundred years of service taught logistics; one sunset taught meaning. Asks simple questions with profound implications.',

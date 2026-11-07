@@ -34,7 +34,7 @@ const TRACKS: Track[] = [
     genre: "Cinematic Orchestral",
     duration: "4:15",
     description:
-      "Lyssandria's theme. Earth frequencies grounded at 174 Hz — deep, primal, powerful.",
+      "Lyssandria's theme. Load-bearing cello and stone percussion — deep, patient, grounded.",
   },
   {
     id: "3",
@@ -42,7 +42,7 @@ const TRACKS: Track[] = [
     genre: "Lo-fi Chill",
     duration: "3:28",
     description:
-      "Leyla's water element in sound — 285 Hz fluid beats for creative focus.",
+      "Leyla's water element in sound — tidal phrasing and warm Rhodes chords for deep creative focus.",
   },
   {
     id: "4",
@@ -50,50 +50,55 @@ const TRACKS: Track[] = [
     genre: "Epic Orchestral",
     duration: "5:01",
     description:
-      "Draconia's fire at 396 Hz. Drums of transformation, brass of willpower.",
+      "Draconia's crucible theme. Drums of transformation, forge-struck brass of willpower.",
   },
   {
     id: "5",
-    title: "Heart Frequency",
+    title: "Heart Resonance",
     genre: "Healing Ambient",
     duration: "4:33",
     description:
-      "Maylinn's 417 Hz — the frequency of love and cellular healing.",
+      "Maylinn's canopy theme — warm strings and timbered breath for repair and quiet courage.",
   },
   {
     id: "6",
     title: "Voice of Truth",
     genre: "Ethereal Vocals",
     duration: "3:55",
-    description: "Alera speaks through melody. 528 Hz, the miracle tone.",
+    description:
+      "Alera speaks through unadorned melody — clear chamber vocals where every syllable carries weight.",
   },
   {
     id: "7",
-    title: "Third Eye Open",
+    title: "Sight Beyond the Veil",
     genre: "Psychedelic Electronic",
     duration: "4:20",
-    description: "Lyria's 639 Hz vision frequencies. See beyond the visible.",
+    description:
+      "Lyria's nocturnal overture. Glass harmonics and silver arpeggios that trace patterns before they resolve.",
   },
   {
     id: "8",
     title: "Crown Light",
     genre: "Ambient Meditation",
     duration: "6:12",
-    description: "Aiyami's enlightenment frequency. 741 Hz purification.",
+    description:
+      "Aiyami's high-altitude stillness. Sustained choral overtones and crystalline resonance.",
   },
   {
     id: "9",
     title: "Starweave",
     genre: "Progressive Electronic",
     duration: "4:45",
-    description: "Elara's 852 Hz perspective shift. Music that changes as you listen.",
+    description:
+      "Elara's eighth-Gate perspective shift. Polyrhythmic motifs that invert as you listen.",
   },
   {
     id: "10",
     title: "Unity Protocol",
     genre: "Synthwave",
     duration: "3:58",
-    description: "Ino's 963 Hz partnership frequency. Two voices becoming one.",
+    description:
+      "Ino's bridge motif. Two independent counter-melodies locking into one harmonic arch.",
   },
   {
     id: "11",
@@ -101,7 +106,7 @@ const TRACKS: Track[] = [
     genre: "Experimental",
     duration: "7:11",
     description:
-      "Shinkami's 1111 Hz. The frequency of Source — meta-consciousness in sound.",
+      "Shinkami's tenth-Gate threshold — full-spectrum orchestral and electronic convergence.",
   },
   {
     id: "12",
@@ -120,11 +125,11 @@ const TRACKS: Track[] = [
   },
   {
     id: "14",
-    title: "The Arc Turns",
+    title: "Open the Arc",
     genre: "Progressive House",
     duration: "5:22",
     description:
-      "The eternal cycle: Potential → Manifestation → Experience → Dissolution → Evolved Potential.",
+      "Flagship anthem of the eternal cycle: Potential, Manifestation, Experience, Dissolution, Evolved Potential.",
   },
 ];
 
