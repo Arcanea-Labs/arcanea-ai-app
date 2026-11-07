@@ -73,9 +73,9 @@ jobs:
           PGDATABASE: chat_disposable
         run: psql -X -v chat_disposable=1 -f supabase/tests/chat-snapshots.sql 2>&1 | tee chat-postgres.log
       - uses: actions/upload-artifact@v7
-        continue-on-error: true
         if: always()
         with:
           name: chat-postgres-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
           path: chat-postgres.log
           if-no-files-found: error
+          retention-days: 2

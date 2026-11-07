@@ -58,9 +58,9 @@ jobs:
       - name: Verify the fresh packages in native OpenCode without model inference
         run: pnpm --dir packages/cli test:opencode-delivery
       - uses: actions/upload-artifact@v7.0.2
-        continue-on-error: true
         if: always()
         with:
           name: opencode-consumer-${{ matrix.os }}
           path: screenshots/opencode-consumer
           if-no-files-found: warn
+          retention-days: 2
