@@ -342,7 +342,7 @@ test("RESET search_path on a definer function is a finding", () => {
   const sql = `
 create function public.member_count() returns int
   language sql security definer set search_path = public as $$ select 1; $$;
-alter function public.member_count() reset search_path;
+alter function public.member_count() reset all;
 `;
   const findings = scanSql(sql, "reset.sql");
   assert.equal(

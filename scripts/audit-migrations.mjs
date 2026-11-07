@@ -323,7 +323,10 @@ export function scanSql(source, file) {
     );
     const ddl = maskQuotedBodies(statement);
     const header = statement.slice(0, 90).replace(/\s+/g, " ").trim();
-    if (/^alter\s+function/i.test(ddl) && /reset\s+search_path/i.test(ddl)) {
+    if (
+      /^alter\s+function/i.test(ddl) &&
+      /reset\s+(?:search_path|all)\b/i.test(ddl)
+    ) {
       add(
         "security-definer-no-search-path",
         "high",
