@@ -34,7 +34,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/frankxai/arcanea-ai-app.git",
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app.git",
     "directory": "packages/overlay-chatgpt"
   },
   "dependencies": {
@@ -51,7 +51,7 @@
     "access": "public"
   },
   "bugs": {
-    "url": "https://github.com/frankxai/arcanea-ai-app/issues"
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app/issues"
   },
-  "homepage": "https://github.com/frankxai/arcanea-ai-app/tree/main/packages/overlay-chatgpt"
+  "homepage": "https://github.com/Arcanea-Labs/arcanea-ai-app/tree/main/packages/overlay-chatgpt"
 }

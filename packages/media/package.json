@@ -46,11 +46,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/frankxai/arcanea-ai-app.git",
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app.git",
     "directory": "packages/media"
   },
   "bugs": {
-    "url": "https://github.com/frankxai/arcanea-ai-app/issues"
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app/issues"
   },
-  "homepage": "https://github.com/frankxai/arcanea-ai-app/tree/main/packages/media"
+  "homepage": "https://github.com/Arcanea-Labs/arcanea-ai-app/tree/main/packages/media"
 }
