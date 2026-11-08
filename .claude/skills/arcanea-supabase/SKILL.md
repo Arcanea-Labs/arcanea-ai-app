@@ -22,6 +22,14 @@ node scripts/supabase-drift.mjs --refresh  # re-mirror first (SUPABASE_ACCESS_TO
 
 Exit code 1 means a repo migration newer than production's head is unapplied.
 
+```bash
+node scripts/supabase-references.mjs --list   # app code vs supabase/production-objects.json
+```
+
+This catches `.from('table')` and `.rpc('fn')` calls to objects production lacks, which TypeScript misses while clients are typed `any`. CI (`.github/workflows/supabase-guard.yml`) fails on any reference not already in `supabase/known-missing-references.json`. When a migration is applied, refresh `production-objects.json` and shrink the baseline; never grow the baseline to make CI pass.
+
+Security fixes get a probe in `supabase/tests/client-trust-boundaries.sql`, which rebuilds the production grants on a disposable Postgres, applies the migrations and asserts both the closed hole and the legitimate write.
+
 ## Writing a migration
 
 1. Name it `YYYYMMDDHHMMSS_snake_name.sql` with a timestamp later than the newest file in both folders.
