@@ -37,6 +37,8 @@ Exit code 1 means a repo migration newer than production's head is unapplied.
 - **PostgREST answers a missing table with 404, not a Postgres error.** Postgres logs stay clean; look at edge logs instead.
 - **The server client falls back to a mock when env is missing.** `lib/supabase/server.ts` returns a proxy whose `getUser` resolves to `null` and whose uploads succeed with `null` data. A blank page or "logged out" state in a preview can mean missing env, not missing auth.
 - **Views bypass RLS** unless created `with (security_invoker = true)`.
+- **An ownership policy is not a business rule.** `credits` lets users insert and update their own row, so any signed-in user can set their own balance; `marketplace_agents` lets creators set `is_certified`. Balances, plans, credits, approval and trust flags are written server-side only (service role or a guarded RPC), never through a client-writable policy.
+- **"Signed in" is not "allowed to see drafts".** `... or auth.uid() is not null` on a read policy exposes every draft to every account. Scope drafts to the owners.
 
 ## Which client
 
