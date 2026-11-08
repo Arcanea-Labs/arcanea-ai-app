@@ -69,15 +69,15 @@ pnpm --dir apps/web run dev
 
 The Author Studio "Publish to Git" button commits Supabase drafts back to the repo via the GitHub Contents API. Local dev setup:
 
-1. Create a fine-grained GitHub PAT with `Contents: Read and Write` on `frankxai/arcanea-ai-app`
+1. Create a fine-grained GitHub PAT with `Contents: Read and Write` on `Arcanea-Labs/arcanea-ai-app`
 2. Add to `apps/web/.env.local`:
    ```
-   GITHUB_TOKEN=ghp_...
-   GITHUB_OWNER=frankxai
+   GITHUB_TOKEN=<fine-grained-token>
+   GITHUB_OWNER=Arcanea-Labs
    GITHUB_REPO=arcanea-ai-app
    GITHUB_BRANCH=main
    ```
-3. Vercel: set the same vars in project env. Without `GITHUB_TOKEN`, the publish endpoint returns 503 gracefully.
+3. Before changing any Vercel settings, verify the configured owner and token access with an administrator. An explicit `GITHUB_OWNER` overrides the code default. Without `GITHUB_TOKEN`, the publish endpoint returns 503 gracefully.
 
 Route: `app/api/author/[bookSlug]/publish/route.ts`. Writes each draft to `book/<bookSlug>/chapters/<chapter>.md`, then clears published drafts from `book_chapter_drafts`.
 

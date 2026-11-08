@@ -8,7 +8,7 @@ One-time setup per repo. Requires `gh` CLI authenticated as a repo admin.
 gh api \
   --method PUT \
   -H "Accept: application/vnd.github+json" \
-  repos/frankxai/arcanea-ai-app/branches/main/protection \
+  repos/Arcanea-Labs/arcanea-ai-app/branches/main/protection \
   -f required_status_checks='{"strict":true,"contexts":["Quality Gate","Guardian PR Check"]}' \
   -f enforce_admins=false \
   -f required_pull_request_reviews='{"required_approving_review_count":1,"require_code_owner_reviews":true,"dismiss_stale_reviews":true}' \
@@ -26,7 +26,7 @@ Same as above, swap `arcanea-ai-app` → `arcanea`.
 ## Verify
 
 ```bash
-gh api repos/frankxai/arcanea-ai-app/branches/main/protection | jq '{
+gh api repos/Arcanea-Labs/arcanea-ai-app/branches/main/protection | jq '{
   force_pushes: .allow_force_pushes.enabled,
   deletions: .allow_deletions.enabled,
   linear_history: .required_linear_history.enabled,

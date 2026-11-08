@@ -1,6 +1,6 @@
 # Sync Command
 
-Sync shared .arcanea/ intelligence between the OSS repo (frankxai/arcanea) and the product repo (frankxai/arcanea-ai-app).
+Sync shared .arcanea/ intelligence between the OSS repo (frankxai/arcanea) and the product repo (Arcanea-Labs/arcanea-ai-app).
 
 ## Rule
 

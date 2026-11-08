@@ -61,7 +61,7 @@ Think **Unreal Engine** (not a game — the engine for making games), **D&D** (n
 ## For developers
 
 ```bash
-git clone https://github.com/frankxai/arcanea-ai-app.git
+git clone https://github.com/Arcanea-Labs/arcanea-ai-app.git
 cd arcanea-ai-app && pnpm install
 cp apps/web/.env.example apps/web/.env.local
 pnpm dev:web

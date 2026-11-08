@@ -15,7 +15,7 @@ import { scoreTASTE } from '@arcanea/publishing-house/quality/taste-gate';
 import type { TasteResult } from '@arcanea/publishing-house/quality/types';
 import { createClient } from '@/lib/supabase/server';
 
-const GITHUB_OWNER = process.env.GITHUB_OWNER || 'frankxai';
+const GITHUB_OWNER = process.env.GITHUB_OWNER || 'Arcanea-Labs';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'arcanea-ai-app';
 const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 

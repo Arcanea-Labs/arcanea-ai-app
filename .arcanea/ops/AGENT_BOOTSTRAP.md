@@ -65,7 +65,7 @@ All configs should be thin shims pointing to `.arcanea/ops/AGENT_BOOTSTRAP.md`.
 | What to push | Where | Why |
 |-------------|-------|-----|
 | Shared intelligence (ops, lore, config, skills, prompts) | `frankxai/arcanea` (OSS) | Canonical framework source |
-| Product code (webapp, DB, planning state, handovers) | `frankxai/arcanea-ai-app` | Product-specific |
+| Product code (webapp, DB, planning state, handovers) | `Arcanea-Labs/arcanea-ai-app` | Product-specific |
 | Claude commands and skills | `frankxai/claude-arcanea` | Agent-specific overlay |
 | OpenCode agents and commands | `frankxai/oh-my-arcanea` | Agent-specific overlay |
 | Standalone CLI | `frankxai/arcanea-orchestrator` | Future product |
