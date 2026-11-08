@@ -67,6 +67,8 @@ cp apps/web/.env.example apps/web/.env.local
 pnpm dev:web
 ```
 
+The copied example currently sets the former `GITHUB_OWNER`. Before using Author Studio publishing, set `GITHUB_OWNER=Arcanea-Labs` in your local configuration; the explicit value overrides the code default.
+
 The web app serves on http://localhost:3001. Environment variables are described in [`docs/guides/ENVIRONMENT_SETUP.md`](./docs/guides/ENVIRONMENT_SETUP.md).
 
 **Stack:** Next.js 16 · React 19 · TypeScript (strict) · Supabase · Vercel AI SDK · Gemini + Claude

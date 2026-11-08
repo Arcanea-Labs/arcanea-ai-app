@@ -15,7 +15,7 @@ echo "  Arcanea Cross-Repo Health Check"
 echo "═══════════════════════════════════════════"
 echo ""
 
-# Repository registry (matches repos.json)
+# Repository registry; reconcile with repos.json before syncing.
 REPOS=(
   "Arcanea-Labs/arcanea-ai-app|production|Main platform"
   "frankxai/arcanea|oss|OSS framework"

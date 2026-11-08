@@ -1,6 +1,6 @@
 # Branch protection setup
 
-One-time setup per repo. Requires `gh` CLI authenticated as a repo admin.
+Historical setup example; do not run the PUT below. Its listed checks differ from the current protected branch. Read the current policy and obtain explicit approval before changing branch protection.
 
 ## arcanea-ai-app (production)
 
