@@ -4,10 +4,10 @@
   "description": "Presence layer for Arcanea — Lumina orb (482-line GLSL particle shell + icosahedron core + halo + satellites), audio analyser, and presence primitives. The visual substrate for Arcanea Cortex (The Living Second Brain).",
   "license": "MIT",
   "author": "FrankX <frank@frankx.ai>",
-  "homepage": "https://github.com/frankxai/arcanea-ai-app/tree/main/packages/presence",
+  "homepage": "https://github.com/Arcanea-Labs/arcanea-ai-app/tree/main/packages/presence",
   "repository": {
     "type": "git",
-    "url": "https://github.com/frankxai/arcanea-ai-app.git",
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app.git",
     "directory": "packages/presence"
   },
   "type": "module",
@@ -66,6 +66,6 @@
     "access": "public"
   },
   "bugs": {
-    "url": "https://github.com/frankxai/arcanea-ai-app/issues"
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app/issues"
   }
 }

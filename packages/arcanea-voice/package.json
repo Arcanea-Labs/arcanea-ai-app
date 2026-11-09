@@ -56,10 +56,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/frankxai/arcanea-ai-app.git",
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app.git",
     "directory": "packages/arcanea-voice"
   },
-  "homepage": "https://github.com/frankxai/arcanea-ai-app/tree/main/packages/arcanea-voice",
+  "homepage": "https://github.com/Arcanea-Labs/arcanea-ai-app/tree/main/packages/arcanea-voice",
   "engines": {
     "node": ">=18.0.0"
   },
@@ -76,6 +76,6 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/frankxai/arcanea-ai-app/issues"
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app/issues"
   }
 }
