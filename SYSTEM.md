@@ -9,7 +9,7 @@ execution records before making architectural changes.
 
 | Boundary              | Verified source or owner                                                        |
 | --------------------- | ------------------------------------------------------------------------------- |
-| Canonical repository  | `Arcanea-Labs/arcanea-ai-app`                                                       |
+| Canonical repository  | `Arcanea-Labs/arcanea-ai-app`                                                   |
 | Operating unit / team | `arcanea` / `arcanea-creative-worlds-team`                                      |
 | Application           | `apps/web`, Next.js; workspace package `@arcanea/web`                           |
 | Vercel project        | `arcanea-ai-app`, `prj_90OIWsAmfeswv8IG8WxqEAFefTOV`                            |

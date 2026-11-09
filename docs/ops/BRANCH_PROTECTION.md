@@ -36,6 +36,7 @@ gh api repos/Arcanea-Labs/arcanea-ai-app/branches/main/protection | jq '{
 ```
 
 Expected output:
+
 ```json
 {
   "force_pushes": false,

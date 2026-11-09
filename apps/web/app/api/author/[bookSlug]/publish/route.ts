@@ -9,18 +9,18 @@
  *   up the new content automatically.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { Octokit } from '@octokit/rest';
-import { scoreTASTE } from '@arcanea/publishing-house/quality/taste-gate';
-import type { TasteResult } from '@arcanea/publishing-house/quality/types';
-import { createClient } from '@/lib/supabase/server';
+import { NextRequest, NextResponse } from "next/server";
+import { Octokit } from "@octokit/rest";
+import { scoreTASTE } from "@arcanea/publishing-house/quality/taste-gate";
+import type { TasteResult } from "@arcanea/publishing-house/quality/types";
+import { createClient } from "@/lib/supabase/server";
 
-const GITHUB_OWNER = process.env.GITHUB_OWNER || 'Arcanea-Labs';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'arcanea-ai-app';
-const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
+const GITHUB_OWNER = process.env.GITHUB_OWNER || "Arcanea-Labs";
+const GITHUB_REPO = process.env.GITHUB_REPO || "arcanea-ai-app";
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || "main";
 
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type DB = any;
@@ -38,49 +38,58 @@ export async function POST(
 ) {
   const { bookSlug } = await params;
   // Optional TASTE quality gate. ?gate=block refuses publish on fail; ?gate=warn (default) publishes anyway and surfaces scores.
-  const gateMode = (req.nextUrl.searchParams.get('gate') ?? 'warn') as 'warn' | 'block' | 'off';
+  const gateMode = (req.nextUrl.searchParams.get("gate") ?? "warn") as
+    "warn" | "block" | "off";
 
   if (!process.env.GITHUB_TOKEN) {
     return NextResponse.json(
-      { error: 'Publishing not configured. Set GITHUB_TOKEN env var.' },
+      { error: "Publishing not configured. Set GITHUB_TOKEN env var." },
       { status: 503 },
     );
   }
 
   const supabase = (await createClient()) as DB;
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) {
-    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    return NextResponse.json(
+      { error: "Authentication required" },
+      { status: 401 },
+    );
   }
 
   // Verify user is an author of this book
   const { data: bookRow } = await supabase
-    .from('books')
-    .select('id')
-    .eq('slug', bookSlug)
+    .from("books")
+    .select("id")
+    .eq("slug", bookSlug)
     .maybeSingle();
 
   if (!bookRow) {
-    return NextResponse.json({ error: 'Book not found' }, { status: 404 });
+    return NextResponse.json({ error: "Book not found" }, { status: 404 });
   }
 
   const { data: authorRow } = await supabase
-    .from('book_authors')
-    .select('role')
-    .eq('book_id', bookRow.id)
-    .eq('user_id', user.id)
+    .from("book_authors")
+    .select("role")
+    .eq("book_id", bookRow.id)
+    .eq("user_id", user.id)
     .maybeSingle();
 
   if (!authorRow) {
-    return NextResponse.json({ error: 'Not an author of this book' }, { status: 403 });
+    return NextResponse.json(
+      { error: "Not an author of this book" },
+      { status: 403 },
+    );
   }
 
   // Load all drafts for this book for this user
   const { data: drafts } = await supabase
-    .from('book_chapter_drafts')
-    .select('chapter_slug, content, word_count')
-    .eq('book_slug', bookSlug)
-    .eq('author_user_id', user.id);
+    .from("book_chapter_drafts")
+    .select("chapter_slug, content, word_count")
+    .eq("book_slug", bookSlug)
+    .eq("author_user_id", user.id);
 
   const draftRows = (drafts ?? []) as Array<{
     chapter_slug: string;
@@ -89,37 +98,40 @@ export async function POST(
   }>;
 
   if (draftRows.length === 0) {
-    return NextResponse.json({ error: 'No drafts to publish' }, { status: 400 });
+    return NextResponse.json(
+      { error: "No drafts to publish" },
+      { status: 400 },
+    );
   }
 
   // Optional TASTE pre-publish quality gate
   const tasteByChapter = new Map<string, TasteResult>();
   const blockedByGate: string[] = [];
-  if (gateMode !== 'off') {
+  if (gateMode !== "off") {
     for (const d of draftRows) {
       try {
         const result = await scoreTASTE({
           content: d.content,
           metadata: {
             title: d.chapter_slug,
-            author: 'Arcanea Author',
-            language: 'en',
+            author: "Arcanea Author",
+            language: "en",
             wordCount: d.word_count,
           },
         });
         tasteByChapter.set(d.chapter_slug, result);
-        if (gateMode === 'block' && !result.passesGate) {
+        if (gateMode === "block" && !result.passesGate) {
           blockedByGate.push(d.chapter_slug);
         }
       } catch {
         // Scoring failure is non-fatal in warn mode; in block mode we skip just to be safe.
-        if (gateMode === 'block') blockedByGate.push(d.chapter_slug);
+        if (gateMode === "block") blockedByGate.push(d.chapter_slug);
       }
     }
-    if (gateMode === 'block' && blockedByGate.length > 0) {
+    if (gateMode === "block" && blockedByGate.length > 0) {
       return NextResponse.json(
         {
-          error: 'TASTE gate failed for one or more drafts',
+          error: "TASTE gate failed for one or more drafts",
           blocked: blockedByGate,
           scores: Object.fromEntries(tasteByChapter),
         },
@@ -143,7 +155,7 @@ export async function POST(
         path,
         ref: GITHUB_BRANCH,
       });
-      if (!Array.isArray(existing) && 'sha' in existing) {
+      if (!Array.isArray(existing) && "sha" in existing) {
         sha = existing.sha;
       }
     } catch {
@@ -156,7 +168,7 @@ export async function POST(
         repo: GITHUB_REPO,
         path,
         message: `publish(${bookSlug}): update ${draft.chapter_slug} (${draft.word_count} words)`,
-        content: Buffer.from(draft.content, 'utf-8').toString('base64'),
+        content: Buffer.from(draft.content, "utf-8").toString("base64"),
         branch: GITHUB_BRANCH,
         sha,
       });
@@ -167,7 +179,7 @@ export async function POST(
         taste: tasteByChapter.get(draft.chapter_slug),
       });
     } catch (e: unknown) {
-      const error = e instanceof Error ? e.message : 'Unknown error';
+      const error = e instanceof Error ? e.message : "Unknown error";
       results.push({
         chapter: draft.chapter_slug,
         error,
@@ -177,20 +189,20 @@ export async function POST(
   }
 
   // Delete successfully published drafts
-  const publishedChapters = results.filter(r => r.sha).map(r => r.chapter);
+  const publishedChapters = results.filter((r) => r.sha).map((r) => r.chapter);
   if (publishedChapters.length > 0) {
     await supabase
-      .from('book_chapter_drafts')
+      .from("book_chapter_drafts")
       .delete()
-      .eq('book_slug', bookSlug)
-      .eq('author_user_id', user.id)
-      .in('chapter_slug', publishedChapters);
+      .eq("book_slug", bookSlug)
+      .eq("author_user_id", user.id)
+      .in("chapter_slug", publishedChapters);
   }
 
   return NextResponse.json({
     success: true,
     published: publishedChapters.length,
-    failed: results.filter(r => r.error).length,
+    failed: results.filter((r) => r.error).length,
     gateMode,
     results,
     deployUrl: `https://arcanea.ai/books/drafts/${bookSlug}`,

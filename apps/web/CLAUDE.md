@@ -28,11 +28,13 @@ Next.js 16 (App Router) + React 19 + TypeScript strict + Tailwind CSS + Supabase
 Distributable plugin at `packages/claude-plugin-design/`. After symlink install (see `install.md`), these are available:
 
 **Slash commands** (`/design-*`):
+
 - `/design-brief <context>` — start a design brief
 - `/design-ship <target>` — full end-to-end page revamp
 - `/design-review <page>` / `/design-verify <page>` — quality review
 
 **Subagents** (dispatch via Task tool):
+
 - `design-architect` — brief + aesthetic + brand kit
 - `design-generator` — 3 variants via Magic + v0
 - `design-motion` — Framer Motion choreography
@@ -45,7 +47,7 @@ Distributable plugin at `packages/claude-plugin-design/`. After symlink install 
 ## Content Loader
 
 ```typescript
-import { getCollections, getText, getTextsForSituation } from '@/lib/content';
+import { getCollections, getText, getTextsForSituation } from "@/lib/content";
 ```
 
 Library lives in `/book/` (17 collections). Use `lib/content/` for programmatic access.
