@@ -63,3 +63,4 @@ jobs:
           name: opencode-consumer-${{ matrix.os }}
           path: screenshots/opencode-consumer
           if-no-files-found: warn
+          retention-days: 2
