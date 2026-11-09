@@ -254,7 +254,9 @@ function HeroPortal() {
           <div className="mt-4 flex flex-col items-center justify-center gap-2 text-[11px] text-white/35 sm:flex-row md:mt-5 md:gap-3">
             <SovereigntyBadge />
             <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:block" />
-            <span className="font-body">Your own model keys · exports in Markdown</span>
+            <span className="font-body">
+              Your own model keys · exports in Markdown
+            </span>
           </div>
 
           <div className="mt-6 hidden items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.025] px-3 py-2 backdrop-blur-md md:inline-flex">

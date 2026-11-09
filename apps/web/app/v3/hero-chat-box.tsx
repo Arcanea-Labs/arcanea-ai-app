@@ -154,9 +154,7 @@ export function HeroChatBox() {
                   : "bg-white/[0.04] cursor-default"
               }`}
               aria-label={
-                hasText
-                  ? "Start in chat"
-                  : "Enter a prompt to start in chat"
+                hasText ? "Start in chat" : "Enter a prompt to start in chat"
               }
             >
               <span
