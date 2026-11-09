@@ -52,6 +52,7 @@ create table public.creators(
 create table public.worlds(id uuid primary key, creator_id uuid, visibility text);
 create table public.world_collaborators(world_id uuid, user_id uuid, role text, primary key(world_id, user_id));
 create table public.world_creations(id uuid primary key default gen_random_uuid(), world_id uuid, creator_id uuid, title text);
+create table public.message_reactions(id uuid primary key default gen_random_uuid(), message_id text not null, user_id uuid, reaction text, unique(user_id, message_id));
 create table public.platforms(
   id uuid primary key default gen_random_uuid(), name text, owner_id uuid, description text, api_key_hash text not null,
   allowed_origins text[], fee_override numeric, agent_count int default 0, deployment_count int default 0,
@@ -59,7 +60,7 @@ create table public.platforms(
 
 do $$ declare t text; begin
   foreach t in array array['notifications','profiles','books','book_authors','book_chapters','book_covers',
-                           'book_ratings','creators','worlds','world_collaborators','world_creations','platforms'] loop
+                           'book_ratings','creators','worlds','world_collaborators','world_creations','platforms','message_reactions'] loop
     execute format('alter table public.%I enable row level security', t);
   end loop;
 end $$;
@@ -108,6 +109,8 @@ create policy worlds_select on public.worlds for select using (true);
 create policy collab_select on public.world_collaborators for select using (true);
 create policy "Creators manage own creations" on public.world_creations for all using (auth.uid() = creator_id);
 create policy platforms_select on public.platforms for select using (is_active = true);
+create policy "Users can manage their own reactions" on public.message_reactions
+  using (auth.uid() = user_id or user_id is null) with check (auth.uid() = user_id or user_id is null);
 
 -- ── Seed ──
 -- A authors book_a and owns world_a. B authors book_b, owns world_b, edits world_a.
@@ -128,6 +131,7 @@ insert into public.book_covers(book_id, status, generated_by) values
 insert into public.worlds values ('a1000000-0000-4000-8000-00000000000a', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'public'),
                                  ('b1000000-0000-4000-8000-00000000000b', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'public');
 insert into public.world_collaborators values ('a1000000-0000-4000-8000-00000000000a', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'editor');
+insert into public.message_reactions(message_id, user_id, reaction) values ('m-anon-seed', null, 'up');
 insert into public.platforms(name, owner_id, api_key_hash) values ('P', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'hash-secret');
 
 -- ── The fixes under test ──
@@ -136,6 +140,7 @@ insert into public.platforms(name, owner_id, api_key_hash) values ('P', 'aaaaaaa
 \ir ../migrations/20261108180200_scope_drafts_and_platform_key_hash.sql
 \ir ../migrations/20261108180300_lock_client_trust_columns.sql
 \ir ../migrations/20261108180400_fix_book_rating_stats_and_lock_book_scores.sql
+\ir ../migrations/20261108180600_message_reactions_owner_only.sql
 
 -- ── As user A ──
 begin;
@@ -204,6 +209,15 @@ do $$ begin
   exception when insufficient_privilege then null; end;
 
   insert into public.world_creations(world_id, creator_id, title) values ('a1000000-0000-4000-8000-00000000000a', auth.uid(), 'Editor contribution');
+
+  insert into public.message_reactions(message_id, user_id, reaction) values ('m-1', auth.uid(), 'up');
+  delete from public.message_reactions where message_id = 'm-1' and user_id = auth.uid();
+  if found is false then raise exception 'Owner could not delete own reaction'; end if;
+  update public.message_reactions set reaction = 'down' where user_id is null;
+  delete from public.message_reactions where user_id is null;
+  if (select count(*) from public.message_reactions where user_id is null and reaction = 'up') <> 1 then
+    raise exception 'Anonymous reaction was changed or deleted by another user';
+  end if;
 end $$;
 commit;
 
@@ -232,6 +246,10 @@ do $$ begin
   begin perform api_key_hash from public.platforms; raise exception 'api_key_hash readable by anon';
   exception when insufficient_privilege then null; end;
   begin update public.profiles set xp = 1; raise exception 'anon profile write accepted';
+  exception when insufficient_privilege then null; end;
+  insert into public.message_reactions(message_id, user_id, reaction) values ('m-anon', null, 'up');
+  begin insert into public.message_reactions(message_id, user_id, reaction) values ('m-forged', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'up');
+    raise exception 'anon forged a reaction for a user';
   exception when insufficient_privilege then null; end;
 end $$;
 commit;
