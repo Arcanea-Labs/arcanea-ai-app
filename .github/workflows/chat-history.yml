@@ -78,3 +78,4 @@ jobs:
           name: chat-postgres-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
           path: chat-postgres.log
           if-no-files-found: error
+          retention-days: 2

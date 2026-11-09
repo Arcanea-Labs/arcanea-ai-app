@@ -102,11 +102,12 @@ jobs:
       - name: Keep revision-bound captures and safe fixture receipts
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: companion-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
           path: screenshots/companion/
           if-no-files-found: ignore
-          retention-days: 7
+          retention-days: 2
 
   independent-source-review:
     name: Independent public-source review
@@ -142,8 +143,9 @@ jobs:
       - name: Retain exact-source review and all attempts
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: companion-review-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
           path: screenshots/companion-review/
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 2

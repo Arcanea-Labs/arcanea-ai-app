@@ -28,11 +28,13 @@ Next.js 16 (App Router) + React 19 + TypeScript strict + Tailwind CSS + Supabase
 Distributable plugin at `packages/claude-plugin-design/`. After symlink install (see `install.md`), these are available:
 
 **Slash commands** (`/design-*`):
+
 - `/design-brief <context>` — start a design brief
 - `/design-ship <target>` — full end-to-end page revamp
 - `/design-review <page>` / `/design-verify <page>` — quality review
 
 **Subagents** (dispatch via Task tool):
+
 - `design-architect` — brief + aesthetic + brand kit
 - `design-generator` — 3 variants via Magic + v0
 - `design-motion` — Framer Motion choreography
@@ -45,7 +47,7 @@ Distributable plugin at `packages/claude-plugin-design/`. After symlink install 
 ## Content Loader
 
 ```typescript
-import { getCollections, getText, getTextsForSituation } from '@/lib/content';
+import { getCollections, getText, getTextsForSituation } from "@/lib/content";
 ```
 
 Library lives in `/book/` (17 collections). Use `lib/content/` for programmatic access.
@@ -69,15 +71,15 @@ pnpm --dir apps/web run dev
 
 The Author Studio "Publish to Git" button commits Supabase drafts back to the repo via the GitHub Contents API. Local dev setup:
 
-1. Create a fine-grained GitHub PAT with `Contents: Read and Write` on `frankxai/arcanea-ai-app`
+1. Create a fine-grained GitHub PAT with `Contents: Read and Write` on `Arcanea-Labs/arcanea-ai-app`
 2. Add to `apps/web/.env.local`:
    ```
-   GITHUB_TOKEN=ghp_...
-   GITHUB_OWNER=frankxai
+   GITHUB_TOKEN=<fine-grained-token>
+   GITHUB_OWNER=Arcanea-Labs
    GITHUB_REPO=arcanea-ai-app
    GITHUB_BRANCH=main
    ```
-3. Vercel: set the same vars in project env. Without `GITHUB_TOKEN`, the publish endpoint returns 503 gracefully.
+3. Before changing any Vercel settings, verify the configured owner and token access with an administrator. An explicit `GITHUB_OWNER` overrides the code default. Without `GITHUB_TOKEN`, the publish endpoint returns 503 gracefully.
 
 Route: `app/api/author/[bookSlug]/publish/route.ts`. Writes each draft to `book/<bookSlug>/chapters/<chapter>.md`, then clears published drafts from `book_chapter_drafts`.
 
