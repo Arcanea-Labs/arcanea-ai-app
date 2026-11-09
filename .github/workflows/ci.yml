@@ -409,10 +409,11 @@ jobs:
       - name: Retain MCP consumer delivery evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: mcp-consumer-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/mcp-consumer/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
       - name: Verify Luminor public-read timeout
@@ -487,10 +488,11 @@ jobs:
       - name: Upload reader journey evidence
         if: always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: reader-entry-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/reader-entry/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
       - name: Verify Firstlight collection and cooperation at three viewports
@@ -529,19 +531,21 @@ jobs:
       - name: Retain geographic map review evidence
         if: always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        continue-on-error: true
         with:
           name: atlas-geography-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: .visual-proof/atlas-after/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
       - name: Upload Firstlight review evidence
         if: always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        continue-on-error: true
         with:
           name: firstlight-02-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: apps/web/test-results/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
       - name: Verify community signup and recovery in the built browser
@@ -559,10 +563,11 @@ jobs:
       - name: Upload community signup browser evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: community-capture-built-app-${{ github.sha }}
           path: screenshots/community-capture/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
       - name: Select MCP reader browser scope
@@ -634,12 +639,13 @@ jobs:
           fi
 
       - name: Upload gallery rendered evidence
-        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false || steps.mcp-scope.outputs.run == 'true' || steps.footer-scope.outputs.run == 'true')
+        if: ${{ failure() || github.ref == 'refs/heads/main' }}
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: galleries-built-app-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
       - name: Build summary
@@ -688,10 +694,11 @@ jobs:
       - name: Retain authenticated preview evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: author-preview-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/author-hosted/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
   world-preview:
@@ -728,10 +735,11 @@ jobs:
       - name: Retain safe world acceptance evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: world-preview-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/world-service/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
   author-independent-review:
@@ -775,10 +783,11 @@ jobs:
       - name: Retain handover final findings and source receipt
         if: always() && (github.ref_name == 'agent/codex/mcp-runtime-integration-20261010' || github.ref_name == 'agent/codex/review-handover-20261010') && inputs.review_hub_release
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: hub-review-${{ github.ref_name == 'agent/codex/review-handover-20261010' && inputs.review_hub_head || '5326dc36c78f' }}-attempt-${{ github.run_attempt }}
           path: screenshots/hub-review/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
       - name: Review complete exact source using the existing independent provider
         if: (github.ref_name != 'agent/codex/review-handover-20261010' || !inputs.review_hub_release) && !(github.ref_name == 'agent/codex/world-creator-recovery-20261010' && inputs.world_live_generation)
@@ -788,10 +797,11 @@ jobs:
       - name: Retain final findings and exact source receipt
         if: always() && (github.ref_name != 'agent/codex/review-handover-20261010' || !inputs.review_hub_release)
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: author-review-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/author-review/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
   generation-preview:
@@ -826,10 +836,11 @@ jobs:
       - name: Retain safe generation acceptance evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: generation-preview-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/generation-service/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
   project-document-preview:
@@ -862,10 +873,11 @@ jobs:
       - name: Retain safe document acceptance evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: project-document-preview-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/project-document-service/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
   provider-account-preview:
@@ -896,10 +908,11 @@ jobs:
       - name: Retain safe provider settings acceptance evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: provider-settings-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/provider-settings/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
   private-imagine-preview:
@@ -930,10 +943,11 @@ jobs:
       - name: Retain safe private Imagine acceptance evidence
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: private-imagine-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/private-imagine/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
 
   # ============================================
