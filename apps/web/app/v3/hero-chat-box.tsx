@@ -148,17 +148,24 @@ export function HeroChatBox() {
               type="button"
               onClick={submit}
               disabled={!hasText}
-              className={`inline-flex h-11 w-11 items-center justify-center rounded-xl transition-[box-shadow,transform,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--arc-brand-atlantean-teal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--arc-cosmic-void)] ${
+              className={`inline-flex h-11 items-center justify-center gap-1.5 px-3.5 rounded-xl transition-[box-shadow,transform,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--arc-brand-atlantean-teal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--arc-cosmic-void)] ${
                 hasText
                   ? "bg-[var(--arc-brand-atlantean-teal)] shadow-[0_2px_16px_color-mix(in_srgb,var(--arc-brand-atlantean-teal)_35%,transparent)] hover:shadow-[0_4px_24px_color-mix(in_srgb,var(--arc-brand-atlantean-teal)_50%,transparent)] active:scale-95"
                   : "bg-white/[0.04] cursor-default"
               }`}
               aria-label={
                 hasText
-                  ? "Start creating in chat"
-                  : "Enter a prompt to start creating"
+                  ? "Start in chat"
+                  : "Enter a prompt to start in chat"
               }
             >
+              <span
+                className={`hidden sm:inline text-xs font-display font-semibold transition-colors ${
+                  hasText ? "text-[var(--arc-cosmic-void)]" : "text-white/45"
+                }`}
+              >
+                Start in chat
+              </span>
               <PhPaperPlane
                 aria-hidden="true"
                 weight={hasText ? "bold" : "regular"}

@@ -210,13 +210,17 @@ function HeroPortal() {
                 Icon: ShieldStar,
                 num: 0,
                 suffix: "MIT",
-                label: "open source",
+                label: "MCP & skills",
+                href: "https://www.npmjs.com/package/@arcanea/mcp-server",
                 color: "var(--arc-void)",
                 fixed: true,
               },
-            ].map(({ Icon, num, suffix, label, color, fixed }, i) => (
-              <div
+            ].map(({ Icon, num, suffix, label, href, color, fixed }, i) => (
+              <a
                 key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-3 py-1.5 backdrop-blur-sm transition-colors hover:border-white/[0.15]"
               >
                 <Icon
@@ -243,14 +247,14 @@ function HeroPortal() {
                 <span className="text-[10px] text-white/34 font-body">
                   {label}
                 </span>
-              </div>
+              </a>
             ))}
           </div>
 
           <div className="mt-4 flex flex-col items-center justify-center gap-2 text-[11px] text-white/35 sm:flex-row md:mt-5 md:gap-3">
             <SovereigntyBadge />
             <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:block" />
-            <span className="font-body">BYOK / your IP / no lock-in</span>
+            <span className="font-body">Your own model keys · exports in Markdown</span>
           </div>
 
           <div className="mt-6 hidden items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.025] px-3 py-2 backdrop-blur-md md:inline-flex">
