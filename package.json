@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "verify:npm-metadata": "node scripts/verify-npm-metadata.mjs && node --test scripts/tests/npm-metadata.test.mjs",
     "dev": "turbo run dev",
     "dev:academy": "turbo run dev --filter=@arcanea/academy",
     "dev:web": "turbo run dev --filter=@arcanea/web",
@@ -85,7 +86,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@supabase/ssr": "^0.12.7",
-    "@supabase/supabase-js": "^2.117.2",
+    "@supabase/supabase-js": "^2.118.0",
     "dotenv": "^16.4.5",
     "glob": "^11.0.0",
     "stripe": "^20.4.1"
