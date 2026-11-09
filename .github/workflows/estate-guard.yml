@@ -46,10 +46,11 @@ jobs:
           cat estate-guard-report.md >> "$GITHUB_STEP_SUMMARY"
           node .claude/ci/estate-guard-scan.mjs --root . $flag --fail-on high > /dev/null
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        continue-on-error: true
         if: always()
         with:
           name: estate-guard-report
           path: |
             estate-guard-report.md
             .claude/ci/estate-guard/last-scan.json
-          retention-days: 30
+          retention-days: 7
