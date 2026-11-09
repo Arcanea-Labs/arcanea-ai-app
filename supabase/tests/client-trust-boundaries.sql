@@ -1,7 +1,7 @@
 -- Disposable PostgreSQL fixture only. Never run against the product database.
 -- Rebuilds the production grants and policies found on 2026-11-08 (table-level
 -- grants to anon/authenticated, the vulnerable policies), applies the
--- 20261108 fix migrations, then proves each hole is closed and each
+-- 20261109 fix migrations, then proves each hole is closed and each
 -- legitimate client write still works.
 \set ON_ERROR_STOP on
 \if :{?trust_disposable}
@@ -135,12 +135,12 @@ insert into public.message_reactions(message_id, user_id, reaction) values ('m-a
 insert into public.platforms(name, owner_id, api_key_hash) values ('P', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'hash-secret');
 
 -- ── The fixes under test ──
-\ir ../migrations/20261108180000_fix_unread_notification_count.sql
-\ir ../migrations/20261108180100_drop_duplicate_indexes.sql
-\ir ../migrations/20261108180200_scope_drafts_and_platform_key_hash.sql
-\ir ../migrations/20261108180300_lock_client_trust_columns.sql
-\ir ../migrations/20261108180400_fix_book_rating_stats_and_lock_book_scores.sql
-\ir ../migrations/20261108180600_message_reactions_owner_only.sql
+\ir ../migrations/20261109104311_fix_unread_notification_count.sql
+\ir ../migrations/20261109110100_drop_duplicate_indexes.sql
+\ir ../migrations/20261109110200_scope_drafts_and_platform_key_hash.sql
+\ir ../migrations/20261109110300_lock_client_trust_columns.sql
+\ir ../migrations/20261109110400_fix_book_rating_stats_and_lock_book_scores.sql
+\ir ../migrations/20261109110600_message_reactions_owner_only.sql
 
 -- ── As user A ──
 begin;

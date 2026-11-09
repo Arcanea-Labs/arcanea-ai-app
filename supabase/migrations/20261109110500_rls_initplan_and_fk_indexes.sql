@@ -3,7 +3,7 @@
 -- (Supabase advisor 0003 auth_rls_initplan). Wrapping it in (select ...) makes it an
 -- initplan that runs once per statement. Who can read or write what is unchanged:
 -- each expression is the live definition from pg_policies on 2026-11-09 with only the
--- call wrapped. The four policies 20261108180200/180300 redefine are left out so this
+-- call wrapped. The four policies 20261109110200/110300 redefine are left out so this
 -- migration cannot undo them.
 
 alter policy reviews_insert on public.agent_reviews with check (((select auth.uid()) = user_id));
