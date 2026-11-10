@@ -12,8 +12,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateText } from 'ai';
+import { getClientIdentifier, checkRateLimit } from '@/lib/rate-limit/rate-limiter';
 
 export const runtime = 'edge';
+
+// Each request is a platform-key model call.
+const FORGE_RATE_LIMIT = { maxRequests: 10, windowMs: 60_000 };
 
 interface ForgeRequest {
   /** Creator's natural language description of what they want their Luminor to do */
@@ -57,6 +61,17 @@ Rules:
 - Element should align with the domain: Fire for transformation/code, Water for flow/music, Earth for structure/architecture, Wind for communication/writing, Void for analysis/research, Spirit for wisdom/foresight`;
 
 export async function POST(req: NextRequest) {
+  const rl = checkRateLimit(`forge:luminor:${getClientIdentifier(req)}`, FORGE_RATE_LIMIT);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Try again in a minute.' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(Math.ceil((rl.resetTime - Date.now()) / 1000)) },
+      }
+    );
+  }
+
   try {
     const body: ForgeRequest = await req.json();
     const { description, name, element, domain } = body;
