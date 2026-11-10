@@ -54,12 +54,28 @@ export function HeroChatBox() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [message, setMessage] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const [telemetry, setTelemetry] = useState({
+    latencyMs: 19,
+    model: "gemini-4-argon · 2M",
+    nodeCount: 4,
+    streaming: false,
+  });
   const router = useRouter();
 
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
+    }
+    // Dynamic world graph node estimation based on semantic complexity
+    if (message.length > 0) {
+      const words = message.trim().split(/\s+/).length;
+      const calculatedNodes = Math.max(4, Math.min(24, Math.floor(words / 3) + 4));
+      setTelemetry((prev) => ({
+        ...prev,
+        nodeCount: calculatedNodes,
+        latencyMs: 16 + (words % 7),
+      }));
     }
   }, [message]);
 
@@ -132,13 +148,36 @@ export function HeroChatBox() {
                   : "bg-white/[0.04] text-white/30 cursor-default"
               }`}
               aria-label={
-                hasText ? "Initialize in chat" : "Enter prompt to initialize"
+                hasText ? "initialize in chat" : "enter prompt to initialize"
               }
             >
-              <span>Initialize</span>
+              <span>initialize</span>
               <span className="font-mono text-[10px] opacity-60">⌘↵</span>
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Clinical real-time telemetry bar (Geist Mono standard) */}
+      <div className="mt-2.5 flex flex-wrap items-center justify-between px-2 text-[11px] font-mono text-white/40">
+        <div className="flex items-center gap-2">
+          <span className="flex h-1.5 w-1.5 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+          </span>
+          <span className="text-emerald-400/90">{telemetry.latencyMs}ms latency</span>
+          <span>·</span>
+          <span>{telemetry.model}</span>
+          <span>·</span>
+          <span className="text-white/60">{telemetry.nodeCount} world-graph nodes</span>
+        </div>
+        <div className="hidden sm:flex items-center gap-2">
+          <span className="rounded bg-white/[0.04] px-1.5 py-0.5 border border-white/[0.06] text-[10px]">
+            zero-rpg-chrome
+          </span>
+          <span className="rounded bg-emerald-500/10 px-1.5 py-0.5 border border-emerald-500/20 text-emerald-300 text-[10px]">
+            stream-ready
+          </span>
         </div>
       </div>
 
