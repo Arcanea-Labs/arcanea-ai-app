@@ -29,7 +29,7 @@ Existing candidate assets:
 ---
 
 ## 3 · Visual Rules & Forbidden Aesthetics
-- **Rules:** Layered depth, parallax planes, deep shadows. Apply the Arcanea Color Spectrum (bg `#05070f` / gold `#c5a26f` / indigo `#3f2a6b` / crimson `#6b2a2a` / teal `#2a5c5c`).
+- **Rules:** Layered depth, parallax planes, deep shadows. Apply the Arcanea Color Spectrum as defined in `packages/design-system/src/tokens.css` (bg `--arc-cosmic-void` `#09090b` / teal `--arc-brand-atlantean-teal` `#00bcd4` / cosmic blue `--arc-brand-cosmic-blue` `#0d47a1` / gold `--arc-brand-arcanean-gold` `#ffd700`).
 - **Forbidden:** No flat vectors, no saturated primary colors (pure red, green, blue), and no standard modern flat UI frames.
 
 ---
