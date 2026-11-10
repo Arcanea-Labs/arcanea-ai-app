@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
-  ArrowLeft, ArrowRight, Star, Users, Clock, Lightning, Sparkle,
+  ArrowLeft, ArrowRight, Star, Clock, Lightning, Sparkle,
   Flame, Drop, Leaf, Wind, Eye, Sun, Trophy, Shield, Crown,
   Check, Book, Globe, Code, Sword, MusicNote,
 } from '@/lib/phosphor-icons';
@@ -204,16 +204,6 @@ export default function ChallengeDetailPage() {
                   <span className="font-mono text-sm font-bold text-[var(--arc-brand-arcanean-gold)]">${challenge.prizePool.toLocaleString()}</span>
                   <span className="font-mono text-[10px] text-white/30">prize pool</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Users className="h-4 w-4 text-white/40" />
-                  <span className="font-mono text-sm text-white/60">{challenge.totalParticipants}</span>
-                  <span className="font-mono text-[10px] text-white/30">creators</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Lightning className="h-4 w-4 text-white/40" />
-                  <span className="font-mono text-sm text-white/60">{challenge.totalSubmissions}</span>
-                  <span className="font-mono text-[10px] text-white/30">submissions</span>
-                </div>
               </div>
             </div>
           </div>
@@ -347,47 +337,9 @@ export default function ChallengeDetailPage() {
 
         {/* ---- ENTRIES TAB ---- */}
         {activeTab === 'entries' && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="font-display text-2xl font-bold text-white">
-                {challenge.totalSubmissions} Submissions
-              </h3>
-              <p className="mt-2 text-sm text-white/40">
-                Browse what other creators have built for this challenge.
-              </p>
-            </div>
-
-            {/* Placeholder entries */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              {Array.from({ length: Math.min(challenge.totalSubmissions, 6) }).map((_, i) => (
-                <div key={i} className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all hover:border-white/[0.12]">
-                  <div className="mb-3 flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-white/10 to-white/5" />
-                    <div>
-                      <div className="font-display text-sm font-semibold text-white">Entry #{i + 1}</div>
-                      <div className="font-mono text-[9px] text-white/30">Creator #{1000 + i}</div>
-                    </div>
-                    {i < 3 && (
-                      <div className="ml-auto">
-                        <Trophy className="h-4 w-4" style={{ color: i === 0 ? 'var(--arc-brand-arcanean-gold)' : i === 1 ? 'var(--arc-text-primary)' : 'var(--arc-fire)' }} weight="fill" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="h-32 rounded-xl bg-gradient-to-br from-white/[0.04] to-white/[0.01]" />
-                  <div className="mt-3 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="flex items-center gap-1 font-mono text-[10px] text-white/30">
-                        <Sparkle className="h-3 w-3" weight="fill" /> {Math.floor(Math.random() * 500 + 100)} mana
-                      </span>
-                      <span className="flex items-center gap-1 font-mono text-[10px] text-white/30">
-                        <Lightning className="h-3 w-3" /> {Math.floor(Math.random() * 5 + 1)} spells
-                      </span>
-                    </div>
-                    <span className="font-mono text-[10px]" style={{ color: challenge.accentColor }}>View</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="py-20 text-center">
+            <Eye className="mx-auto mb-4 h-12 w-12 text-white/10" weight="duotone" />
+            <p className="text-sm text-white/30">No submissions to show yet.</p>
           </div>
         )}
       </section>

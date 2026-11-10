@@ -5,30 +5,17 @@ import { useState, Suspense, lazy } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight, Sparkle, Crown, Star, Lightning, Users,
-  Trophy, Flame, Drop, Leaf, Wind, Eye, Sun,
+  Trophy, Eye,
   Globe, Shield, Scroll, Book, Sword, MusicNote,
 } from '@/lib/phosphor-icons';
-import { FEATURED_CHALLENGES, DIFFICULTY_CONFIG, ELEMENT_CONFIG, SPELLBOOKS } from '@/lib/challenges';
+import { FEATURED_CHALLENGES, DIFFICULTY_CONFIG, SPELLBOOKS } from '@/lib/challenges';
 import { ChallengeCard, SpellbookViewer, TeamComposer } from '@/components/challenges';
-import type { ChallengeCategory, ChallengeStatus, Element } from '@/lib/types/challenge';
+import type { ChallengeCategory, ChallengeStatus } from '@/lib/types/challenge';
 
 // Lazy load the 3D scene (heavy)
 const ArenaScene = lazy(() =>
   import('@/components/challenges/arena-orbs').then(mod => ({ default: mod.ArenaScene }))
 );
-
-/* ----------------------------------------------------------------
- *  ARENA STATS
- * ---------------------------------------------------------------- */
-
-const ARENA_STATS = [
-  { label: 'Active Challenges', value: '6', icon: Lightning, color: 'var(--arc-fire)' },
-  { label: 'Creators Competing', value: '1,434', icon: Users, color: 'var(--arc-brand-cosmic-blue)' },
-  { label: 'Total Prize Pool', value: '$12,200', icon: Trophy, color: 'var(--arc-brand-arcanean-gold)' },
-  { label: 'Spells Cast', value: '8,291', icon: Sparkle, color: 'var(--arc-void)' },
-  { label: 'Submissions', value: '526', icon: Scroll, color: 'var(--arc-wind)' },
-  { label: 'Legendary Entries', value: '12', icon: Crown, color: 'var(--arc-brand-arcanean-gold)' },
-];
 
 const FILTER_CATEGORIES: { label: string; value: ChallengeCategory | 'all'; icon: React.ComponentType<Record<string, unknown>> }[] = [
   { label: 'All', value: 'all', icon: Globe },
@@ -38,14 +25,6 @@ const FILTER_CATEGORIES: { label: string; value: ChallengeCategory | 'all'; icon
   { label: 'Agent Forge', value: 'agent-forge', icon: Shield },
   { label: 'Lore', value: 'lore-weaving', icon: Book },
   { label: 'Prompt Craft', value: 'prompt-craft', icon: Scroll },
-];
-
-const LEADERBOARD = [
-  { rank: 1, name: 'Vaelith Storm', house: 'Pyros', mana: 42800, wins: 7, element: 'fire' as Element },
-  { rank: 2, name: 'Luna Deepwell', house: 'Aqualis', mana: 38200, wins: 6, element: 'water' as Element },
-  { rank: 3, name: 'Kaiden Roothold', house: 'Terra', mana: 35100, wins: 5, element: 'earth' as Element },
-  { rank: 4, name: 'Zephyr Windcaller', house: 'Ventus', mana: 31500, wins: 5, element: 'wind' as Element },
-  { rank: 5, name: 'Nyxara Voidtouched', house: 'Nero', mana: 28900, wins: 4, element: 'void' as Element },
 ];
 
 /* ----------------------------------------------------------------
@@ -62,10 +41,6 @@ export default function ChallengesPage() {
     if (filterStatus !== 'all' && c.status !== filterStatus) return false;
     return true;
   });
-
-  const ELEMENT_ICONS: Record<string, React.ComponentType<Record<string, unknown>>> = {
-    fire: Flame, water: Drop, earth: Leaf, wind: Wind, void: Eye, spirit: Sun,
-  };
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[var(--arc-cosmic-void)]">
@@ -135,19 +110,6 @@ export default function ChallengesPage() {
             </button>
           </div>
 
-          {/* Stats bar */}
-          <div className="mx-auto mt-16 grid max-w-4xl grid-cols-3 gap-6 sm:grid-cols-6">
-            {ARENA_STATS.map((stat) => {
-              const StatIcon = stat.icon;
-              return (
-                <div key={stat.label} className="text-center">
-                  <StatIcon className="mx-auto mb-1.5 h-5 w-5" style={{ color: stat.color }} weight="fill" />
-                  <div className="font-display text-xl font-bold text-white md:text-2xl">{stat.value}</div>
-                  <div className="mt-0.5 font-mono text-[8px] uppercase tracking-[0.15em] text-white/30">{stat.label}</div>
-                </div>
-              );
-            })}
-          </div>
         </div>
       </section>
 
@@ -232,56 +194,6 @@ export default function ChallengesPage() {
             </div>
           )}
 
-          {/* ============ LEADERBOARD ============ */}
-          <div className="mt-20">
-            <div className="mb-8 text-center">
-              <div className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-5 py-2 backdrop-blur-md">
-                <Trophy className="h-4 w-4 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
-                <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--arc-brand-arcanean-gold)]/90">
-                  Arena Leaderboard
-                </span>
-              </div>
-              <h2 className="font-display text-3xl font-bold text-white md:text-4xl">
-                Top <span className="bg-gradient-to-r from-[var(--arc-brand-arcanean-gold)] to-[var(--arc-brand-arcanean-gold)] bg-clip-text text-transparent">Creators</span>
-              </h2>
-            </div>
-
-            <div className="mx-auto max-w-2xl space-y-3">
-              {LEADERBOARD.map((entry) => {
-                const ElIcon = ELEMENT_ICONS[entry.element] || Sparkle;
-                const elConfig = ELEMENT_CONFIG[entry.element];
-                return (
-                  <div
-                    key={entry.rank}
-                    className="group flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all hover:border-white/[0.12] hover:bg-white/[0.04]"
-                  >
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-display text-lg font-bold ${
-                      entry.rank === 1 ? 'bg-[var(--arc-brand-arcanean-gold)]/15 text-[var(--arc-brand-arcanean-gold)]'
-                      : entry.rank === 2 ? 'bg-white/10 text-white/60'
-                      : entry.rank === 3 ? 'bg-[var(--arc-fire)]/15 text-[var(--arc-fire)]'
-                      : 'bg-white/[0.04] text-white/30'
-                    }`}>
-                      {entry.rank === 1 ? <Crown className="h-5 w-5" weight="fill" /> : `#${entry.rank}`}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-display text-sm font-semibold text-white">{entry.name}</span>
-                        <ElIcon className="h-3.5 w-3.5" style={{ color: elConfig?.color }} weight="fill" />
-                      </div>
-                      <span className="font-mono text-[10px] text-white/30">House {entry.house}</span>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center gap-1.5">
-                        <Sparkle className="h-3 w-3 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
-                        <span className="font-mono text-xs font-bold text-[var(--arc-brand-arcanean-gold)]">{entry.mana.toLocaleString()}</span>
-                      </div>
-                      <span className="font-mono text-[9px] text-white/30">{entry.wins} wins</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         </section>
       )}
 

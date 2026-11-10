@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import {
-  ArrowRight, Star, Users, Clock, Lightning, Sparkle,
+  ArrowRight, Star, Clock, Sparkle,
   Flame, Drop, Leaf, Wind, Eye, Sun, Trophy, Shield,
 } from '@/lib/phosphor-icons';
 import { DIFFICULTY_CONFIG, ELEMENT_CONFIG, CATEGORY_CONFIG } from '@/lib/challenges';
@@ -178,20 +178,6 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
 
           {/* Stats row */}
           <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-4">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1.5">
-                <Users className="h-3.5 w-3.5 text-white/30" />
-                <span className="font-mono text-[10px] text-white/40">
-                  {challenge.totalParticipants}
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Lightning className="h-3.5 w-3.5 text-white/30" />
-                <span className="font-mono text-[10px] text-white/40">
-                  {challenge.totalSubmissions} entries
-                </span>
-              </div>
-            </div>
             <TimeRemaining endDate={challenge.endDate} />
           </div>
 

@@ -123,8 +123,6 @@ export interface Challenge {
   maxTeamSize: number;
 
   // Stats
-  totalSubmissions: number;
-  totalParticipants: number;
   prizePool: number;
 
   // Visual
