@@ -109,10 +109,6 @@ export default function DevelopersPage() {
                       <Icons.Box style={{ color: pkg.color }} />
                       <span className="font-mono text-sm text-text-primary">{pkg.name}</span>
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-text-muted">
-                      <Icons.GitBranch />
-                      {pkg.stars}
-                    </div>
                   </div>
                   <p className="text-text-secondary text-sm leading-relaxed font-sans mb-4">{pkg.description}</p>
                   <div className="flex flex-wrap gap-2">
