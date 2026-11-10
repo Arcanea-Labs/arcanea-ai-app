@@ -8,7 +8,7 @@ const head = git("rev-parse", "HEAD").trim();
 const base = git("merge-base", "origin/main", head).trim();
 if (
   process.env.READING_SCENE_HEAD !== head ||
-  process.env.GITHUB_REPOSITORY !== "frankxai/arcanea-ai-app" ||
+  process.env.GITHUB_REPOSITORY !== "Arcanea-Labs/arcanea-ai-app" ||
   base === head ||
   process.env.READING_SCENE_REVIEW_BUDGET_USD !== "1" ||
   !process.env.GEMINI_API_KEY ||

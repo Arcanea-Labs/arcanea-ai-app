@@ -9,7 +9,7 @@ import { setTimeout as pause } from "node:timers/promises";
 // Never use a hosted URL/key. The app receives only this disposable database's ephemeral service token.
 if (
   process.env.GITHUB_ACTIONS !== "true" ||
-  process.env.GITHUB_REPOSITORY !== "frankxai/arcanea-ai-app" ||
+  process.env.GITHUB_REPOSITORY !== "Arcanea-Labs/arcanea-ai-app" ||
   process.env.GITHUB_REF_NAME !== "agent/codex/generation-admission-20261011"
 )
   throw Error(
