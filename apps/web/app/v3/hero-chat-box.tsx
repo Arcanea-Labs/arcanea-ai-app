@@ -70,7 +70,10 @@ export function HeroChatBox() {
     // Dynamic world graph node estimation based on semantic complexity
     if (message.length > 0) {
       const words = message.trim().split(/\s+/).length;
-      const calculatedNodes = Math.max(4, Math.min(24, Math.floor(words / 3) + 4));
+      const calculatedNodes = Math.max(
+        4,
+        Math.min(24, Math.floor(words / 3) + 4),
+      );
       setTelemetry((prev) => ({
         ...prev,
         nodeCount: calculatedNodes,
@@ -165,11 +168,15 @@ export function HeroChatBox() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
           </span>
-          <span className="text-emerald-400/90">{telemetry.latencyMs}ms latency</span>
+          <span className="text-emerald-400/90">
+            {telemetry.latencyMs}ms latency
+          </span>
           <span>·</span>
           <span>{telemetry.model}</span>
           <span>·</span>
-          <span className="text-white/60">{telemetry.nodeCount} world-graph nodes</span>
+          <span className="text-white/60">
+            {telemetry.nodeCount} world-graph nodes
+          </span>
         </div>
         <div className="hidden sm:flex items-center gap-2">
           <span className="rounded bg-white/[0.04] px-1.5 py-0.5 border border-white/[0.06] text-[10px]">
