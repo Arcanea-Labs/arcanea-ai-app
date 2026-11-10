@@ -8,7 +8,9 @@
  *
  * Inputs (query):
  *  - persona: PersonaId (lumina, jarvis, draconia, lyria, alera, shinkami, nero)
- *  - tenant : 'arcanea' | 'sis' | 'frankx' (default 'arcanea')
+ *  - tenant : 'arcanea' | 'sis' | 'frankx' (default 'arcanea'). Any other
+ *    value is served as 'arcanea', so it can never create a new cache entry
+ *    or a new paid TTS call.
  *
  * Caches greeting copy by (persona, tenant) for 30 minutes to avoid
  * re-billing OpenAI TTS on every clap. The cache lives in-memory per
@@ -19,7 +21,13 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PERSONAS, greetingFor, type PersonaId } from '@/app/room/[persona]/personas';
+import {
+  PERSONAS,
+  TENANT_GREETING_OVERRIDE,
+  greetingFor,
+  type PersonaId,
+} from '@/app/room/[persona]/personas';
+import { getClientIdentifier, checkRateLimit } from '@/lib/rate-limit/rate-limiter';
 
 export const runtime = 'edge';
 export const maxDuration = 15;
@@ -31,6 +39,11 @@ interface CachedGreeting {
 }
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
+const DEFAULT_TENANT = 'arcanea';
+const RATE_LIMIT = { maxRequests: 10, windowMs: 60_000 };
+// One entry per known (persona, tenant) pair; nothing else is ever cached.
+const MAX_CACHE_ENTRIES =
+  Object.keys(PERSONAS).length * Object.keys(TENANT_GREETING_OVERRIDE).length;
 const cache = new Map<string, CachedGreeting>();
 
 const TENANT_VOICE_OVERRIDE: Record<string, Partial<Record<PersonaId, string>>> = {
@@ -45,11 +58,27 @@ const TENANT_VOICE_OVERRIDE: Record<string, Partial<Record<PersonaId, string>>> 
 };
 
 export async function GET(req: NextRequest) {
+  const rl = checkRateLimit(`voice:greeting:${getClientIdentifier(req)}`, RATE_LIMIT);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Try again in a minute.' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(Math.ceil((rl.resetTime - Date.now()) / 1000)) },
+      },
+    );
+  }
+
   const url = new URL(req.url);
   const personaParam = url.searchParams.get('persona') || 'lumina';
-  const tenant = url.searchParams.get('tenant') || 'arcanea';
+  const tenantParam = url.searchParams.get('tenant') || DEFAULT_TENANT;
+  // Only tenants the greeting config knows; everything else is the default.
+  const tenant = Object.hasOwn(TENANT_GREETING_OVERRIDE, tenantParam)
+    ? tenantParam
+    : DEFAULT_TENANT;
 
-  if (!(personaParam in PERSONAS)) {
+  // hasOwn, not `in`: "constructor" and friends are not personas.
+  if (!Object.hasOwn(PERSONAS, personaParam)) {
     return NextResponse.json({ error: 'Unknown persona' }, { status: 400 });
   }
   const personaId = personaParam as PersonaId;
@@ -104,6 +133,10 @@ export async function GET(req: NextRequest) {
 
   const bytes = await ttsRes.arrayBuffer();
   const contentType = ttsRes.headers.get('Content-Type') || 'audio/mpeg';
+  if (!cache.has(cacheKey) && cache.size >= MAX_CACHE_ENTRIES) {
+    const oldest = cache.keys().next().value;
+    if (oldest !== undefined) cache.delete(oldest);
+  }
   cache.set(cacheKey, { bytes, contentType, ts: Date.now() });
 
   return new NextResponse(bytes, {
