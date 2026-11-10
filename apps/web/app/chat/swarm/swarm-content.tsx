@@ -119,6 +119,21 @@ export default function SwarmChatContent() {
               <ExchangeCard key={x.id} exchange={x} />
             ))}
 
+            {state.authRequired && (
+              <section className="rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-5 sm:p-6">
+                <h2 className="text-[15px] font-medium text-white/80">Sign in to use the swarm</h2>
+                <p className="mt-1 text-[13px] text-white/55">
+                  Swarm runs need an account. Your request was not sent to any model.
+                </p>
+                <Link
+                  href="/auth/login?next=/chat/swarm"
+                  className="mt-3 inline-flex items-center px-4 py-1.5 rounded-lg text-[13px] font-medium bg-[var(--arc-brand-atlantean-teal)]/15 border border-[var(--arc-brand-atlantean-teal)]/30 text-[var(--arc-text-primary)] hover:bg-[var(--arc-brand-atlantean-teal)]/25 hover:border-[var(--arc-brand-atlantean-teal)]/50 transition-all"
+                >
+                  Sign in
+                </Link>
+              </section>
+            )}
+
             {(state.plan || state.error) && (
               <div className="space-y-3">
                 {transcript.length === 0 && (
@@ -130,7 +145,7 @@ export default function SwarmChatContent() {
               </div>
             )}
 
-            {!state.isStreaming && transcript.length === 0 && !state.plan && (
+            {!state.isStreaming && transcript.length === 0 && !state.plan && !state.authRequired && (
               <EmptyState
                 onPick={(s) => {
                   setInput(s);

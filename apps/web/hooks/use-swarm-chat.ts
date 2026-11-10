@@ -66,6 +66,8 @@ export interface SwarmState {
   totalTokens?: number;
   traceId?: string;
   error: string | null;
+  /** The route answered 401: the caller should offer sign-in, not an error. */
+  authRequired: boolean;
 }
 
 interface UseSwarmChatOptions {
@@ -95,6 +97,7 @@ const INITIAL_STATE: SwarmState = {
   synthesisDone: false,
   isStreaming: false,
   error: null,
+  authRequired: false,
 };
 
 // ---------------------------------------------------------------------------
@@ -144,6 +147,11 @@ export function useSwarmChat(options: UseSwarmChatOptions = {}) {
           body: JSON.stringify({ input, history, maxLuminors, heuristicOnly, force }),
           signal: ctrl.signal,
         });
+
+        if (res.status === 401) {
+          setState((prev) => ({ ...prev, isStreaming: false, authRequired: true }));
+          return;
+        }
 
         if (!res.ok || !res.body) {
           const text = await res.text().catch(() => '');
