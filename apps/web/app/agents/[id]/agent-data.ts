@@ -22,20 +22,9 @@ export interface MarketplaceAgent {
   icon: string;
   color: string;
   gradient: string;
-  rating: number;
-  usageCount: number;
   isFeatured: boolean;
   capabilities: string[];
   examplePrompts: string[];
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-export function formatUsageCount(count: number): string {
-  if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
-  return String(count);
 }
 
 // ---------------------------------------------------------------------------
@@ -53,8 +42,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F5E1}\uFE0F",
     color: "var(--arc-fire)",
     gradient: "linear-gradient(135deg, var(--arc-fire), var(--arc-fire))",
-    rating: 4.8,
-    usageCount: 3241,
     isFeatured: true,
     capabilities: ["Long-form narratives", "Chapter generation", "Dialogue writing", "Scene description"],
     examplePrompts: [
@@ -73,8 +60,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F525}",
     color: "var(--arc-brand-arcanean-gold)",
     gradient: "linear-gradient(135deg, var(--arc-brand-arcanean-gold), var(--arc-brand-arcanean-gold))",
-    rating: 4.9,
-    usageCount: 2876,
     isFeatured: true,
     capabilities: ["Character backstory", "Personality profiling", "Voice development", "Character sheets"],
     examplePrompts: [
@@ -93,8 +78,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F30D}",
     color: "var(--arc-wind)",
     gradient: "linear-gradient(135deg, var(--arc-wind), var(--arc-wind))",
-    rating: 4.7,
-    usageCount: 1654,
     isFeatured: false,
     capabilities: ["World geography", "History & lore", "Magic systems", "Cultural design"],
     examplePrompts: [
@@ -113,8 +96,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F4DD}",
     color: "var(--arc-brand-cosmic-blue)",
     gradient: "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-cosmic-blue))",
-    rating: 4.6,
-    usageCount: 4102,
     isFeatured: false,
     capabilities: ["Line editing", "Structural feedback", "Pacing analysis", "Voice consistency"],
     examplePrompts: [
@@ -133,8 +114,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u26A1",
     color: "var(--arc-fire)",
     gradient: "linear-gradient(135deg, var(--arc-fire), var(--arc-fire))",
-    rating: 4.5,
-    usageCount: 987,
     isFeatured: false,
     capabilities: ["TypeScript & React", "API integration", "Interactive fiction engines", "Web components"],
     examplePrompts: [
@@ -153,8 +132,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F50D}",
     color: "var(--arc-text-primary)",
     gradient: "linear-gradient(135deg, var(--arc-void), var(--arc-text-primary))",
-    rating: 4.4,
-    usageCount: 1234,
     isFeatured: false,
     capabilities: ["Mythology research", "Historical accuracy", "Scientific grounding", "Cultural context"],
     examplePrompts: [
@@ -173,8 +150,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F3B5}",
     color: "var(--arc-brand-cosmic-blue)",
     gradient: "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-atlantean-teal))",
-    rating: 4.7,
-    usageCount: 782,
     isFeatured: false,
     capabilities: ["Lyric writing", "Chord progressions", "Song structure", "Musical themes"],
     examplePrompts: [
@@ -193,8 +168,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F3A8}",
     color: "var(--arc-void)",
     gradient: "linear-gradient(135deg, var(--arc-void), var(--arc-void))",
-    rating: 4.6,
-    usageCount: 2341,
     isFeatured: false,
     capabilities: ["Art direction", "Image prompts", "Style guides", "Cover composition"],
     examplePrompts: [
@@ -213,8 +186,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F4DA}",
     color: "var(--arc-wind)",
     gradient: "linear-gradient(135deg, var(--arc-wind), var(--arc-earth))",
-    rating: 4.3,
-    usageCount: 445,
     isFeatured: false,
     capabilities: ["Book formatting", "Blurb writing", "Query letters", "Distribution planning"],
     examplePrompts: [
@@ -233,8 +204,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F4E3}",
     color: "var(--arc-text-primary)",
     gradient: "linear-gradient(135deg, var(--arc-earth), var(--arc-void))",
-    rating: 4.2,
-    usageCount: 678,
     isFeatured: false,
     capabilities: ["Social content", "Newsletter writing", "Launch campaigns", "Audience building"],
     examplePrompts: [
@@ -253,8 +222,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F310}",
     color: "var(--arc-text-primary)",
     gradient: "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-atlantean-teal))",
-    rating: 4.5,
-    usageCount: 334,
     isFeatured: false,
     capabilities: ["Literary translation", "Cultural adaptation", "Localization", "50+ languages"],
     examplePrompts: [
@@ -273,8 +240,6 @@ export const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "\u{1F393}",
     color: "var(--arc-brand-arcanean-gold)",
     gradient: "linear-gradient(135deg, var(--arc-brand-arcanean-gold), var(--arc-brand-arcanean-gold))",
-    rating: 4.8,
-    usageCount: 221,
     isFeatured: false,
     capabilities: ["Course design", "Workshop curricula", "Learning paths", "Craft exercises"],
     examplePrompts: [

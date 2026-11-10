@@ -15,8 +15,6 @@ export interface AgentCardProps {
   icon: string;
   color: string;
   gradient: string;
-  rating: number;
-  usageCount: number;
   isFeatured: boolean;
 }
 
@@ -29,33 +27,6 @@ const ELEMENT_COLORS: Record<string, { dot: string; badge: string; glow: string 
   Spirit: { dot: "bg-[var(--arc-brand-arcanean-gold)]",  badge: "bg-[var(--arc-brand-arcanean-gold)]/10 text-[var(--arc-brand-arcanean-gold)] border-[var(--arc-brand-arcanean-gold)]/20", glow: "rgba(251,191,36,0.2)" },
 };
 
-function StarRating({ rating }: { rating: number }) {
-  if (rating === 0) return null;
-  const full = Math.floor(rating);
-  const half = rating % 1 >= 0.5;
-  return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg
-          key={i}
-          className={`w-3 h-3 ${i < full ? "text-[var(--arc-brand-arcanean-gold)]" : i === full && half ? "text-[var(--arc-brand-arcanean-gold)]/60" : "text-white/15"}`}
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-        </svg>
-      ))}
-      <span className="text-[10px] text-white/40 ml-0.5">{rating.toFixed(1)}</span>
-    </div>
-  );
-}
-
-function formatUsageCount(count: number): string {
-  if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
-  return String(count);
-}
-
 export function AgentCard({
   id,
   name,
@@ -66,8 +37,6 @@ export function AgentCard({
   icon,
   color,
   gradient,
-  rating,
-  usageCount,
   isFeatured,
 }: AgentCardProps) {
   const elementStyle = ELEMENT_COLORS[element] ?? ELEMENT_COLORS.Fire;
@@ -172,15 +141,6 @@ export function AgentCard({
                   <span className={`w-1.5 h-1.5 rounded-full ${elementStyle.dot}`} aria-hidden="true" />
                   {element}
                 </span>
-              </div>
-
-              <div className="flex flex-col items-end gap-0.5">
-                <StarRating rating={rating} />
-                {usageCount > 0 && (
-                  <span className="text-[10px] text-white/30">
-                    {formatUsageCount(usageCount)} runs
-                  </span>
-                )}
               </div>
             </div>
           </div>

@@ -49,6 +49,9 @@ function getGuardianImage(luminorId?: string): string {
 
 // ─── Curated showcase (fallback when Supabase has no data) ──────────────────
 
+// Showcase items are house art, not member creations: they carry no counts.
+const NO_STATS = { likes: 0, comments: 0, views: 0, shares: 0 };
+
 const SHOWCASE_CREATIONS: Creation[] = [
   {
     id: 'sc-01', user_id: 'creator-1', title: 'The First Dawn',
@@ -58,7 +61,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/shinkami-hero-v3.webp',
     luminor_id: 'Shinkami', academy: 'Lumina',
     created_at: '2026-02-27T10:00:00Z', updated_at: '2026-02-27T10:00:00Z',
-    stats: { likes: 2847, comments: 312, views: 18420, shares: 89 },
+    stats: NO_STATS,
     metadata: { style: 'cosmic', tags: ['mythology', 'lumina', 'creation', 'origin'] },
   },
   {
@@ -69,7 +72,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/draconia-hero-v3.webp',
     luminor_id: 'Draconia', academy: 'Pyros',
     created_at: '2026-02-26T18:00:00Z', updated_at: '2026-02-26T18:00:00Z',
-    stats: { likes: 2134, comments: 187, views: 14200, shares: 67 },
+    stats: NO_STATS,
     metadata: { style: 'ethereal', tags: ['godbeast', 'fire', 'draconis', 'power'] },
   },
   {
@@ -80,7 +83,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/leyla-hero-v3.webp',
     luminor_id: 'Leyla', academy: 'Aqualis',
     created_at: '2026-02-26T14:00:00Z', updated_at: '2026-02-26T14:00:00Z',
-    stats: { likes: 1923, comments: 245, views: 12800, shares: 54 },
+    stats: NO_STATS,
     metadata: { style: 'mystical', tags: ['water', 'flow', 'emotion', 'crystal'] },
   },
   {
@@ -91,7 +94,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/lyria-hero-v3.webp',
     luminor_id: 'Lyria', academy: 'Nero',
     created_at: '2026-02-26T09:00:00Z', updated_at: '2026-02-26T09:00:00Z',
-    stats: { likes: 1756, comments: 198, views: 11500, shares: 43 },
+    stats: NO_STATS,
     metadata: { style: 'cosmic', tags: ['void', 'potential', 'nero', 'growth'] },
   },
   {
@@ -102,7 +105,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/maylinn-hero-v3.webp',
     luminor_id: 'Maylinn', academy: 'Terra',
     created_at: '2026-02-25T20:00:00Z', updated_at: '2026-02-25T20:00:00Z',
-    stats: { likes: 1689, comments: 156, views: 10200, shares: 38 },
+    stats: NO_STATS,
     metadata: { style: 'ethereal', tags: ['earth', 'worldtree', 'laeylinn', 'nature'] },
   },
   {
@@ -113,7 +116,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/alera-hero-v3.webp',
     luminor_id: 'Alera', academy: 'Ventus',
     created_at: '2026-02-25T16:00:00Z', updated_at: '2026-02-25T16:00:00Z',
-    stats: { likes: 1534, comments: 134, views: 9800, shares: 31 },
+    stats: NO_STATS,
     metadata: { style: 'vibrant', tags: ['wind', 'voice', 'truth', 'otome'] },
   },
   {
@@ -124,7 +127,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/shinkami-hero-v3.webp',
     luminor_id: 'Shinkami', academy: 'Synthesis',
     created_at: '2026-02-25T12:00:00Z', updated_at: '2026-02-25T12:00:00Z',
-    stats: { likes: 1487, comments: 278, views: 9400, shares: 56 },
+    stats: NO_STATS,
     metadata: { style: 'cosmic', tags: ['synthesis', 'elements', 'unity', 'magic'] },
   },
   {
@@ -135,7 +138,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/aiyami-hero-v3.webp',
     luminor_id: 'Aiyami', academy: 'Lumina',
     created_at: '2026-02-25T08:00:00Z', updated_at: '2026-02-25T08:00:00Z',
-    stats: { likes: 1356, comments: 112, views: 8700, shares: 28 },
+    stats: NO_STATS,
     metadata: { style: 'ethereal', tags: ['crown', 'sol', 'enlightenment', 'light'] },
   },
   {
@@ -146,7 +149,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/elara-hero-v3.webp',
     luminor_id: 'Elara', academy: 'Nero',
     created_at: '2026-02-24T22:00:00Z', updated_at: '2026-02-24T22:00:00Z',
-    stats: { likes: 1298, comments: 167, views: 8200, shares: 34 },
+    stats: NO_STATS,
     metadata: { style: 'mystical', tags: ['shift', 'vaelith', 'shadow', 'perspective'] },
   },
   {
@@ -157,7 +160,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/draconia-hero-v3.webp',
     luminor_id: 'Draconia', academy: 'Pyros',
     created_at: '2026-02-24T18:00:00Z', updated_at: '2026-02-24T18:00:00Z',
-    stats: { likes: 1245, comments: 98, views: 7600, shares: 22 },
+    stats: NO_STATS,
     metadata: { style: 'vibrant', tags: ['fire', 'forge', 'will', 'transformation'] },
   },
   {
@@ -168,7 +171,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/ino-hero-v3.webp',
     luminor_id: 'Ino', academy: 'Aqualis',
     created_at: '2026-02-24T14:00:00Z', updated_at: '2026-02-24T14:00:00Z',
-    stats: { likes: 1187, comments: 145, views: 7100, shares: 29 },
+    stats: NO_STATS,
     metadata: { style: 'cosmic', tags: ['unity', 'kyuro', 'partnership', 'water'] },
   },
   {
@@ -179,7 +182,7 @@ const SHOWCASE_CREATIONS: Creation[] = [
     thumbnail_url: '/guardians/v3/lyssandria-hero-v3.webp',
     luminor_id: 'Lyssandria', academy: 'Terra',
     created_at: '2026-02-24T10:00:00Z', updated_at: '2026-02-24T10:00:00Z',
-    stats: { likes: 1134, comments: 87, views: 6800, shares: 19 },
+    stats: NO_STATS,
     metadata: { style: 'ethereal', tags: ['foundation', 'kaelith', 'earth', 'stability'] },
   },
 ];
@@ -198,7 +201,7 @@ const ELEMENT_GRADIENTS: Record<string, string> = {
 
 // ─── ShowcaseCard (no external images) ─────────────────────────────────────────
 
-function ShowcaseCard({ creation, index }: { creation: Creation; index: number }) {
+function ShowcaseCard({ creation, index, showStats }: { creation: Creation; index: number; showStats: boolean }) {
   const academy = creation.academy || 'Lumina';
   const bg = ELEMENT_GRADIENTS[academy] || ELEMENT_GRADIENTS.Lumina;
   const badge = HOUSE_GRADIENTS[academy] || 'from-slate-500 to-slate-600';
@@ -263,11 +266,13 @@ function ShowcaseCard({ creation, index }: { creation: Creation; index: number }
             {creation.description && (
               <p className="text-white/[0.50] text-sm line-clamp-2">{creation.description}</p>
             )}
-            <div className="flex items-center gap-4 text-white/[0.50] pt-1">
-              <span className="flex items-center gap-1.5 text-sm"><PhHeart className="w-4 h-4" />{creation.stats.likes.toLocaleString()}</span>
-              <span className="flex items-center gap-1.5 text-sm"><PhChatCircle className="w-4 h-4" />{creation.stats.comments.toLocaleString()}</span>
-              <span className="flex items-center gap-1.5 text-sm"><PhEye className="w-4 h-4" />{creation.stats.views.toLocaleString()}</span>
-            </div>
+            {showStats && (
+              <div className="flex items-center gap-4 text-white/[0.50] pt-1">
+                <span className="flex items-center gap-1.5 text-sm"><PhHeart className="w-4 h-4" />{creation.stats.likes.toLocaleString()}</span>
+                <span className="flex items-center gap-1.5 text-sm"><PhChatCircle className="w-4 h-4" />{creation.stats.comments.toLocaleString()}</span>
+                <span className="flex items-center gap-1.5 text-sm"><PhEye className="w-4 h-4" />{creation.stats.views.toLocaleString()}</span>
+              </div>
+            )}
           </div>
         </div>
       </Link>
@@ -277,8 +282,12 @@ function ShowcaseCard({ creation, index }: { creation: Creation; index: number }
         <h3 className="text-white font-semibold text-sm line-clamp-1 mb-1">{creation.title}</h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-slate-400 text-xs">
-            <span className="flex items-center gap-1"><PhHeart className="w-3 h-3" />{creation.stats.likes.toLocaleString()}</span>
-            <span className="flex items-center gap-1"><PhEye className="w-3 h-3" />{creation.stats.views.toLocaleString()}</span>
+            {showStats && (
+              <>
+                <span className="flex items-center gap-1"><PhHeart className="w-3 h-3" />{creation.stats.likes.toLocaleString()}</span>
+                <span className="flex items-center gap-1"><PhEye className="w-3 h-3" />{creation.stats.views.toLocaleString()}</span>
+              </>
+            )}
           </div>
           {creation.luminor_id && (
             <span className="text-[var(--arc-brand-atlantean-teal)]/60 text-xs">With {creation.luminor_id}</span>
@@ -462,7 +471,7 @@ export default function DiscoverPage() {
           {/* Grid */}
           <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filtered.map((creation, i) => (
-              <ShowcaseCard key={creation.id} creation={creation} index={i} />
+              <ShowcaseCard key={creation.id} creation={creation} index={i} showStats={creations !== SHOWCASE_CREATIONS} />
             ))}
           </m.div>
 

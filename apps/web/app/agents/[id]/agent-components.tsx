@@ -7,31 +7,6 @@ import { m } from "framer-motion";
 import type { MarketplaceAgent } from "./agent-data";
 
 // ---------------------------------------------------------------------------
-// Star rating
-// ---------------------------------------------------------------------------
-
-export function StarRating({ rating }: { rating: number }) {
-  const full = Math.floor(rating);
-  const half = rating % 1 >= 0.5;
-  return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg
-          key={i}
-          className={`w-4 h-4 ${i < full ? "text-[var(--arc-brand-arcanean-gold)]" : i === full && half ? "text-[var(--arc-brand-arcanean-gold)]/60" : "text-white/15"}`}
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-        </svg>
-      ))}
-      <span className="text-sm text-white/50 ml-1">{rating.toFixed(1)}</span>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
 // Streaming cursor animation
 // ---------------------------------------------------------------------------
 

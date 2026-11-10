@@ -175,7 +175,7 @@ export function AppsContent() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl mx-auto"
+              className="grid grid-cols-2 sm:grid-cols-3 gap-6 max-w-2xl mx-auto"
             >
               {HERO_STATS.map(({ value, label, color }, i) => (
                 <StatCard
@@ -204,7 +204,7 @@ export function AppsContent() {
                 Featured
               </p>
               <h2 className="text-xl font-display font-semibold text-white/70">
-                Most-installed connectors
+                Featured connectors
               </h2>
             </m.div>
 

@@ -21,14 +21,14 @@ const SHOWCASE_WORLDS = [
     tagline: "Where Malachar's corruption seeps through fractured reality",
     gradient: "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-cosmic-void), var(--arc-earth))",
     elements: ["Void", "Fire"],
-    href: "/lore",
+    href: "/lore/malachar",
   },
   {
     name: "Starweave Academy",
     tagline: "Seven houses and a thousand stories waiting to unfold",
     gradient: "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-arcanean-gold), var(--arc-brand-atlantean-teal))",
     elements: ["Spirit", "Water", "Wind"],
-    href: "/lore",
+    href: "/academy/houses",
   },
 ];
 
@@ -66,8 +66,8 @@ export function WorldsShowcase() {
             <span className="text-gradient-cosmic">living worlds</span>
           </h2>
           <p className="text-white/40 max-w-2xl mx-auto text-lg font-body">
-            Discover universes built by creators. Fork, star, and build on each
-            other&apos;s worlds — or create your own from scratch.
+            Explore the worlds of Arcanea&apos;s own lore — or create your own
+            from scratch.
           </p>
         </m.div>
 

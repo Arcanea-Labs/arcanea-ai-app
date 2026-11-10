@@ -30,7 +30,6 @@ export const APPS: AppEntry[] = [
     installed: true,
     featured: true,
     capabilities: ["MCP Server", "Agent Hooks", "Skill Packs"],
-    href: "/apps/claude-code",
   },
   {
     name: "VS Code",
@@ -41,7 +40,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-atlantean-teal)",
     status: "live",
     capabilities: ["Agents Extension", "Inline Chat", "File Context"],
-    href: "/apps/vscode",
   },
   {
     name: "Cursor",
@@ -52,7 +50,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-text-primary)",
     status: "live",
     capabilities: ["MCP Native", "Rules Sync", "Context Injection"],
-    href: "/apps/cursor",
   },
   {
     name: "Windsurf",
@@ -63,7 +60,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-atlantean-teal)",
     status: "beta",
     capabilities: ["Rules Sync", "Context Files", "Cascade Hooks"],
-    href: "/apps/windsurf",
   },
   {
     name: "Antigravity",
@@ -74,7 +70,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-void)",
     status: "soon",
     capabilities: ["In-Browser Agents", "Realtime Collab", "MCP Bridge"],
-    href: "/apps/antigravity",
   },
   {
     name: "GitHub",
@@ -86,7 +81,6 @@ export const APPS: AppEntry[] = [
     status: "live",
     installed: true,
     capabilities: ["PR Automation", "Release Manager", "Code Review"],
-    href: "/apps/github",
   },
   {
     name: "Vercel",
@@ -97,7 +91,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-text-primary)",
     status: "live",
     capabilities: ["Preview URLs", "Edge Config", "CI Hooks"],
-    href: "/apps/vercel",
   },
 
   // ── Creative AI ─────────────────────────────────────────────────────────
@@ -111,7 +104,6 @@ export const APPS: AppEntry[] = [
     status: "live",
     featured: true,
     capabilities: ["Generation", "Licensing", "World Sync"],
-    href: "/apps/suno",
   },
   {
     name: "Nano Banana 2",
@@ -123,7 +115,6 @@ export const APPS: AppEntry[] = [
     status: "live",
     featured: true,
     capabilities: ["Image Gen", "Style Presets", "Batch Export"],
-    href: "/apps/nano-banana-2",
   },
   {
     name: "ElevenLabs",
@@ -134,7 +125,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-void)",
     status: "live",
     capabilities: ["Voice Cloning", "Audiobook Gen", "Luminor Voices"],
-    href: "/apps/elevenlabs",
   },
   {
     name: "Runway",
@@ -145,7 +135,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-wind)",
     status: "beta",
     capabilities: ["Video Gen", "Trailer Engine", "Scene Bridge"],
-    href: "/apps/runway",
   },
   {
     name: "Hedra",
@@ -156,7 +145,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-atlantean-teal)",
     status: "beta",
     capabilities: ["Avatar Animation", "Lip Sync", "Guardian Skins"],
-    href: "/apps/hedra",
   },
   {
     name: "Midjourney",
@@ -167,7 +155,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-text-primary)",
     status: "soon",
     capabilities: ["Style Refs", "Character Art", "World Concepts"],
-    href: "/apps/midjourney",
   },
 
   // ── Distribution ────────────────────────────────────────────────────────
@@ -180,7 +167,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-fire)",
     status: "live",
     capabilities: ["Multi-Post", "Thread Engine", "Analytics"],
-    href: "/apps/blotato",
   },
   {
     name: "Postiz",
@@ -191,7 +177,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-cosmic-blue)",
     status: "live",
     capabilities: ["Scheduling", "Calendar", "Repurpose"],
-    href: "/apps/postiz",
   },
   {
     name: "n8n",
@@ -202,7 +187,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-fire)",
     status: "live",
     capabilities: ["Webhooks", "Node Engine", "Multi-Step Flows"],
-    href: "/apps/n8n",
   },
   {
     name: "Zapier",
@@ -213,7 +197,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-fire)",
     status: "soon",
     capabilities: ["Triggers", "Actions", "Multi-Step Zaps"],
-    href: "/apps/zapier",
   },
   {
     name: "Linear",
@@ -224,7 +207,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-void)",
     status: "live",
     capabilities: ["Issue Sync", "AIP Tracker", "Sprint Board"],
-    href: "/apps/linear",
   },
   {
     name: "Stripe",
@@ -235,7 +217,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-void)",
     status: "live",
     capabilities: ["Subscriptions", "Creator Payouts", "Webhook Engine"],
-    href: "/apps/stripe",
   },
 
   // ── Community ───────────────────────────────────────────────────────────
@@ -250,7 +231,6 @@ export const APPS: AppEntry[] = [
     installed: true,
     featured: true,
     capabilities: ["Server Bots", "Role Sync", "Live Sessions"],
-    href: "/apps/discord",
   },
   {
     name: "Reddit",
@@ -261,7 +241,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-fire)",
     status: "live",
     capabilities: ["Post Sync", "Flair System", "AMA Engine"],
-    href: "/apps/reddit",
   },
   {
     name: "Whop",
@@ -272,7 +251,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-arcanean-gold)",
     status: "live",
     capabilities: ["Tier Access", "Gated Content", "Stripe Sync"],
-    href: "/apps/whop",
   },
   {
     name: "Telegram",
@@ -283,7 +261,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-atlantean-teal)",
     status: "beta",
     capabilities: ["Bot Framework", "World Alerts", "Group Sync"],
-    href: "/apps/telegram",
   },
 
   // ── Game Engines ────────────────────────────────────────────────────────
@@ -296,7 +273,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-earth)",
     status: "beta",
     capabilities: ["World Export", "Asset Pipeline", "Level Builder"],
-    href: "/apps/unreal",
   },
   {
     name: "Unity",
@@ -307,7 +283,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-text-primary)",
     status: "beta",
     capabilities: ["Prefab Export", "Scene Bridge", "C# SDK"],
-    href: "/apps/unity",
   },
   {
     name: "Godot",
@@ -318,7 +293,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-atlantean-teal)",
     status: "soon",
     capabilities: ["Scene Import", "GDScript Bindings", "Asset Sync"],
-    href: "/apps/godot",
   },
   {
     name: "Roblox Studio",
@@ -329,7 +303,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-fire)",
     status: "soon",
     capabilities: ["Experience Export", "Lua Scripts", "Asset Pack"],
-    href: "/apps/roblox",
   },
 
   // ── Storage ─────────────────────────────────────────────────────────────
@@ -342,7 +315,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-atlantean-teal)",
     status: "live",
     capabilities: ["Auto Sync", "Folder Structure", "Shared Drives"],
-    href: "/apps/google-drive",
   },
   {
     name: "Notion",
@@ -353,7 +325,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-text-primary)",
     status: "live",
     capabilities: ["Page Sync", "Database Blocks", "Template Export"],
-    href: "/apps/notion",
   },
   {
     name: "Supabase",
@@ -365,7 +336,6 @@ export const APPS: AppEntry[] = [
     status: "live",
     installed: true,
     capabilities: ["DB + Auth", "Realtime", "pgvector Search"],
-    href: "/apps/supabase",
   },
   {
     name: "Obsidian",
@@ -376,7 +346,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-void)",
     status: "beta",
     capabilities: ["Graph Export", "Markdown Sync", "Dataview Queries"],
-    href: "/apps/obsidian",
   },
   {
     name: "Arweave",
@@ -387,7 +356,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-void)",
     status: "beta",
     capabilities: ["Permanent Archive", "Content Hash", "IPFS Bridge"],
-    href: "/apps/arweave",
   },
   {
     name: "Syncthing",
@@ -398,7 +366,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-wind)",
     status: "soon",
     capabilities: ["P2P Sync", "Offline First", "Conflict Resolve"],
-    href: "/apps/syncthing",
   },
 
   // ── Web3 ────────────────────────────────────────────────────────────────
@@ -411,7 +378,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-brand-cosmic-blue)",
     status: "live",
     capabilities: ["Mint Engine", "Royalties", "x402 Payments"],
-    href: "/apps/base",
   },
   {
     name: "Story Protocol",
@@ -422,7 +388,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-text-primary)",
     status: "beta",
     capabilities: ["IP Registration", "License Terms", "Revenue Split"],
-    href: "/apps/story-protocol",
   },
   {
     name: "Lens",
@@ -433,7 +398,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-wind)",
     status: "soon",
     capabilities: ["Social Graph", "Profile NFT", "Follow API"],
-    href: "/apps/lens",
   },
   {
     name: "Farcaster",
@@ -444,7 +408,6 @@ export const APPS: AppEntry[] = [
     color: "var(--arc-void)",
     status: "beta",
     capabilities: ["Cast Engine", "Frame Builder", "Channel Sync"],
-    href: "/apps/farcaster",
   },
 ];
 
@@ -461,7 +424,6 @@ export const CATEGORIES: Category[] = [
 ];
 
 export const HERO_STATS = [
-  { value: "37+", label: "apps", color: "var(--arc-brand-atlantean-teal)" },
   { value: "8", label: "categories", color: "var(--arc-brand-atlantean-teal)" },
   { value: "MIT", label: "license", color: "var(--arc-void)" },
   { value: "BYOK", label: "model agnostic", color: "var(--arc-brand-arcanean-gold)" },
