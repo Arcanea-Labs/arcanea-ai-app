@@ -157,8 +157,9 @@ function HeroPortal() {
 
           {/* Value prop */}
           <p className="max-w-2xl mx-auto text-base md:text-lg text-white/60 leading-relaxed mb-6 md:mb-8 font-sans">
-            Turn creative brief into a living intelligence graph. Lore, characters,
-            relational physics, and multi-agent pipelines stay persistent across every run.
+            Turn creative brief into a living intelligence graph. Lore,
+            characters, relational physics, and multi-agent pipelines stay
+            persistent across every run.
           </p>
 
           {/* Chat box */}
