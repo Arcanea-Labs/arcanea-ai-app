@@ -17,7 +17,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "The Shardlands",
     type: "world",
     subtitle: "Fractured reality, crystal storms, six rival factions",
-    previewGradient: "from-[var(--arc-brand-atlantean-teal)]/20 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-cosmic-blue)]/40",
+    previewGradient:
+      "from-[var(--arc-brand-atlantean-teal)]/20 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-cosmic-blue)]/40",
     stats: [{ label: "chars", value: "42" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     badge: "Popular",
@@ -30,7 +31,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Tidesong Archipelago",
     type: "world",
     subtitle: "Ocean-realm, living coral cities, tidal magic system",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-atlantean-teal)]/20",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-atlantean-teal)]/20",
     stats: [{ label: "chars", value: "29" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     href: "/worlds/templates/tidesong-archipelago",
@@ -41,7 +43,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Ash & Ember",
     type: "world",
     subtitle: "Post-volcanic empire, fire-priests, obsidian fortresses",
-    previewGradient: "from-[var(--arc-fire)]/30 via-[var(--arc-earth)]/40 to-[var(--arc-cosmic-void)]/50",
+    previewGradient:
+      "from-[var(--arc-fire)]/30 via-[var(--arc-earth)]/40 to-[var(--arc-cosmic-void)]/50",
     stats: [{ label: "chars", value: "35" }],
     accentColor: "var(--arc-fire)",
     badge: "Trending",
@@ -52,7 +55,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Verdant Dominion",
     type: "world",
     subtitle: "Living forest empire, druid councils, ancient root-networks",
-    previewGradient: "from-[var(--arc-cosmic-void)]/40 via-[var(--arc-cosmic-void)]/30 to-[var(--arc-cosmic-void)]/50",
+    previewGradient:
+      "from-[var(--arc-cosmic-void)]/40 via-[var(--arc-cosmic-void)]/30 to-[var(--arc-cosmic-void)]/50",
     stats: [{ label: "chars", value: "21" }],
     accentColor: "var(--arc-wind)",
     href: "/worlds/templates/verdant-dominion",
@@ -64,7 +68,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Orbital Nine",
     type: "world",
     subtitle: "Space station politics, nine factions, zero-g combat",
-    previewGradient: "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/40 to-[var(--arc-void)]/20",
+    previewGradient:
+      "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/40 to-[var(--arc-void)]/20",
     stats: [{ label: "chars", value: "55" }],
     accentColor: "var(--arc-void)",
     badge: "Popular",
@@ -75,7 +80,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Belt Sovereign",
     type: "world",
     subtitle: "Asteroid belt miner clans, corp war, scarcity magic",
-    previewGradient: "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-brand-arcanean-gold)]/10",
+    previewGradient:
+      "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-brand-arcanean-gold)]/10",
     stats: [{ label: "chars", value: "18" }],
     accentColor: "var(--arc-brand-arcanean-gold)",
     href: "/worlds/templates/belt-sovereign",
@@ -87,7 +93,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "The Velvet Unknown",
     type: "world",
     subtitle: "1930s occult city, glamour as currency, five hidden societies",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-earth)]/30",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-earth)]/30",
     stats: [{ label: "chars", value: "33" }],
     accentColor: "var(--arc-void)",
     href: "/worlds/templates/velvet-unknown",
@@ -98,7 +105,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Solvent Protocol",
     type: "world",
     subtitle: "Cyberpunk noir, memory black market, deep-net arcane code",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-cosmic-void)]/60 to-[var(--arc-brand-atlantean-teal)]/15",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-cosmic-void)]/60 to-[var(--arc-brand-atlantean-teal)]/15",
     stats: [{ label: "chars", value: "47" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     badge: "Trending",
@@ -110,7 +118,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Morally Grey Villain",
     type: "character",
     subtitle: "Three-act motivation arc, dual morality, redemption thread",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-cosmic-void)]/60 to-[var(--arc-fire)]/15",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-cosmic-void)]/60 to-[var(--arc-fire)]/15",
     stats: [{ label: "scenes", value: "12" }],
     accentColor: "var(--arc-fire)",
     badge: "Popular",
@@ -121,7 +130,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Reluctant Hero",
     type: "character",
     subtitle: "Refusal arc, mentor bond, flaw-driven growth progression",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/30 via-[var(--arc-brand-cosmic-blue)]/40 to-[var(--arc-brand-atlantean-teal)]/10",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/30 via-[var(--arc-brand-cosmic-blue)]/40 to-[var(--arc-brand-atlantean-teal)]/10",
     stats: [{ label: "scenes", value: "10" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     href: "/worlds/templates/char-reluctant-hero",
@@ -132,7 +142,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Cosmic Trickster",
     type: "character",
     subtitle: "Chaos-aligned, riddle speech, unpredictable loyalty",
-    previewGradient: "from-[var(--arc-brand-arcanean-gold)]/15 via-[var(--arc-earth)]/30 to-[var(--arc-brand-cosmic-blue)]/40",
+    previewGradient:
+      "from-[var(--arc-brand-arcanean-gold)]/15 via-[var(--arc-earth)]/30 to-[var(--arc-brand-cosmic-blue)]/40",
     stats: [{ label: "scenes", value: "8" }],
     accentColor: "var(--arc-brand-arcanean-gold)",
     href: "/worlds/templates/char-cosmic-trickster",
@@ -143,7 +154,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "The Exiled Scholar",
     type: "character",
     subtitle: "Forbidden knowledge, hunted arc, complex loyalty map",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/50 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-cosmic-blue)]/20",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/50 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-cosmic-blue)]/20",
     stats: [{ label: "scenes", value: "9" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     href: "/worlds/templates/char-exiled-scholar",
@@ -154,8 +166,10 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     category: "story",
     title: "Hollow Oath",
     type: "story",
-    subtitle: "Broken promise drives the arc, three timelines, morally resonant",
-    previewGradient: "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-brand-atlantean-teal)]/10",
+    subtitle:
+      "Broken promise drives the arc, three timelines, morally resonant",
+    previewGradient:
+      "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-brand-atlantean-teal)]/10",
     stats: [{ label: "acts", value: "3" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     href: "/worlds/templates/story-hollow-oath",
@@ -166,7 +180,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Neon Detective",
     type: "story",
     subtitle: "Cyberpunk noir mystery, corrupt city, unreliable narrator",
-    previewGradient: "from-[var(--arc-cosmic-void)]/70 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-fire)]/15",
+    previewGradient:
+      "from-[var(--arc-cosmic-void)]/70 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-fire)]/15",
     stats: [{ label: "acts", value: "5" }],
     accentColor: "var(--arc-fire)",
     badge: "Popular",
@@ -177,7 +192,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Three-Act Fantasy",
     type: "story",
     subtitle: "Classic hero journey, mentor/shadow pairing, resolution gate",
-    previewGradient: "from-[var(--arc-void)]/30 via-[var(--arc-brand-cosmic-blue)]/40 to-[var(--arc-brand-arcanean-gold)]/10",
+    previewGradient:
+      "from-[var(--arc-void)]/30 via-[var(--arc-brand-cosmic-blue)]/40 to-[var(--arc-brand-arcanean-gold)]/10",
     stats: [{ label: "acts", value: "3" }],
     accentColor: "var(--arc-void)",
     href: "/worlds/templates/story-three-act-fantasy",
@@ -188,7 +204,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Sci-Fi Thriller",
     type: "story",
     subtitle: "First contact, paranoia escalation, hard-sci-fi grounding",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/50 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-atlantean-teal)]/10",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/50 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-atlantean-teal)]/10",
     stats: [{ label: "acts", value: "4" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     href: "/worlds/templates/story-scifi-thriller",
@@ -200,7 +217,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "World Lore Keeper",
     type: "agent",
     subtitle: "Tracks canon, resolves contradictions, builds lore graph",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-brand-cosmic-blue)]/50 to-[var(--arc-brand-cosmic-blue)]/20",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/40 via-[var(--arc-brand-cosmic-blue)]/50 to-[var(--arc-brand-cosmic-blue)]/20",
     stats: [{ label: "tools", value: "7" }],
     accentColor: "var(--arc-void)",
     href: "/agents/templates/world-lore-keeper",
@@ -211,7 +229,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Story Editor",
     type: "agent",
     subtitle: "Pacing analysis, prose polish, voice consistency reviewer",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/50 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-atlantean-teal)]/10",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/50 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-atlantean-teal)]/10",
     stats: [{ label: "tools", value: "5" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     href: "/agents/templates/story-editor",
@@ -222,7 +241,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Epic Orchestral Theme",
     type: "music",
     subtitle: "Hero arc, full strings, brass resolve, battle swell",
-    previewGradient: "from-[var(--arc-earth)]/40 via-[var(--arc-earth)]/30 to-[var(--arc-brand-arcanean-gold)]/15",
+    previewGradient:
+      "from-[var(--arc-earth)]/40 via-[var(--arc-earth)]/30 to-[var(--arc-brand-arcanean-gold)]/15",
     stats: [{ label: "mins", value: "4" }],
     accentColor: "var(--arc-brand-arcanean-gold)",
     badge: "Popular",
@@ -233,7 +253,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Ambient World Score",
     type: "music",
     subtitle: "Atmospheric, layered pads, slow evolution, world identity",
-    previewGradient: "from-[var(--arc-brand-cosmic-blue)]/30 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-atlantean-teal)]/10",
+    previewGradient:
+      "from-[var(--arc-brand-cosmic-blue)]/30 via-[var(--arc-brand-cosmic-blue)]/30 to-[var(--arc-brand-atlantean-teal)]/10",
     stats: [{ label: "mins", value: "6" }],
     accentColor: "var(--arc-brand-atlantean-teal)",
     href: "/music/templates/ambient-world-score",
@@ -245,7 +266,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "Fantasy Portrait",
     type: "image",
     subtitle: "Character art, cinematic lighting, detailed costume guide",
-    previewGradient: "from-[var(--arc-void)]/30 via-[var(--arc-brand-cosmic-blue)]/40 to-[var(--arc-brand-arcanean-gold)]/10",
+    previewGradient:
+      "from-[var(--arc-void)]/30 via-[var(--arc-brand-cosmic-blue)]/40 to-[var(--arc-brand-arcanean-gold)]/10",
     stats: [{ label: "styles", value: "6" }],
     accentColor: "var(--arc-void)",
     badge: "Popular",
@@ -256,7 +278,8 @@ export const TEMPLATE_DATA: TemplateEntry[] = [
     title: "World Map Art",
     type: "image",
     subtitle: "Cartographic fantasy, hand-drawn aesthetic, continent layout",
-    previewGradient: "from-[var(--arc-cosmic-void)]/40 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-brand-arcanean-gold)]/10",
+    previewGradient:
+      "from-[var(--arc-cosmic-void)]/40 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-brand-arcanean-gold)]/10",
     stats: [{ label: "styles", value: "4" }],
     accentColor: "var(--arc-wind)",
     href: "/imagine/templates/world-map-art",
@@ -284,7 +307,8 @@ export const QUICK_START_ITEMS = [
     symbol: "W",
     description: "Blank canvas",
     href: "/worlds/create",
-    gradient: "from-[var(--arc-brand-atlantean-teal)]/20 via-[var(--arc-brand-cosmic-blue)]/15 to-[var(--arc-brand-atlantean-teal)]/5",
+    gradient:
+      "from-[var(--arc-brand-atlantean-teal)]/20 via-[var(--arc-brand-cosmic-blue)]/15 to-[var(--arc-brand-atlantean-teal)]/5",
     glowColor: "var(--arc-brand-atlantean-teal)",
     accentColor: "var(--arc-brand-atlantean-teal)",
   },
@@ -294,7 +318,8 @@ export const QUICK_START_ITEMS = [
     symbol: "C",
     description: "Blank canvas",
     href: "/worlds/create?tab=character",
-    gradient: "from-[var(--arc-brand-atlantean-teal)]/15 via-[var(--arc-brand-atlantean-teal)]/10 to-[var(--arc-brand-cosmic-blue)]/5",
+    gradient:
+      "from-[var(--arc-brand-atlantean-teal)]/15 via-[var(--arc-brand-atlantean-teal)]/10 to-[var(--arc-brand-cosmic-blue)]/5",
     glowColor: "var(--arc-brand-atlantean-teal)",
     accentColor: "var(--arc-brand-atlantean-teal)",
   },
@@ -304,7 +329,8 @@ export const QUICK_START_ITEMS = [
     symbol: "S",
     description: "Blank canvas",
     href: "/chat?mode=story",
-    gradient: "from-[var(--arc-brand-arcanean-gold)]/15 via-[var(--arc-earth)]/10 to-[var(--arc-cosmic-void)]/20",
+    gradient:
+      "from-[var(--arc-brand-arcanean-gold)]/15 via-[var(--arc-earth)]/10 to-[var(--arc-cosmic-void)]/20",
     glowColor: "var(--arc-brand-arcanean-gold)",
     accentColor: "var(--arc-brand-arcanean-gold)",
   },
@@ -314,7 +340,8 @@ export const QUICK_START_ITEMS = [
     symbol: "A",
     description: "Blank canvas",
     href: "/agents/create",
-    gradient: "from-[var(--arc-void)]/15 via-[var(--arc-brand-cosmic-blue)]/10 to-[var(--arc-cosmic-void)]/20",
+    gradient:
+      "from-[var(--arc-void)]/15 via-[var(--arc-brand-cosmic-blue)]/10 to-[var(--arc-cosmic-void)]/20",
     glowColor: "var(--arc-void)",
     accentColor: "var(--arc-void)",
   },
@@ -324,7 +351,8 @@ export const QUICK_START_ITEMS = [
     symbol: "M",
     description: "Blank canvas",
     href: "/music",
-    gradient: "from-[var(--arc-fire)]/15 via-[var(--arc-earth)]/10 to-[var(--arc-cosmic-void)]/20",
+    gradient:
+      "from-[var(--arc-fire)]/15 via-[var(--arc-earth)]/10 to-[var(--arc-cosmic-void)]/20",
     glowColor: "var(--arc-fire)",
     accentColor: "var(--arc-void)",
   },
@@ -334,7 +362,8 @@ export const QUICK_START_ITEMS = [
     symbol: "I",
     description: "Blank canvas",
     href: "/imagine",
-    gradient: "from-[var(--arc-brand-atlantean-teal)]/15 via-[var(--arc-brand-cosmic-blue)]/10 to-[var(--arc-cosmic-void)]/20",
+    gradient:
+      "from-[var(--arc-brand-atlantean-teal)]/15 via-[var(--arc-brand-cosmic-blue)]/10 to-[var(--arc-cosmic-void)]/20",
     glowColor: "var(--arc-brand-atlantean-teal)",
     accentColor: "var(--arc-text-primary)",
   },
@@ -346,8 +375,12 @@ export const RECENT_MOCK = [
     title: "The Shattered Meridian",
     type: "world" as const,
     subtitle: "Your world · 3 hours ago",
-    previewGradient: "from-[var(--arc-brand-atlantean-teal)]/15 via-[var(--arc-brand-cosmic-blue)]/25 to-[var(--arc-brand-cosmic-blue)]/25",
-    stats: [{ label: "chars", value: "7" }, { label: "lore", value: "12" }],
+    previewGradient:
+      "from-[var(--arc-brand-atlantean-teal)]/15 via-[var(--arc-brand-cosmic-blue)]/25 to-[var(--arc-brand-cosmic-blue)]/25",
+    stats: [
+      { label: "chars", value: "7" },
+      { label: "lore", value: "12" },
+    ],
     accentColor: "var(--arc-brand-atlantean-teal)",
     href: "/worlds/shattered-meridian",
     badge: "Draft",
@@ -356,7 +389,8 @@ export const RECENT_MOCK = [
     title: "Veyra Solcroft",
     type: "character" as const,
     subtitle: "Your character · Yesterday",
-    previewGradient: "from-[var(--arc-brand-arcanean-gold)]/15 via-[var(--arc-earth)]/20 to-[var(--arc-cosmic-void)]/30",
+    previewGradient:
+      "from-[var(--arc-brand-arcanean-gold)]/15 via-[var(--arc-earth)]/20 to-[var(--arc-cosmic-void)]/30",
     stats: [{ label: "scenes", value: "4" }],
     accentColor: "var(--arc-brand-arcanean-gold)",
     href: "/worlds/shattered-meridian/characters/veyra",
@@ -366,8 +400,12 @@ export const RECENT_MOCK = [
     title: "The Iron Covenant",
     type: "story" as const,
     subtitle: "Your story · 2 days ago",
-    previewGradient: "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-fire)]/10",
-    stats: [{ label: "acts", value: "2" }, { label: "scenes", value: "8" }],
+    previewGradient:
+      "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/50 to-[var(--arc-fire)]/10",
+    stats: [
+      { label: "acts", value: "2" },
+      { label: "scenes", value: "8" },
+    ],
     accentColor: "var(--arc-fire)",
     href: "/chat?context=iron-covenant",
   },
@@ -375,7 +413,8 @@ export const RECENT_MOCK = [
     title: "Obsidian Soundscape",
     type: "music" as const,
     subtitle: "Your track · 3 days ago",
-    previewGradient: "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/70 to-[var(--arc-brand-arcanean-gold)]/10",
+    previewGradient:
+      "from-[var(--arc-cosmic-void)]/60 via-[var(--arc-cosmic-void)]/70 to-[var(--arc-brand-arcanean-gold)]/10",
     stats: [{ label: "mins", value: "3.2" }],
     accentColor: "var(--arc-brand-arcanean-gold)",
     href: "/music",

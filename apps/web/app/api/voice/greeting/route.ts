@@ -22,16 +22,19 @@
  * Edge runtime ArrayBuffer is safe to reuse.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 import {
   PERSONAS,
   TENANT_GREETING_OVERRIDE,
   greetingFor,
   type PersonaId,
-} from '@/app/room/[persona]/personas';
-import { getClientIdentifier, checkRateLimit } from '@/lib/rate-limit/rate-limiter';
+} from "@/app/room/[persona]/personas";
+import {
+  getClientIdentifier,
+  checkRateLimit,
+} from "@/lib/rate-limit/rate-limiter";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 export const maxDuration = 15;
 
 interface CachedGreeting {
@@ -41,7 +44,7 @@ interface CachedGreeting {
 }
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
-const DEFAULT_TENANT = 'arcanea';
+const DEFAULT_TENANT = "arcanea";
 const RATE_LIMIT = { maxRequests: 10, windowMs: 60_000 };
 // One entry per known (persona, tenant) pair; nothing else is ever cached.
 const MAX_CACHE_ENTRIES =
@@ -52,32 +55,40 @@ const pending = new Map<string, Promise<CachedGreeting | null>>();
 // Below maxDuration, so a stalled upstream call cannot hold its waiters.
 const UPSTREAM_TIMEOUT_MS = 12_000;
 
-const TENANT_VOICE_OVERRIDE: Record<string, Partial<Record<PersonaId, string>>> = {
+const TENANT_VOICE_OVERRIDE: Record<
+  string,
+  Partial<Record<PersonaId, string>>
+> = {
   sis: {
-    lumina: 'shimmer',
-    alera: 'echo',
+    lumina: "shimmer",
+    alera: "echo",
   },
   frankx: {
-    lumina: 'alloy',
-    jarvis: 'alloy',
+    lumina: "alloy",
+    jarvis: "alloy",
   },
 };
 
 export async function GET(req: NextRequest) {
-  const rl = checkRateLimit(`voice:greeting:${getClientIdentifier(req)}`, RATE_LIMIT);
+  const rl = checkRateLimit(
+    `voice:greeting:${getClientIdentifier(req)}`,
+    RATE_LIMIT,
+  );
   if (!rl.allowed) {
     return NextResponse.json(
-      { error: 'Rate limit exceeded. Try again in a minute.' },
+      { error: "Rate limit exceeded. Try again in a minute." },
       {
         status: 429,
-        headers: { 'Retry-After': String(Math.ceil((rl.resetTime - Date.now()) / 1000)) },
+        headers: {
+          "Retry-After": String(Math.ceil((rl.resetTime - Date.now()) / 1000)),
+        },
       },
     );
   }
 
   const url = new URL(req.url);
-  const personaParam = url.searchParams.get('persona') || 'lumina';
-  const tenantParam = url.searchParams.get('tenant') || DEFAULT_TENANT;
+  const personaParam = url.searchParams.get("persona") || "lumina";
+  const tenantParam = url.searchParams.get("tenant") || DEFAULT_TENANT;
   // Only tenants the greeting config knows; everything else is the default.
   const tenant = Object.hasOwn(TENANT_GREETING_OVERRIDE, tenantParam)
     ? tenantParam
@@ -85,7 +96,7 @@ export async function GET(req: NextRequest) {
 
   // hasOwn, not `in`: "constructor" and friends are not personas.
   if (!Object.hasOwn(PERSONAS, personaParam)) {
-    return NextResponse.json({ error: 'Unknown persona' }, { status: 400 });
+    return NextResponse.json({ error: "Unknown persona" }, { status: 400 });
   }
   const personaId = personaParam as PersonaId;
   const persona = PERSONAS[personaId];
@@ -96,11 +107,11 @@ export async function GET(req: NextRequest) {
   if (hit && Date.now() - hit.ts < CACHE_TTL_MS) {
     return new NextResponse(hit.bytes, {
       headers: {
-        'Content-Type': hit.contentType,
-        'Cache-Control': 'public, max-age=1800',
-        'X-Greeting-Cache': 'hit',
-        'X-Persona': personaId,
-        'X-Tenant': tenant,
+        "Content-Type": hit.contentType,
+        "Cache-Control": "public, max-age=1800",
+        "X-Greeting-Cache": "hit",
+        "X-Persona": personaId,
+        "X-Tenant": tenant,
       },
     });
   }
@@ -108,13 +119,14 @@ export async function GET(req: NextRequest) {
   const openaiKey = process.env.OPENAI_API_KEY;
   if (!openaiKey) {
     return NextResponse.json(
-      { error: 'TTS not configured. Set OPENAI_API_KEY.' },
+      { error: "TTS not configured. Set OPENAI_API_KEY." },
       { status: 503 },
     );
   }
 
   const tenantVoice = TENANT_VOICE_OVERRIDE[tenant]?.[personaId];
-  const voice = tenantVoice || (persona.voiceKey === 'lumina' ? 'nova' : 'shimmer');
+  const voice =
+    tenantVoice || (persona.voiceKey === "lumina" ? "nova" : "shimmer");
 
   let flight = pending.get(cacheKey);
   if (!flight) {
@@ -135,18 +147,21 @@ export async function GET(req: NextRequest) {
   // Failures are not cached: the next request starts a new upstream call.
   const greeting = await flight;
   if (!greeting) {
-    return NextResponse.json({ error: 'Greeting generation failed' }, { status: 502 });
+    return NextResponse.json(
+      { error: "Greeting generation failed" },
+      { status: 502 },
+    );
   }
   const { bytes, contentType } = greeting;
 
   return new NextResponse(bytes, {
     headers: {
-      'Content-Type': contentType,
-      'Cache-Control': 'public, max-age=1800',
-      'X-Greeting-Cache': 'miss',
-      'X-Persona': personaId,
-      'X-Tenant': tenant,
-      'X-Voice': voice,
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=1800",
+      "X-Greeting-Cache": "miss",
+      "X-Persona": personaId,
+      "X-Tenant": tenant,
+      "X-Voice": voice,
     },
   });
 }
@@ -157,17 +172,17 @@ async function generateGreeting(
   voice: string,
 ): Promise<CachedGreeting | null> {
   try {
-    const ttsRes = await fetch('https://api.openai.com/v1/audio/speech', {
-      method: 'POST',
+    const ttsRes = await fetch("https://api.openai.com/v1/audio/speech", {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${openaiKey}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: 'tts-1-hd',
+        model: "tts-1-hd",
         input: text,
         voice,
-        response_format: 'mp3',
+        response_format: "mp3",
         speed: 1.0,
       }),
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
@@ -175,15 +190,15 @@ async function generateGreeting(
 
     if (!ttsRes.ok) {
       const err = await ttsRes.text();
-      console.error('Greeting TTS error:', ttsRes.status, err);
+      console.error("Greeting TTS error:", ttsRes.status, err);
       return null;
     }
 
     const bytes = await ttsRes.arrayBuffer();
-    const contentType = ttsRes.headers.get('Content-Type') || 'audio/mpeg';
+    const contentType = ttsRes.headers.get("Content-Type") || "audio/mpeg";
     return { bytes, contentType, ts: Date.now() };
   } catch (err) {
-    console.error('Greeting TTS error:', err);
+    console.error("Greeting TTS error:", err);
     return null;
   }
 }

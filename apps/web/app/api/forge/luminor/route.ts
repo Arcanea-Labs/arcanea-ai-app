@@ -8,13 +8,16 @@
  * This is the superintelligence helping creators build their own intelligence agents.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { createOpenAI } from '@ai-sdk/openai';
-import { generateText } from 'ai';
-import { getClientIdentifier, checkRateLimit } from '@/lib/rate-limit/rate-limiter';
+import { NextRequest, NextResponse } from "next/server";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createOpenAI } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import {
+  getClientIdentifier,
+  checkRateLimit,
+} from "@/lib/rate-limit/rate-limiter";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 // Each request is a platform-key model call.
 const FORGE_RATE_LIMIT = { maxRequests: 10, windowMs: 60_000 };
@@ -61,14 +64,19 @@ Rules:
 - Element should align with the domain: Fire for transformation/code, Water for flow/music, Earth for structure/architecture, Wind for communication/writing, Void for analysis/research, Spirit for wisdom/foresight`;
 
 export async function POST(req: NextRequest) {
-  const rl = checkRateLimit(`forge:luminor:${getClientIdentifier(req)}`, FORGE_RATE_LIMIT);
+  const rl = checkRateLimit(
+    `forge:luminor:${getClientIdentifier(req)}`,
+    FORGE_RATE_LIMIT,
+  );
   if (!rl.allowed) {
     return NextResponse.json(
-      { error: 'Rate limit exceeded. Try again in a minute.' },
+      { error: "Rate limit exceeded. Try again in a minute." },
       {
         status: 429,
-        headers: { 'Retry-After': String(Math.ceil((rl.resetTime - Date.now()) / 1000)) },
-      }
+        headers: {
+          "Retry-After": String(Math.ceil((rl.resetTime - Date.now()) / 1000)),
+        },
+      },
     );
   }
 
@@ -78,8 +86,11 @@ export async function POST(req: NextRequest) {
 
     if (!description || description.length < 10) {
       return NextResponse.json(
-        { error: 'Describe what your Luminor should do (at least 10 characters).' },
-        { status: 400 }
+        {
+          error:
+            "Describe what your Luminor should do (at least 10 characters).",
+        },
+        { status: 400 },
       );
     }
 
@@ -96,14 +107,20 @@ export async function POST(req: NextRequest) {
 
     if (googleKey) {
       const google = createGoogleGenerativeAI({ apiKey: googleKey });
-      model = google('gemini-2.0-flash');
+      model = google("gemini-2.0-flash");
     } else if (openrouterKey) {
-      const openrouter = createOpenAI({ apiKey: openrouterKey, baseURL: 'https://openrouter.ai/api/v1' });
-      model = openrouter('google/gemini-2.5-flash');
+      const openrouter = createOpenAI({
+        apiKey: openrouterKey,
+        baseURL: "https://openrouter.ai/api/v1",
+      });
+      model = openrouter("google/gemini-2.5-flash");
     } else {
       return NextResponse.json(
-        { error: 'No AI provider configured. Set GOOGLE_GENERATIVE_AI_API_KEY on Vercel.' },
-        { status: 503 }
+        {
+          error:
+            "No AI provider configured. Set GOOGLE_GENERATIVE_AI_API_KEY on Vercel.",
+        },
+        { status: 503 },
       );
     }
 
@@ -120,22 +137,25 @@ export async function POST(req: NextRequest) {
     try {
       // Strip any markdown code fences if present
       let text = result.text.trim();
-      if (text.startsWith('```')) {
-        text = text.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '');
+      if (text.startsWith("```")) {
+        text = text.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
       }
       spec = JSON.parse(text);
     } catch {
       return NextResponse.json(
-        { error: 'Failed to generate Luminor spec. Try again with a more detailed description.' },
-        { status: 500 }
+        {
+          error:
+            "Failed to generate Luminor spec. Try again with a more detailed description.",
+        },
+        { status: 500 },
       );
     }
 
     // Validate required fields
     if (!spec.name || !spec.domain || !spec.voice || !spec.element) {
       return NextResponse.json(
-        { error: 'Generated spec is incomplete. Try again.' },
-        { status: 500 }
+        { error: "Generated spec is incomplete. Try again." },
+        { status: 500 },
       );
     }
 
@@ -144,10 +164,10 @@ export async function POST(req: NextRequest) {
       message: `Lumina has shaped ${spec.name}, ${spec.title}. Review and customize before forging.`,
     });
   } catch (error) {
-    console.error('Forge API error:', error);
+    console.error("Forge API error:", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Forge failed' },
-      { status: 500 }
+      { error: error instanceof Error ? error.message : "Forge failed" },
+      { status: 500 },
     );
   }
 }

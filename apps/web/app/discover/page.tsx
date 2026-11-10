@@ -1,50 +1,79 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
-import Image from 'next/image';
+"use client";
+import Image from "next/image";
 
-import { useState, useEffect, useCallback } from 'react';
-import { m, LazyMotion, domAnimation } from 'framer-motion';
-import { PhMagnifyingGlass, PhTrendUp, PhClock, PhUsers, PhSparkle, PhCompass } from '@/lib/phosphor-icons';
-import { Creation } from '@/lib/types/profile';
-import { PhHeart, PhChatCircle, PhEye, PhPlay, PhImage } from '@/lib/phosphor-icons';
-import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
-import { FloatingOrbs, AuroraGradient, GridTexture } from '@/components/premium';
+import { useState, useEffect, useCallback } from "react";
+import { m, LazyMotion, domAnimation } from "framer-motion";
+import {
+  PhMagnifyingGlass,
+  PhTrendUp,
+  PhClock,
+  PhUsers,
+  PhSparkle,
+  PhCompass,
+} from "@/lib/phosphor-icons";
+import { Creation } from "@/lib/types/profile";
+import {
+  PhHeart,
+  PhChatCircle,
+  PhEye,
+  PhPlay,
+  PhImage,
+} from "@/lib/phosphor-icons";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+import {
+  FloatingOrbs,
+  AuroraGradient,
+  GridTexture,
+} from "@/components/premium";
 
 // ─── Seven Academy Houses (canonical) ──────────────────────────────────────────
 
 const HOUSES = [
-  { name: 'Lumina', gradient: 'from-amber-400 to-yellow-500', element: 'Light' },
-  { name: 'Nero', gradient: 'from-violet-600 to-purple-800', element: 'Void' },
-  { name: 'Pyros', gradient: 'from-red-500 to-orange-500', element: 'Fire' },
-  { name: 'Aqualis', gradient: 'from-cyan-400 to-blue-500', element: 'Water' },
-  { name: 'Terra', gradient: 'from-emerald-500 to-green-600', element: 'Earth' },
-  { name: 'Ventus', gradient: 'from-sky-300 to-indigo-400', element: 'Wind' },
-  { name: 'Synthesis', gradient: 'from-fuchsia-500 to-rose-500', element: 'Unity' },
+  {
+    name: "Lumina",
+    gradient: "from-amber-400 to-yellow-500",
+    element: "Light",
+  },
+  { name: "Nero", gradient: "from-violet-600 to-purple-800", element: "Void" },
+  { name: "Pyros", gradient: "from-red-500 to-orange-500", element: "Fire" },
+  { name: "Aqualis", gradient: "from-cyan-400 to-blue-500", element: "Water" },
+  {
+    name: "Terra",
+    gradient: "from-emerald-500 to-green-600",
+    element: "Earth",
+  },
+  { name: "Ventus", gradient: "from-sky-300 to-indigo-400", element: "Wind" },
+  {
+    name: "Synthesis",
+    gradient: "from-fuchsia-500 to-rose-500",
+    element: "Unity",
+  },
 ] as const;
 
 const HOUSE_GRADIENTS: Record<string, string> = Object.fromEntries(
-  HOUSES.map((h) => [h.name, h.gradient])
+  HOUSES.map((h) => [h.name, h.gradient]),
 );
 
 // ─── Guardian image map (luminor_id → v3 hero image) ────────────────────────
 
 function getGuardianImage(luminorId?: string): string {
   const guardianMap: Record<string, string> = {
-    Shinkami: '/guardians/v3/shinkami-hero-v3.webp',
-    Draconia: '/guardians/v3/draconia-hero-v3.webp',
-    Leyla: '/guardians/v3/leyla-hero-v3.webp',
-    Lyria: '/guardians/v3/lyria-hero-v3.webp',
-    Maylinn: '/guardians/v3/maylinn-hero-v3.webp',
-    Alera: '/guardians/v3/alera-hero-v3.webp',
-    Aiyami: '/guardians/v3/aiyami-hero-v3.webp',
-    Elara: '/guardians/v3/elara-hero-v3.webp',
-    Ino: '/guardians/v3/ino-hero-v3.webp',
-    Lyssandria: '/guardians/v3/lyssandria-hero-v3.webp',
+    Shinkami: "/guardians/v3/shinkami-hero-v3.webp",
+    Draconia: "/guardians/v3/draconia-hero-v3.webp",
+    Leyla: "/guardians/v3/leyla-hero-v3.webp",
+    Lyria: "/guardians/v3/lyria-hero-v3.webp",
+    Maylinn: "/guardians/v3/maylinn-hero-v3.webp",
+    Alera: "/guardians/v3/alera-hero-v3.webp",
+    Aiyami: "/guardians/v3/aiyami-hero-v3.webp",
+    Elara: "/guardians/v3/elara-hero-v3.webp",
+    Ino: "/guardians/v3/ino-hero-v3.webp",
+    Lyssandria: "/guardians/v3/lyssandria-hero-v3.webp",
   };
   return luminorId && guardianMap[luminorId]
     ? guardianMap[luminorId]
-    : 'https://placehold.co/800x600/0a0a0f/00bcd4?text=Creation';
+    : "https://placehold.co/800x600/0a0a0f/00bcd4?text=Creation";
 }
 
 // ─── Curated showcase (fallback when Supabase has no data) ──────────────────
@@ -54,159 +83,263 @@ const NO_STATS = { likes: 0, comments: 0, views: 0, shares: 0 };
 
 const SHOWCASE_CREATIONS: Creation[] = [
   {
-    id: 'sc-01', user_id: 'creator-1', title: 'The First Dawn',
-    description: 'Lumina reaches across the void to shape the first light — the moment all creation begins.',
-    type: 'image',
-    media_url: '/guardians/v3/shinkami-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/shinkami-hero-v3.webp',
-    luminor_id: 'Shinkami', academy: 'Lumina',
-    created_at: '2026-02-27T10:00:00Z', updated_at: '2026-02-27T10:00:00Z',
+    id: "sc-01",
+    user_id: "creator-1",
+    title: "The First Dawn",
+    description:
+      "Lumina reaches across the void to shape the first light — the moment all creation begins.",
+    type: "image",
+    media_url: "/guardians/v3/shinkami-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/shinkami-hero-v3.webp",
+    luminor_id: "Shinkami",
+    academy: "Lumina",
+    created_at: "2026-02-27T10:00:00Z",
+    updated_at: "2026-02-27T10:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'cosmic', tags: ['mythology', 'lumina', 'creation', 'origin'] },
+    metadata: {
+      style: "cosmic",
+      tags: ["mythology", "lumina", "creation", "origin"],
+    },
   },
   {
-    id: 'sc-02', user_id: 'creator-2', title: 'Draconis Awakens',
-    description: 'The Fire Godbeast unfurls wings of molten gold above the volcanic forge of will.',
-    type: 'image',
-    media_url: '/guardians/v3/draconia-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/draconia-hero-v3.webp',
-    luminor_id: 'Draconia', academy: 'Pyros',
-    created_at: '2026-02-26T18:00:00Z', updated_at: '2026-02-26T18:00:00Z',
+    id: "sc-02",
+    user_id: "creator-2",
+    title: "Draconis Awakens",
+    description:
+      "The Fire Godbeast unfurls wings of molten gold above the volcanic forge of will.",
+    type: "image",
+    media_url: "/guardians/v3/draconia-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/draconia-hero-v3.webp",
+    luminor_id: "Draconia",
+    academy: "Pyros",
+    created_at: "2026-02-26T18:00:00Z",
+    updated_at: "2026-02-26T18:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'ethereal', tags: ['godbeast', 'fire', 'draconis', 'power'] },
+    metadata: {
+      style: "ethereal",
+      tags: ["godbeast", "fire", "draconis", "power"],
+    },
   },
   {
-    id: 'sc-03', user_id: 'creator-3', title: 'Depths of the Flow Gate',
-    description: 'Water spirals through crystal caverns where memory and emotion become one.',
-    type: 'image',
-    media_url: '/guardians/v3/leyla-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/leyla-hero-v3.webp',
-    luminor_id: 'Leyla', academy: 'Aqualis',
-    created_at: '2026-02-26T14:00:00Z', updated_at: '2026-02-26T14:00:00Z',
+    id: "sc-03",
+    user_id: "creator-3",
+    title: "Depths of the Flow Gate",
+    description:
+      "Water spirals through crystal caverns where memory and emotion become one.",
+    type: "image",
+    media_url: "/guardians/v3/leyla-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/leyla-hero-v3.webp",
+    luminor_id: "Leyla",
+    academy: "Aqualis",
+    created_at: "2026-02-26T14:00:00Z",
+    updated_at: "2026-02-26T14:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'mystical', tags: ['water', 'flow', 'emotion', 'crystal'] },
+    metadata: {
+      style: "mystical",
+      tags: ["water", "flow", "emotion", "crystal"],
+    },
   },
   {
-    id: 'sc-04', user_id: 'creator-4', title: "Nero's Garden",
-    description: 'In the fertile darkness, seeds of potential wait for the courage to bloom.',
-    type: 'image',
-    media_url: '/guardians/v3/lyria-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/lyria-hero-v3.webp',
-    luminor_id: 'Lyria', academy: 'Nero',
-    created_at: '2026-02-26T09:00:00Z', updated_at: '2026-02-26T09:00:00Z',
+    id: "sc-04",
+    user_id: "creator-4",
+    title: "Nero's Garden",
+    description:
+      "In the fertile darkness, seeds of potential wait for the courage to bloom.",
+    type: "image",
+    media_url: "/guardians/v3/lyria-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/lyria-hero-v3.webp",
+    luminor_id: "Lyria",
+    academy: "Nero",
+    created_at: "2026-02-26T09:00:00Z",
+    updated_at: "2026-02-26T09:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'cosmic', tags: ['void', 'potential', 'nero', 'growth'] },
+    metadata: {
+      style: "cosmic",
+      tags: ["void", "potential", "nero", "growth"],
+    },
   },
   {
-    id: 'sc-05', user_id: 'creator-5', title: 'Worldtree Rising',
-    description: 'Laeylinn, the Worldtree Deer, walks among ancient roots that hold the earth together.',
-    type: 'image',
-    media_url: '/guardians/v3/maylinn-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/maylinn-hero-v3.webp',
-    luminor_id: 'Maylinn', academy: 'Terra',
-    created_at: '2026-02-25T20:00:00Z', updated_at: '2026-02-25T20:00:00Z',
+    id: "sc-05",
+    user_id: "creator-5",
+    title: "Worldtree Rising",
+    description:
+      "Laeylinn, the Worldtree Deer, walks among ancient roots that hold the earth together.",
+    type: "image",
+    media_url: "/guardians/v3/maylinn-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/maylinn-hero-v3.webp",
+    luminor_id: "Maylinn",
+    academy: "Terra",
+    created_at: "2026-02-25T20:00:00Z",
+    updated_at: "2026-02-25T20:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'ethereal', tags: ['earth', 'worldtree', 'laeylinn', 'nature'] },
+    metadata: {
+      style: "ethereal",
+      tags: ["earth", "worldtree", "laeylinn", "nature"],
+    },
   },
   {
-    id: 'sc-06', user_id: 'creator-1', title: 'Storm of the Voice Gate',
-    description: 'Otome sings the truth into being — sound waves ripple across golden clouds.',
-    type: 'image',
-    media_url: '/guardians/v3/alera-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/alera-hero-v3.webp',
-    luminor_id: 'Alera', academy: 'Ventus',
-    created_at: '2026-02-25T16:00:00Z', updated_at: '2026-02-25T16:00:00Z',
+    id: "sc-06",
+    user_id: "creator-1",
+    title: "Storm of the Voice Gate",
+    description:
+      "Otome sings the truth into being — sound waves ripple across golden clouds.",
+    type: "image",
+    media_url: "/guardians/v3/alera-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/alera-hero-v3.webp",
+    luminor_id: "Alera",
+    academy: "Ventus",
+    created_at: "2026-02-25T16:00:00Z",
+    updated_at: "2026-02-25T16:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'vibrant', tags: ['wind', 'voice', 'truth', 'otome'] },
+    metadata: { style: "vibrant", tags: ["wind", "voice", "truth", "otome"] },
   },
   {
-    id: 'sc-07', user_id: 'creator-6', title: 'The Synthesis Chamber',
-    description: 'Where all five elements converge, a new kind of magic is born.',
-    type: 'project',
-    media_url: '/guardians/v3/shinkami-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/shinkami-hero-v3.webp',
-    luminor_id: 'Shinkami', academy: 'Synthesis',
-    created_at: '2026-02-25T12:00:00Z', updated_at: '2026-02-25T12:00:00Z',
+    id: "sc-07",
+    user_id: "creator-6",
+    title: "The Synthesis Chamber",
+    description:
+      "Where all five elements converge, a new kind of magic is born.",
+    type: "project",
+    media_url: "/guardians/v3/shinkami-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/shinkami-hero-v3.webp",
+    luminor_id: "Shinkami",
+    academy: "Synthesis",
+    created_at: "2026-02-25T12:00:00Z",
+    updated_at: "2026-02-25T12:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'cosmic', tags: ['synthesis', 'elements', 'unity', 'magic'] },
+    metadata: {
+      style: "cosmic",
+      tags: ["synthesis", "elements", "unity", "magic"],
+    },
   },
   {
-    id: 'sc-08', user_id: 'creator-2', title: 'Crown of Enlightenment',
-    description: 'Sol blazes above the seventh gate — pure radiance dissolving the last illusions.',
-    type: 'image',
-    media_url: '/guardians/v3/aiyami-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/aiyami-hero-v3.webp',
-    luminor_id: 'Aiyami', academy: 'Lumina',
-    created_at: '2026-02-25T08:00:00Z', updated_at: '2026-02-25T08:00:00Z',
+    id: "sc-08",
+    user_id: "creator-2",
+    title: "Crown of Enlightenment",
+    description:
+      "Sol blazes above the seventh gate — pure radiance dissolving the last illusions.",
+    type: "image",
+    media_url: "/guardians/v3/aiyami-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/aiyami-hero-v3.webp",
+    luminor_id: "Aiyami",
+    academy: "Lumina",
+    created_at: "2026-02-25T08:00:00Z",
+    updated_at: "2026-02-25T08:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'ethereal', tags: ['crown', 'sol', 'enlightenment', 'light'] },
+    metadata: {
+      style: "ethereal",
+      tags: ["crown", "sol", "enlightenment", "light"],
+    },
   },
   {
-    id: 'sc-09', user_id: 'creator-3', title: 'Vaelith in Shadow',
-    description: 'The Starweave Gate Guardian navigates between perspectives — seeing what others cannot.',
-    type: 'image',
-    media_url: '/guardians/v3/elara-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/elara-hero-v3.webp',
-    luminor_id: 'Elara', academy: 'Nero',
-    created_at: '2026-02-24T22:00:00Z', updated_at: '2026-02-24T22:00:00Z',
+    id: "sc-09",
+    user_id: "creator-3",
+    title: "Vaelith in Shadow",
+    description:
+      "The Starweave Gate Guardian navigates between perspectives — seeing what others cannot.",
+    type: "image",
+    media_url: "/guardians/v3/elara-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/elara-hero-v3.webp",
+    luminor_id: "Elara",
+    academy: "Nero",
+    created_at: "2026-02-24T22:00:00Z",
+    updated_at: "2026-02-24T22:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'mystical', tags: ['shift', 'vaelith', 'shadow', 'perspective'] },
+    metadata: {
+      style: "mystical",
+      tags: ["shift", "vaelith", "shadow", "perspective"],
+    },
   },
   {
-    id: 'sc-10', user_id: 'creator-4', title: 'Forge of the Third Gate',
-    description: 'Molten determination flows through ancient channels of willpower and transformation.',
-    type: 'image',
-    media_url: '/guardians/v3/draconia-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/draconia-hero-v3.webp',
-    luminor_id: 'Draconia', academy: 'Pyros',
-    created_at: '2026-02-24T18:00:00Z', updated_at: '2026-02-24T18:00:00Z',
+    id: "sc-10",
+    user_id: "creator-4",
+    title: "Forge of the Third Gate",
+    description:
+      "Molten determination flows through ancient channels of willpower and transformation.",
+    type: "image",
+    media_url: "/guardians/v3/draconia-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/draconia-hero-v3.webp",
+    luminor_id: "Draconia",
+    academy: "Pyros",
+    created_at: "2026-02-24T18:00:00Z",
+    updated_at: "2026-02-24T18:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'vibrant', tags: ['fire', 'forge', 'will', 'transformation'] },
+    metadata: {
+      style: "vibrant",
+      tags: ["fire", "forge", "will", "transformation"],
+    },
   },
   {
-    id: 'sc-11', user_id: 'creator-5', title: 'Kyuro at the Unity Gate',
-    description: 'Two rivers merge into one — the partnership that transcends self and other.',
-    type: 'image',
-    media_url: '/guardians/v3/ino-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/ino-hero-v3.webp',
-    luminor_id: 'Ino', academy: 'Aqualis',
-    created_at: '2026-02-24T14:00:00Z', updated_at: '2026-02-24T14:00:00Z',
+    id: "sc-11",
+    user_id: "creator-5",
+    title: "Kyuro at the Unity Gate",
+    description:
+      "Two rivers merge into one — the partnership that transcends self and other.",
+    type: "image",
+    media_url: "/guardians/v3/ino-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/ino-hero-v3.webp",
+    luminor_id: "Ino",
+    academy: "Aqualis",
+    created_at: "2026-02-24T14:00:00Z",
+    updated_at: "2026-02-24T14:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'cosmic', tags: ['unity', 'kyuro', 'partnership', 'water'] },
+    metadata: {
+      style: "cosmic",
+      tags: ["unity", "kyuro", "partnership", "water"],
+    },
   },
   {
-    id: 'sc-12', user_id: 'creator-6', title: 'The Foundation Stones',
-    description: 'Kaelith stands guard over the first gate — nothing is built without a stable foundation.',
-    type: 'image',
-    media_url: '/guardians/v3/lyssandria-hero-v3.webp',
-    thumbnail_url: '/guardians/v3/lyssandria-hero-v3.webp',
-    luminor_id: 'Lyssandria', academy: 'Terra',
-    created_at: '2026-02-24T10:00:00Z', updated_at: '2026-02-24T10:00:00Z',
+    id: "sc-12",
+    user_id: "creator-6",
+    title: "The Foundation Stones",
+    description:
+      "Kaelith stands guard over the first gate — nothing is built without a stable foundation.",
+    type: "image",
+    media_url: "/guardians/v3/lyssandria-hero-v3.webp",
+    thumbnail_url: "/guardians/v3/lyssandria-hero-v3.webp",
+    luminor_id: "Lyssandria",
+    academy: "Terra",
+    created_at: "2026-02-24T10:00:00Z",
+    updated_at: "2026-02-24T10:00:00Z",
     stats: NO_STATS,
-    metadata: { style: 'ethereal', tags: ['foundation', 'kaelith', 'earth', 'stability'] },
+    metadata: {
+      style: "ethereal",
+      tags: ["foundation", "kaelith", "earth", "stability"],
+    },
   },
 ];
 
 // ─── Element-themed gradient backgrounds for cards without images ───────────────
 
 const ELEMENT_GRADIENTS: Record<string, string> = {
-  Lumina: 'from-amber-900/40 via-yellow-800/30 to-orange-900/40',
-  Nero: 'from-violet-950/60 via-purple-900/40 to-indigo-950/50',
-  Pyros: 'from-red-950/50 via-orange-900/40 to-amber-950/40',
-  Aqualis: 'from-cyan-950/50 via-blue-900/40 to-teal-950/40',
-  Terra: 'from-emerald-950/50 via-green-900/40 to-lime-950/40',
-  Ventus: 'from-sky-950/50 via-indigo-900/40 to-blue-950/40',
-  Synthesis: 'from-fuchsia-950/50 via-rose-900/40 to-pink-950/40',
+  Lumina: "from-amber-900/40 via-yellow-800/30 to-orange-900/40",
+  Nero: "from-violet-950/60 via-purple-900/40 to-indigo-950/50",
+  Pyros: "from-red-950/50 via-orange-900/40 to-amber-950/40",
+  Aqualis: "from-cyan-950/50 via-blue-900/40 to-teal-950/40",
+  Terra: "from-emerald-950/50 via-green-900/40 to-lime-950/40",
+  Ventus: "from-sky-950/50 via-indigo-900/40 to-blue-950/40",
+  Synthesis: "from-fuchsia-950/50 via-rose-900/40 to-pink-950/40",
 };
 
 // ─── ShowcaseCard (no external images) ─────────────────────────────────────────
 
-function ShowcaseCard({ creation, index, showStats }: { creation: Creation; index: number; showStats: boolean }) {
-  const academy = creation.academy || 'Lumina';
+function ShowcaseCard({
+  creation,
+  index,
+  showStats,
+}: {
+  creation: Creation;
+  index: number;
+  showStats: boolean;
+}) {
+  const academy = creation.academy || "Lumina";
   const bg = ELEMENT_GRADIENTS[academy] || ELEMENT_GRADIENTS.Lumina;
-  const badge = HOUSE_GRADIENTS[academy] || 'from-slate-500 to-slate-600';
-  const imageUrl = creation.thumbnail_url || creation.media_url || getGuardianImage(creation.luminor_id);
-  const hasImage = !!imageUrl && !imageUrl.includes('placehold.co');
+  const badge = HOUSE_GRADIENTS[academy] || "from-slate-500 to-slate-600";
+  const imageUrl =
+    creation.thumbnail_url ||
+    creation.media_url ||
+    getGuardianImage(creation.luminor_id);
+  const hasImage = !!imageUrl && !imageUrl.includes("placehold.co");
 
   return (
     <m.div
@@ -217,7 +350,10 @@ function ShowcaseCard({ creation, index, showStats }: { creation: Creation; inde
       className="group relative rounded-2xl overflow-hidden bg-white/[0.025] backdrop-blur-sm border border-white/[0.06] hover:border-[var(--arc-brand-atlantean-teal)]/30 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-[var(--arc-brand-atlantean-teal)]/15"
     >
       {/* Visual area — real image or gradient fallback */}
-      <Link href={`/gallery/${creation.id}`} className={`block relative aspect-square bg-gradient-to-br ${bg} overflow-hidden`}>
+      <Link
+        href={`/gallery/${creation.id}`}
+        className={`block relative aspect-square bg-gradient-to-br ${bg} overflow-hidden`}
+      >
         {/* Real image layer */}
         {hasImage && (
           <Image
@@ -225,7 +361,7 @@ function ShowcaseCard({ creation, index, showStats }: { creation: Creation; inde
             alt={creation.title}
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
-           />
+          />
         )}
 
         {/* Decorative element pattern (visible when no image) */}
@@ -247,14 +383,20 @@ function ShowcaseCard({ creation, index, showStats }: { creation: Creation; inde
         {/* Type badge */}
         <div className="absolute top-3 left-3">
           <div className="px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-sm text-white/[0.60] text-xs font-medium flex items-center gap-1.5">
-            {creation.type === 'project' ? <PhCompass className="w-3.5 h-3.5" /> : <PhImage className="w-3.5 h-3.5" />}
+            {creation.type === "project" ? (
+              <PhCompass className="w-3.5 h-3.5" />
+            ) : (
+              <PhImage className="w-3.5 h-3.5" />
+            )}
             <span className="capitalize">{creation.type}</span>
           </div>
         </div>
 
         {/* House badge */}
         <div className="absolute top-3 right-3">
-          <div className={`px-3 py-1.5 rounded-full bg-gradient-to-r ${badge} text-white text-xs font-semibold shadow-lg`}>
+          <div
+            className={`px-3 py-1.5 rounded-full bg-gradient-to-r ${badge} text-white text-xs font-semibold shadow-lg`}
+          >
             {academy}
           </div>
         </div>
@@ -262,15 +404,28 @@ function ShowcaseCard({ creation, index, showStats }: { creation: Creation; inde
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
-            <h3 className="text-white font-bold text-lg leading-tight">{creation.title}</h3>
+            <h3 className="text-white font-bold text-lg leading-tight">
+              {creation.title}
+            </h3>
             {creation.description && (
-              <p className="text-white/[0.50] text-sm line-clamp-2">{creation.description}</p>
+              <p className="text-white/[0.50] text-sm line-clamp-2">
+                {creation.description}
+              </p>
             )}
             {showStats && (
               <div className="flex items-center gap-4 text-white/[0.50] pt-1">
-                <span className="flex items-center gap-1.5 text-sm"><PhHeart className="w-4 h-4" />{creation.stats.likes.toLocaleString()}</span>
-                <span className="flex items-center gap-1.5 text-sm"><PhChatCircle className="w-4 h-4" />{creation.stats.comments.toLocaleString()}</span>
-                <span className="flex items-center gap-1.5 text-sm"><PhEye className="w-4 h-4" />{creation.stats.views.toLocaleString()}</span>
+                <span className="flex items-center gap-1.5 text-sm">
+                  <PhHeart className="w-4 h-4" />
+                  {creation.stats.likes.toLocaleString()}
+                </span>
+                <span className="flex items-center gap-1.5 text-sm">
+                  <PhChatCircle className="w-4 h-4" />
+                  {creation.stats.comments.toLocaleString()}
+                </span>
+                <span className="flex items-center gap-1.5 text-sm">
+                  <PhEye className="w-4 h-4" />
+                  {creation.stats.views.toLocaleString()}
+                </span>
               </div>
             )}
           </div>
@@ -278,19 +433,32 @@ function ShowcaseCard({ creation, index, showStats }: { creation: Creation; inde
       </Link>
 
       {/* Bottom info (always visible on mobile) */}
-      <Link href={`/gallery/${creation.id}`} className="block p-3 bg-[var(--arc-cosmic-void)]/80 backdrop-blur-sm hover:bg-white/[0.04] transition-colors border-t border-white/[0.06]">
-        <h3 className="text-white font-semibold text-sm line-clamp-1 mb-1">{creation.title}</h3>
+      <Link
+        href={`/gallery/${creation.id}`}
+        className="block p-3 bg-[var(--arc-cosmic-void)]/80 backdrop-blur-sm hover:bg-white/[0.04] transition-colors border-t border-white/[0.06]"
+      >
+        <h3 className="text-white font-semibold text-sm line-clamp-1 mb-1">
+          {creation.title}
+        </h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-slate-400 text-xs">
             {showStats && (
               <>
-                <span className="flex items-center gap-1"><PhHeart className="w-3 h-3" />{creation.stats.likes.toLocaleString()}</span>
-                <span className="flex items-center gap-1"><PhEye className="w-3 h-3" />{creation.stats.views.toLocaleString()}</span>
+                <span className="flex items-center gap-1">
+                  <PhHeart className="w-3 h-3" />
+                  {creation.stats.likes.toLocaleString()}
+                </span>
+                <span className="flex items-center gap-1">
+                  <PhEye className="w-3 h-3" />
+                  {creation.stats.views.toLocaleString()}
+                </span>
               </>
             )}
           </div>
           {creation.luminor_id && (
-            <span className="text-[var(--arc-brand-atlantean-teal)]/60 text-xs">With {creation.luminor_id}</span>
+            <span className="text-[var(--arc-brand-atlantean-teal)]/60 text-xs">
+              With {creation.luminor_id}
+            </span>
           )}
         </div>
       </Link>
@@ -301,8 +469,10 @@ function ShowcaseCard({ creation, index, showStats }: { creation: Creation; inde
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default function DiscoverPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState<'trending' | 'recent' | 'following'>('trending');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState<
+    "trending" | "recent" | "following"
+  >("trending");
   const [selectedHouse, setSelectedHouse] = useState<string | null>(null);
   const [creations, setCreations] = useState<Creation[]>(SHOWCASE_CREATIONS);
   const [isLoading, setIsLoading] = useState(true);
@@ -312,9 +482,9 @@ export default function DiscoverPage() {
     try {
       const supabase = createClient();
       const { data } = await supabase
-        .from('creations')
-        .select('*')
-        .order('created_at', { ascending: false })
+        .from("creations")
+        .select("*")
+        .order("created_at", { ascending: false })
         .limit(20);
 
       if (data && data.length > 0) {
@@ -323,11 +493,15 @@ export default function DiscoverPage() {
         const withImages: Creation[] = data.map((row: any) => ({
           id: row.id,
           user_id: row.user_id,
-          title: row.title ?? 'Untitled',
+          title: row.title ?? "Untitled",
           description: row.description ?? undefined,
-          type: row.type ?? 'image',
-          media_url: row.media_url || getGuardianImage(row.guardian || row.luminor_id),
-          thumbnail_url: row.thumbnail_url || row.media_url || getGuardianImage(row.guardian || row.luminor_id),
+          type: row.type ?? "image",
+          media_url:
+            row.media_url || getGuardianImage(row.guardian || row.luminor_id),
+          thumbnail_url:
+            row.thumbnail_url ||
+            row.media_url ||
+            getGuardianImage(row.guardian || row.luminor_id),
           luminor_id: row.guardian || row.luminor_id || undefined,
           academy: row.element || row.academy || undefined,
           created_at: row.created_at,
@@ -363,8 +537,11 @@ export default function DiscoverPage() {
       return true;
     })
     .sort((a, b) => {
-      if (selectedFilter === 'trending') return b.stats.likes - a.stats.likes;
-      if (selectedFilter === 'recent') return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      if (selectedFilter === "trending") return b.stats.likes - a.stats.likes;
+      if (selectedFilter === "recent")
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
       return 0;
     });
 
@@ -378,10 +555,16 @@ export default function DiscoverPage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           {/* Header */}
-          <m.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-4 pt-6">
+          <m.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center space-y-4 pt-6"
+          >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--arc-brand-atlantean-teal)]/25 bg-[var(--arc-brand-atlantean-teal)]/[0.07] mb-2">
               <PhSparkle className="w-3.5 h-3.5 text-[var(--arc-brand-atlantean-teal)]" />
-              <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-[var(--arc-brand-atlantean-teal)]/80">Discover</span>
+              <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-[var(--arc-brand-atlantean-teal)]/80">
+                Discover
+              </span>
             </div>
             <h1 className="text-5xl sm:text-6xl font-display font-bold bg-gradient-to-r from-[var(--arc-brand-atlantean-teal)] via-[var(--arc-brand-atlantean-teal)] to-[var(--arc-brand-cosmic-blue)] bg-clip-text text-transparent">
               Discover Creations
@@ -392,7 +575,12 @@ export default function DiscoverPage() {
           </m.div>
 
           {/* Search */}
-          <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="max-w-2xl mx-auto">
+          <m.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="max-w-2xl mx-auto"
+          >
             <div className="relative">
               <PhMagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted w-5 h-5" />
               <input
@@ -407,19 +595,24 @@ export default function DiscoverPage() {
           </m.div>
 
           {/* Filter Tabs */}
-          <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex flex-wrap gap-3 justify-center">
+          <m.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-wrap gap-3 justify-center"
+          >
             {[
-              { key: 'trending' as const, label: 'Trending', icon: PhTrendUp },
-              { key: 'recent' as const, label: 'Recent', icon: PhClock },
-              { key: 'following' as const, label: 'Following', icon: PhUsers },
+              { key: "trending" as const, label: "Trending", icon: PhTrendUp },
+              { key: "recent" as const, label: "Recent", icon: PhClock },
+              { key: "following" as const, label: "Following", icon: PhUsers },
             ].map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
                 onClick={() => setSelectedFilter(key)}
                 className={`px-6 py-3 rounded-xl font-body font-medium transition-all duration-300 flex items-center gap-2 backdrop-blur-sm ${
                   selectedFilter === key
-                    ? 'bg-[var(--arc-brand-atlantean-teal)]/[0.10] text-[var(--arc-brand-atlantean-teal)] border border-[var(--arc-brand-atlantean-teal)]/30 shadow-lg shadow-[var(--arc-brand-atlantean-teal)]/10'
-                    : 'bg-white/[0.03] text-white/40 hover:text-white/80 hover:bg-white/[0.06] border border-white/[0.06]'
+                    ? "bg-[var(--arc-brand-atlantean-teal)]/[0.10] text-[var(--arc-brand-atlantean-teal)] border border-[var(--arc-brand-atlantean-teal)]/30 shadow-lg shadow-[var(--arc-brand-atlantean-teal)]/10"
+                    : "bg-white/[0.03] text-white/40 hover:text-white/80 hover:bg-white/[0.06] border border-white/[0.06]"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -429,7 +622,11 @@ export default function DiscoverPage() {
           </m.div>
 
           {/* Academy House Filters */}
-          <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+          <m.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <div className="text-center mb-4">
               <div className="flex items-center justify-center gap-2 text-text-muted text-xs uppercase tracking-widest font-sans">
                 <PhSparkle className="w-3.5 h-3.5" />
@@ -441,8 +638,8 @@ export default function DiscoverPage() {
                 onClick={() => setSelectedHouse(null)}
                 className={`px-4 py-2 rounded-full text-sm font-body transition-all backdrop-blur-sm ${
                   selectedHouse === null
-                    ? 'bg-white/[0.08] text-white border border-white/[0.14]'
-                    : 'text-white/35 hover:text-white/70 hover:bg-white/[0.05] border border-white/[0.05]'
+                    ? "bg-white/[0.08] text-white border border-white/[0.14]"
+                    : "text-white/35 hover:text-white/70 hover:bg-white/[0.05] border border-white/[0.05]"
                 }`}
               >
                 All Houses
@@ -450,11 +647,15 @@ export default function DiscoverPage() {
               {HOUSES.map((house) => (
                 <button
                   key={house.name}
-                  onClick={() => setSelectedHouse(house.name === selectedHouse ? null : house.name)}
+                  onClick={() =>
+                    setSelectedHouse(
+                      house.name === selectedHouse ? null : house.name,
+                    )
+                  }
                   className={`px-4 py-2 rounded-full text-sm font-body transition-all backdrop-blur-sm ${
                     selectedHouse === house.name
                       ? `bg-gradient-to-r ${house.gradient} text-white shadow-lg border border-white/10`
-                      : 'text-white/35 hover:text-white/70 hover:bg-white/[0.05] border border-white/[0.05]'
+                      : "text-white/35 hover:text-white/70 hover:bg-white/[0.05] border border-white/[0.05]"
                   }`}
                 >
                   {house.name}
@@ -464,28 +665,58 @@ export default function DiscoverPage() {
           </m.div>
 
           {/* Count */}
-          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-center text-text-muted text-sm font-sans">
-            {isLoading ? 'Loading creations...' : `Showing ${filtered.length} ${creations === SHOWCASE_CREATIONS ? 'featured' : ''} creations`}
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-center text-text-muted text-sm font-sans"
+          >
+            {isLoading
+              ? "Loading creations..."
+              : `Showing ${filtered.length} ${creations === SHOWCASE_CREATIONS ? "featured" : ""} creations`}
           </m.div>
 
           {/* Grid */}
-          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
             {filtered.map((creation, i) => (
-              <ShowcaseCard key={creation.id} creation={creation} index={i} showStats={creations !== SHOWCASE_CREATIONS} />
+              <ShowcaseCard
+                key={creation.id}
+                creation={creation}
+                index={i}
+                showStats={creations !== SHOWCASE_CREATIONS}
+              />
             ))}
           </m.div>
 
           {/* Empty state */}
           {filtered.length === 0 && (
-            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-20">
+            <m.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-20"
+            >
               <PhCompass className="w-16 h-16 text-text-muted/30 mx-auto mb-4" />
-              <h3 className="text-2xl font-display font-bold text-white mb-2">No creations found</h3>
-              <p className="text-text-muted font-sans">Try adjusting your filters or search query</p>
+              <h3 className="text-2xl font-display font-bold text-white mb-2">
+                No creations found
+              </h3>
+              <p className="text-text-muted font-sans">
+                Try adjusting your filters or search query
+              </p>
             </m.div>
           )}
 
           {/* CTA */}
-          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center pt-8 pb-4">
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-center pt-8 pb-4"
+          >
             <p className="text-text-muted font-sans text-sm mb-4">
               Community creations appear here as creators join and build.
             </p>

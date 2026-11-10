@@ -170,7 +170,8 @@ export const APPS: AppEntry[] = [
   },
   {
     name: "Postiz",
-    tagline: "Scheduling pipeline — drop your creation, Postiz handles the rest.",
+    tagline:
+      "Scheduling pipeline — drop your creation, Postiz handles the rest.",
     category: "Distribution",
     filterCategory: "Distribution",
     glyph: "◱",
@@ -266,7 +267,8 @@ export const APPS: AppEntry[] = [
   // ── Game Engines ────────────────────────────────────────────────────────
   {
     name: "Unreal Engine",
-    tagline: "Export world data to Unreal scenes — characters, locations, lore.",
+    tagline:
+      "Export world data to Unreal scenes — characters, locations, lore.",
     category: "Game Engines",
     filterCategory: "Game Engines",
     glyph: "⧉",
@@ -426,7 +428,16 @@ export const CATEGORIES: Category[] = [
 export const HERO_STATS = [
   { value: "8", label: "categories", color: "var(--arc-brand-atlantean-teal)" },
   { value: "MIT", label: "license", color: "var(--arc-void)" },
-  { value: "BYOK", label: "model agnostic", color: "var(--arc-brand-arcanean-gold)" },
+  {
+    value: "BYOK",
+    label: "model agnostic",
+    color: "var(--arc-brand-arcanean-gold)",
+  },
 ];
 
-export const FEATURED_NAMES = ["Claude Code", "Suno", "Nano Banana 2", "Discord"];
+export const FEATURED_NAMES = [
+  "Claude Code",
+  "Suno",
+  "Nano Banana 2",
+  "Discord",
+];

@@ -56,7 +56,8 @@ const PRODUCTION_STACKS = [
   },
   {
     name: "Music release room",
-    promise: "Artist lore, song brief, cover art, visualizer, and launch posts.",
+    promise:
+      "Artist lore, song brief, cover art, visualizer, and launch posts.",
     apps: ["Suno", "Nano Banana 2", "Runway", "Blotato", "Postiz"],
     route: "/music-studio",
   },
@@ -234,7 +235,10 @@ export function AppsContent() {
                   Install workflows, not random tools
                 </h2>
               </div>
-              <Link href="/canvas" className="text-xs font-mono uppercase tracking-[0.16em] text-white/35 hover:text-white/70">
+              <Link
+                href="/canvas"
+                className="text-xs font-mono uppercase tracking-[0.16em] text-white/35 hover:text-white/70"
+              >
                 Open Canvas
               </Link>
             </m.div>
@@ -251,8 +255,12 @@ export function AppsContent() {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-lg font-display font-semibold text-white/86">{stack.name}</h3>
-                      <p className="mt-2 text-sm leading-relaxed text-white/42">{stack.promise}</p>
+                      <h3 className="text-lg font-display font-semibold text-white/86">
+                        {stack.name}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-white/42">
+                        {stack.promise}
+                      </p>
                     </div>
                     <Link
                       href={stack.route}
@@ -263,7 +271,10 @@ export function AppsContent() {
                   </div>
                   <div className="mt-5 flex flex-wrap gap-2">
                     {stack.apps.map((app) => (
-                      <span key={`${stack.name}-${app}`} className="rounded-full border border-white/[0.07] bg-black/24 px-3 py-1.5 text-xs text-white/48">
+                      <span
+                        key={`${stack.name}-${app}`}
+                        className="rounded-full border border-white/[0.07] bg-black/24 px-3 py-1.5 text-xs text-white/48"
+                      >
                         {app}
                       </span>
                     ))}
@@ -341,7 +352,10 @@ export function AppsContent() {
               </h2>
             </m.div>
 
-            <FeatureCard glowColor="var(--arc-brand-atlantean-teal)" delay={0.1}>
+            <FeatureCard
+              glowColor="var(--arc-brand-atlantean-teal)"
+              delay={0.1}
+            >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
                 <div className="flex-1">
                   <div
@@ -358,9 +372,10 @@ export function AppsContent() {
                     Ship your own connector
                   </h3>
                   <p className="text-sm text-white/45 leading-relaxed max-w-lg font-body">
-                    Arcanea Apps is an open spec. Any tool can publish a connector
-                    to our marketplace. Earn revenue share when creators install —
-                    70% to you, 30% to the protocol. MIT licensed, BYOK by design.
+                    Arcanea Apps is an open spec. Any tool can publish a
+                    connector to our marketplace. Earn revenue share when
+                    creators install — 70% to you, 30% to the protocol. MIT
+                    licensed, BYOK by design.
                   </p>
                   <ul className="mt-5 flex flex-col gap-2">
                     {[
@@ -448,7 +463,8 @@ export function AppsContent() {
                   </Link>
                 </div>
                 <p className="mt-8 text-[11px] font-mono text-white/20 tracking-wider">
-                  MIT licensed. BYOK. 70/30 revenue share for connector developers.
+                  MIT licensed. BYOK. 70/30 revenue share for connector
+                  developers.
                 </p>
               </div>
             </m.div>

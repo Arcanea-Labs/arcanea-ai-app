@@ -1,16 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState } from "react";
+import Link from "next/link";
 import {
-  ArrowRight, Star, Clock, Sparkle,
-  Flame, Drop, Leaf, Wind, Eye, Sun, Trophy, Shield,
-} from '@/lib/phosphor-icons';
-import { DIFFICULTY_CONFIG, ELEMENT_CONFIG, CATEGORY_CONFIG } from '@/lib/challenges';
-import type { Challenge } from '@/lib/types/challenge';
+  ArrowRight,
+  Star,
+  Clock,
+  Sparkle,
+  Flame,
+  Drop,
+  Leaf,
+  Wind,
+  Eye,
+  Sun,
+  Trophy,
+  Shield,
+} from "@/lib/phosphor-icons";
+import {
+  DIFFICULTY_CONFIG,
+  ELEMENT_CONFIG,
+  CATEGORY_CONFIG,
+} from "@/lib/challenges";
+import type { Challenge } from "@/lib/types/challenge";
 
-const ELEMENT_ICONS: Record<string, React.ComponentType<Record<string, unknown>>> = {
+const ELEMENT_ICONS: Record<
+  string,
+  React.ComponentType<Record<string, unknown>>
+> = {
   fire: Flame,
   water: Drop,
   earth: Leaf,
@@ -25,37 +42,83 @@ function DifficultyStars({ difficulty }: { difficulty: string }) {
   return (
     <div className="flex items-center gap-1">
       {Array.from({ length: config.stars }).map((_, i) => (
-        <Star key={i} className="h-3 w-3" style={{ color: config.color }} weight="fill" />
+        <Star
+          key={i}
+          className="h-3 w-3"
+          style={{ color: config.color }}
+          weight="fill"
+        />
       ))}
       {Array.from({ length: 5 - config.stars }).map((_, i) => (
-        <Star key={`empty-${i}`} className="h-3 w-3 text-white/10" weight="regular" />
+        <Star
+          key={`empty-${i}`}
+          className="h-3 w-3 text-white/10"
+          weight="regular"
+        />
       ))}
     </div>
   );
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const configs: Record<string, { label: string; color: string; bg: string; pulse: boolean }> = {
-    active: { label: 'LIVE', color: 'var(--arc-wind)', bg: 'rgba(52,211,153,0.15)', pulse: true },
-    upcoming: { label: 'UPCOMING', color: 'var(--arc-brand-cosmic-blue)', bg: 'rgba(96,165,250,0.15)', pulse: false },
-    judging: { label: 'JUDGING', color: 'var(--arc-brand-arcanean-gold)', bg: 'rgba(245,158,11,0.15)', pulse: true },
-    completed: { label: 'COMPLETE', color: 'var(--arc-earth)', bg: 'rgba(107,114,128,0.15)', pulse: false },
-    legendary: { label: 'LEGENDARY', color: 'var(--arc-brand-arcanean-gold)', bg: 'rgba(255,215,0,0.15)', pulse: true },
+  const configs: Record<
+    string,
+    { label: string; color: string; bg: string; pulse: boolean }
+  > = {
+    active: {
+      label: "LIVE",
+      color: "var(--arc-wind)",
+      bg: "rgba(52,211,153,0.15)",
+      pulse: true,
+    },
+    upcoming: {
+      label: "UPCOMING",
+      color: "var(--arc-brand-cosmic-blue)",
+      bg: "rgba(96,165,250,0.15)",
+      pulse: false,
+    },
+    judging: {
+      label: "JUDGING",
+      color: "var(--arc-brand-arcanean-gold)",
+      bg: "rgba(245,158,11,0.15)",
+      pulse: true,
+    },
+    completed: {
+      label: "COMPLETE",
+      color: "var(--arc-earth)",
+      bg: "rgba(107,114,128,0.15)",
+      pulse: false,
+    },
+    legendary: {
+      label: "LEGENDARY",
+      color: "var(--arc-brand-arcanean-gold)",
+      bg: "rgba(255,215,0,0.15)",
+      pulse: true,
+    },
   };
   const config = configs[status] || configs.completed;
 
   return (
-    <div className="flex items-center gap-1.5 rounded-full px-2.5 py-1" style={{ backgroundColor: config.bg }}>
+    <div
+      className="flex items-center gap-1.5 rounded-full px-2.5 py-1"
+      style={{ backgroundColor: config.bg }}
+    >
       {config.pulse && (
         <span className="relative flex h-2 w-2">
           <span
             className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
             style={{ backgroundColor: config.color }}
           />
-          <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: config.color }} />
+          <span
+            className="relative inline-flex h-2 w-2 rounded-full"
+            style={{ backgroundColor: config.color }}
+          />
         </span>
       )}
-      <span className="font-mono text-[9px] font-bold tracking-widest" style={{ color: config.color }}>
+      <span
+        className="font-mono text-[9px] font-bold tracking-widest"
+        style={{ color: config.color }}
+      >
         {config.label}
       </span>
     </div>
@@ -96,12 +159,14 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
         className="group relative overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.02] transition-all duration-500 hover:border-white/[0.12] hover:bg-white/[0.04]"
         style={{
           boxShadow: isHovered
-            ? `0 0 60px ${elementConfig?.bgGlow || 'rgba(255,255,255,0.05)'}, inset 0 1px 0 rgba(255,255,255,0.06)`
-            : 'inset 0 1px 0 rgba(255,255,255,0.03)',
+            ? `0 0 60px ${elementConfig?.bgGlow || "rgba(255,255,255,0.05)"}, inset 0 1px 0 rgba(255,255,255,0.06)`
+            : "inset 0 1px 0 rgba(255,255,255,0.03)",
         }}
       >
         {/* Banner gradient */}
-        <div className={`relative h-32 bg-gradient-to-r ${challenge.bannerGradient} overflow-hidden`}>
+        <div
+          className={`relative h-32 bg-gradient-to-r ${challenge.bannerGradient} overflow-hidden`}
+        >
           {/* Animated particles overlay */}
           <div className="absolute inset-0 opacity-30">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -124,10 +189,19 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
             <StatusBadge status={challenge.status} />
             <div
               className="flex items-center gap-1.5 rounded-full px-2.5 py-1"
-              style={{ backgroundColor: `${elementConfig?.color || 'var(--arc-text-primary)'}20` }}
+              style={{
+                backgroundColor: `${elementConfig?.color || "var(--arc-text-primary)"}20`,
+              }}
             >
-              <ElIcon className="h-3 w-3" style={{ color: elementConfig?.color }} weight="fill" />
-              <span className="font-mono text-[9px]" style={{ color: elementConfig?.color }}>
+              <ElIcon
+                className="h-3 w-3"
+                style={{ color: elementConfig?.color }}
+                weight="fill"
+              />
+              <span
+                className="font-mono text-[9px]"
+                style={{ color: elementConfig?.color }}
+              >
                 {elementConfig?.label}
               </span>
             </div>
@@ -135,7 +209,10 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
 
           {/* Prize pool */}
           <div className="absolute right-4 top-4 flex items-center gap-1.5 rounded-full border border-[var(--arc-brand-arcanean-gold)]/20 bg-black/40 px-3 py-1.5 backdrop-blur-sm">
-            <Trophy className="h-3.5 w-3.5 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
+            <Trophy
+              className="h-3.5 w-3.5 text-[var(--arc-brand-arcanean-gold)]"
+              weight="fill"
+            />
             <span className="font-mono text-xs font-bold text-[var(--arc-brand-arcanean-gold)]">
               ${challenge.prizePool.toLocaleString()}
             </span>
@@ -157,8 +234,8 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
             <span
               className="rounded-full px-2.5 py-1 font-mono text-[9px] font-medium uppercase tracking-wider"
               style={{
-                backgroundColor: `${categoryConfig?.color || 'var(--arc-text-primary)'}15`,
-                color: categoryConfig?.color || 'var(--arc-text-primary)',
+                backgroundColor: `${categoryConfig?.color || "var(--arc-text-primary)"}15`,
+                color: categoryConfig?.color || "var(--arc-text-primary)",
               }}
             >
               {categoryConfig?.label}
@@ -182,7 +259,10 @@ export function ChallengeCard({ challenge }: { challenge: Challenge }) {
           </div>
 
           {/* CTA */}
-          <div className="mt-4 flex items-center gap-2 font-display text-sm font-semibold transition-colors" style={{ color: challenge.accentColor }}>
+          <div
+            className="mt-4 flex items-center gap-2 font-display text-sm font-semibold transition-colors"
+            style={{ color: challenge.accentColor }}
+          >
             Enter Challenge
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </div>

@@ -8,16 +8,18 @@
  *  ELEMENTS & MAGIC
  * ---------------------------------------------------------------- */
 
-export type Element = 'fire' | 'water' | 'earth' | 'wind' | 'void' | 'spirit';
+export type Element = "fire" | "water" | "earth" | "wind" | "void" | "spirit";
 
-export type MagicRank = 'apprentice' | 'mage' | 'master' | 'archmage' | 'luminor';
+export type MagicRank =
+  "apprentice" | "mage" | "master" | "archmage" | "luminor";
 
 // Seven-tier power/sanctity scale (replaces legacy cantrip→genesis).
 // Mapping + gating: magic-intelligence-system/docs/MAGIC-PROTOCOLS.md
-export type SpellTier = 'light' | 'advanced' | 'greater' | 'sacred' | 'royal' | 'imperial' | 'divine';
+export type SpellTier =
+  "light" | "advanced" | "greater" | "sacred" | "royal" | "imperial" | "divine";
 
 // The three disciplines of magic. Healing folds into defense; utility is a tag, not a discipline.
-export type Discipline = 'attack' | 'defense' | 'summoning';
+export type Discipline = "attack" | "defense" | "summoning";
 
 /* ----------------------------------------------------------------
  *  SPELLBOOK SYSTEM
@@ -55,7 +57,7 @@ export interface SpellCast {
   casterId: string;
   targetChallengeId: string;
   timestamp: number;
-  result: 'success' | 'fizzle' | 'critical';
+  result: "success" | "fizzle" | "critical";
   manaSpent: number;
   effectApplied: string;
 }
@@ -65,19 +67,21 @@ export interface SpellCast {
  * ---------------------------------------------------------------- */
 
 export type ChallengeCategory =
-  | 'web-design'
-  | 'ai-creation'
-  | 'world-building'
-  | 'visual-art'
-  | 'music-composition'
-  | 'prompt-craft'
-  | 'agent-forge'
-  | 'lore-weaving'
-  | 'code-arcana';
+  | "web-design"
+  | "ai-creation"
+  | "world-building"
+  | "visual-art"
+  | "music-composition"
+  | "prompt-craft"
+  | "agent-forge"
+  | "lore-weaving"
+  | "code-arcana";
 
-export type ChallengeDifficulty = 'spark' | 'flame' | 'inferno' | 'supernova' | 'genesis';
+export type ChallengeDifficulty =
+  "spark" | "flame" | "inferno" | "supernova" | "genesis";
 
-export type ChallengeStatus = 'upcoming' | 'active' | 'judging' | 'completed' | 'legendary';
+export type ChallengeStatus =
+  "upcoming" | "active" | "judging" | "completed" | "legendary";
 
 export interface ChallengeReward {
   mana: number;
@@ -129,7 +133,8 @@ export interface Challenge {
   bannerGradient: string;
   accentColor: string;
   ambientColor: string;
-  particleEffect: 'fire' | 'water' | 'earth' | 'wind' | 'void' | 'aurora' | 'starfield';
+  particleEffect:
+    "fire" | "water" | "earth" | "wind" | "void" | "aurora" | "starfield";
 }
 
 /* ----------------------------------------------------------------
@@ -137,14 +142,14 @@ export interface Challenge {
  * ---------------------------------------------------------------- */
 
 export type TeamRole =
-  | 'creator'      // The Arcanean Creator (team lead)
-  | 'architect'    // Systems & code designer
-  | 'artificer'    // Visual artist / 3D creator
-  | 'songweaver'   // Music & audio
-  | 'lorekeeper'   // Story & narrative
-  | 'spellbinder'  // Prompt engineer / AI wrangler
-  | 'guardian'     // Mentor / advisor role
-  | 'monk'         // Bass Intelligence - computational power
+  | "creator" // The Arcanean Creator (team lead)
+  | "architect" // Systems & code designer
+  | "artificer" // Visual artist / 3D creator
+  | "songweaver" // Music & audio
+  | "lorekeeper" // Story & narrative
+  | "spellbinder" // Prompt engineer / AI wrangler
+  | "guardian" // Mentor / advisor role
+  | "monk"; // Bass Intelligence - computational power
 
 export interface TeamMember {
   id: string;
@@ -174,61 +179,70 @@ export interface TeamComposition {
 }
 
 export type TeamFormation =
-  | 'luminor-squad'     // Creator + 4 specialists (balanced)
-  | 'alera-ensemble'    // Creator + Alera the Superstar focus
-  | 'starlight-choir'   // Creator + large vocal/music team
-  | 'monk-battalion'    // Creator + hundreds of Monks (compute-heavy)
-  | 'guardian-circle'   // Creator + multiple Guardians (wisdom-heavy)
-  | 'genesis-forge'     // Creator + all role types (full spectrum);
+  | "luminor-squad" // Creator + 4 specialists (balanced)
+  | "alera-ensemble" // Creator + Alera the Superstar focus
+  | "starlight-choir" // Creator + large vocal/music team
+  | "monk-battalion" // Creator + hundreds of Monks (compute-heavy)
+  | "guardian-circle" // Creator + multiple Guardians (wisdom-heavy)
+  | "genesis-forge"; // Creator + all role types (full spectrum);
 
-export const FORMATION_INFO: Record<TeamFormation, {
-  name: string;
-  description: string;
-  maxSize: number;
-  bonus: string;
-  color: string;
-}> = {
-  'luminor-squad': {
-    name: 'Luminor Squad',
-    description: 'A balanced team of specialists led by a Creator. Jack of all trades, master of synergy.',
+export const FORMATION_INFO: Record<
+  TeamFormation,
+  {
+    name: string;
+    description: string;
+    maxSize: number;
+    bonus: string;
+    color: string;
+  }
+> = {
+  "luminor-squad": {
+    name: "Luminor Squad",
+    description:
+      "A balanced team of specialists led by a Creator. Jack of all trades, master of synergy.",
     maxSize: 5,
-    bonus: '+15% to all spell effectiveness',
-    color: 'var(--arc-brand-arcanean-gold)',
+    bonus: "+15% to all spell effectiveness",
+    color: "var(--arc-brand-arcanean-gold)",
   },
-  'alera-ensemble': {
-    name: 'Alera Ensemble',
-    description: 'Channel the Superstar — Alera, Voice Gate Goddess. Maximum creative expression and truth.',
+  "alera-ensemble": {
+    name: "Alera Ensemble",
+    description:
+      "Channel the Superstar — Alera, Voice Gate Goddess. Maximum creative expression and truth.",
     maxSize: 3,
-    bonus: '+40% to Voice & Expression spells',
-    color: 'var(--arc-brand-atlantean-teal)',
+    bonus: "+40% to Voice & Expression spells",
+    color: "var(--arc-brand-atlantean-teal)",
   },
-  'starlight-choir': {
-    name: 'Starlight Choir',
-    description: 'The celestial chorus. Hundreds of voices weaving sonic tapestries of creation.',
+  "starlight-choir": {
+    name: "Starlight Choir",
+    description:
+      "The celestial chorus. Hundreds of voices weaving sonic tapestries of creation.",
     maxSize: 100,
-    bonus: '+60% to Music & Harmony compositions',
-    color: 'var(--arc-void)',
+    bonus: "+60% to Music & Harmony compositions",
+    color: "var(--arc-void)",
   },
-  'monk-battalion': {
-    name: 'Monk Battalion',
-    description: 'Thousands of Monks channeling Bass Intelligence — raw computational and spiritual power.',
+  "monk-battalion": {
+    name: "Monk Battalion",
+    description:
+      "Thousands of Monks channeling Bass Intelligence — raw computational and spiritual power.",
     maxSize: 1000,
-    bonus: '+80% to AI/Compute-heavy challenges',
-    color: 'var(--arc-wind)',
+    bonus: "+80% to AI/Compute-heavy challenges",
+    color: "var(--arc-wind)",
   },
-  'guardian-circle': {
-    name: 'Guardian Circle',
-    description: 'Invoke the Guardians themselves. Ancient wisdom channeled through mortal creators.',
+  "guardian-circle": {
+    name: "Guardian Circle",
+    description:
+      "Invoke the Guardians themselves. Ancient wisdom channeled through mortal creators.",
     maxSize: 10,
-    bonus: '+50% to Lore & World-building challenges',
-    color: 'var(--arc-brand-arcanean-gold)',
+    bonus: "+50% to Lore & World-building challenges",
+    color: "var(--arc-brand-arcanean-gold)",
   },
-  'genesis-forge': {
-    name: 'Genesis Forge',
-    description: 'The ultimate formation. Every role represented. For challenges that demand everything.',
+  "genesis-forge": {
+    name: "Genesis Forge",
+    description:
+      "The ultimate formation. Every role represented. For challenges that demand everything.",
     maxSize: 50,
-    bonus: '+25% to all categories, unlock Genesis spells',
-    color: 'var(--arc-fire)',
+    bonus: "+25% to all categories, unlock Genesis spells",
+    color: "var(--arc-fire)",
   },
 };
 
@@ -270,7 +284,8 @@ export interface Submission {
   };
 
   // Status
-  status: 'draft' | 'submitted' | 'under-review' | 'scored' | 'winner' | 'legendary';
+  status:
+    "draft" | "submitted" | "under-review" | "scored" | "winner" | "legendary";
   submittedAt: string;
   rank?: number;
 }

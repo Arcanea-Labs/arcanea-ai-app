@@ -1,30 +1,55 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
-import { useState, Suspense, lazy } from 'react';
-import Link from 'next/link';
+import { useState, Suspense, lazy } from "react";
+import Link from "next/link";
 import {
-  ArrowRight, Sparkle, Crown, Star, Lightning, Users,
-  Trophy, Eye,
-  Globe, Shield, Scroll, Book, Sword, MusicNote,
-} from '@/lib/phosphor-icons';
-import { FEATURED_CHALLENGES, DIFFICULTY_CONFIG, SPELLBOOKS } from '@/lib/challenges';
-import { ChallengeCard, SpellbookViewer, TeamComposer } from '@/components/challenges';
-import type { ChallengeCategory, ChallengeStatus } from '@/lib/types/challenge';
+  ArrowRight,
+  Sparkle,
+  Crown,
+  Star,
+  Lightning,
+  Users,
+  Trophy,
+  Eye,
+  Globe,
+  Shield,
+  Scroll,
+  Book,
+  Sword,
+  MusicNote,
+} from "@/lib/phosphor-icons";
+import {
+  FEATURED_CHALLENGES,
+  DIFFICULTY_CONFIG,
+  SPELLBOOKS,
+} from "@/lib/challenges";
+import {
+  ChallengeCard,
+  SpellbookViewer,
+  TeamComposer,
+} from "@/components/challenges";
+import type { ChallengeCategory, ChallengeStatus } from "@/lib/types/challenge";
 
 // Lazy load the 3D scene (heavy)
 const ArenaScene = lazy(() =>
-  import('@/components/challenges/arena-orbs').then(mod => ({ default: mod.ArenaScene }))
+  import("@/components/challenges/arena-orbs").then((mod) => ({
+    default: mod.ArenaScene,
+  })),
 );
 
-const FILTER_CATEGORIES: { label: string; value: ChallengeCategory | 'all'; icon: React.ComponentType<Record<string, unknown>> }[] = [
-  { label: 'All', value: 'all', icon: Globe },
-  { label: 'Web Design', value: 'web-design', icon: Globe },
-  { label: 'Visual Art', value: 'visual-art', icon: Sparkle },
-  { label: 'Music', value: 'music-composition', icon: MusicNote },
-  { label: 'Agent Forge', value: 'agent-forge', icon: Shield },
-  { label: 'Lore', value: 'lore-weaving', icon: Book },
-  { label: 'Prompt Craft', value: 'prompt-craft', icon: Scroll },
+const FILTER_CATEGORIES: {
+  label: string;
+  value: ChallengeCategory | "all";
+  icon: React.ComponentType<Record<string, unknown>>;
+}[] = [
+  { label: "All", value: "all", icon: Globe },
+  { label: "Web Design", value: "web-design", icon: Globe },
+  { label: "Visual Art", value: "visual-art", icon: Sparkle },
+  { label: "Music", value: "music-composition", icon: MusicNote },
+  { label: "Agent Forge", value: "agent-forge", icon: Shield },
+  { label: "Lore", value: "lore-weaving", icon: Book },
+  { label: "Prompt Craft", value: "prompt-craft", icon: Scroll },
 ];
 
 /* ----------------------------------------------------------------
@@ -32,19 +57,24 @@ const FILTER_CATEGORIES: { label: string; value: ChallengeCategory | 'all'; icon
  * ---------------------------------------------------------------- */
 
 export default function ChallengesPage() {
-  const [activeSection, setActiveSection] = useState<'challenges' | 'spellbooks' | 'teams'>('challenges');
-  const [filterCategory, setFilterCategory] = useState<ChallengeCategory | 'all'>('all');
-  const [filterStatus, setFilterStatus] = useState<ChallengeStatus | 'all'>('all');
+  const [activeSection, setActiveSection] = useState<
+    "challenges" | "spellbooks" | "teams"
+  >("challenges");
+  const [filterCategory, setFilterCategory] = useState<
+    ChallengeCategory | "all"
+  >("all");
+  const [filterStatus, setFilterStatus] = useState<ChallengeStatus | "all">(
+    "all",
+  );
 
   const filteredChallenges = FEATURED_CHALLENGES.filter((c) => {
-    if (filterCategory !== 'all' && c.category !== filterCategory) return false;
-    if (filterStatus !== 'all' && c.status !== filterStatus) return false;
+    if (filterCategory !== "all" && c.category !== filterCategory) return false;
+    if (filterStatus !== "all" && c.status !== filterStatus) return false;
     return true;
   });
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[var(--arc-cosmic-void)]">
-
       {/* ============ 3D ARENA BACKDROP ============ */}
       <Suspense fallback={null}>
         <div className="pointer-events-none fixed inset-0 opacity-40">
@@ -55,7 +85,10 @@ export default function ChallengesPage() {
       {/* ============ HERO ============ */}
       <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden px-6">
         {/* Ambient orbs */}
-        <div className="pointer-events-none absolute inset-0 -z-0" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 -z-0"
+          aria-hidden="true"
+        >
           <div className="absolute left-[15%] top-[10%] h-[500px] w-[500px] rounded-full bg-[var(--arc-fire)]/10 blur-[160px]" />
           <div className="absolute right-[10%] top-[30%] h-[400px] w-[400px] rounded-full bg-[var(--arc-void)]/10 blur-[140px]" />
           <div className="absolute bottom-[15%] left-[30%] h-[350px] w-[350px] rounded-full bg-[var(--arc-brand-arcanean-gold)]/8 blur-[120px]" />
@@ -85,7 +118,8 @@ export default function ChallengesPage() {
             Compete. Cast Spells. Create Legends.
             <br />
             <span className="text-white/30">
-              Where GenAI meets world-building, and creators forge their destiny.
+              Where GenAI meets world-building, and creators forge their
+              destiny.
             </span>
           </p>
 
@@ -93,7 +127,9 @@ export default function ChallengesPage() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <button
               onClick={() => {
-                document.getElementById('challenges')?.scrollIntoView({ behavior: 'smooth' });
+                document
+                  .getElementById("challenges")
+                  ?.scrollIntoView({ behavior: "smooth" });
               }}
               className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-2xl bg-gradient-to-r from-[var(--arc-fire)] to-[var(--arc-brand-arcanean-gold)] px-8 py-4 font-display text-sm font-bold text-[var(--arc-cosmic-void)] shadow-[0_0_40px_rgba(255,107,53,0.3)] transition-all duration-300 hover:shadow-[0_0_60px_rgba(255,107,53,0.5)] hover:scale-[1.02]"
             >
@@ -102,14 +138,13 @@ export default function ChallengesPage() {
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>
             <button
-              onClick={() => setActiveSection('spellbooks')}
+              onClick={() => setActiveSection("spellbooks")}
               className="inline-flex items-center gap-2 rounded-2xl border border-white/[0.1] bg-white/[0.03] px-8 py-4 font-display text-sm font-semibold text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/[0.2] hover:bg-white/[0.06]"
             >
               <Book className="h-4 w-4" />
               Open Spellbooks
             </button>
           </div>
-
         </div>
       </section>
 
@@ -117,20 +152,23 @@ export default function ChallengesPage() {
       <section className="relative z-10 mx-auto max-w-7xl px-6 py-8">
         <div className="flex justify-center gap-2">
           {[
-            { key: 'challenges' as const, label: 'Challenges', icon: Sword },
-            { key: 'spellbooks' as const, label: 'Spellbooks', icon: Book },
-            { key: 'teams' as const, label: 'Team Forge', icon: Users },
+            { key: "challenges" as const, label: "Challenges", icon: Sword },
+            { key: "spellbooks" as const, label: "Spellbooks", icon: Book },
+            { key: "teams" as const, label: "Team Forge", icon: Users },
           ].map(({ key, label, icon: Icon }) => (
             <button
               key={key}
               onClick={() => setActiveSection(key)}
               className={`flex items-center gap-2.5 rounded-2xl border px-6 py-3 font-display text-sm font-semibold transition-all duration-300 ${
                 activeSection === key
-                  ? 'border-[var(--arc-brand-arcanean-gold)]/30 bg-[var(--arc-brand-arcanean-gold)]/10 text-[var(--arc-brand-arcanean-gold)] shadow-[0_0_20px_rgba(255,215,0,0.15)]'
-                  : 'border-white/[0.06] bg-white/[0.02] text-white/50 hover:border-white/[0.12] hover:text-white/80'
+                  ? "border-[var(--arc-brand-arcanean-gold)]/30 bg-[var(--arc-brand-arcanean-gold)]/10 text-[var(--arc-brand-arcanean-gold)] shadow-[0_0_20px_rgba(255,215,0,0.15)]"
+                  : "border-white/[0.06] bg-white/[0.02] text-white/50 hover:border-white/[0.12] hover:text-white/80"
               }`}
             >
-              <Icon className="h-4 w-4" weight={activeSection === key ? 'fill' : 'regular'} />
+              <Icon
+                className="h-4 w-4"
+                weight={activeSection === key ? "fill" : "regular"}
+              />
               {label}
             </button>
           ))}
@@ -138,21 +176,26 @@ export default function ChallengesPage() {
       </section>
 
       {/* ============ CHALLENGES SECTION ============ */}
-      {activeSection === 'challenges' && (
-        <section id="challenges" className="relative z-10 mx-auto max-w-7xl px-6 pb-20">
+      {activeSection === "challenges" && (
+        <section
+          id="challenges"
+          className="relative z-10 mx-auto max-w-7xl px-6 pb-20"
+        >
           {/* Filters */}
           <div className="mb-10 space-y-4">
             {/* Category filter */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="mr-2 font-mono text-[10px] uppercase tracking-widest text-white/30">Category</span>
+              <span className="mr-2 font-mono text-[10px] uppercase tracking-widest text-white/30">
+                Category
+              </span>
               {FILTER_CATEGORIES.map(({ label, value, icon: Icon }) => (
                 <button
                   key={value}
                   onClick={() => setFilterCategory(value)}
                   className={`flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono text-[10px] transition-all ${
                     filterCategory === value
-                      ? 'border-white/[0.15] bg-white/[0.08] text-white'
-                      : 'border-white/[0.06] text-white/40 hover:border-white/[0.1] hover:text-white/60'
+                      ? "border-white/[0.15] bg-white/[0.08] text-white"
+                      : "border-white/[0.06] text-white/40 hover:border-white/[0.1] hover:text-white/60"
                   }`}
                 >
                   <Icon className="h-3 w-3" />
@@ -163,15 +206,19 @@ export default function ChallengesPage() {
 
             {/* Status filter */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="mr-2 font-mono text-[10px] uppercase tracking-widest text-white/30">Status</span>
-              {(['all', 'active', 'upcoming', 'judging', 'completed'] as const).map((status) => (
+              <span className="mr-2 font-mono text-[10px] uppercase tracking-widest text-white/30">
+                Status
+              </span>
+              {(
+                ["all", "active", "upcoming", "judging", "completed"] as const
+              ).map((status) => (
                 <button
                   key={status}
                   onClick={() => setFilterStatus(status)}
                   className={`rounded-full border px-3.5 py-1.5 font-mono text-[10px] capitalize transition-all ${
                     filterStatus === status
-                      ? 'border-white/[0.15] bg-white/[0.08] text-white'
-                      : 'border-white/[0.06] text-white/40 hover:border-white/[0.1] hover:text-white/60'
+                      ? "border-white/[0.15] bg-white/[0.08] text-white"
+                      : "border-white/[0.06] text-white/40 hover:border-white/[0.1] hover:text-white/60"
                   }`}
                 >
                   {status}
@@ -189,24 +236,32 @@ export default function ChallengesPage() {
 
           {filteredChallenges.length === 0 && (
             <div className="py-20 text-center">
-              <Eye className="mx-auto mb-4 h-12 w-12 text-white/10" weight="duotone" />
-              <p className="text-sm text-white/30">No challenges match your filters. Try adjusting them.</p>
+              <Eye
+                className="mx-auto mb-4 h-12 w-12 text-white/10"
+                weight="duotone"
+              />
+              <p className="text-sm text-white/30">
+                No challenges match your filters. Try adjusting them.
+              </p>
             </div>
           )}
-
         </section>
       )}
 
       {/* ============ SPELLBOOKS SECTION ============ */}
-      {activeSection === 'spellbooks' && (
+      {activeSection === "spellbooks" && (
         <section className="relative z-10 mx-auto max-w-5xl px-6 pb-20">
           <div className="mb-10 text-center">
             <h2 className="font-display text-3xl font-bold text-white md:text-4xl">
-              The Five <span className="bg-gradient-to-r from-[var(--arc-fire)] via-[var(--arc-brand-arcanean-gold)] to-[var(--arc-void)] bg-clip-text text-transparent">Spellbooks</span>
+              The Five{" "}
+              <span className="bg-gradient-to-r from-[var(--arc-fire)] via-[var(--arc-brand-arcanean-gold)] to-[var(--arc-void)] bg-clip-text text-transparent">
+                Spellbooks
+              </span>
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sm text-white/50">
-              Master the elemental grimoires. Each spell enhances your submissions with magical power.
-              Speak the incantation, pay the Mana cost, and watch your creation transform.
+              Master the elemental grimoires. Each spell enhances your
+              submissions with magical power. Speak the incantation, pay the
+              Mana cost, and watch your creation transform.
             </p>
           </div>
           <SpellbookViewer spellbooks={SPELLBOOKS} userGates={3} />
@@ -214,7 +269,7 @@ export default function ChallengesPage() {
       )}
 
       {/* ============ TEAMS SECTION ============ */}
-      {activeSection === 'teams' && (
+      {activeSection === "teams" && (
         <section className="relative z-10 mx-auto max-w-5xl px-6 pb-20">
           <TeamComposer />
         </section>
@@ -225,55 +280,75 @@ export default function ChallengesPage() {
         <div className="mx-auto max-w-5xl px-6">
           <div className="mb-12 text-center">
             <h2 className="font-display text-3xl font-bold text-white md:text-4xl">
-              How the Arena <span className="bg-gradient-to-r from-[var(--arc-brand-atlantean-teal)] to-[var(--arc-brand-cosmic-blue)] bg-clip-text text-transparent">Works</span>
+              How the Arena{" "}
+              <span className="bg-gradient-to-r from-[var(--arc-brand-atlantean-teal)] to-[var(--arc-brand-cosmic-blue)] bg-clip-text text-transparent">
+                Works
+              </span>
             </h2>
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
-                step: '01',
-                title: 'Choose Your Challenge',
-                description: 'Browse active challenges across categories — web design, AI agents, music, visual art, lore, and more.',
+                step: "01",
+                title: "Choose Your Challenge",
+                description:
+                  "Browse active challenges across categories — web design, AI agents, music, visual art, lore, and more.",
                 icon: Lightning,
-                color: 'var(--arc-fire)',
+                color: "var(--arc-fire)",
               },
               {
-                step: '02',
-                title: 'Forge Your Team',
-                description: 'Assemble a team with your chosen Formation. Each role and combination grants unique synergy bonuses.',
+                step: "02",
+                title: "Forge Your Team",
+                description:
+                  "Assemble a team with your chosen Formation. Each role and combination grants unique synergy bonuses.",
                 icon: Users,
-                color: 'var(--arc-brand-cosmic-blue)',
+                color: "var(--arc-brand-cosmic-blue)",
               },
               {
-                step: '03',
-                title: 'Cast & Create',
-                description: 'Use Spellbooks to enhance your work. Cast incantations, burn Mana, and channel elemental power into your creation.',
+                step: "03",
+                title: "Cast & Create",
+                description:
+                  "Use Spellbooks to enhance your work. Cast incantations, burn Mana, and channel elemental power into your creation.",
                 icon: Sparkle,
-                color: 'var(--arc-void)',
+                color: "var(--arc-void)",
               },
               {
-                step: '04',
-                title: 'Submit & Earn',
-                description: 'Submit your creation on-chain. Smart contracts verify authorship, team composition, and timestamps. Winners earn Mana, titles, and real rewards.',
+                step: "04",
+                title: "Submit & Earn",
+                description:
+                  "Submit your creation on-chain. Smart contracts verify authorship, team composition, and timestamps. Winners earn Mana, titles, and real rewards.",
                 icon: Trophy,
-                color: 'var(--arc-brand-arcanean-gold)',
+                color: "var(--arc-brand-arcanean-gold)",
               },
             ].map((item) => {
               const StepIcon = item.icon;
               return (
-                <div key={item.step} className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 transition-all hover:border-white/[0.12] hover:bg-white/[0.04]">
+                <div
+                  key={item.step}
+                  className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 transition-all hover:border-white/[0.12] hover:bg-white/[0.04]"
+                >
                   <div className="mb-4 flex items-center gap-3">
                     <div
                       className="flex h-10 w-10 items-center justify-center rounded-xl"
                       style={{ backgroundColor: `${item.color}15` }}
                     >
-                      <StepIcon className="h-5 w-5" style={{ color: item.color }} weight="fill" />
+                      <StepIcon
+                        className="h-5 w-5"
+                        style={{ color: item.color }}
+                        weight="fill"
+                      />
                     </div>
-                    <span className="font-mono text-3xl font-bold text-white/10">{item.step}</span>
+                    <span className="font-mono text-3xl font-bold text-white/10">
+                      {item.step}
+                    </span>
                   </div>
-                  <h3 className="font-display text-lg font-semibold text-white">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/40">{item.description}</p>
+                  <h3 className="font-display text-lg font-semibold text-white">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/40">
+                    {item.description}
+                  </p>
                 </div>
               );
             })}
@@ -284,13 +359,16 @@ export default function ChallengesPage() {
       {/* ============ CTA SECTION ============ */}
       <section className="relative z-10 py-20">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <Crown className="mx-auto mb-6 h-12 w-12 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
+          <Crown
+            className="mx-auto mb-6 h-12 w-12 text-[var(--arc-brand-arcanean-gold)]"
+            weight="fill"
+          />
           <h2 className="font-display text-3xl font-bold text-white md:text-5xl">
             The Arena Awaits
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-white/40">
-            Every great creator started with a single challenge.
-            Yours begins now.
+            Every great creator started with a single challenge. Yours begins
+            now.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link

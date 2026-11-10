@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
-import { useCallback, useRef, useState } from 'react';
-import Link from 'next/link';
-import { m, LazyMotion, domAnimation } from 'framer-motion';
-import { useSwarmChat } from '@/hooks/use-swarm-chat';
-import { SwarmTrace } from '@/components/chat/swarm-trace';
+import { useCallback, useRef, useState } from "react";
+import Link from "next/link";
+import { m, LazyMotion, domAnimation } from "framer-motion";
+import { useSwarmChat } from "@/hooks/use-swarm-chat";
+import { SwarmTrace } from "@/components/chat/swarm-trace";
 
 // ---------------------------------------------------------------------------
 // Swarm chat surface — dedicated test bench for the multi-Luminor pipeline.
@@ -13,16 +13,16 @@ import { SwarmTrace } from '@/components/chat/swarm-trace';
 // ---------------------------------------------------------------------------
 
 const STARTERS = [
-  'Design a villain for my cyberpunk detective world with a backstory, visual direction, and a theme track.',
-  'Help me architect a composable plugin system in Next.js with observability and graceful degradation.',
-  'I want to build a 5-chapter origin story for a rogue AI that becomes the protagonist of a series.',
-  'Plan a launch week — positioning, a landing page, a teaser soundtrack, and a research-backed hook.',
+  "Design a villain for my cyberpunk detective world with a backstory, visual direction, and a theme track.",
+  "Help me architect a composable plugin system in Next.js with observability and graceful degradation.",
+  "I want to build a 5-chapter origin story for a rogue AI that becomes the protagonist of a series.",
+  "Plan a launch week — positioning, a landing page, a teaser soundtrack, and a research-backed hook.",
 ];
 
 interface Exchange {
   id: string;
   input: string;
-  mode: 'solo' | 'swarm' | null;
+  mode: "solo" | "swarm" | null;
   luminorNames: string[];
   synthesis: string;
   totalMs?: number;
@@ -31,12 +31,12 @@ interface Exchange {
 }
 
 export default function SwarmChatContent() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [maxLuminors, setMaxLuminors] = useState(4);
   const [heuristicOnly, setHeuristicOnly] = useState(false);
-  const [history, setHistory] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>(
-    [],
-  );
+  const [history, setHistory] = useState<
+    Array<{ role: "user" | "assistant"; content: string }>
+  >([]);
   const [transcript, setTranscript] = useState<Exchange[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -47,7 +47,7 @@ export default function SwarmChatContent() {
         final.synthesis.trim().length > 0
           ? final.synthesis
           : // Solo mode: fall back to the single contribution
-            Object.values(final.contributions)[0]?.text ?? '';
+            (Object.values(final.contributions)[0]?.text ?? "");
 
       const luminorNames = (final.plan?.luminors ?? []).map((l) => l.name);
 
@@ -67,8 +67,8 @@ export default function SwarmChatContent() {
 
       setHistory((prev) => [
         ...prev.slice(-6),
-        { role: 'user', content: input.trim() },
-        { role: 'assistant', content: synthesis },
+        { role: "user", content: input.trim() },
+        { role: "assistant", content: synthesis },
       ]);
     },
   });
@@ -91,7 +91,7 @@ export default function SwarmChatContent() {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+      if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         handleSubmit();
       }
@@ -102,7 +102,7 @@ export default function SwarmChatContent() {
   const handleClearSession = useCallback(() => {
     stop();
     reset();
-    setInput('');
+    setInput("");
     setHistory([]);
     setTranscript([]);
     textareaRef.current?.focus();
@@ -112,7 +112,10 @@ export default function SwarmChatContent() {
     <LazyMotion features={domAnimation} strict>
       <main className="min-h-screen bg-[var(--arc-cosmic-void)] text-white/90">
         <div className="mx-auto max-w-[960px] px-4 sm:px-6 pb-40 pt-8 sm:pt-10">
-          <Header onClear={handleClearSession} hasSession={transcript.length > 0} />
+          <Header
+            onClear={handleClearSession}
+            hasSession={transcript.length > 0}
+          />
 
           <div className="mt-6 space-y-6">
             {transcript.map((x) => (
@@ -121,9 +124,12 @@ export default function SwarmChatContent() {
 
             {state.authRequired && (
               <section className="rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-5 sm:p-6">
-                <h2 className="text-[15px] font-medium text-white/80">Sign in to use the swarm</h2>
+                <h2 className="text-[15px] font-medium text-white/80">
+                  Sign in to use the swarm
+                </h2>
                 <p className="mt-1 text-[13px] text-white/55">
-                  Swarm runs need an account. Your request was not sent to any model.
+                  Swarm runs need an account. Your request was not sent to any
+                  model.
                 </p>
                 <Link
                   href="/auth/login?next=/chat/swarm"
@@ -145,14 +151,17 @@ export default function SwarmChatContent() {
               </div>
             )}
 
-            {!state.isStreaming && transcript.length === 0 && !state.plan && !state.authRequired && (
-              <EmptyState
-                onPick={(s) => {
-                  setInput(s);
-                  textareaRef.current?.focus();
-                }}
-              />
-            )}
+            {!state.isStreaming &&
+              transcript.length === 0 &&
+              !state.plan &&
+              !state.authRequired && (
+                <EmptyState
+                  onPick={(s) => {
+                    setInput(s);
+                    textareaRef.current?.focus();
+                  }}
+                />
+              )}
           </div>
         </div>
 
@@ -171,7 +180,7 @@ export default function SwarmChatContent() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                rows={Math.min(5, Math.max(1, input.split('\n').length))}
+                rows={Math.min(5, Math.max(1, input.split("\n").length))}
                 placeholder="Ask something that spans domains — the swarm will split it."
                 className="w-full resize-none bg-transparent text-[15px] text-white placeholder:text-white/30 focus:outline-none"
                 disabled={state.isStreaming}
@@ -186,7 +195,9 @@ export default function SwarmChatContent() {
                       max={5}
                       value={maxLuminors}
                       onChange={(e) =>
-                        setMaxLuminors(Math.min(5, Math.max(1, Number(e.target.value) || 1)))
+                        setMaxLuminors(
+                          Math.min(5, Math.max(1, Number(e.target.value) || 1)),
+                        )
                       }
                       className="w-10 rounded border border-white/10 bg-transparent px-1 py-0.5 text-center text-white/80 focus:outline-none focus:border-[var(--arc-brand-atlantean-teal)]/40"
                       disabled={state.isStreaming}
@@ -218,7 +229,7 @@ export default function SwarmChatContent() {
                     disabled={state.isStreaming || !input.trim()}
                     className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-[13px] font-medium bg-[var(--arc-brand-atlantean-teal)]/15 border border-[var(--arc-brand-atlantean-teal)]/30 text-[var(--arc-text-primary)] hover:bg-[var(--arc-brand-atlantean-teal)]/25 hover:border-[var(--arc-brand-atlantean-teal)]/50 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   >
-                    {state.isStreaming ? 'Streaming…' : 'Invoke swarm'}
+                    {state.isStreaming ? "Streaming…" : "Invoke swarm"}
                   </button>
                 </div>
               </div>
@@ -234,7 +245,13 @@ export default function SwarmChatContent() {
 // Parts
 // ---------------------------------------------------------------------------
 
-function Header({ hasSession, onClear }: { hasSession: boolean; onClear: () => void }) {
+function Header({
+  hasSession,
+  onClear,
+}: {
+  hasSession: boolean;
+  onClear: () => void;
+}) {
   return (
     <header className="flex flex-wrap items-start justify-between gap-3">
       <div>
@@ -245,11 +262,15 @@ function Header({ hasSession, onClear }: { hasSession: boolean; onClear: () => v
           Two to five Luminors, thinking in parallel.
         </h1>
         <p className="mt-2 max-w-[620px] text-sm text-white/55 leading-relaxed">
-          Preview of the multi-agent chat surface. The planner routes your request,
-          each specialist streams in parallel, and Lumina synthesizes. The classic{' '}
-          <Link href="/chat" className="text-[var(--arc-text-primary)] underline decoration-white/20 underline-offset-4 hover:decoration-[var(--arc-text-primary)]/60">
+          Preview of the multi-agent chat surface. The planner routes your
+          request, each specialist streams in parallel, and Lumina synthesizes.
+          The classic{" "}
+          <Link
+            href="/chat"
+            className="text-[var(--arc-text-primary)] underline decoration-white/20 underline-offset-4 hover:decoration-[var(--arc-text-primary)]/60"
+          >
             /chat
-          </Link>{' '}
+          </Link>{" "}
           remains single-Luminor.
         </p>
       </div>
@@ -277,7 +298,9 @@ function Header({ hasSession, onClear }: { hasSession: boolean; onClear: () => v
 function EmptyState({ onPick }: { onPick: (s: string) => void }) {
   return (
     <section className="rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-5 sm:p-6">
-      <h2 className="text-[15px] font-medium text-white/80 mb-3">Try a starter</h2>
+      <h2 className="text-[15px] font-medium text-white/80 mb-3">
+        Try a starter
+      </h2>
       <ul className="space-y-2">
         {STARTERS.map((s) => (
           <li key={s}>
@@ -292,7 +315,8 @@ function EmptyState({ onPick }: { onPick: (s: string) => void }) {
         ))}
       </ul>
       <p className="mt-4 text-[11px] text-white/30">
-        Swarm decides solo vs multi. Max 5 Luminors per request.{/* facts-ok: per-request cap */}
+        Swarm decides solo vs multi. Max 5 Luminors per request.
+        {/* facts-ok: per-request cap */}
       </p>
     </section>
   );
@@ -317,17 +341,17 @@ function ExchangeCard({ exchange }: { exchange: Exchange }) {
       <div className="border-t border-white/[0.05] pt-3 space-y-2">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[10px] uppercase tracking-[0.08em] text-[var(--arc-brand-atlantean-teal)]/80">
-            Lumina · {exchange.mode === 'swarm' ? 'Swarm' : 'Solo'}
+            Lumina · {exchange.mode === "swarm" ? "Swarm" : "Solo"}
           </span>
           {exchange.luminorNames.length > 0 && (
             <span className="text-[11px] text-white/35">
-              {exchange.luminorNames.join(' · ')}
+              {exchange.luminorNames.join(" · ")}
             </span>
           )}
           {exchange.totalMs && (
             <span className="text-[11px] text-white/25 ml-auto">
               {(exchange.totalMs / 1000).toFixed(1)}s
-              {exchange.totalTokens ? ` · ${exchange.totalTokens} tok` : ''}
+              {exchange.totalTokens ? ` · ${exchange.totalTokens} tok` : ""}
             </span>
           )}
         </div>

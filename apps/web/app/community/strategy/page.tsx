@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
 /**
  * Community Strategy - Planning & Governance
@@ -22,7 +22,7 @@ import {
   PhArrowUpRight,
   PhScales,
   PhHeart,
-} from '@/lib/phosphor-icons';
+} from "@/lib/phosphor-icons";
 
 const ACTIVE_PROPOSALS = [
   {
@@ -352,7 +352,10 @@ export default function CommunityStrategyPage() {
         </section>
 
         {/* CTA */}
-        <section id="propose" className="py-16 border-t border-white/[0.04] pb-24">
+        <section
+          id="propose"
+          className="py-16 border-t border-white/[0.04] pb-24"
+        >
           <div className="relative liquid-glass rounded-3xl overflow-hidden p-10 sm:p-14">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-transparent to-crystal/8 pointer-events-none" />
 
