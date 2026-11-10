@@ -71,7 +71,6 @@ const CREATOR = {
   gate: "Source",
   rank: "Luminor",
   worldsBuilt: 12,
-  followers: 3421,
   verified: true,
   avatar: "/guardians/v3/shinkami-hero-v3.webp",
 };
