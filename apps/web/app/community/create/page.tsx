@@ -40,7 +40,6 @@ const CATEGORIES = [
     icon: PhImage,
     color: "var(--arc-fire)",
     description: "Collaborate on artwork, illustrations, and visual narratives",
-    projects: 24,
   },
   {
     id: "audio",
@@ -48,7 +47,6 @@ const CATEGORIES = [
     icon: PhMusicNote,
     color: "var(--arc-brand-cosmic-blue)",
     description: "Create soundscapes, compositions, and audio experiences",
-    projects: 18,
   },
   {
     id: "writing",
@@ -56,7 +54,6 @@ const CATEGORIES = [
     icon: PhFileText,
     color: "var(--arc-wind)",
     description: "Co-author stories, lore documents, and creative texts",
-    projects: 31,
   },
   {
     id: "code",
@@ -64,7 +61,6 @@ const CATEGORIES = [
     icon: PhGitBranch,
     color: "var(--arc-brand-arcanean-gold)",
     description: "Build features, tools, and applications together",
-    projects: 12,
   },
 ];
 
@@ -75,7 +71,6 @@ const FEATURED_PROJECTS = [
     description:
       "An anthology of tales exploring the origins and adventures of the Ten Godbeasts",
     category: "writing",
-    participants: 8,
     status: "active",
     element: "fire",
     elementColor: "var(--arc-fire)",
@@ -87,7 +82,6 @@ const FEATURED_PROJECTS = [
     description:
       "A musical composition series where each piece corresponds to a Gate frequency",
     category: "audio",
-    participants: 5,
     status: "active",
     element: "water",
     elementColor: "var(--arc-brand-cosmic-blue)",
@@ -99,7 +93,6 @@ const FEATURED_PROJECTS = [
     description:
       "Visual interpretations of all Ten Guardians and their bonded Godbeasts",
     category: "visual",
-    participants: 12,
     status: "active",
     element: "void",
     elementColor: "var(--arc-void)",
@@ -111,7 +104,6 @@ const FEATURED_PROJECTS = [
     description:
       "A command-line toolkit for creators to interact with the platform",
     category: "code",
-    participants: 4,
     status: "beta",
     element: "wind",
     elementColor: "var(--arc-void)",
@@ -278,12 +270,6 @@ export default function CommunityCreatePage() {
                   <p className="text-xs text-text-muted mb-3 font-sans">
                     {cat.description}
                   </p>
-                  <span
-                    className="inline-flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded-full"
-                    style={{ backgroundColor: `${cat.color}15`, color: cat.color }}
-                  >
-                    ● {cat.projects}
-                  </span>
                 </Link>
               );
             })}
@@ -334,10 +320,6 @@ export default function CommunityCreatePage() {
                       {project.category}
                     </span>
                     <div className="flex items-center gap-3 text-xs text-text-muted">
-                      <span className="flex items-center gap-1">
-                        <PhUsers className="w-3 h-3" />
-                        {project.participants}
-                      </span>
                       <span
                         className={`px-2 py-0.5 rounded-full text-xs ${
                           project.status === "active"
