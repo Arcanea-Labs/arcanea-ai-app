@@ -11,6 +11,7 @@ import {
   PhArrowRight,
 } from "@/lib/phosphor-icons";
 import Link from "next/link";
+import { trackCtaClick } from "@/lib/analytics/track";
 
 const PLANS = [
   {
@@ -156,6 +157,12 @@ export function PricingSection() {
                   {/* CTA */}
                   <Link
                     href={plan.href}
+                    onClick={() =>
+                      trackCtaClick({
+                        cta: `plan_${plan.name.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+                        location: "home_pricing",
+                      })
+                    }
                     className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all mb-8 ${
                       plan.featured
                         ? "bg-atlantean-teal-aqua text-cosmic-deep hover:bg-atlantean-teal-aqua/90"

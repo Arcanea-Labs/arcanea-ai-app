@@ -12,6 +12,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { priceBand, trackCheckoutStart, trackWaitlistJoin } from "@/lib/analytics/track";
 import {
   Chat,
   ImageSquare,
@@ -209,7 +210,10 @@ function PlanCard({
       ) : canBuy ? (
         <button
           type="button"
-          onClick={() => onBuy(plan.id)}
+          onClick={() => {
+            trackCheckoutStart({ product: plan.id, price_band: priceBand(plan.priceCents) });
+            onBuy(plan.id);
+          }}
           disabled={busy}
           className={`w-full min-h-11 flex items-center justify-center py-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--arc-brand-atlantean-teal)] motion-reduce:transition-none disabled:opacity-50 ${
             plan.featured
@@ -274,7 +278,10 @@ function PackCard({
       {ready ? (
         <button
           type="button"
-          onClick={() => onBuy(pack.id)}
+          onClick={() => {
+            trackCheckoutStart({ product: pack.id, price_band: priceBand(pack.priceCents) });
+            onBuy(pack.id);
+          }}
           disabled={busy}
           className="mt-auto min-h-11 py-2.5 rounded-xl border border-[var(--arc-cosmic-border-bright)] text-xs font-semibold text-[var(--arc-text-primary)] hover:bg-[var(--arc-cosmic-surface)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--arc-brand-atlantean-teal)] disabled:opacity-50"
         >
@@ -318,6 +325,7 @@ export function PricingClient({ billing }: { billing: PricingBillingState }) {
 
       const data = await res.json();
       if (data.success) {
+        trackWaitlistJoin({ product: "arcanea", source: "pricing" });
         setStatus("success");
         setEmail("");
       } else {
