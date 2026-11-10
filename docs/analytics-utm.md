@@ -4,10 +4,10 @@
 
 Typed wrapper over `track` from `@vercel/analytics`. Exactly three events, no PII:
 
-| Event | Props | Fires |
-| --- | --- | --- |
-| `waitlist_join` | `product`, `source` | Client success path of a waitlist/newsletter submit |
-| `cta_click` | `cta`, `location` | Click on a primary CTA |
+| Event            | Props                   | Fires                                                                |
+| ---------------- | ----------------------- | -------------------------------------------------------------------- |
+| `waitlist_join`  | `product`, `source`     | Client success path of a waitlist/newsletter submit                  |
+| `cta_click`      | `cta`, `location`       | Click on a primary CTA                                               |
 | `checkout_start` | `product`, `price_band` | Click on a pricing buy button (click only; checkout logic untouched) |
 
 `price_band` is one of `free`, `under_10`, `10_to_49`, `50_plus` (euro, tax-inclusive monthly or pack price). Each event also carries `utm_source` when the visit arrived with a valid one (kept in `sessionStorage` for the tab).

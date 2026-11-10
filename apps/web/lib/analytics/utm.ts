@@ -55,7 +55,9 @@ export function withUtm(url: string, params: UtmParams): string {
 }
 
 /** Sanitize an inbound utm_source; returns undefined if it is not slug-shaped. */
-export function parseUtmSource(raw: string | null | undefined): string | undefined {
+export function parseUtmSource(
+  raw: string | null | undefined,
+): string | undefined {
   if (!raw) return undefined;
   const value = raw.trim().toLowerCase();
   return SOURCE_RE.test(value) ? value : undefined;

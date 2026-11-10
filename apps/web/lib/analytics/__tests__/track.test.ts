@@ -10,7 +10,9 @@ test("trackEvent forwards name and props", () => {
     { product: "arcanea", source: "footer" },
     { send: (n, p) => calls.push([n, p]), utmSource: undefined },
   );
-  assert.deepEqual(calls, [["waitlist_join", { product: "arcanea", source: "footer" }]]);
+  assert.deepEqual(calls, [
+    ["waitlist_join", { product: "arcanea", source: "footer" }],
+  ]);
 });
 
 test("trackEvent adds inbound utm_source", () => {
@@ -55,10 +57,22 @@ test("withUtm appends params and keeps query + hash", () => {
 });
 
 test("withUtm rejects invalid values", () => {
-  assert.throws(() => withUtm("/", { source: "X Y", medium: "social", campaign: "2026-11-a" }));
-  assert.throws(() => withUtm("/", { source: "x", medium: "ads" as never, campaign: "2026-11-a" }));
-  assert.throws(() => withUtm("/", { source: "x", medium: "social", campaign: "launch" }));
-  assert.throws(() => withUtm("/", { source: "x", medium: "social", campaign: "2026-13-a" }));
+  assert.throws(() =>
+    withUtm("/", { source: "X Y", medium: "social", campaign: "2026-11-a" }),
+  );
+  assert.throws(() =>
+    withUtm("/", {
+      source: "x",
+      medium: "ads" as never,
+      campaign: "2026-11-a",
+    }),
+  );
+  assert.throws(() =>
+    withUtm("/", { source: "x", medium: "social", campaign: "launch" }),
+  );
+  assert.throws(() =>
+    withUtm("/", { source: "x", medium: "social", campaign: "2026-13-a" }),
+  );
 });
 
 test("parseUtmSource sanitizes", () => {

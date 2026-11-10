@@ -12,7 +12,11 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { priceBand, trackCheckoutStart, trackWaitlistJoin } from "@/lib/analytics/track";
+import {
+  priceBand,
+  trackCheckoutStart,
+  trackWaitlistJoin,
+} from "@/lib/analytics/track";
 import {
   Chat,
   ImageSquare,
@@ -211,7 +215,10 @@ function PlanCard({
         <button
           type="button"
           onClick={() => {
-            trackCheckoutStart({ product: plan.id, price_band: priceBand(plan.priceCents) });
+            trackCheckoutStart({
+              product: plan.id,
+              price_band: priceBand(plan.priceCents),
+            });
             onBuy(plan.id);
           }}
           disabled={busy}
@@ -279,7 +286,10 @@ function PackCard({
         <button
           type="button"
           onClick={() => {
-            trackCheckoutStart({ product: pack.id, price_band: priceBand(pack.priceCents) });
+            trackCheckoutStart({
+              product: pack.id,
+              price_band: priceBand(pack.priceCents),
+            });
             onBuy(pack.id);
           }}
           disabled={busy}

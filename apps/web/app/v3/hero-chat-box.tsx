@@ -179,7 +179,10 @@ export function HeroChatBox() {
         {STARTER_CARDS.map((card) => {
           const Icon = card.icon;
           const handleClick = () => {
-            trackCtaClick({ cta: `chip_${card.label.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`, location: "home_hero" });
+            trackCtaClick({
+              cta: `chip_${card.label.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+              location: "home_hero",
+            });
             if ("href" in card && card.href) {
               const sep = card.href.includes("?") ? "&" : "?";
               router.push(

@@ -81,7 +81,10 @@ export function CTASection() {
                   <Link
                     href="/chat"
                     onClick={() =>
-                      trackCtaClick({ cta: "start_creating", location: "home_final" })
+                      trackCtaClick({
+                        cta: "start_creating",
+                        location: "home_final",
+                      })
                     }
                     className="group relative px-8 py-4 rounded-2xl font-semibold text-base overflow-hidden btn-glow"
                   >
@@ -100,7 +103,10 @@ export function CTASection() {
                   <Link
                     href="/library"
                     onClick={() =>
-                      trackCtaClick({ cta: "explore_library", location: "home_final" })
+                      trackCtaClick({
+                        cta: "explore_library",
+                        location: "home_final",
+                      })
                     }
                     className="px-8 py-4 rounded-2xl border border-white/[0.10] text-white font-semibold text-base hover:bg-white/[0.06] hover:border-white/[0.15] hover:scale-[1.02] active:scale-[0.98] transition-[background-color,border-color,transform] duration-300"
                   >
