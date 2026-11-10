@@ -26,7 +26,15 @@ function request(query: Record<string, string>, ip?: string) {
   );
 }
 
-function useUpstream(t: TestContext) {
+const audio = () =>
+  new Response(new Uint8Array([1, 2, 3]), {
+    headers: { "Content-Type": "audio/mpeg" },
+  });
+
+function useUpstream(
+  t: TestContext,
+  respond: () => Promise<Response> = async () => audio(),
+) {
   const calls: UpstreamCall[] = [];
   const previousKey = process.env.OPENAI_API_KEY;
   process.env.OPENAI_API_KEY = "test-openai-key";
@@ -47,13 +55,18 @@ function useUpstream(t: TestContext) {
         input: body.input,
         voice: body.voice,
       });
-      return new Response(new Uint8Array([1, 2, 3]), {
-        headers: { "Content-Type": "audio/mpeg" },
-      });
+      return respond();
     },
   );
   return calls;
 }
+
+/** Makes every cached greeting stale, whatever earlier tests warmed. */
+function expireCache(t: TestContext) {
+  t.mock.timers.enable({ apis: ["Date"], now: Date.now() + 31 * 60 * 1000 });
+}
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 test("N distinct unknown tenants cause at most one upstream TTS call", async (t) => {
   const calls = useUpstream(t);
@@ -151,4 +164,77 @@ test("one client is rate limited before another greeting is generated", async (t
 
   const other = await request({ persona: "nero" }, "203.0.113.78");
   assert.equal(other.status, 200);
+});
+
+test("concurrent cold requests share one upstream TTS call", async (t) => {
+  expireCache(t);
+  const calls = useUpstream(t, async () => {
+    await delay(25);
+    return audio();
+  });
+
+  // N distinct unknown tenants from N addresses, all in flight together.
+  const responses = await Promise.all(
+    Array.from({ length: 50 }, (_, i) =>
+      request({ persona: "shinkami", tenant: `burst-${i}` }),
+    ),
+  );
+  for (const response of responses) {
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("x-tenant"), "arcanea");
+    assert.equal((await response.arrayBuffer()).byteLength, 3);
+  }
+  assert.equal(calls.length, 1);
+
+  // One address bursting: the limiter still applies, and the requests it
+  // lets through share one call as well.
+  const ip = "203.0.113.90";
+  const burst = await Promise.all(
+    Array.from({ length: 50 }, (_, i) =>
+      request({ persona: "lyria", tenant: `burst-${i}` }, ip),
+    ),
+  );
+  assert.equal(burst.filter((r) => r.status === 200).length, 10);
+  assert.equal(burst.filter((r) => r.status === 429).length, 40);
+  assert.equal(calls.length, 2);
+
+  // Different cache keys do not wait on each other.
+  await Promise.all([
+    request({ persona: "alera", tenant: "sis" }),
+    request({ persona: "alera", tenant: "frankx" }),
+    request({ persona: "alera", tenant: "sis" }),
+  ]);
+  assert.equal(calls.length, 4);
+});
+
+test("a failed upstream call is shared, not cached, and does not block the next one", async (t) => {
+  expireCache(t);
+  t.mock.method(console, "error", () => {});
+  let fail = true;
+  const calls = useUpstream(t, async () => {
+    await delay(25);
+    if (fail) throw new Error("upstream unreachable");
+    return audio();
+  });
+
+  const failed = await Promise.all(
+    Array.from({ length: 5 }, () => request({ persona: "jarvis" })),
+  );
+  for (const response of failed) {
+    assert.equal(response.status, 502);
+    assert.deepEqual(await response.json(), {
+      error: "Greeting generation failed",
+    });
+  }
+  assert.equal(calls.length, 1);
+
+  fail = false;
+  const retried = await request({ persona: "jarvis" });
+  assert.equal(retried.status, 200);
+  assert.equal(retried.headers.get("x-greeting-cache"), "miss");
+  assert.equal(calls.length, 2);
+
+  const cached = await request({ persona: "jarvis" });
+  assert.equal(cached.headers.get("x-greeting-cache"), "hit");
+  assert.equal(calls.length, 2);
 });

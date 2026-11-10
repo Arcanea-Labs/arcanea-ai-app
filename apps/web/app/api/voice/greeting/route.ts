@@ -15,6 +15,8 @@
  * Caches greeting copy by (persona, tenant) for 30 minutes to avoid
  * re-billing OpenAI TTS on every clap. The cache lives in-memory per
  * Edge isolate — worst case duplicates one TTS call per cold start.
+ * Requests that arrive while a greeting is being generated wait for that
+ * one upstream call instead of starting their own.
  *
  * Cache strategy: store the audio bytes once, replay on subsequent calls.
  * Edge runtime ArrayBuffer is safe to reuse.
@@ -45,6 +47,10 @@ const RATE_LIMIT = { maxRequests: 10, windowMs: 60_000 };
 const MAX_CACHE_ENTRIES =
   Object.keys(PERSONAS).length * Object.keys(TENANT_GREETING_OVERRIDE).length;
 const cache = new Map<string, CachedGreeting>();
+// One upstream call per cache key at a time. Bounded by the same known keys.
+const pending = new Map<string, Promise<CachedGreeting | null>>();
+// Below maxDuration, so a stalled upstream call cannot hold its waiters.
+const UPSTREAM_TIMEOUT_MS = 12_000;
 
 const TENANT_VOICE_OVERRIDE: Record<string, Partial<Record<PersonaId, string>>> = {
   sis: {
@@ -110,34 +116,28 @@ export async function GET(req: NextRequest) {
   const tenantVoice = TENANT_VOICE_OVERRIDE[tenant]?.[personaId];
   const voice = tenantVoice || (persona.voiceKey === 'lumina' ? 'nova' : 'shimmer');
 
-  const ttsRes = await fetch('https://api.openai.com/v1/audio/speech', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${openaiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'tts-1-hd',
-      input: text,
-      voice,
-      response_format: 'mp3',
-      speed: 1.0,
-    }),
-  });
+  let flight = pending.get(cacheKey);
+  if (!flight) {
+    flight = generateGreeting(openaiKey, text, voice)
+      .then((greeting) => {
+        if (!greeting) return null;
+        if (!cache.has(cacheKey) && cache.size >= MAX_CACHE_ENTRIES) {
+          const oldest = cache.keys().next().value;
+          if (oldest !== undefined) cache.delete(oldest);
+        }
+        cache.set(cacheKey, greeting);
+        return greeting;
+      })
+      .finally(() => pending.delete(cacheKey));
+    pending.set(cacheKey, flight);
+  }
 
-  if (!ttsRes.ok) {
-    const err = await ttsRes.text();
-    console.error('Greeting TTS error:', ttsRes.status, err);
+  // Failures are not cached: the next request starts a new upstream call.
+  const greeting = await flight;
+  if (!greeting) {
     return NextResponse.json({ error: 'Greeting generation failed' }, { status: 502 });
   }
-
-  const bytes = await ttsRes.arrayBuffer();
-  const contentType = ttsRes.headers.get('Content-Type') || 'audio/mpeg';
-  if (!cache.has(cacheKey) && cache.size >= MAX_CACHE_ENTRIES) {
-    const oldest = cache.keys().next().value;
-    if (oldest !== undefined) cache.delete(oldest);
-  }
-  cache.set(cacheKey, { bytes, contentType, ts: Date.now() });
+  const { bytes, contentType } = greeting;
 
   return new NextResponse(bytes, {
     headers: {
@@ -149,4 +149,41 @@ export async function GET(req: NextRequest) {
       'X-Voice': voice,
     },
   });
+}
+
+async function generateGreeting(
+  openaiKey: string,
+  text: string,
+  voice: string,
+): Promise<CachedGreeting | null> {
+  try {
+    const ttsRes = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${openaiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'tts-1-hd',
+        input: text,
+        voice,
+        response_format: 'mp3',
+        speed: 1.0,
+      }),
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+    });
+
+    if (!ttsRes.ok) {
+      const err = await ttsRes.text();
+      console.error('Greeting TTS error:', ttsRes.status, err);
+      return null;
+    }
+
+    const bytes = await ttsRes.arrayBuffer();
+    const contentType = ttsRes.headers.get('Content-Type') || 'audio/mpeg';
+    return { bytes, contentType, ts: Date.now() };
+  } catch (err) {
+    console.error('Greeting TTS error:', err);
+    return null;
+  }
 }
