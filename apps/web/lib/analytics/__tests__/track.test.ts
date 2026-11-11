@@ -42,6 +42,8 @@ test("priceBand buckets cents", () => {
   assert.equal(priceBand(0), "free");
   assert.equal(priceBand(500), "under_10");
   assert.equal(priceBand(1900), "10_to_49");
+  assert.equal(priceBand(4999), "10_to_49");
+  assert.equal(priceBand(5000), "50_plus");
   assert.equal(priceBand(7900), "50_plus");
 });
 

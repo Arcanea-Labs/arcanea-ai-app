@@ -30,12 +30,12 @@ export function trackEvent<E extends AnalyticsEventName>(
     utmSource?: string | undefined;
   } = {},
 ): void {
-  const send = deps.send ?? track;
-  const utmSource =
-    "utmSource" in deps ? deps.utmSource : getInboundUtmSource();
-  const payload: Record<string, string> = { ...props };
-  if (utmSource) payload.utm_source = utmSource;
   try {
+    const send = deps.send ?? track;
+    const utmSource =
+      "utmSource" in deps ? deps.utmSource : getInboundUtmSource();
+    const payload: Record<string, string> = { ...props };
+    if (utmSource) payload.utm_source = utmSource;
     send(name, payload);
   } catch {
     // Analytics must never break the UI.

@@ -334,7 +334,7 @@ export function PricingClient({ billing }: { billing: PricingBillingState }) {
       });
 
       const data = await res.json();
-      if (data.success) {
+      if (res.ok && data.success) {
         trackWaitlistJoin({ product: "arcanea", source: "pricing" });
         setStatus("success");
         setEmail("");
