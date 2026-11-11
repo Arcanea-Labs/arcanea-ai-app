@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
 /**
  * useSwarmChat — consume the SSE stream from /api/chat/swarm.
@@ -13,7 +13,7 @@
  * Start with `run(input)`. Abort with `stop()`.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // ---------------------------------------------------------------------------
 // Types (must mirror the server event union in /api/chat/swarm/route.ts)
@@ -26,10 +26,10 @@ export interface SwarmPlanLuminor {
 }
 
 export interface SwarmPlan {
-  mode: 'solo' | 'swarm';
+  mode: "solo" | "swarm";
   luminors: SwarmPlanLuminor[];
   rationale: string;
-  source: 'llm' | 'heuristic' | 'fallback';
+  source: "llm" | "heuristic" | "fallback";
   planMs: number;
 }
 
@@ -47,7 +47,7 @@ export interface SwarmContribution {
   avatar?: string;
   text: string;
   toolCalls: SwarmToolCall[];
-  status: 'thinking' | 'streaming' | 'done' | 'error';
+  status: "thinking" | "streaming" | "done" | "error";
   error?: string;
   tokensIn?: number;
   tokensOut?: number;
@@ -66,6 +66,8 @@ export interface SwarmState {
   totalTokens?: number;
   traceId?: string;
   error: string | null;
+  /** The route answered 401: the caller should offer sign-in, not an error. */
+  authRequired: boolean;
 }
 
 interface UseSwarmChatOptions {
@@ -76,7 +78,7 @@ interface UseSwarmChatOptions {
 
 interface RunArgs {
   input: string;
-  history?: Array<{ role: 'user' | 'assistant'; content: string }>;
+  history?: Array<{ role: "user" | "assistant"; content: string }>;
   maxLuminors?: number;
   heuristicOnly?: boolean;
   force?: boolean;
@@ -90,11 +92,12 @@ const INITIAL_STATE: SwarmState = {
   plan: null,
   contributions: {},
   order: [],
-  synthesis: '',
+  synthesis: "",
   synthesisStarted: false,
   synthesisDone: false,
   isStreaming: false,
   error: null,
+  authRequired: false,
 };
 
 // ---------------------------------------------------------------------------
@@ -102,7 +105,7 @@ const INITIAL_STATE: SwarmState = {
 // ---------------------------------------------------------------------------
 
 export function useSwarmChat(options: UseSwarmChatOptions = {}) {
-  const endpoint = options.endpoint ?? '/api/chat/swarm';
+  const endpoint = options.endpoint ?? "/api/chat/swarm";
   const [state, setState] = useState<SwarmState>(INITIAL_STATE);
   const abortRef = useRef<AbortController | null>(null);
   const optionsRef = useRef(options);
@@ -139,14 +142,32 @@ export function useSwarmChat(options: UseSwarmChatOptions = {}) {
 
       try {
         const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
-          body: JSON.stringify({ input, history, maxLuminors, heuristicOnly, force }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "text/event-stream",
+          },
+          body: JSON.stringify({
+            input,
+            history,
+            maxLuminors,
+            heuristicOnly,
+            force,
+          }),
           signal: ctrl.signal,
         });
 
+        if (res.status === 401) {
+          setState((prev) => ({
+            ...prev,
+            isStreaming: false,
+            authRequired: true,
+          }));
+          return;
+        }
+
         if (!res.ok || !res.body) {
-          const text = await res.text().catch(() => '');
+          const text = await res.text().catch(() => "");
           const message = `Swarm request failed: ${res.status} ${text}`;
           setState((prev) => ({ ...prev, isStreaming: false, error: message }));
           optionsRef.current.onError?.(message);
@@ -155,7 +176,7 @@ export function useSwarmChat(options: UseSwarmChatOptions = {}) {
 
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
-        let buffer = '';
+        let buffer = "";
 
         while (true) {
           const { done, value } = await reader.read();
@@ -164,12 +185,12 @@ export function useSwarmChat(options: UseSwarmChatOptions = {}) {
           buffer += decoder.decode(value, { stream: true });
 
           // SSE frames are separated by \n\n
-          let boundary = buffer.indexOf('\n\n');
+          let boundary = buffer.indexOf("\n\n");
           while (boundary !== -1) {
             const frame = buffer.slice(0, boundary);
             buffer = buffer.slice(boundary + 2);
             handleFrame(frame, setState);
-            boundary = buffer.indexOf('\n\n');
+            boundary = buffer.indexOf("\n\n");
           }
         }
 
@@ -183,11 +204,11 @@ export function useSwarmChat(options: UseSwarmChatOptions = {}) {
           return { ...prev, isStreaming: false };
         });
       } catch (err) {
-        if ((err as Error)?.name === 'AbortError') {
+        if ((err as Error)?.name === "AbortError") {
           setState((prev) => ({ ...prev, isStreaming: false }));
           return;
         }
-        const message = err instanceof Error ? err.message : 'Swarm error';
+        const message = err instanceof Error ? err.message : "Swarm error";
         setState((prev) => ({ ...prev, isStreaming: false, error: message }));
         optionsRef.current.onError?.(message);
       }
@@ -202,8 +223,11 @@ export function useSwarmChat(options: UseSwarmChatOptions = {}) {
 // Frame parsing
 // ---------------------------------------------------------------------------
 
-function handleFrame(frame: string, setState: React.Dispatch<React.SetStateAction<SwarmState>>) {
-  const line = frame.split('\n').find((l) => l.startsWith('data:'));
+function handleFrame(
+  frame: string,
+  setState: React.Dispatch<React.SetStateAction<SwarmState>>,
+) {
+  const line = frame.split("\n").find((l) => l.startsWith("data:"));
   if (!line) return;
   const jsonText = line.slice(5).trim();
   if (!jsonText) return;
@@ -214,15 +238,18 @@ function handleFrame(frame: string, setState: React.Dispatch<React.SetStateActio
   } catch {
     return;
   }
-  if (typeof event !== 'object' || event === null) return;
+  if (typeof event !== "object" || event === null) return;
   const e = event as { type?: string } & Record<string, unknown>;
 
   setState((prev) => reduce(prev, e));
 }
 
-function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown>): SwarmState {
+function reduce(
+  state: SwarmState,
+  e: { type?: string } & Record<string, unknown>,
+): SwarmState {
   switch (e.type) {
-    case 'plan': {
+    case "plan": {
       const plan = e.plan as SwarmPlan | undefined;
       if (!plan) return state;
       return {
@@ -235,16 +262,16 @@ function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown
             {
               id: l.id,
               name: l.name,
-              guardian: '',
-              text: '',
+              guardian: "",
+              text: "",
               toolCalls: [],
-              status: 'thinking' as const,
+              status: "thinking" as const,
             },
           ]),
         ),
       };
     }
-    case 'luminor_start': {
+    case "luminor_start": {
       const id = e.id as string;
       const prev = state.contributions[id];
       return {
@@ -255,21 +282,21 @@ function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown
             ...(prev ?? {
               id,
               name: (e.name as string) ?? id,
-              guardian: '',
-              text: '',
+              guardian: "",
+              text: "",
               toolCalls: [],
-              status: 'thinking',
+              status: "thinking",
             }),
             id,
             name: (e.name as string) ?? prev?.name ?? id,
-            guardian: (e.guardian as string) ?? prev?.guardian ?? '',
+            guardian: (e.guardian as string) ?? prev?.guardian ?? "",
             avatar: (e.avatar as string) ?? prev?.avatar,
-            status: 'streaming',
+            status: "streaming",
           },
         },
       };
     }
-    case 'luminor_token': {
+    case "luminor_token": {
       const id = e.id as string;
       const prev = state.contributions[id];
       if (!prev) return state;
@@ -277,11 +304,15 @@ function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown
         ...state,
         contributions: {
           ...state.contributions,
-          [id]: { ...prev, text: prev.text + ((e.delta as string) ?? ''), status: 'streaming' },
+          [id]: {
+            ...prev,
+            text: prev.text + ((e.delta as string) ?? ""),
+            status: "streaming",
+          },
         },
       };
     }
-    case 'luminor_tool': {
+    case "luminor_tool": {
       const id = e.id as string;
       const prev = state.contributions[id];
       if (!prev) return state;
@@ -294,7 +325,7 @@ function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown
             toolCalls: [
               ...prev.toolCalls,
               {
-                toolName: (e.toolName as string) ?? 'unknown',
+                toolName: (e.toolName as string) ?? "unknown",
                 input: e.input,
                 completed: false,
               },
@@ -303,13 +334,18 @@ function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown
         },
       };
     }
-    case 'luminor_tool_result': {
+    case "luminor_tool_result": {
       const id = e.id as string;
       const prev = state.contributions[id];
       if (!prev) return state;
-      const name = (e.toolName as string) ?? 'unknown';
+      const name = (e.toolName as string) ?? "unknown";
       const toolCalls = prev.toolCalls.map((t, i) =>
-        !t.completed && t.toolName === name && i === prev.toolCalls.findIndex((tc) => !tc.completed && tc.toolName === name)
+        !t.completed &&
+        t.toolName === name &&
+        i ===
+          prev.toolCalls.findIndex(
+            (tc) => !tc.completed && tc.toolName === name,
+          )
           ? { ...t, output: e.output, completed: true }
           : t,
       );
@@ -318,7 +354,7 @@ function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown
         contributions: { ...state.contributions, [id]: { ...prev, toolCalls } },
       };
     }
-    case 'luminor_done': {
+    case "luminor_done": {
       const id = e.id as string;
       const prev = state.contributions[id];
       if (!prev) return state;
@@ -332,16 +368,19 @@ function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown
             tokensIn: (e.tokensIn as number) ?? prev.tokensIn,
             tokensOut: (e.tokensOut as number) ?? prev.tokensOut,
             durationMs: (e.durationMs as number) ?? prev.durationMs,
-            status: 'done',
+            status: "done",
           },
         },
       };
     }
-    case 'synthesis_start':
+    case "synthesis_start":
       return { ...state, synthesisStarted: true };
-    case 'synthesis_token':
-      return { ...state, synthesis: state.synthesis + ((e.delta as string) ?? '') };
-    case 'done':
+    case "synthesis_token":
+      return {
+        ...state,
+        synthesis: state.synthesis + ((e.delta as string) ?? ""),
+      };
+    case "done":
       return {
         ...state,
         synthesisDone: true,
@@ -350,18 +389,18 @@ function reduce(state: SwarmState, e: { type?: string } & Record<string, unknown
         totalTokens: (e.totalTokens as number) ?? state.totalTokens,
         traceId: (e.traceId as string) ?? state.traceId,
       };
-    case 'error': {
-      const message = (e.message as string) ?? 'Unknown error';
+    case "error": {
+      const message = (e.message as string) ?? "Unknown error";
       const scope = e.scope as string | undefined;
       const luminorId = e.luminorId as string | undefined;
-      if (scope === 'luminor' && luminorId && state.contributions[luminorId]) {
+      if (scope === "luminor" && luminorId && state.contributions[luminorId]) {
         return {
           ...state,
           contributions: {
             ...state.contributions,
             [luminorId]: {
               ...state.contributions[luminorId],
-              status: 'error',
+              status: "error",
               error: message,
             },
           },

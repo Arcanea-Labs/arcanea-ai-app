@@ -9,7 +9,7 @@ const source = readFileSync(
 );
 const env = {
   GITHUB_ACTIONS: "true",
-  GITHUB_REPOSITORY: "frankxai/arcanea-ai-app",
+  GITHUB_REPOSITORY: "Arcanea-Labs/arcanea-ai-app",
   GITHUB_REF_NAME: "agent/codex/generation-admission-20261011",
   GENERATION_FIXTURE_ORIGIN: "http://127.0.0.1:54321",
   XAI_API_KEY: "fixture-" + "a".repeat(64),
@@ -35,6 +35,7 @@ test("provider fixture refuses another harness, repository, branch, origin or cr
   for (const overrides of [
     { GITHUB_ACTIONS: "false" },
     { GITHUB_REPOSITORY: "other/repo" },
+    { GITHUB_REPOSITORY: "frankxai/arcanea-ai-app" },
     { GITHUB_REF_NAME: "main" },
     { GENERATION_FIXTURE_ORIGIN: "https://remote.invalid" },
     { XAI_API_KEY: "ordinary-key" },
@@ -106,7 +107,7 @@ test("the full fixture refuses local execution and inherited hosted credentials 
       env: {
         ...process.env,
         GITHUB_ACTIONS: "true",
-        GITHUB_REPOSITORY: "frankxai/arcanea-ai-app",
+        GITHUB_REPOSITORY: "Arcanea-Labs/arcanea-ai-app",
         GITHUB_REF_NAME: "agent/codex/generation-admission-20261011",
         XAI_API_KEY: "prohibited",
       },

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { metadataErrors } from "../verify-npm-metadata.mjs";
 
-const base = "https://github.com/frankxai/arcanea-ai-app";
+const base = "https://github.com/Arcanea-Labs/arcanea-ai-app";
 const pkg = {
   repository: { type: "git", url: `${base}.git`, directory: "packages/core" },
   homepage: `${base}/tree/main/packages/core`,
@@ -13,7 +13,7 @@ test("accepts the canonical package source and rejects mirror and legacy sources
   assert.deepEqual(metadataErrors(pkg, "packages/core"), []);
   for (const url of [
     "https://github.com/frankxai/arcanea.git",
-    "https://github.com/Arcanea-Labs/arcanea-ai-app.git",
+    "https://github.com/frankxai/arcanea-ai-app.git",
     `${base}.git/other`,
   ]) {
     assert.match(

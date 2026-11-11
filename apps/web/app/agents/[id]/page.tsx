@@ -5,9 +5,8 @@ import { useState, useRef, useCallback, use } from "react";
 import Link from "next/link";
 import { m, LazyMotion, domAnimation, AnimatePresence } from "framer-motion";
 import { CreditBadge } from "@/components/agents/credit-badge";
-import { AGENTS_CATALOG, formatUsageCount, type RunStatus } from "./agent-data";
+import { AGENTS_CATALOG, type RunStatus } from "./agent-data";
 import {
-  StarRating,
   StreamingCursor,
   StreamingProgress,
   CopyButton,
@@ -268,7 +267,6 @@ function AgentHeaderCard({
                 </span>
               </div>
             </div>
-            <StarRating rating={agent.rating} />
           </div>
         </div>
 
@@ -277,23 +275,6 @@ function AgentHeaderCard({
         </p>
 
         <div className="flex items-center gap-6 text-sm text-white/40">
-          <span className="flex items-center gap-1.5">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
-            {formatUsageCount(agent.usageCount)} runs
-          </span>
           <span className="flex items-center gap-1.5">
             <svg
               className="w-4 h-4"

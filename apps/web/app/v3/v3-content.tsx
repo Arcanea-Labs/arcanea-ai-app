@@ -120,82 +120,46 @@ function HeroPortal() {
       className="relative flex items-center justify-center overflow-hidden py-14 md:py-20"
       style={{ minHeight: "calc(92svh - var(--nav-h, 64px))" }}
     >
-      {/* Background: premium Arcanea production chamber media */}
-      <div className="absolute inset-0 z-0 bg-[var(--arc-cosmic-void)]">
-        <Image
-          src="/brand/arcanea-dashboard-hero-premium.png"
-          alt=""
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          className="object-cover object-[50%_42%] opacity-95"
-        />
-        {showVideo && (
-          <video
-            aria-hidden="true"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            onPlaying={() => setVideoPlaying(true)}
-            className={`absolute inset-0 hidden h-full w-full object-cover object-[50%_42%] transition-opacity duration-[400ms] ease-out motion-safe:block ${
-              videoPlaying ? "opacity-95" : "opacity-0"
-            }`}
-          >
-            <source
-              src="/brand/arcanea-dashboard-hero-premium.mp4"
-              type="video/mp4"
-            />
-          </video>
-        )}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_82%_52%_at_50%_42%,transparent_0%,color-mix(in_srgb,var(--arc-cosmic-void)_24%,transparent)_58%,var(--arc-cosmic-void)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--arc-cosmic-void)]/28 via-[var(--arc-cosmic-void)]/38 to-[var(--arc-cosmic-void)]/92" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--arc-cosmic-void)]/82 via-transparent to-[var(--arc-cosmic-void)]/82" />
-        <div className="absolute inset-0 hidden bg-[radial-gradient(ellipse_46%_44%_at_50%_53%,color-mix(in_srgb,var(--arc-cosmic-void)_78%,transparent)_0%,color-mix(in_srgb,var(--arc-cosmic-void)_52%,transparent)_48%,transparent_74%)] md:block" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_82%_70%_at_50%_52%,color-mix(in_srgb,var(--arc-cosmic-void)_82%,transparent)_0%,color-mix(in_srgb,var(--arc-cosmic-void)_58%,transparent)_52%,transparent_82%)] md:hidden" />
-        <div className="absolute left-1/2 top-[12%] h-px w-[min(720px,80vw)] -translate-x-1/2 bg-gradient-to-r from-transparent via-[var(--arc-brand-atlantean-teal)]/38 to-transparent" />
-      </div>
+      {/* Background: clinical AI-Lab void canvas with precision structural grid */}
+      <div className="absolute inset-0 z-0 bg-[#090a0c]">
+        {/* Subtle radial illumination */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_25%,rgba(16,185,129,0.06)_0%,transparent_65%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.03)_0%,transparent_70%)]" />
 
-      {/* Fine grid — barely visible texture */}
-      <div
-        className="absolute inset-0 z-[1] opacity-[0.015]"
-        style={{
-          backgroundImage:
-            "linear-gradient(color-mix(in srgb, var(--arc-text-primary) 30%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--arc-text-primary) 30%, transparent) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-        }}
-      />
+        {/* Clinical fine engineering grid */}
+        <div
+          className="absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.4) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-b from-[#090a0c]/40 via-transparent to-[#090a0c]" />
+        <div className="absolute left-1/2 top-0 h-px w-[min(800px,90vw)] -translate-x-1/2 bg-gradient-to-r from-transparent via-emerald-400/25 to-transparent" />
+      </div>
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-3xl mx-auto px-5 sm:px-6">
         <div className="flex flex-col items-center text-center">
-          {/* Canonical brand mark */}
-          <div className="mb-5 md:mb-8">
-            <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.04] shadow-[0_14px_60px_color-mix(in_srgb,var(--arc-cosmic-void)_70%,transparent)] backdrop-blur-xl md:h-16 md:w-16">
-              <Image
-                src={navLogo}
-                alt="Arcanea"
-                width={44}
-                height={44}
-                sizes="44px"
-                className="rounded-xl object-cover"
-                priority
-              />
-            </div>
+          {/* Clinical Lab System Badge */}
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-3.5 py-1 text-xs font-mono text-emerald-400 backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>arcanea ai lab · frontier world-graph runtime</span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-[clamp(2.25rem,5.1vw,4.45rem)] font-display font-bold tracking-[-0.025em] leading-[1.04] mb-4 md:mb-5 text-white">
-            <span className="block">Build living worlds</span>{" "}
-            <span className="block">with AI agents.</span>
+          {/* Headline — Geist Sans Clinical AI-Lab Standard */}
+          <h1 className="text-[clamp(2.25rem,5.1vw,4.45rem)] font-sans font-semibold tracking-[-0.03em] leading-[1.04] mb-4 md:mb-5 text-white">
+            <span className="block">Build persistent world graphs</span>{" "}
+            <span className="block text-white/60">with autonomous agents.</span>
           </h1>
 
           {/* Value prop */}
-          <p className="max-w-2xl mx-auto text-base md:text-lg text-white/55 leading-relaxed mb-5 md:mb-9 font-body">
-            Turn one idea into a persistent world graph: lore, characters,
-            rules, media briefs, and agent tasks stay connected across sessions.
+          <p className="max-w-2xl mx-auto text-base md:text-lg text-white/60 leading-relaxed mb-6 md:mb-8 font-sans">
+            Turn creative brief into a living intelligence graph. Lore,
+            characters, relational physics, and multi-agent pipelines stay
+            persistent across every run.
           </p>
 
           {/* Chat box */}
@@ -210,13 +174,17 @@ function HeroPortal() {
                 Icon: ShieldStar,
                 num: 0,
                 suffix: "MIT",
-                label: "open source",
+                label: "MCP & skills",
+                href: "https://www.npmjs.com/package/@arcanea/mcp-server",
                 color: "var(--arc-void)",
                 fixed: true,
               },
-            ].map(({ Icon, num, suffix, label, color, fixed }, i) => (
-              <div
+            ].map(({ Icon, num, suffix, label, href, color, fixed }, i) => (
+              <a
                 key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-3 py-1.5 backdrop-blur-sm transition-colors hover:border-white/[0.15]"
               >
                 <Icon
@@ -243,14 +211,16 @@ function HeroPortal() {
                 <span className="text-[10px] text-white/34 font-body">
                   {label}
                 </span>
-              </div>
+              </a>
             ))}
           </div>
 
           <div className="mt-4 flex flex-col items-center justify-center gap-2 text-[11px] text-white/35 sm:flex-row md:mt-5 md:gap-3">
             <SovereigntyBadge />
             <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:block" />
-            <span className="font-body">BYOK / your IP / no lock-in</span>
+            <span className="font-body">
+              Your own model keys · exports in Markdown
+            </span>
           </div>
 
           <div className="mt-6 hidden items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.025] px-3 py-2 backdrop-blur-md md:inline-flex">
