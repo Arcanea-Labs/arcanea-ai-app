@@ -20,16 +20,23 @@
  *   }
  */
 
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { LUMINORS } from "@/lib/luminors/config";
 import { BENCHMARKS } from "@/lib/eval/benchmarks";
 import { claudeFallbackOptions, isRefusal } from "@/lib/ai/claude-safeguards";
+import {
+  getClientIdentifier,
+  checkRateLimit,
+} from "@/lib/rate-limit/rate-limiter";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
+
+// Every run fans out to platform-key model calls for each benchmark task.
+const ARENA_RATE_LIMIT = { maxRequests: 5, windowMs: 60_000 };
 
 interface ArenaRequest {
   luminorId: string;
@@ -47,8 +54,24 @@ interface TaskResult {
   tokensOut: number;
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const started = Date.now();
+
+  const rl = checkRateLimit(
+    `arena:run:${getClientIdentifier(request)}`,
+    ARENA_RATE_LIMIT,
+  );
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded. Try again in a minute." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rl.resetTime - Date.now()) / 1000)),
+        },
+      },
+    );
+  }
 
   let body: ArenaRequest;
   try {

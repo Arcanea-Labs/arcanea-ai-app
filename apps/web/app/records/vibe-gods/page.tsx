@@ -214,8 +214,6 @@ const VIBE_GODS = [
       "Passion, transformation, and the drive to create with burning intensity.",
     color: "var(--arc-fire)",
     icon: "flame",
-    followers: 1247,
-    works: 89,
   },
   {
     id: "aquara",
@@ -225,8 +223,6 @@ const VIBE_GODS = [
       "Emotional depth, intuition, and the ability to go with the creative current.",
     color: "var(--arc-brand-atlantean-teal)",
     icon: "droplets",
-    followers: 982,
-    works: 67,
   },
   {
     id: "zephyra",
@@ -236,8 +232,6 @@ const VIBE_GODS = [
       "Freedom, change, and ideas that blow through like a gentle breeze.",
     color: "var(--arc-brand-atlantean-teal)",
     icon: "wind",
-    followers: 756,
-    works: 45,
   },
   {
     id: "terra",
@@ -247,8 +241,6 @@ const VIBE_GODS = [
       "Foundation, structure, and building works that stand the test of time.",
     color: "var(--arc-earth)",
     icon: "mountain",
-    followers: 1103,
-    works: 78,
   },
   {
     id: "lux",
@@ -257,8 +249,6 @@ const VIBE_GODS = [
     description: "Clarity, illumination, and bringing hidden truths to light.",
     color: "var(--arc-brand-arcanean-gold)",
     icon: "sun",
-    followers: 2034,
-    works: 156,
   },
   {
     id: "umbra",
@@ -268,8 +258,6 @@ const VIBE_GODS = [
       "Mystery, depth, and exploring the darker corners of imagination.",
     color: "var(--arc-void)",
     icon: "moon",
-    followers: 1876,
-    works: 134,
   },
   {
     id: "aurora",
@@ -279,8 +267,6 @@ const VIBE_GODS = [
       "New beginnings, hope, and the first light of creative inspiration.",
     color: "var(--arc-void)",
     icon: "star",
-    followers: 1654,
-    works: 112,
   },
   {
     id: "void",
@@ -290,8 +276,6 @@ const VIBE_GODS = [
       "Pure potential, the space between ideas, where creation begins.",
     color: "var(--arc-cosmic-void)",
     icon: "sparkles",
-    followers: 945,
-    works: 34,
   },
 ];
 
@@ -394,19 +378,7 @@ export default function VibeGodsPage() {
                   {god.description}
                 </p>
 
-                {/* Stats */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/[0.04]">
-                  <div className="flex items-center gap-4 text-xs text-text-muted">
-                    <span className="flex items-center gap-1.5">
-                      <Icons.Heart />
-                      {god.followers.toLocaleString()}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Icons.Zap />
-                      {god.works}
-                    </span>
-                  </div>
-
+                <div className="flex items-center justify-end pt-4 border-t border-white/[0.04]">
                   <button
                     className="text-sm font-medium transition-colors group-hover:text-crystal"
                     style={{ color: god.color }}

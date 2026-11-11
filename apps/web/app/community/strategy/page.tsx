@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
 /**
  * Community Strategy - Planning & Governance
@@ -19,11 +19,10 @@ import {
   PhTrendUp,
   PhShield,
   PhLightbulb,
-  PhChatSquare,
   PhArrowUpRight,
   PhScales,
   PhHeart,
-} from '@/lib/phosphor-icons';
+} from "@/lib/phosphor-icons";
 
 const ACTIVE_PROPOSALS = [
   {
@@ -33,9 +32,6 @@ const ACTIVE_PROPOSALS = [
       "A proposal to form a dedicated moderation council elected by the community to ensure healthy discourse and adherence to community values.",
     type: "governance",
     status: "voting",
-    votesFor: 156,
-    votesAgainst: 23,
-    totalVotes: 179,
     endsIn: "3 days",
     category: "governance",
   },
@@ -46,9 +42,6 @@ const ACTIVE_PROPOSALS = [
       "Establish quarterly themed creative challenges with community-voted prizes and showcase events.",
     type: "initiative",
     status: "discussion",
-    votesFor: 0,
-    votesAgainst: 0,
-    totalVotes: 42,
     endsIn: "7 days",
     category: "events",
   },
@@ -59,9 +52,6 @@ const ACTIVE_PROPOSALS = [
       "Define canonical guidelines for Guardian and Godbeast visual representations to maintain consistency across the community.",
     type: "standards",
     status: "voting",
-    votesFor: 89,
-    votesAgainst: 12,
-    totalVotes: 101,
     endsIn: "1 day",
     category: "creative",
   },
@@ -72,21 +62,18 @@ const PAST_PROPOSALS = [
     id: "prop-past-1",
     title: "Community Discord Reorganization",
     result: "passed",
-    votes: 234,
     date: "Jan 2026",
   },
   {
     id: "prop-past-2",
     title: "Weekly Creation Sessions Pilot",
     result: "passed",
-    votes: 189,
     date: "Dec 2025",
   },
   {
     id: "prop-past-3",
     title: "Open Source Contribution Guidelines",
     result: "passed",
-    votes: 156,
     date: "Nov 2025",
   },
 ];
@@ -221,11 +208,6 @@ export default function CommunityStrategyPage() {
 
           <div className="space-y-6">
             {ACTIVE_PROPOSALS.map((proposal) => {
-              const forPercentage = Math.round(
-                (proposal.votesFor / proposal.totalVotes) * 100,
-              );
-              const againstPercentage = 100 - forPercentage;
-
               return (
                 <div
                   key={proposal.id}
@@ -261,40 +243,6 @@ export default function CommunityStrategyPage() {
                     <p className="text-text-secondary text-sm leading-relaxed font-sans mb-4">
                       {proposal.description}
                     </p>
-
-                    {/* Vote Bar */}
-                    {proposal.status === "voting" ? (
-                      <div className="mb-4">
-                        <div className="flex justify-between text-xs mb-2">
-                          <span className="text-crystal">
-                            For {forPercentage}%
-                          </span>
-                          <span className="text-fire">
-                            Against {againstPercentage}%
-                          </span>
-                        </div>
-                        <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden flex">
-                          <div
-                            className="h-full bg-crystal rounded-full"
-                            style={{ width: `${forPercentage}%` }}
-                          />
-                          <div
-                            className="h-full bg-fire rounded-full"
-                            style={{ width: `${againstPercentage}%` }}
-                          />
-                        </div>
-                        <div className="text-xs text-text-muted mt-1">
-                          {proposal.totalVotes} votes
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="mb-4">
-                        <p className="text-xs text-text-muted flex items-center gap-1.5">
-                          <PhChatSquare className="w-3.5 h-3.5 text-brand-primary" />
-                          {proposal.totalVotes} participants in discussion
-                        </p>
-                      </div>
-                    )}
 
                     <button className="flex items-center gap-2 text-sm text-crystal opacity-0 group-hover:opacity-100 transition-opacity">
                       <span>Cast Your Vote</span>
@@ -372,9 +320,6 @@ export default function CommunityStrategyPage() {
                     Result
                   </th>
                   <th className="text-left text-xs font-mono text-text-muted uppercase tracking-wider px-6 py-4">
-                    Votes
-                  </th>
-                  <th className="text-left text-xs font-mono text-text-muted uppercase tracking-wider px-6 py-4">
                     Date
                   </th>
                 </tr>
@@ -397,9 +342,6 @@ export default function CommunityStrategyPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-text-muted text-sm">
-                      {proposal.votes}
-                    </td>
-                    <td className="px-6 py-4 text-text-muted text-sm">
                       {proposal.date}
                     </td>
                   </tr>
@@ -410,7 +352,10 @@ export default function CommunityStrategyPage() {
         </section>
 
         {/* CTA */}
-        <section id="propose" className="py-16 border-t border-white/[0.04] pb-24">
+        <section
+          id="propose"
+          className="py-16 border-t border-white/[0.04] pb-24"
+        >
           <div className="relative liquid-glass rounded-3xl overflow-hidden p-10 sm:p-14">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-transparent to-crystal/8 pointer-events-none" />
 
