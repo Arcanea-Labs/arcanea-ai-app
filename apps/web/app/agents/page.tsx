@@ -52,8 +52,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "🗡️",
     color: "var(--arc-fire)",
     gradient: "linear-gradient(135deg, var(--arc-fire), var(--arc-fire))",
-    rating: 4.8,
-    usageCount: 3241,
     isFeatured: true,
     capabilities: [
       "Long-form narratives",
@@ -80,8 +78,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     color: "var(--arc-brand-arcanean-gold)",
     gradient:
       "linear-gradient(135deg, var(--arc-brand-arcanean-gold), var(--arc-brand-arcanean-gold))",
-    rating: 4.9,
-    usageCount: 2876,
     isFeatured: true,
     capabilities: [
       "Character backstory",
@@ -107,8 +103,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "🌍",
     color: "var(--arc-wind)",
     gradient: "linear-gradient(135deg, var(--arc-wind), var(--arc-wind))",
-    rating: 4.7,
-    usageCount: 1654,
     isFeatured: false,
     capabilities: [
       "World geography",
@@ -135,8 +129,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     color: "var(--arc-brand-cosmic-blue)",
     gradient:
       "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-cosmic-blue))",
-    rating: 4.6,
-    usageCount: 4102,
     isFeatured: false,
     capabilities: [
       "Line editing",
@@ -162,8 +154,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "⚡",
     color: "var(--arc-fire)",
     gradient: "linear-gradient(135deg, var(--arc-fire), var(--arc-fire))",
-    rating: 4.5,
-    usageCount: 987,
     isFeatured: false,
     capabilities: [
       "TypeScript & React",
@@ -190,8 +180,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     color: "var(--arc-text-primary)",
     gradient:
       "linear-gradient(135deg, var(--arc-void), var(--arc-text-primary))",
-    rating: 4.4,
-    usageCount: 1234,
     isFeatured: false,
     capabilities: [
       "Mythology research",
@@ -218,8 +206,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     color: "var(--arc-brand-cosmic-blue)",
     gradient:
       "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-atlantean-teal))",
-    rating: 4.7,
-    usageCount: 782,
     isFeatured: false,
     capabilities: [
       "Lyric writing",
@@ -245,8 +231,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "🎨",
     color: "var(--arc-void)",
     gradient: "linear-gradient(135deg, var(--arc-void), var(--arc-void))",
-    rating: 4.6,
-    usageCount: 2341,
     isFeatured: false,
     capabilities: [
       "Art direction",
@@ -272,8 +256,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "📚",
     color: "var(--arc-wind)",
     gradient: "linear-gradient(135deg, var(--arc-wind), var(--arc-earth))",
-    rating: 4.3,
-    usageCount: 445,
     isFeatured: false,
     capabilities: [
       "Book formatting",
@@ -299,8 +281,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     icon: "📣",
     color: "var(--arc-text-primary)",
     gradient: "linear-gradient(135deg, var(--arc-earth), var(--arc-void))",
-    rating: 4.2,
-    usageCount: 678,
     isFeatured: false,
     capabilities: [
       "Social content",
@@ -327,8 +307,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     color: "var(--arc-text-primary)",
     gradient:
       "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-atlantean-teal))",
-    rating: 4.5,
-    usageCount: 334,
     isFeatured: false,
     capabilities: [
       "Literary translation",
@@ -355,8 +333,6 @@ const AGENTS_CATALOG: MarketplaceAgent[] = [
     color: "var(--arc-brand-arcanean-gold)",
     gradient:
       "linear-gradient(135deg, var(--arc-brand-arcanean-gold), var(--arc-brand-arcanean-gold))",
-    rating: 4.8,
-    usageCount: 221,
     isFeatured: false,
     capabilities: [
       "Course design",
@@ -533,7 +509,6 @@ export default function AgentsMarketplacePage() {
   }, [activeCategory, searchQuery]);
 
   const featuredAgents = AGENTS_CATALOG.filter((a) => a.isFeatured);
-  const totalRuns = AGENTS_CATALOG.reduce((sum, a) => sum + a.usageCount, 0);
 
   return (
     <LazyMotion features={domAnimation}>
