@@ -51,7 +51,7 @@
 | 5   | Voice      | Alera       | Otome    | Truth, expression, authenticity   |
 | 6   | Sight      | Lyria       | Yumiko   | Intuition, vision, perception     |
 | 7   | Crown      | Aiyami      | Sol      | Enlightenment, wisdom             |
-| 8   | Shift      | Elara       | Vaelith  | Perspective, transformation       |
+| 8   | Starweave  | Elara       | Vaelith  | Perspective, transformation       |
 | 9   | Unity      | Ino         | Kyuro    | Partnership, connection           |
 | 10  | Source     | Shinkami    | Source   | Meta-consciousness, transcendence |
 

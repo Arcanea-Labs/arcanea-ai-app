@@ -2,10 +2,24 @@
 
 ## Spectrum Magic, Drafting, the Halo, and the Lightbringer-Equivalent in Arcanea
 
-> **Status:** STAGING ⏳ (introduced 2026-04-27; awaiting Creator approval to LOCK)
+> **Status:** STAGING — QUARANTINED FOR INTERNAL MECHANICS COMPARISON ONLY (`RM008_THIRD_PARTY_IP_CONTAMINATION_BLOCK`)
+> **IP & Rights Gate (2026-11-07 Creative Renaissance Council Ruling):** This file contains comparative structural notes referencing Brent Weeks' *Lightbringer* vocabulary (`luxin`, `drafter`, `sub-red`, `super-violet`, `paryl`, `chi`, `halo-burn`). Those terms are third-party intellectual property and **MUST NEVER** appear in public Arcanea canon, manuscripts, UI surfaces, prompts, or commercial editions. All public and canonical works must use the native **Arcanean Spectrum Weaving Lexicon** defined below (`Destello`, `Refracted Glass / Spectrum Shard`, `Prism Weaver / Refractor`, `Iris Resonance Ring`, `Resonance Saturation`).
 > **Tier:** Magical-System Canon, sub-tier of Tier 5 (Realms of the Kingdom of Light) and Tier 6 (Seven Academy Houses)
 > **Companion to:** `LEAGUES_AND_ORDERS.md` PART FIVE (The Prism — Spectrum Magic), `CANON_LOCKED.md` Tier 2 (Ten Gates), Tier 6 (Houses), Tier 9 (Origin Classes)
 > **Authority:** Builds on existing Prism canon (Solara Whitepath, Order of Refracted Light, Hall of White, eleven historical Prisms) — does not replace, extends.
+
+### Canonical Native Arcanean Spectrum Lexicon (Mandatory for All Public/Commercial Use)
+
+| Quarantined Comparative Term (Forbidden in Public Output) | Canonical Arcanean Native Term (Locked for Public Use) | Canon Basis |
+|---|---|---|
+| `luxin` | **Refracted Destello** / **Spectrum Glass** | `book/las-tierras-de-luz/BIBLE.md` + `LEAGUES_AND_ORDERS.md` Part V |
+| `drafter` / `drafting` | **Prism Weaver** / **Refractor** / **Spectrum Weaving** | `CHARACTER_CORE.md` (Emilia) + House Synthesis |
+| `sub-red` | **Deep-Foundation Band** (Ember-Basalt) | Gate 1 — Foundation (`Lyssandria` / `Kaelith`) |
+| `super-violet` | **Crown-Ultraviolet Band** (Veil-Thread) | Gate 7 — Crown (`Aiyami` / `Sol`) |
+| `chi` (as drafted band) | **Starweave-Filament Band** (Lattice-Sight) | Gate 8 — Starweave (`Elara` / `Vaelith`) |
+| `paryl` | **Unity-Trace Band** (Nerve-Silver) | Gate 9 — Unity (`Ino` / `Kyuro`) |
+| `halo` / `halo-burn` / `breaking the halo` | **Iris Resonance Ring** / **Resonance Saturation** | Order of Refracted Light practitioner diagnostics |
+| `black luxin` | **Hollow Glass** / **Corrupted Void-Shard** | `STORY_ENGINE.md` (Herald weapons) + `CANON_LOCKED.md` |
 
 ---
 

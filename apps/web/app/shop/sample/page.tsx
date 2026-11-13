@@ -100,6 +100,9 @@ export default function SamplePage() {
         className="shop-button"
       >
         Inspect the full edition specification
+      </Link>{" "}
+      <Link href="/renaissance" className="shop-text-link">
+        Explore the Creative Renaissance Screening Room &amp; World Bible
       </Link>
     </article>
   );
