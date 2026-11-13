@@ -36,6 +36,22 @@
     {
       "name": "Basemap consent gate",
       "pass": true
+    },
+    {
+      "name": "failed chapter restores committed controls",
+      "pass": true
+    },
+    {
+      "name": "failed perspective restores reader lens",
+      "pass": true
+    },
+    {
+      "name": "failed namespace restores displayed world",
+      "pass": true
+    },
+    {
+      "name": "Native dialog Escape closes and restores context",
+      "pass": true
     }
   ],
   "errors": [],
