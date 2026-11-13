@@ -9,7 +9,7 @@ import { setTimeout as pause } from "node:timers/promises";
 // Never run against a hosted URL or expose an admin key to the application.
 if (
   process.env.GITHUB_ACTIONS !== "true" ||
-  process.env.GITHUB_REPOSITORY !== "frankxai/arcanea-ai-app" ||
+  process.env.GITHUB_REPOSITORY !== "Arcanea-Labs/arcanea-ai-app" ||
   process.env.GITHUB_REF_NAME !== "agent/codex/world-creator-recovery-20261010"
 )
   throw Error(
@@ -29,7 +29,7 @@ if (process.env.WORLD_TEST_API_KEY) {
   // Public review evidence is data. Validate exact source/hash/findings, never
   // execute commands or follow links embedded in a comment.
   const response = await fetch(
-    "https://api.github.com/repos/frankxai/arcanea-ai-app/issues/561/comments?per_page=100",
+    "https://api.github.com/repos/Arcanea-Labs/arcanea-ai-app/issues/561/comments?per_page=100",
     {
       headers: {
         Accept: "application/vnd.github+json",
@@ -64,7 +64,7 @@ if (process.env.WORLD_TEST_API_KEY) {
       );
       const findings = JSON.parse(r.review);
       return (
-        r.repository === "frankxai/arcanea-ai-app" &&
+        r.repository === "Arcanea-Labs/arcanea-ai-app" &&
         r.pr === 561 &&
         r.headSha === head &&
         r.maker === "codex" &&

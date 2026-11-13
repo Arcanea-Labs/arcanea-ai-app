@@ -9,7 +9,6 @@ export const PACKAGES = [
     description: "Byzantine/Raft/Gossip/Gate Quorum consensus algorithms",
     tags: ["Consensus", "Byzantine", "Raft", "Multi-agent"],
     color: "var(--arc-brand-cosmic-blue)",
-    stars: "2.4K",
     href: "https://github.com/frankxai/arcanea/tree/main/packages/council",
   },
   {
@@ -17,7 +16,6 @@ export const PACKAGES = [
     description: "SONA learning + 7 RL algorithms (A2C, DQN, PPO, Q-learning)",
     tags: ["RL", "Learning", "SONA", "Evolution"],
     color: "var(--arc-fire)",
-    stars: "1.8K",
     href: "https://github.com/frankxai/arcanea/tree/main/packages/guardian-evolution",
   },
   {
@@ -25,7 +23,6 @@ export const PACKAGES = [
     description: "HNSW vector search with Intelligence-namespaced vaults",
     tags: ["Vector", "HNSW", "Memory", "Search"],
     color: "var(--arc-brand-atlantean-teal)",
-    stars: "1.5K",
     href: "https://github.com/frankxai/arcanea/tree/main/packages/guardian-memory",
   },
   {
@@ -33,7 +30,6 @@ export const PACKAGES = [
     description: "Swarm communication, 12 Spirits workers, MCP bridge",
     tags: ["MCP", "Swarm", "Workers", "Rituals"],
     color: "var(--arc-brand-arcanean-gold)",
-    stars: "1.2K",
     href: "https://github.com/frankxai/arcanea/tree/main/packages/rituals",
   },
   {
@@ -41,7 +37,6 @@ export const PACKAGES = [
     description: "Prompt engine, asset vault, curator, sessions",
     tags: ["Creative", "Pipeline", "Prompt", "Assets"],
     color: "var(--arc-brand-cosmic-blue)",
-    stars: "980",
     href: "https://github.com/frankxai/arcanea/tree/main/packages/creative-pipeline",
   },
   {
@@ -49,7 +44,6 @@ export const PACKAGES = [
     description: "Multi-agent workflow orchestration",
     tags: ["Orchestration", "Multi-agent", "Workflow", "Coordination"],
     color: "var(--arc-void)",
-    stars: "756",
     href: "https://github.com/frankxai/arcanea/tree/main/packages/swarm-coordinator",
   },
 ];
