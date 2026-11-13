@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import navLogo from "@/assets/brand/arcanea-mark.jpg";
-import { track } from "@vercel/analytics";
+import { trackCtaClick } from "@/lib/analytics/track";
 import {
   PhPaperPlane,
   PhPencil,
@@ -93,7 +93,7 @@ export function HeroChatBox() {
   // the creator's and never leaves the page as analytics.
   const submit = () => {
     if (!message.trim()) return;
-    track("home_hero_submit");
+    trackCtaClick({ cta: "hero_submit", location: "home_hero" });
     goToChat(message);
   };
 
@@ -193,7 +193,10 @@ export function HeroChatBox() {
         {STARTER_CARDS.map((card) => {
           const Icon = card.icon;
           const handleClick = () => {
-            track("home_hero_chip", { chip: card.label });
+            trackCtaClick({
+              cta: `chip_${card.label.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+              location: "home_hero",
+            });
             if ("href" in card && card.href) {
               const sep = card.href.includes("?") ? "&" : "?";
               router.push(
