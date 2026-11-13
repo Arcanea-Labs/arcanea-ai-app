@@ -1,5 +1,3 @@
-
-
 ## Correctness and security review
 
 Follow AGENTS.md's review and local release rules. Report actionable findings
