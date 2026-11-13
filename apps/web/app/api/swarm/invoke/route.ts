@@ -39,10 +39,17 @@ import {
   claudeFallbackOptions,
   isRefusal,
 } from "@/lib/ai/claude-safeguards";
+import {
+  getClientIdentifier,
+  checkRateLimit,
+} from "@/lib/rate-limit/rate-limiter";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
+
+// Every request fans out to several platform-key model calls.
+const SWARM_RATE_LIMIT = { maxRequests: 5, windowMs: 60_000 };
 
 interface SwarmRequest {
   input: string;
@@ -69,6 +76,22 @@ interface Contribution {
 
 export async function POST(req: NextRequest) {
   const started = Date.now();
+
+  const rl = checkRateLimit(
+    `swarm:invoke:${getClientIdentifier(req)}`,
+    SWARM_RATE_LIMIT,
+  );
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded. Try again in a minute." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rl.resetTime - Date.now()) / 1000)),
+        },
+      },
+    );
+  }
 
   let body: SwarmRequest;
   try {

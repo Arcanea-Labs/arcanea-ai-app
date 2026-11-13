@@ -14,8 +14,31 @@ import {
   getArtDirection,
 } from "@/lib/worlds/image-gen";
 import type { GeminiResponsePart } from "@/lib/database/types/world-graph-types";
+import {
+  getClientIdentifier,
+  checkRateLimit,
+} from "@/lib/rate-limit/rate-limiter";
+
+// Each request is a platform-key image generation call.
+const IMAGE_RATE_LIMIT = { maxRequests: 5, windowMs: 60_000 };
 
 export async function POST(request: NextRequest) {
+  const rl = checkRateLimit(
+    `worlds:generate-image:${getClientIdentifier(request)}`,
+    IMAGE_RATE_LIMIT,
+  );
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded. Try again in a minute." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rl.resetTime - Date.now()) / 1000)),
+        },
+      },
+    );
+  }
+
   try {
     const body = await request.json();
     const { type, blueprint, style } = body;

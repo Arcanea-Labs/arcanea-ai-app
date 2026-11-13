@@ -2,7 +2,6 @@
 "use client";
 
 import { m } from "framer-motion";
-import Link from "next/link";
 
 // ---------------------------------------------------------------------------
 // AppTile — Canva-Apps-equivalent. Installable connector tile for the
@@ -19,7 +18,6 @@ export interface AppTileProps {
   installed?: boolean;
   status?: "live" | "beta" | "soon";
   capabilities?: string[];
-  href?: string;
   index?: number;
 }
 
@@ -44,7 +42,6 @@ export function AppTile({
   installed = false,
   status = "live",
   capabilities,
-  href = "#",
   index = 0,
 }: AppTileProps) {
   return (
@@ -60,7 +57,8 @@ export function AppTile({
       whileHover={{ y: -3 }}
       className="group relative rounded-2xl bg-white/[0.025] border border-white/[0.06] hover:border-white/[0.14] transition-all duration-300 overflow-hidden"
     >
-      <Link href={href} className="block p-5">
+      {/* No per-app pages exist yet, so a tile is not a link. */}
+      <div className="p-5">
         {/* Hover glow */}
         <div
           className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -138,7 +136,7 @@ export function AppTile({
             </div>
           )}
         </div>
-      </Link>
+      </div>
     </m.div>
   );
 }

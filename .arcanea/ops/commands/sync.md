@@ -1,10 +1,11 @@
 # Sync Command
 
-Sync shared .arcanea/ intelligence between the OSS repo (frankxai/arcanea) and the product repo (frankxai/arcanea-ai-app).
+Sync shared .arcanea/ intelligence between the OSS repo (frankxai/arcanea) and the product repo (Arcanea-Labs/arcanea-ai-app).
 
 ## Rule
 
 The OSS repo is the CANONICAL SOURCE for:
+
 - `.arcanea/ops/` — agent bootstrap, ao protocol, shared commands
 - `.arcanea/lore/` — canon, guardians, mythology
 - `.arcanea/config/` — design tokens, model routing, voice
@@ -14,6 +15,7 @@ The OSS repo is the CANONICAL SOURCE for:
 - `.arcanea/prompts/` — luminor engineering kernel
 
 The product repo (arcanea-ai-app) is the CANONICAL SOURCE for:
+
 - `planning-with-files/*` — execution control plane
 - `docs/ops/*` — handovers, branch matrix, action logs
 - `apps/web/` — the webapp
@@ -22,6 +24,7 @@ The product repo (arcanea-ai-app) is the CANONICAL SOURCE for:
 - `.arcanea/sis/` — SIS bridge (product-specific)
 
 Agent-specific overlays go to their dedicated repos:
+
 - `.claude/commands/`, `.claude/skills/` → `frankxai/claude-arcanea`
 - `.opencode/agents/`, `.opencode/commands/` → `frankxai/oh-my-arcanea`
 - `.agents/claude-*-index.md`, `.agents/skills/claude-native-bridge/` → portable Codex/OpenCode bridge in this repo
@@ -36,11 +39,13 @@ pnpm agents:bridge:check
 ## Sync Steps
 
 1. Identify which files changed in `.arcanea/ops/`, `.arcanea/scripts/`, `.arcanea/lore/`, `.arcanea/config/`:
+
 ```bash
 git diff --name-only HEAD~1 -- .arcanea/ops .arcanea/scripts .arcanea/lore .arcanea/config .arcanea/skills .arcanea/agents .arcanea/prompts
 ```
 
 2. For each changed file, push to the OSS repo:
+
 ```bash
 cat "{file}" | base64 -w0 > /tmp/b64.txt
 gh api "repos/frankxai/arcanea/contents/{file}" \
@@ -50,10 +55,12 @@ gh api "repos/frankxai/arcanea/contents/{file}" \
 ```
 
 3. If agent-specific files changed, push to the right overlay repo:
+
 - `.claude/` changes → `frankxai/claude-arcanea`
 - `.opencode/` changes → `frankxai/oh-my-arcanea`
 
 4. If shared-ops changed, also update:
+
 - `frankxai/arcanea-orchestrator` (shared-ops/)
 - `frankxai/arcanea-flow` (shared-ops/)
 - `frankxai/oh-my-arcanea` (shared-ops/)
