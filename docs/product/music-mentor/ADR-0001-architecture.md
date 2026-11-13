@@ -3,9 +3,11 @@
 Status: proposed, pending architecture review. Date: 2026-11-01.
 
 ## Context
+
 Existing Arcanea Academy onboarding and Luminor configuration are not yet a verified production music tutoring path. GenCreator has a browser BYOK studio agent, not a proven music DSP API. Starlight estate registry is authoritative for runtime, storage and technology decisions.
 
 ## Decision
+
 1. Extend existing Arcanea Academy web experience at /academy/music; avoid a new subdomain or duplicate auth stack for v1.
 2. Use Next.js and existing auth conventions; store learner/attempt metadata in existing approved Supabase Postgres schema after migration review; store consented media in approved Vercel Blob with private access controls and retention policy.
 3. Use an asynchronous analysis job: signed upload -> persisted attempt -> queued analysis -> deterministic DSP/score alignment -> structured observations -> AI mentor explanation -> user-visible result. Never block a web request on long processing.
@@ -14,6 +16,7 @@ Existing Arcanea Academy onboarding and Luminor configuration are not yet a veri
 6. Use a stable API contract so GenCreator may later reuse the practice analysis capability without importing Arcanea canon or duplicating storage.
 
 ## Rejected alternatives
+
 - Standalone music.academy domain: fragments identity and discovery.
 - Avatar-first MVP: high cost and weak proof of learning outcomes.
 - Pure LLM assessment: unreliable for precise pitch/timing.
@@ -21,4 +24,5 @@ Existing Arcanea Academy onboarding and Luminor configuration are not yet a veri
 - Immediate cross-repo implementation: contracts and privacy controls require review first.
 
 ## Risks / decisions pending
+
 Audio pipeline library and execution runtime require current vendor documentation and benchmark; auth and storage conventions must be confirmed in app; canonical Luminor identity must be reconciled; rights/retention and youth-user handling require policy review. No deployment authorized.
