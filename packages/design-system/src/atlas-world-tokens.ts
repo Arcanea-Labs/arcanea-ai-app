@@ -1,0 +1,26 @@
+/** Content-specific survey palette. Controls continue to use Arcanea UI roles. */
+export const atlasWorld = {
+  "void": "#0b0e14",
+  "surface": "#10171d",
+  "terrain": "#0b181b",
+  "ground": "#223c35",
+  "lowland": "#142723",
+  "summit": "#acb585",
+  "forest": "#7c9c79",
+  "grid": "#9dbaad",
+  "water": "#102b30",
+  "waterEdge": "#427076",
+  "waterLight": "#5a8b8d",
+  "majorContour": "#a6b68a",
+  "minorContour": "#799b79",
+  "mapLabel": "#d3dfd3",
+  "earthLabel": "#b8c8ad",
+  "trail": "#9fe9cd",
+  "trailHalo": "#7fffd4",
+  "pin": "#b1d8c7",
+  "selectedPin": "#b1eed4",
+  "pinBackground": "#091d1c",
+  "gold": "#ffd700",
+  "compass": "#aebdb1",
+  "compassShadow": "#5d716c"
+} as const;

@@ -1,0 +1,43 @@
+{
+  "environment": "Actual Atlas React components in isolated browser harness; full Next.js integration requires hosted preview",
+  "checks": [
+    {
+      "name": "Reflow 375",
+      "pass": true
+    },
+    {
+      "name": "Reflow 768",
+      "pass": true
+    },
+    {
+      "name": "Reflow 1440",
+      "pass": true
+    },
+    {
+      "name": "Chapter-one spoiler boundary",
+      "pass": true
+    },
+    {
+      "name": "Reader contradiction",
+      "pass": true
+    },
+    {
+      "name": "Character knowledge boundary",
+      "pass": true
+    },
+    {
+      "name": "R3F canvas",
+      "pass": true
+    },
+    {
+      "name": "Canon remains unplaced",
+      "pass": true
+    },
+    {
+      "name": "Basemap consent gate",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "font": "Geist, sans-serif"
+}

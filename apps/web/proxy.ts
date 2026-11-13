@@ -4,6 +4,11 @@ import { updateSession } from "@/lib/supabase/middleware";
 import { getOAuthRecoveryPath } from "@/lib/auth/redirect";
 
 export async function proxy(request: NextRequest) {
+  // This exact read-only endpoint serves public, server-projected canon excerpts and synthetic fixtures.
+  // Private Atlas worlds and every mutation keep the existing session gate.
+  if (request.nextUrl.pathname === '/api/atlas/snapshot' && request.method === 'GET') {
+    return NextResponse.next({ request: { headers: request.headers } });
+  }
   // Redirect non-www to www (permanent 308) so all client-side fetches
   // (including streamed POST requests to /api/ai/chat) go directly to
   // the canonical origin without an extra 307 hop.
