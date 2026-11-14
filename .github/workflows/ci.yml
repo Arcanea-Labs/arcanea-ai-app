@@ -388,7 +388,9 @@ jobs:
           node scripts/build-creator-starters.mjs --check
 
       - name: Verify Atlas chronology, visibility, consent and spoiler boundaries
-        run: node --import tsx --test tests/atlas/engine.test.ts
+        run: |
+          node --import tsx --test tests/atlas/engine.test.ts
+          node --test tests/atlas/csp.test.cjs
 
       - name: Verify timeline geography against the Realm Graph
         run: node --test packages/world-engine/tests/geography.test.mjs

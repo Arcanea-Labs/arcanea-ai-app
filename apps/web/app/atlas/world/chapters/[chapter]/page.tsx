@@ -1,4 +1,4 @@
-import Link from 'next/link';
+/* eslint-disable @next/next/no-html-link-for-pages -- Full document navigation applies and removes the Atlas-only CSP. */
 import { notFound } from 'next/navigation';
 import { simulation } from '@/lib/atlas/fixtures';
 import { reconstruct } from '@arcanea/world-engine/atlas-world';
@@ -14,5 +14,5 @@ export default async function SyntheticChapter({params,searchParams}:{params:Pro
   const branchId=query.branch==='alternate'?'alternate':'main';
   const state=reconstruct(simulation,{role:perspective,maxChapter:chapter,...(perspective==='character'?{characterId:'witness-a'}:{})},{chapter,validAt:100,knownAt,branchId});
   const records=state.records.filter(r=>r.revealChapter===chapter);
-  return <div className="atlas-root"><article className="atlas-reading-page"><Link href={`/atlas/world?${back}`}>← Locate this chapter in the world</Link><p className="atlas-eyebrow">SYNTHETIC CHAPTER {chapter} · {perspective==='character'?'WITNESS A':'READER'} · {branchId==='alternate'?'ALTERNATE CROSSING':'ORIGINAL PATH'}</p><h1>{['Arrival','The ascent','Two accounts','The crossing','Afterward'][chapter-1]}</h1><p>This is a synthetic chapter record, not an Arcanea manuscript or approved narrative.</p>{records.map(r=><section key={r.id}><h2>{r.title}</h2><p>{r.detail}</p><small>World time {r.validFrom} · {r.fact.kind} · source-backed test fixture</small></section>)}{!records.length && <p>No additional reader-visible event is revealed in this chapter.</p>}</article></div>;
+  return <div className="atlas-root"><article className="atlas-reading-page"><a href={`/atlas/world?${back}`}>← Locate this chapter in the world</a><p className="atlas-eyebrow">SYNTHETIC CHAPTER {chapter} · {perspective==='character'?'WITNESS A':'READER'} · {branchId==='alternate'?'ALTERNATE CROSSING':'ORIGINAL PATH'}</p><h1>{['Arrival','The ascent','Two accounts','The crossing','Afterward'][chapter-1]}</h1><p>This is a synthetic chapter record, not an Arcanea manuscript or approved narrative.</p>{records.map(r=><section key={r.id}><h2>{r.title}</h2><p>{r.detail}</p><small>World time {r.validFrom} · {r.fact.kind} · source-backed test fixture</small></section>)}{!records.length && <p>No additional reader-visible event is revealed in this chapter.</p>}</article></div>;
 }

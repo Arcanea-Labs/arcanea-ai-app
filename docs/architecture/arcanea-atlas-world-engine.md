@@ -72,13 +72,16 @@ pnpm --filter @arcanea/schemas build
 pnpm --filter @arcanea/design-system build
 pnpm --filter @arcanea/world-engine build
 node --import tsx --test tests/atlas/engine.test.ts
+node --test tests/atlas/csp.test.cjs
 pnpm --dir apps/web exec tsc -p tsconfig.atlas-world.json --noEmit
 pnpm --dir apps/web exec eslint components/atlas app/atlas/world app/api/atlas lib/atlas proxy.ts --max-warnings=0
 ```
 
-`tests/atlas/database.sql` runs after the migration inside a transaction and rolls back every test identity and world. It tests direct RPCs, approval, replay, reader and cross-tenant access, timestamp format and PostGIS consent/revocation. The migration itself was syntax- and behavior-tested on the connected project inside rollback transactions; this is not a claim of production schema activation.
+`tests/atlas/database.sql` runs after the migration inside a transaction and rolls back every test identity and world. It tests direct RPCs, approval, replay, reader and cross-tenant access, timestamp format and PostGIS consent/revocation. After rollback verification, the additive schema was activated on existing Arcanea project `hcfhyssdzphudaqatxbk` via `apply_migration`, ledger `20261114000655`. The repository migration filename matches that ledger. Post-activation database regressions passed inside rollback; no synthetic identities or worlds were retained. PostGIS3.3.7 and pg_jsonschema0.3.3 are active. Existing world/book/auth tables and policies were not modified.
 
-Browser evidence under `docs/evidence/atlas-world/` identifies its environment. The isolated harness uses the actual React components, schema and reconstruction sources; it demonstrates responsive reflow, chapter/perspective behavior, R3F and consent gating. It does not establish full Next.js/auth/deployment acceptance. Full app compilation exceeded this workspace's memory; hosted preview and CI remain required before merge. The Node 24 Tailwind `createRequire` repair is necessary for loading the existing configuration.
+Security advisors report four Atlas `rls_enabled_no_policy` informational notices and nine signed-in `SECURITY DEFINER` RPC warnings. These are intentional: direct schema/table access is revoked and RLS denies it; the RPCs are the narrow authenticated boundary with explicit ownership/grant checks and empty search paths. Do not add permissive policies to silence these findings. Review guidance: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy .
+
+Browser evidence under `docs/evidence/atlas-world/` identifies its environment. The isolated harness uses the actual React components, schema and reconstruction sources; it demonstrates responsive reflow, chapter/perspective behavior, R3F and consent gating. It does not establish full Next.js/auth/deployment acceptance. The hosted Vercel preview built all9 tasks successfully at source742d5abd; Next type checking remains enabled. Live chapter/API checks passed on that deployment. Final navigation/GPU fallback repairs require receiving validation at the final preview source. The Node 24 Tailwind `createRequire` repair is necessary for loading the existing configuration.
 
 Rollback before merge: delete no production data; abandon the branch/preview. After a normal merge: revert the reviewed application commit and redeploy the previous accepted Vercel source. Keep private database records; revoke the new RPC execution grants to disable writes while retaining recovery data. Do not drop a populated schema as an automatic rollback.
 

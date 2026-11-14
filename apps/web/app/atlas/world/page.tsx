@@ -1,10 +1,10 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- Full document navigation applies and removes the Atlas-only CSP. */
 import type { Metadata } from 'next';
 import { AtlasExperience } from '@/components/atlas/atlas-experience';
 import { simulation } from '@/lib/atlas/fixtures';
 import { reconstruct } from '@arcanea/world-engine/atlas-world';
 import { World, type Principal } from '@arcanea/schemas/atlas-world';
 import { atlasRpc } from '@/lib/atlas/store';
-import Link from 'next/link';
 import './atlas.css';
 
 export const metadata: Metadata = { title: 'Atlas · Arcanea', description: 'Explore place, time and perspective in a source-backed literary world.', robots: { index: false, follow: false } };
@@ -18,7 +18,7 @@ export default async function AtlasPage({ searchParams }: { searchParams: Promis
     if (!/^[a-f0-9-]{36}$/.test(params.world)) return <p>Invalid world identifier.</p>;
     const branch = params.branch || 'main', knownAt = new Date().toISOString();
     const result = await atlasRpc('atlas_world_context', { p_world: params.world, p_chapter: chapter, p_branch: branch, p_valid: 100, p_known: knownAt });
-    if (result.error) return <div className="atlas-root atlas-review-page"><h1>Private world</h1><p>Sign in with an account granted access to this world.</p><Link href="/auth/login">Sign in to Arcanea</Link></div>;
+    if (result.error) return <div className="atlas-root atlas-review-page"><h1>Private world</h1><p>Sign in with an account granted access to this world.</p><a href="/auth/login">Sign in to Arcanea</a></div>;
     const value = result.data as { document: unknown; principal: Principal };
     const document = World.safeParse(value.document);
     if (!document.success) return <p>The world packet could not be validated.</p>;

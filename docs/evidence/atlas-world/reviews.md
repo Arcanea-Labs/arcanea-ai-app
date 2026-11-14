@@ -21,3 +21,9 @@ The actual-component browser harness subsequently passed 13 checks with zero pag
 ## Receiving boundary
 
 No reviewer approved merge or claimed production readiness. Full application build, exact-source hosted route behavior and the authenticated private-world browser loop remain release requirements. The first opt-in hosted install found missing MapLibre lock metadata; the repair restores its full25-node dependency closure without changing existing dependency versions. Hosted receiving verification determines the result.
+
+## Final scoped re-review
+
+After the hosted application built at742d5abd, cloud-browser testing exposed GPU context creation failure escaping the Canvas fallback. A local `MapBoundary` now preserves index/chronology and offers a2D recovery. The actual-component harness passed15 checks with no uncaught page errors, including forced GPU absence and recovery. Existing PNG evidence predates the final checkbox/timestamp repairs; hosted evidence is recorded separately.
+
+Engineering independently reran17/17 engine tests,2/2 CSP/navigation tests, focused TypeScript and four timestamp-equivalence cases. No remaining source blocker identified in the final scoped changes. Design found no new P1/P2 source blocker. Both reviews explicitly distinguish source/component evidence from hosted acceptance, context-loss behavior and merge approval. Full-document anchors are deliberate: Next client navigation cannot replace document CSP.

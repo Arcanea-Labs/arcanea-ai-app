@@ -10,7 +10,7 @@ Decision: preserve `/atlas` and extend the existing schema/world-engine/design p
 
 Acceptance: compiled changed scope, chronology/observation/spatial/access/spoiler tests, direct database rollback regressions, 375/768/1440 visual evidence, separate engineering/design review, exact-source hosted preview and receiving checks. No merge until applicable checks and reviews pass.
 
-Current evidence: see `docs/architecture/arcanea-atlas-world-engine.md` and `docs/evidence/atlas-world/`. Early engineering review identified timestamp, disclosure and approval lifecycle defects; those have regression repairs. A second review identified branch-local supersession and SQL hidden-reference gaps; these are being tested before the final verdict. Evidence from the isolated component browser is labeled as such. The full application build is not claimed from local package builds.
+Current evidence: see architecture and evidence documents. Engine17/17, CSP/navigation2/2, focused TypeScript/lint and actual-component browser15checks pass. Separate engineering/design scoped reviews found no remaining source blockers. The hosted source742d5abd built9/9tasks and live chapter/API checks passed. A final hosted pass must cover the subsequently repaired navigation CSP, GPU isolation and checkbox sizing. The private additive schema is active on Arcanea Supabase, ledger20261114000655; post-activation SQL regressions passed inside rollback. No synthetic DB data remains. The private authenticated browser loop is not yet established.
 
 Budget: existing provider accounts and entitlements. No paid project/branch/subscription/domain/bucket creation; no generation calls. A preview is authorized; production alias promotion and canonical lore locking remain separate owner actions.
 

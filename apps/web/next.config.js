@@ -140,6 +140,18 @@ const nextConfig = {
   async headers() {
     const { scriptHash } = await import('../../packages/arcanea-creator-starters/scripts/build.mjs');
     const starterScriptHash = await scriptHash();
+    const appContentSecurityPolicy = [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vercel.live",
+              "style-src 'self' 'unsafe-inline'",
+              `img-src 'self' data: blob: https://imgen.x.ai https://*.supabase.co https://avatars.githubusercontent.com https://lh3.googleusercontent.com https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ''}`,
+              `media-src 'self' https://*.supabase.co https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ''}`,
+              "font-src 'self' data:",
+              `connect-src 'self' https://imgen.x.ai https://*.supabase.co wss://*.supabase.co https://generativelanguage.googleapis.com https://openrouter.ai https://api.anthropic.com https://va.vercel-scripts.com https://vercel.live${localSupabaseOrigin ? ` ${localSupabaseOrigin} ${localSupabaseWebSocket}` : ''}`,
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; ');
     return [
       {
         source: '/(.*)',
@@ -152,20 +164,17 @@ const nextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(self), geolocation=(), interest-cohort=()' },
           {
             key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vercel.live",
-              "style-src 'self' 'unsafe-inline'",
-              `img-src 'self' data: blob: https://imgen.x.ai https://*.supabase.co https://avatars.githubusercontent.com https://lh3.googleusercontent.com https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ''}`,
-              `media-src 'self' https://*.supabase.co https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ''}`,
-              "font-src 'self' data:",
-              `connect-src 'self' https://imgen.x.ai https://*.supabase.co wss://*.supabase.co https://generativelanguage.googleapis.com https://openrouter.ai https://api.anthropic.com https://va.vercel-scripts.com https://vercel.live${localSupabaseOrigin ? ` ${localSupabaseOrigin} ${localSupabaseWebSocket}` : ''}`,
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self'",
-            ].join('; '),
+            value: appContentSecurityPolicy,
           },
         ],
+      },
+      // The consent-gated geographic view needs only this tile origin and its locally generated worker.
+      // Keep these capabilities scoped to this exact page; no geolocation permission is granted.
+      {
+        source: '/atlas/world',
+        headers: [{ key: 'Content-Security-Policy', value: appContentSecurityPolicy
+          .replace("img-src 'self'", "img-src 'self' https://tile.openstreetmap.org")
+          .replace("connect-src 'self'", "connect-src 'self' https://tile.openstreetmap.org") + "; worker-src 'self' blob:" }],
       },
       // Standalone examples use Google Fonts but no provider or network form.
       // This final route-specific policy leaves the app-wide policy unchanged.

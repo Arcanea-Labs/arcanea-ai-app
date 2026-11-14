@@ -52,6 +52,14 @@
     {
       "name": "Native dialog Escape closes and restores context",
       "pass": true
+    },
+    {
+      "name": "Unavailable GPU is isolated from chronology and index",
+      "pass": true
+    },
+    {
+      "name": "Unavailable GPU returns to working 2D map",
+      "pass": true
     }
   ],
   "errors": [],

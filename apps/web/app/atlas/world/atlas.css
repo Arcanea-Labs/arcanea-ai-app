@@ -71,7 +71,7 @@
 .atlas-map-tools button:hover{background:color-mix(in srgb, var(--atlas-terrain-trailHalo) 8.24%, transparent)}
 .atlas-layerbar{display:flex;gap:17px;align-items:center;height:43px;padding:0 17px;border-top:1px solid var(--atlas-line);background:var(--arc-cosmic-deep);font-size:9px;color:var(--arc-text-secondary)}
 .atlas-layerbar label{display:flex;gap:6px;align-items:center;cursor:pointer;min-height:28px}
-.atlas-layerbar input{width:11px;height:11px;accent-color:var(--atlas-terrain-trailHalo)}
+.atlas-layerbar input{width:16px;height:16px;min-width:16px;min-height:16px;padding:0;appearance:auto;accent-color:var(--atlas-terrain-trailHalo)}
 .atlas-map-note{margin-left:auto;font-size:8px;color:var(--arc-text-secondary)}
 .atlas-inspector{border-left:1px solid var(--atlas-line);padding:0 21px 21px;background:var(--arc-cosmic-deep);min-width:0;max-height:640px;overflow:auto;scrollbar-width:thin}
 .atlas-inspector-heading{height:53px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--atlas-line);margin:0 -21px 23px;padding:0 21px;color:var(--atlas-muted);font-size:10px}
