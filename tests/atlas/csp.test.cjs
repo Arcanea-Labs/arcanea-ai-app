@@ -30,6 +30,6 @@ test("Atlas policy boundary uses document links", () => {
   ]) {
     const source = fs.readFileSync(file, "utf8");
     assert.ok(!/<Link[^>]*href=.*atlas\/world/.test(source), file);
-    assert.ok(source.includes("<a "), file);
+    assert.ok(/<a\b/.test(source), file);
   }
 });
