@@ -1,11 +1,11 @@
 {
   "environment": "Hosted full Next.js application",
-  "source": "4df366187fe1828425b7008a06ea32806ced646e",
-  "deployment": "dpl_CHPeXo7m7MTkkd83DB3Di2Bicfrx",
-  "capture": "Cloudflare Browser Rendering screenshot endpoint, settled atlas-map-svg selector",
+  "source": "57f5ab7424fb4092a65c76228862f09eaa85b01e",
+  "deployment": "dpl_63KDzBTwcJHhix68N7e3PseiU7C5",
+  "capture": "Cloudflare Browser Rendering settled viewport screenshot, no selector scrolling",
   "widths": [
     375,
     1440
   ],
-  "scope": "Actual deployed initial map. Does not prove authenticated flows or hosted 3D/MapLibre graphics. Narrow-screen recorded-time and shared-page CSS fixes are later source changes."
+  "scope": "Actual initial deployed map including shared navigation. Not authenticated or GPU-enabled interaction evidence."
 }
