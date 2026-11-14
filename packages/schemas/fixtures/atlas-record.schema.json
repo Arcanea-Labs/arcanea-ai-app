@@ -20,10 +20,7 @@
       "type": "number"
     },
     "validTo": {
-      "type": [
-        "number",
-        "null"
-      ]
+      "type": ["number", "null"]
     },
     "recordedFrom": {
       "type": "string",
@@ -51,10 +48,7 @@
       "type": "string"
     },
     "chapterHref": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"]
     },
     "title": {
       "type": "string"
@@ -64,11 +58,7 @@
     },
     "audience": {
       "type": "string",
-      "enum": [
-        "reader",
-        "character",
-        "author"
-      ]
+      "enum": ["reader", "character", "author"]
     },
     "knownBy": {
       "type": "array",
@@ -85,11 +75,7 @@
     },
     "status": {
       "type": "string",
-      "enum": [
-        "approved",
-        "provisional",
-        "synthetic"
-      ]
+      "enum": ["approved", "provisional", "synthetic"]
     },
     "fact": {
       "oneOf": [
@@ -110,11 +96,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "kind",
-            "entityId",
-            "locationId"
-          ],
+          "required": ["kind", "entityId", "locationId"],
           "additionalProperties": false
         },
         {
@@ -134,12 +116,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "kind",
-            "entityId",
-            "predicate",
-            "value"
-          ],
+          "required": ["kind", "entityId", "predicate", "value"],
           "additionalProperties": false
         },
         {

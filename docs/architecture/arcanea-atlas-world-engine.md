@@ -23,11 +23,11 @@ Maker owns the implementation; independent engineering and design reviewers judg
 
 ## Three experience directions
 
-| Direction | Composition and type | Scene and interaction | Decision |
-| --- | --- | --- | --- |
-| Cartographic reading desk | Persistent map, compact index and evidence inspector; Geist controls and occasional editorial accent | 2D first; chapter/perspective reconstruct the same scene; optional demand-rendered 3D | Selected: keeps source and uncertainty beside the geography |
-| Cinematic world entry | Full-screen 3D, large editorial opening, controls disclosed after entry | Orbit and spatial reveal first; evidence in a drawer | Deferred: increases GPU and navigation cost before the reader understands the scene |
-| Chronology ledger | Dense event table, horizontal time strip, small map inset | Compare valid time and knowledge time before spatial exploration | Retained as an author workflow direction; weaker as the first literary experience |
+| Direction                 | Composition and type                                                                                 | Scene and interaction                                                                 | Decision                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Cartographic reading desk | Persistent map, compact index and evidence inspector; Geist controls and occasional editorial accent | 2D first; chapter/perspective reconstruct the same scene; optional demand-rendered 3D | Selected: keeps source and uncertainty beside the geography                         |
+| Cinematic world entry     | Full-screen 3D, large editorial opening, controls disclosed after entry                              | Orbit and spatial reveal first; evidence in a drawer                                  | Deferred: increases GPU and navigation cost before the reader understands the scene |
+| Chronology ledger         | Dense event table, horizontal time strip, small map inset                                            | Compare valid time and knowledge time before spatial exploration                      | Retained as an author workflow direction; weaker as the first literary experience   |
 
 The synthetic contour landscape is procedural scene content, not evidence of Arcanea geography. No external imagery is required. All palette values live in the existing design-system package. The current app already loads Geist/Instrument Serif; the route reuses those fonts.
 
@@ -92,3 +92,7 @@ No generation API was called and no new paid service was purchased. This slice a
 Planning workload, not a measurement: 1,000 monthly readers × 10 snapshots × 50 KB is roughly 0.5 GB API transfer, plus cacheable application assets. A 60 ms reconstruction budget would be 10 CPU minutes for those 10,000 calls; actual deployed latency and database CPU must be measured. Keep the first pilot within current entitlements and a €5 incremental usage target, then set provider alerts using observed bills. Cloudflare browser-rendering evidence requests were bounded; startup-credit coverage was not assumed.
 
 Source links: https://r3f.docs.pmnd.rs/getting-started/installation · https://maplibre.org/maplibre-gl-js/docs/ · https://supabase.com/docs/guides/database/extensions/postgis · https://supabase.com/docs/guides/database/extensions/pg_jsonschema · https://operations.osmfoundation.org/policies/tiles/
+
+## Final receiving status
+
+See `docs/evidence/atlas-world/delivery-receipt.md` for hosted build/CI evidence and the interrupted authenticated-test boundary. The earlier rollback-only statement applies to SQL regression fixtures; a separate HTTP fixture account was secured after interruption, with deletion unverified. PR remains draft until final receiving and authenticated browser checks pass.

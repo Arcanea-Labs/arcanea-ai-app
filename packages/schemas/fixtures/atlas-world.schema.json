@@ -7,11 +7,7 @@
     },
     "namespace": {
       "type": "string",
-      "enum": [
-        "arcanea",
-        "starlight",
-        "simulation"
-      ]
+      "enum": ["arcanea", "starlight", "simulation"]
     },
     "title": {
       "type": "string"
@@ -57,10 +53,7 @@
           "audience": {
             "default": "reader",
             "type": "string",
-            "enum": [
-              "reader",
-              "author"
-            ]
+            "enum": ["reader", "author"]
           }
         },
         "required": [
@@ -88,20 +81,11 @@
           },
           "namespace": {
             "type": "string",
-            "enum": [
-              "arcanea",
-              "starlight",
-              "simulation"
-            ]
+            "enum": ["arcanea", "starlight", "simulation"]
           },
           "kind": {
             "type": "string",
-            "enum": [
-              "character",
-              "location",
-              "region",
-              "portal"
-            ]
+            "enum": ["character", "location", "region", "portal"]
           },
           "name": {
             "type": "string",
@@ -141,14 +125,7 @@
                         "const": "m"
                       }
                     },
-                    "required": [
-                      "system",
-                      "frame",
-                      "x",
-                      "y",
-                      "z",
-                      "unit"
-                    ],
+                    "required": ["system", "frame", "x", "y", "z", "unit"],
                     "additionalProperties": false
                   },
                   {
@@ -172,11 +149,7 @@
                         "type": "number"
                       }
                     },
-                    "required": [
-                      "system",
-                      "longitude",
-                      "latitude"
-                    ],
+                    "required": ["system", "longitude", "latitude"],
                     "additionalProperties": false
                   }
                 ]
@@ -187,10 +160,7 @@
             ]
           },
           "parentId": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "sourceIds": {
             "minItems": 1,
@@ -202,11 +172,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "approved",
-              "provisional",
-              "synthetic"
-            ]
+            "enum": ["approved", "provisional", "synthetic"]
           },
           "revealChapter": {
             "default": 0,
@@ -217,10 +183,7 @@
           "audience": {
             "default": "reader",
             "type": "string",
-            "enum": [
-              "reader",
-              "author"
-            ]
+            "enum": ["reader", "author"]
           }
         },
         "required": [
@@ -251,16 +214,10 @@
             "type": "string"
           },
           "parentId": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "forkAt": {
-            "type": [
-              "number",
-              "null"
-            ]
+            "type": ["number", "null"]
           },
           "revealChapter": {
             "default": 0,
@@ -271,10 +228,7 @@
           "audience": {
             "default": "reader",
             "type": "string",
-            "enum": [
-              "reader",
-              "author"
-            ]
+            "enum": ["reader", "author"]
           }
         },
         "required": [
@@ -311,10 +265,7 @@
             "type": "number"
           },
           "validTo": {
-            "type": [
-              "number",
-              "null"
-            ]
+            "type": ["number", "null"]
           },
           "recordedFrom": {
             "type": "string",
@@ -342,10 +293,7 @@
             "type": "string"
           },
           "chapterHref": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "title": {
             "type": "string"
@@ -355,11 +303,7 @@
           },
           "audience": {
             "type": "string",
-            "enum": [
-              "reader",
-              "character",
-              "author"
-            ]
+            "enum": ["reader", "character", "author"]
           },
           "knownBy": {
             "type": "array",
@@ -376,11 +320,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "approved",
-              "provisional",
-              "synthetic"
-            ]
+            "enum": ["approved", "provisional", "synthetic"]
           },
           "fact": {
             "oneOf": [
@@ -401,11 +341,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "kind",
-                  "entityId",
-                  "locationId"
-                ],
+                "required": ["kind", "entityId", "locationId"],
                 "additionalProperties": false
               },
               {
@@ -425,12 +361,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "kind",
-                  "entityId",
-                  "predicate",
-                  "value"
-                ],
+                "required": ["kind", "entityId", "predicate", "value"],
                 "additionalProperties": false
               },
               {

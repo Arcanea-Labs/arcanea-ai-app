@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- Full document navigation establishes the Atlas-only CSP. */
 import { Metadata } from "next";
 import {
   getCanonicalRealms,
@@ -31,17 +32,22 @@ export default function AtlasPage() {
 
   return (
     <>
-    <div className="mx-auto max-w-7xl px-6 pt-8 text-sm">
-      <a className="text-[var(--arc-brand-atlantean-teal)] underline underline-offset-4" href="/atlas/world">Explore place, time and perspective in the world engine →</a>
-    </div>
-    <AtlasClient
-      initialRealms={realms}
-      linguisticFamilies={linguisticFamilies}
-      epochs={epochs}
-      guardians={guardians}
-      monomythStages={monomythStages}
-      geographicAtlas={projectAtlasStaging(atlasFixture)}
-    />
+      <div className="mx-auto max-w-7xl px-6 pt-8 text-sm">
+        <a
+          className="text-[var(--arc-brand-atlantean-teal)] underline underline-offset-4"
+          href="/atlas/world"
+        >
+          Explore place, time and perspective in the world engine →
+        </a>
+      </div>
+      <AtlasClient
+        initialRealms={realms}
+        linguisticFamilies={linguisticFamilies}
+        epochs={epochs}
+        guardians={guardians}
+        monomythStages={monomythStages}
+        geographicAtlas={projectAtlasStaging(atlasFixture)}
+      />
     </>
   );
 }

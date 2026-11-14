@@ -4,15 +4,15 @@ Status: SYNTHETIC / PROVISIONAL. This packet is an engine test, not approved Arc
 
 Local frame: synthetic-survey, metres, X to the right and Y downward in the test presentation. The terrain is a procedural illustration and has no canonical authority.
 
-| Test identity | Kind | Local X | Local Y |
-| --- | --- | --- | --- |
-| Survey basin | location | 235 | 405 |
-| Ridge station | location | 465 | 270 |
-| Eastern crossing | location | 690 | 360 |
-| Far station | location | 820 | 170 |
-| Test portal | portal | 700 | 325 |
-| Witness A | synthetic observer | unknown | unknown |
-| Witness B | synthetic observer | unknown | unknown |
+| Test identity    | Kind               | Local X | Local Y |
+| ---------------- | ------------------ | ------- | ------- |
+| Survey basin     | location           | 235     | 405     |
+| Ridge station    | location           | 465     | 270     |
+| Eastern crossing | location           | 690     | 360     |
+| Far station      | location           | 820     | 170     |
+| Test portal      | portal             | 700     | 325     |
+| Witness A        | synthetic observer | unknown | unknown |
+| Witness B        | synthetic observer | unknown | unknown |
 
 World time 0/chapter1: Witness A reaches the basin. World time25/chapter2: A reaches ridge station. World time50/chapter3: A reports the crossing open (confidence0.82); B reports closed (confidence0.67). B's report is recorded on 10 November2026; earlier knowledge queries do not include it. Accounts remain attributed and unresolved.
 
