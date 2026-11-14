@@ -11,7 +11,7 @@ let bootstrapPhase = "hosted-admission";
 async function main() {
   if (
     process.env.GITHUB_ACTIONS !== "true" ||
-    process.env.GITHUB_REPOSITORY !== "frankxai/arcanea-ai-app" ||
+    process.env.GITHUB_REPOSITORY !== "Arcanea-Labs/arcanea-ai-app" ||
     process.env.GITHUB_REF_NAME !== "agent/codex/generation-admission-20261011"
   )
     throw Error("Only the owned disposable hosted generation lane is admitted");
@@ -749,7 +749,7 @@ main().catch(async () => {
   const evidencePath = "screenshots/generation-service/browser-evidence.json";
   if (
     process.env.GITHUB_ACTIONS === "true" &&
-    process.env.GITHUB_REPOSITORY === "frankxai/arcanea-ai-app" &&
+    process.env.GITHUB_REPOSITORY === "Arcanea-Labs/arcanea-ai-app" &&
     process.env.GITHUB_REF_NAME ===
       "agent/codex/generation-admission-20261011" &&
     /^[a-f0-9]{40}$/.test(process.env.GITHUB_SHA || "")

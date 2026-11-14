@@ -1,7 +1,7 @@
 // Import only in the owned disposable hosted server. Production never loads this hook.
 if (
   process.env.GITHUB_ACTIONS !== "true" ||
-  process.env.GITHUB_REPOSITORY !== "frankxai/arcanea-ai-app" ||
+  process.env.GITHUB_REPOSITORY !== "Arcanea-Labs/arcanea-ai-app" ||
   process.env.GITHUB_REF_NAME !== "agent/codex/generation-admission-20261011" ||
   process.env.GENERATION_FIXTURE_ORIGIN !== "http://127.0.0.1:54321" ||
   !/^fixture-[a-f0-9]{64}$/.test(process.env.XAI_API_KEY ?? "")

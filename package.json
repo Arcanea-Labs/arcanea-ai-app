@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "verify:npm-metadata": "node scripts/verify-npm-metadata.mjs && node --test scripts/tests/npm-metadata.test.mjs",
     "dev": "turbo run dev",
     "dev:academy": "turbo run dev --filter=@arcanea/academy",
     "dev:web": "turbo run dev --filter=@arcanea/web",
@@ -93,17 +94,17 @@
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
     "@tailwindcss/typography": "^0.5.20",
-    "@turbo/gen": "^2.11.4",
-    "autoprefixer": "^10.6.1",
-    "eslint": "^9.39.4",
-    "next": "16.4.1",
-    "postcss": "^8.5.28",
-    "prettier": "^3.9.9",
-    "semver": "^7.8.5",
+    "@turbo/gen": "^2.11.10",
+    "autoprefixer": "^10.6.2",
+    "eslint": "^10.14.0",
+    "next": "16.4.5",
+    "postcss": "^8.5.32",
+    "prettier": "^3.9.10",
+    "semver": "^7.8.6",
     "tailwindcss": "^3.4.9",
     "tailwindcss-animate": "^1.0.7",
     "tsx": "^4.23.15",
-    "turbo": "^2.11.4",
+    "turbo": "^2.11.10",
     "typescript": "^5.9.3"
   },
   "engines": {

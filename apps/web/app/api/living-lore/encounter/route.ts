@@ -17,8 +17,15 @@ import {
 } from "@/lib/ai/claude-safeguards";
 import { CREW_SYSTEM_PROMPTS } from "@/lib/living-lore/crew-prompts";
 import { CREW } from "@/lib/living-lore/crew-data";
+import {
+  getClientIdentifier,
+  checkRateLimit,
+} from "@/lib/rate-limit/rate-limiter";
 
 export const runtime = "edge";
+
+// Each turn is a platform-key model call.
+const ENCOUNTER_RATE_LIMIT = { maxRequests: 20, windowMs: 60_000 };
 
 function buildEncounterPrompt(
   presentCrew: string[],
@@ -62,6 +69,23 @@ ${sceneContext}
 }
 
 export async function POST(req: NextRequest) {
+  const rl = checkRateLimit(
+    `living-lore:encounter:${getClientIdentifier(req)}`,
+    ENCOUNTER_RATE_LIMIT,
+  );
+  if (!rl.allowed) {
+    return new Response(
+      JSON.stringify({ error: "Rate limit exceeded. Try again in a minute." }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "Retry-After": String(Math.ceil((rl.resetTime - Date.now()) / 1000)),
+        },
+      },
+    );
+  }
+
   try {
     const body = await req.json();
     const { messages, presentCrew, sceneContext } = body;
