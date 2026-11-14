@@ -11,7 +11,7 @@
     "generate:data": "tsx scripts/build-data.ts"
   },
   "dependencies": {
-    "astro": "^7.2.10",
+    "astro": "^7.4.7",
     "@astrojs/mdx": "^8.0.2"
   },
   "devDependencies": {
