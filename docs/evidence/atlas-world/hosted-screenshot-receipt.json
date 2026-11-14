@@ -3,9 +3,6 @@
   "source": "57f5ab7424fb4092a65c76228862f09eaa85b01e",
   "deployment": "dpl_63KDzBTwcJHhix68N7e3PseiU7C5",
   "capture": "Cloudflare Browser Rendering settled viewport screenshot, no selector scrolling",
-  "widths": [
-    375,
-    1440
-  ],
+  "widths": [375, 1440],
   "scope": "Actual initial deployed map including shared navigation. Not authenticated or GPU-enabled interaction evidence."
 }
