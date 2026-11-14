@@ -387,6 +387,11 @@ jobs:
           node packages/arcanea-creator-starters/scripts/build.mjs --compat --check
           node scripts/build-creator-starters.mjs --check
 
+      - name: Verify Atlas chronology, visibility, consent and spoiler boundaries
+        run: |
+          node --import tsx --test tests/atlas/engine.test.ts
+          node --test tests/atlas/csp.test.cjs
+
       - name: Verify timeline geography against the Realm Graph
         run: node --test packages/world-engine/tests/geography.test.mjs
 

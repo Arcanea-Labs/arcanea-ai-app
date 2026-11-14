@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": false
+  },
+  "include": [
+    "next-env.d.ts",
+    "app/atlas/world/**/*.tsx",
+    "components/atlas/**/*",
+    "lib/atlas/**/*",
+    "app/api/atlas/**/*",
+    "proxy.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
+}

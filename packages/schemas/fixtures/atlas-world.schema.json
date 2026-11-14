@@ -1,0 +1,509 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "namespace": {
+      "type": "string",
+      "enum": [
+        "arcanea",
+        "starlight",
+        "simulation"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "uri": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "locator": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "synthetic": {
+            "type": "boolean"
+          },
+          "revealChapter": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "audience": {
+            "default": "reader",
+            "type": "string",
+            "enum": [
+              "reader",
+              "author"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "uri",
+          "sha256",
+          "locator",
+          "synthetic",
+          "revealChapter",
+          "audience"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "namespace": {
+            "type": "string",
+            "enum": [
+              "arcanea",
+              "starlight",
+              "simulation"
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "character",
+              "location",
+              "region",
+              "portal"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "coordinate": {
+            "anyOf": [
+              {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "system": {
+                        "type": "string",
+                        "const": "local"
+                      },
+                      "frame": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "x": {
+                        "type": "number"
+                      },
+                      "y": {
+                        "type": "number"
+                      },
+                      "z": {
+                        "default": 0,
+                        "type": "number"
+                      },
+                      "unit": {
+                        "type": "string",
+                        "const": "m"
+                      }
+                    },
+                    "required": [
+                      "system",
+                      "frame",
+                      "x",
+                      "y",
+                      "z",
+                      "unit"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "system": {
+                        "type": "string",
+                        "const": "wgs84"
+                      },
+                      "longitude": {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      },
+                      "latitude": {
+                        "type": "number",
+                        "minimum": -90,
+                        "maximum": 90
+                      },
+                      "altitude": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "system",
+                      "longitude",
+                      "latitude"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parentId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sourceIds": {
+            "minItems": 1,
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "provisional",
+              "synthetic"
+            ]
+          },
+          "revealChapter": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "audience": {
+            "default": "reader",
+            "type": "string",
+            "enum": [
+              "reader",
+              "author"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "namespace",
+          "kind",
+          "name",
+          "summary",
+          "coordinate",
+          "parentId",
+          "sourceIds",
+          "status",
+          "revealChapter",
+          "audience"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "branches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "forkAt": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "revealChapter": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "audience": {
+            "default": "reader",
+            "type": "string",
+            "enum": [
+              "reader",
+              "author"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "parentId",
+          "forkAt",
+          "revealChapter",
+          "audience"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "logicalId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "branchId": {
+            "type": "string"
+          },
+          "validFrom": {
+            "type": "number"
+          },
+          "validTo": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "recordedFrom": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "recordedTo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "revealChapter": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "chapterTitle": {
+            "type": "string"
+          },
+          "chapterHref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "audience": {
+            "type": "string",
+            "enum": [
+              "reader",
+              "character",
+              "author"
+            ]
+          },
+          "knownBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sourceIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "provisional",
+              "synthetic"
+            ]
+          },
+          "fact": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "position"
+                  },
+                  "entityId": {
+                    "type": "string"
+                  },
+                  "locationId": {
+                    "type": "string"
+                  },
+                  "viaPortalId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "entityId",
+                  "locationId"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "assertion"
+                  },
+                  "entityId": {
+                    "type": "string"
+                  },
+                  "predicate": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "entityId",
+                  "predicate",
+                  "value"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "observation"
+                  },
+                  "observerId": {
+                    "type": "string"
+                  },
+                  "entityId": {
+                    "type": "string"
+                  },
+                  "predicate": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "observerId",
+                  "entityId",
+                  "predicate",
+                  "value",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "logicalId",
+          "revision",
+          "branchId",
+          "validFrom",
+          "validTo",
+          "recordedFrom",
+          "recordedTo",
+          "revealChapter",
+          "chapterTitle",
+          "chapterHref",
+          "title",
+          "detail",
+          "audience",
+          "knownBy",
+          "sourceIds",
+          "status",
+          "fact"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "id",
+    "namespace",
+    "title",
+    "synthetic",
+    "sources",
+    "entities",
+    "branches",
+    "records"
+  ],
+  "additionalProperties": false
+}

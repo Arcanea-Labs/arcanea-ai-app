@@ -1,0 +1,25 @@
+.atlas-root {
+  --atlas-terrain-void: #0b0e14;
+  --atlas-terrain-surface: #10171d;
+  --atlas-terrain-terrain: #0b181b;
+  --atlas-terrain-ground: #223c35;
+  --atlas-terrain-lowland: #142723;
+  --atlas-terrain-summit: #acb585;
+  --atlas-terrain-forest: #7c9c79;
+  --atlas-terrain-grid: #9dbaad;
+  --atlas-terrain-water: #102b30;
+  --atlas-terrain-waterEdge: #427076;
+  --atlas-terrain-waterLight: #5a8b8d;
+  --atlas-terrain-majorContour: #a6b68a;
+  --atlas-terrain-minorContour: #799b79;
+  --atlas-terrain-mapLabel: #d3dfd3;
+  --atlas-terrain-earthLabel: #b8c8ad;
+  --atlas-terrain-trail: #9fe9cd;
+  --atlas-terrain-trailHalo: #7fffd4;
+  --atlas-terrain-pin: #b1d8c7;
+  --atlas-terrain-selectedPin: #b1eed4;
+  --atlas-terrain-pinBackground: #091d1c;
+  --atlas-terrain-gold: #ffd700;
+  --atlas-terrain-compass: #aebdb1;
+  --atlas-terrain-compassShadow: #5d716c;
+}

@@ -32,7 +32,12 @@
     },
     "./tokens.css": "./src/tokens.css",
     "./reading-scene.module.css": "./src/reading-scene.module.css",
-    "./companion.module.css": "./src/companion.module.css"
+    "./companion.module.css": "./src/companion.module.css",
+    "./atlas-world-tokens": {
+      "types": "./dist/atlas-world-tokens.d.ts",
+      "default": "./dist/atlas-world-tokens.js"
+    },
+    "./atlas-world-tokens.css": "./src/atlas-world-tokens.css"
   },
   "scripts": {
     "build": "tsc",

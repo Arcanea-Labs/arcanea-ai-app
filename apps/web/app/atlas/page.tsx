@@ -30,6 +30,10 @@ export default function AtlasPage() {
   const monomythStages = getMonomythStages();
 
   return (
+    <>
+    <div className="mx-auto max-w-7xl px-6 pt-8 text-sm">
+      <a className="text-[var(--arc-brand-atlantean-teal)] underline underline-offset-4" href="/atlas/world">Explore place, time and perspective in the world engine →</a>
+    </div>
     <AtlasClient
       initialRealms={realms}
       linguisticFamilies={linguisticFamilies}
@@ -38,5 +42,6 @@ export default function AtlasPage() {
       monomythStages={monomythStages}
       geographicAtlas={projectAtlasStaging(atlasFixture)}
     />
+    </>
   );
 }
