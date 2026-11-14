@@ -1,5 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   evaluateRhythm,
   detectOnsets,
@@ -39,4 +42,13 @@ test("more than four attacks abstains rather than cherry picking", () => {
 });
 test("invalid sample rate rejected", () => {
   assert.throws(() => detectOnsets(new Float32Array(1), 0));
+});
+test("piano practice keeps previous-result update outside setResult updater", () => {
+  const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
+  const source = readFileSync(
+    join(root, "apps/web/app/academy/music/piano-practice.tsx"),
+    "utf8",
+  );
+  assert.doesNotMatch(source, /setResult\([^)]*=>[\s\S]*?setPrevious\(/);
+  assert.match(source, /resultRef\.current/);
 });

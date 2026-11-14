@@ -13,6 +13,7 @@ export function PianoPractice() {
   const [error, setError] = useState("");
   const [result, setResult] = useState<RhythmResult | null>(null);
   const [previous, setPrevious] = useState<RhythmResult | null>(null);
+  const resultRef = useRef<RhythmResult | null>(null);
   const recorder = useRef<MediaRecorder | null>(null);
   const stream = useRef<MediaStream | null>(null);
   const chunks = useRef<Blob[]>([]);
@@ -62,10 +63,10 @@ export function PianoPractice() {
         for (let i = 0; i < data.length; i++)
           samples[i] += data[i] / buffer.numberOfChannels;
       }
-      setResult((current) => {
-        setPrevious(current);
-        return evaluateRhythm(samples, buffer.sampleRate, BPM);
-      });
+      const nextResult = evaluateRhythm(samples, buffer.sampleRate, BPM);
+      setPrevious(resultRef.current);
+      resultRef.current = nextResult;
+      setResult(nextResult);
     } catch {
       setError(
         "Could not decode this recording. Try another recording or browser.",
