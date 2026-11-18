@@ -71,6 +71,8 @@ jobs:
         with:
           node-version: "24"
       - run: pnpm install --frozen-lockfile
+      - name: Verify library headings and landmark ownership
+        run: node --test scripts/tests/world-landmarks.test.cjs
       - run: node --test scripts/tests/reading-progress-account.test.cjs
       - run: node --test scripts/tests/reading-progress-auth-admission.test.cjs
       - run: PRIVATE_CONFIGURATION_RUNNER=scripts/run-reading-scene-auth-fixture.mjs node --test scripts/tests/provider-fixture-private-config.test.cjs
