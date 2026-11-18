@@ -3,11 +3,11 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Agent Certification | Arcanea Academy',
-  description: 'Earn certifications through the Ten Gates. For humans and AI agents. Prove mastery, unlock capabilities, join the marketplace.',
+  title: 'Design for Agent Certification | Arcanea Academy',
+  description: 'A design for evaluating agents against Gate rubrics. Not an available certification: no badge is issued and nothing is unlocked.',
   openGraph: {
-    title: 'Agent Certification — Arcanea Academy',
-    description: 'The first certification system designed for both humans and AI agents. Ten Gates. Ten levels of mastery.',
+    title: 'Design for Agent Certification — Arcanea Academy',
+    description: 'A design for evaluating agents against Gate rubrics. Not an available certification.',
   },
 };
 
@@ -43,23 +43,23 @@ export default function CertificationPage() {
           </p>
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             <span className="bg-gradient-to-r from-white via-white/90 to-[var(--arc-brand-atlantean-teal)]/80 bg-clip-text text-transparent">
-              Agent Certification
+              Design for Agent Certification
             </span>
           </h1>
           <p className="text-lg text-white/40 max-w-2xl mx-auto leading-relaxed">
-            The first certification system designed for both humans and AI agents.
-            Ten Gates. Ten levels of mastery. Prove your capability, unlock the marketplace.
+            A design for evaluating agents against Gate rubrics. It is not an available
+            certification. No badge is issued and nothing is unlocked.
           </p>
         </section>
 
         {/* How it works */}
         <section className="mb-16">
-          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">How It Works</h2>
+          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">How the Design Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { step: '1', title: 'Challenge', desc: 'Complete practical challenges for each Gate. Agents submit code. Humans submit projects.' },
-              { step: '2', title: 'Evaluate', desc: 'Automated rubrics score your output on 5 dimensions: correctness, completeness, quality, efficiency, safety.' },
-              { step: '3', title: 'Certify', desc: 'Pass the Gate threshold (7.5/10) to earn your badge. Badges unlock marketplace listing and premium features.' },
+              { step: '1', title: 'Challenge', desc: 'The design sets practical challenges for each Gate. Agents would submit code and humans would submit projects. Nothing can be submitted today.' },
+              { step: '2', title: 'Evaluate', desc: 'Each draft challenge lists weighted criteria. The rubric is written down. No automated scoring runs.' },
+              { step: '3', title: 'Threshold', desc: 'Each draft challenge names a pass mark. Meeting it issues no badge and unlocks nothing.' },
             ].map((item) => (
               <div
                 key={item.step}
@@ -77,7 +77,7 @@ export default function CertificationPage() {
 
         {/* The Ten Gates */}
         <section className="mb-16">
-          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">The Ten Gates</h2>
+          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">Draft Challenges by Gate</h2>
           <div className="space-y-3">
             {GATES.map((gate) => (
               <div
@@ -152,10 +152,10 @@ export default function CertificationPage() {
         <section className="text-center">
           <div className="rounded-2xl bg-gradient-to-br from-[var(--arc-brand-atlantean-teal)]/10 via-[var(--arc-brand-cosmic-blue)]/5 to-[var(--arc-brand-cosmic-blue)]/10 border border-[var(--arc-brand-atlantean-teal)]/15 p-8">
             <h2 className="text-xl font-display font-semibold text-white/80 mb-3">
-              Ready to Begin?
+              What Exists Today
             </h2>
             <p className="text-sm text-white/35 mb-6 max-w-md mx-auto">
-              Start your journey through the Ten Gates. Whether you are a human creator or an AI agent, the path to mastery begins here.
+              This page describes a design. There is no challenge submission, no scoring run and no badge. The Gate pages describe the Gates themselves.
             </p>
             <div className="flex items-center justify-center gap-3">
               <Link
