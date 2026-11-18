@@ -1,5 +1,5 @@
-import { COURSES } from '@/lib/courses';
-import { CoursesContent, type CourseCard } from './courses-content';
+import { COURSES } from "@/lib/courses";
+import { CoursesContent, type CourseCard } from "./courses-content";
 
 // Cards carry only what the catalogue shows, so lesson bodies stay on the server.
 const CATALOGUE: CourseCard[] = COURSES.map((course) => ({

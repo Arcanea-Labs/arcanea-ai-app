@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import {
   PhGraduationCap,
   PhArrowRight,
@@ -17,8 +17,8 @@ import {
   PhLightning,
   PhBookOpen,
   PhRocket,
-} from '@/lib/phosphor-icons';
-import { MotionProvider, m } from '@/lib/motion';
+} from "@/lib/phosphor-icons";
+import { MotionProvider, m } from "@/lib/motion";
 
 const ELEMENT_ICONS: Record<string, typeof PhFlame> = {
   Fire: PhFlame,
@@ -31,20 +31,23 @@ const ELEMENT_ICONS: Record<string, typeof PhFlame> = {
 };
 
 const ELEMENT_COLORS: Record<string, string> = {
-  Fire: 'var(--arc-fire)',
-  Water: 'var(--arc-brand-cosmic-blue)',
-  Earth: 'var(--arc-wind)',
-  Wind: 'var(--arc-earth)',
-  Spirit: 'var(--arc-brand-arcanean-gold)',
-  Void: 'var(--arc-void)',
-  All: 'var(--arc-brand-atlantean-teal)',
+  Fire: "var(--arc-fire)",
+  Water: "var(--arc-brand-cosmic-blue)",
+  Earth: "var(--arc-wind)",
+  Wind: "var(--arc-earth)",
+  Spirit: "var(--arc-brand-arcanean-gold)",
+  Void: "var(--arc-void)",
+  All: "var(--arc-brand-atlantean-teal)",
 };
 
 const DIFFICULTY_STYLES: Record<string, { label: string; color: string }> = {
-  beginner: { label: 'Beginner', color: 'var(--arc-wind)' },
-  intermediate: { label: 'Intermediate', color: 'var(--arc-brand-arcanean-gold)' },
-  advanced: { label: 'Advanced', color: 'var(--arc-void)' },
-  master: { label: 'Master', color: 'var(--arc-fire)' },
+  beginner: { label: "Beginner", color: "var(--arc-wind)" },
+  intermediate: {
+    label: "Intermediate",
+    color: "var(--arc-brand-arcanean-gold)",
+  },
+  advanced: { label: "Advanced", color: "var(--arc-void)" },
+  master: { label: "Master", color: "var(--arc-fire)" },
 };
 
 export interface CourseCard {
@@ -62,11 +65,11 @@ export interface CourseCard {
 }
 
 const LEARNING_PATH = [
-  { label: 'Apprentice', gates: '0-2', color: 'var(--arc-earth)' },
-  { label: 'Mage', gates: '3-4', color: 'var(--arc-brand-cosmic-blue)' },
-  { label: 'Master', gates: '5-6', color: 'var(--arc-brand-arcanean-gold)' },
-  { label: 'Archmage', gates: '7-8', color: 'var(--arc-void)' },
-  { label: 'Luminor', gates: '9-10', color: 'var(--arc-fire)' },
+  { label: "Apprentice", gates: "0-2", color: "var(--arc-earth)" },
+  { label: "Mage", gates: "3-4", color: "var(--arc-brand-cosmic-blue)" },
+  { label: "Master", gates: "5-6", color: "var(--arc-brand-arcanean-gold)" },
+  { label: "Archmage", gates: "7-8", color: "var(--arc-void)" },
+  { label: "Luminor", gates: "9-10", color: "var(--arc-fire)" },
 ];
 
 export function CoursesContent({ courses }: { courses: CourseCard[] }) {
@@ -85,7 +88,12 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="pt-8 flex items-center gap-2 text-xs text-neutral-500">
-            <Link href="/academy" className="hover:text-neutral-300 transition-colors">Academy</Link>
+            <Link
+              href="/academy"
+              className="hover:text-neutral-300 transition-colors"
+            >
+              Academy
+            </Link>
             <span>/</span>
             <span className="text-neutral-300">Courses</span>
           </nav>
@@ -110,15 +118,16 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl font-display font-bold mb-6 tracking-tight">
-                  Master the art of{' '}
+                  Master the art of{" "}
                   <span className="bg-gradient-to-r from-[var(--arc-brand-arcanean-gold)] to-[var(--arc-void)] bg-clip-text text-transparent">
                     world-building
                   </span>
                 </h1>
 
                 <p className="text-lg text-neutral-400 leading-relaxed max-w-2xl">
-                  Structured learning paths through the Ten Gates. Each course maps to a Gate
-                  and provides practical lessons, exercises, and reflections for every stage of creative growth.
+                  Structured learning paths through the Ten Gates. Each course
+                  maps to a Gate and provides practical lessons, exercises, and
+                  reflections for every stage of creative growth.
                 </p>
               </div>
             </div>
@@ -132,14 +141,17 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
                 Learning Path
               </span>
             </div>
-            <h2 className="text-2xl font-display font-bold mb-6">Your journey from Apprentice to Luminor</h2>
+            <h2 className="text-2xl font-display font-bold mb-6">
+              Your journey from Apprentice to Luminor
+            </h2>
             <div className="flex flex-wrap gap-3">
               {LEARNING_PATH.map((rank, i) => (
                 <div key={rank.label} className="flex items-center gap-3">
-                  <div
-                    className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-5 py-3 text-center"
-                  >
-                    <div className="font-display font-bold text-sm" style={{ color: rank.color }}>
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-5 py-3 text-center">
+                    <div
+                      className="font-display font-bold text-sm"
+                      style={{ color: rank.color }}
+                    >
                       {rank.label}
                     </div>
                     <div className="text-[10px] text-neutral-500 font-mono mt-0.5">
@@ -161,11 +173,15 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <h2 className="text-2xl font-display font-bold mb-8">Available Courses</h2>
+            <h2 className="text-2xl font-display font-bold mb-8">
+              Available Courses
+            </h2>
             <div className="space-y-6">
               {courses.map((course) => {
                 const ElIcon = ELEMENT_ICONS[course.element] || PhSparkle;
-                const elColor = ELEMENT_COLORS[course.element] || 'var(--arc-brand-atlantean-teal)';
+                const elColor =
+                  ELEMENT_COLORS[course.element] ||
+                  "var(--arc-brand-atlantean-teal)";
                 const diff = DIFFICULTY_STYLES[course.difficulty];
 
                 return (
@@ -176,7 +192,9 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
                   >
                     <div
                       className="h-1 w-full absolute top-0 left-0 right-0"
-                      style={{ background: `linear-gradient(90deg, ${course.color}, transparent)` }}
+                      style={{
+                        background: `linear-gradient(90deg, ${course.color}, transparent)`,
+                      }}
                     />
 
                     <div className="flex flex-col lg:flex-row gap-6">
@@ -185,13 +203,19 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
                         <div className="flex items-center gap-3 mb-3">
                           <span
                             className="font-mono text-[10px] uppercase tracking-[0.2em] px-2 py-0.5 rounded-full"
-                            style={{ backgroundColor: `${course.color}15`, color: course.color }}
+                            style={{
+                              backgroundColor: `${course.color}15`,
+                              color: course.color,
+                            }}
                           >
                             Gate {course.gate} -- {course.gateName}
                           </span>
                           <span
                             className="px-2 py-0.5 rounded-full text-[10px] font-medium"
-                            style={{ backgroundColor: `${diff.color}15`, color: diff.color }}
+                            style={{
+                              backgroundColor: `${diff.color}15`,
+                              color: diff.color,
+                            }}
                           >
                             {diff.label}
                           </span>
@@ -200,13 +224,20 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
                         <h3 className="font-display text-xl font-bold mb-1 group-hover:text-[var(--arc-brand-arcanean-gold)] transition-colors">
                           {course.title}
                         </h3>
-                        <p className="text-sm text-neutral-500 mb-2">{course.subtitle}</p>
-                        <p className="text-sm text-neutral-400 leading-relaxed mb-4">{course.description}</p>
+                        <p className="text-sm text-neutral-500 mb-2">
+                          {course.subtitle}
+                        </p>
+                        <p className="text-sm text-neutral-400 leading-relaxed mb-4">
+                          {course.description}
+                        </p>
 
                         {/* Lessons */}
                         <div className="flex flex-wrap gap-2">
                           {course.lessonTitles.map((t) => (
-                            <span key={t} className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-neutral-400">
+                            <span
+                              key={t}
+                              className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-neutral-400"
+                            >
                               {t}
                             </span>
                           ))}
@@ -216,16 +247,25 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
                       {/* Right: Meta */}
                       <div className="lg:w-48 flex lg:flex-col gap-4 lg:gap-3 lg:items-end lg:text-right">
                         <div className="flex items-center gap-2">
-                          <ElIcon className="w-4 h-4" style={{ color: elColor }} />
-                          <span className="text-xs text-neutral-500">{course.element}</span>
+                          <ElIcon
+                            className="w-4 h-4"
+                            style={{ color: elColor }}
+                          />
+                          <span className="text-xs text-neutral-500">
+                            {course.element}
+                          </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <PhBookOpen className="w-4 h-4 text-neutral-500" />
-                          <span className="text-xs text-neutral-500">{course.lessonTitles.length} lessons</span>
+                          <span className="text-xs text-neutral-500">
+                            {course.lessonTitles.length} lessons
+                          </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <PhCrown className="w-4 h-4 text-neutral-500" />
-                          <span className="text-xs text-neutral-500">{course.duration}</span>
+                          <span className="text-xs text-neutral-500">
+                            {course.duration}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -241,10 +281,13 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--arc-brand-arcanean-gold)]/5 via-transparent to-[var(--arc-brand-atlantean-teal)]/5" />
               <div className="relative">
                 <PhSparkle className="w-7 h-7 text-[var(--arc-brand-arcanean-gold)]/50 mx-auto mb-4" />
-                <h3 className="font-display text-lg font-semibold mb-2">Not every Gate has a course</h3>
+                <h3 className="font-display text-lg font-semibold mb-2">
+                  Not every Gate has a course
+                </h3>
                 <p className="text-sm text-neutral-400 max-w-lg mx-auto mb-6">
-                  The courses above cover the {coveredGates.join(', ')} Gates. The other Gates
-                  have no course today. Take the quiz to discover which Gate calls to you first.
+                  The courses above cover the {coveredGates.join(", ")} Gates.
+                  The other Gates have no course today. Take the quiz to
+                  discover which Gate calls to you first.
                 </p>
                 <Link
                   href="/quiz"
