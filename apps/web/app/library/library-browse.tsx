@@ -12,15 +12,15 @@
  * ─────────────────────────────────────────────────
  */
 
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import type { Collection, Situation } from '../../lib/content/types';
-import { useAuth } from '../../lib/auth/context';
-import { getLabel } from '../../lib/vocabulary';
-import { useReadingProgress } from '../../hooks/use-reading-progress';
-import { GlowCard } from '@/components/motion/glow-card';
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import type { Collection, Situation } from "../../lib/content/types";
+import { useAuth } from "../../lib/auth/context";
+import { getLabel } from "../../lib/vocabulary";
+import { useReadingProgress } from "../../hooks/use-reading-progress";
+import { GlowCard } from "@/components/motion/glow-card";
 
 interface LibraryBrowseProps {
   collections: Collection[];
@@ -29,68 +29,123 @@ interface LibraryBrowseProps {
 }
 
 const SITUATIONS: { value: Situation; label: string; icon: string }[] = [
-  { value: 'beginning', label: 'Beginning something new', icon: '🌅' },
-  { value: 'stuck', label: 'Feeling stuck', icon: '🌀' },
-  { value: 'darkness', label: 'In darkness', icon: '🌑' },
-  { value: 'comparison', label: 'Comparing myself', icon: '👥' },
-  { value: 'failure', label: 'After failure', icon: '🔥' },
-  { value: 'celebration', label: 'Celebrating', icon: '✨' },
-  { value: 'confusion', label: 'Confused', icon: '🌫️' },
-  { value: 'lost', label: 'Feeling lost', icon: '🧭' },
-  { value: 'collaboration', label: 'Working with others', icon: '🤝' },
-  { value: 'fear', label: 'Facing fear', icon: '⚡' },
-  { value: 'scattered', label: 'Scattered mind', icon: '💫' },
+  { value: "beginning", label: "Beginning something new", icon: "🌅" },
+  { value: "stuck", label: "Feeling stuck", icon: "🌀" },
+  { value: "darkness", label: "In darkness", icon: "🌑" },
+  { value: "comparison", label: "Comparing myself", icon: "👥" },
+  { value: "failure", label: "After failure", icon: "🔥" },
+  { value: "celebration", label: "Celebrating", icon: "✨" },
+  { value: "confusion", label: "Confused", icon: "🌫️" },
+  { value: "lost", label: "Feeling lost", icon: "🧭" },
+  { value: "collaboration", label: "Working with others", icon: "🤝" },
+  { value: "fear", label: "Facing fear", icon: "⚡" },
+  { value: "scattered", label: "Scattered mind", icon: "💫" },
 ];
 
 // Map situations to recommended collections
 const SITUATION_TO_COLLECTIONS: Record<Situation, string[]> = {
-  beginning: ['laws-of-arcanea', 'academy-handbook', 'atlas-of-territories'],
-  stuck: ['chronicles-of-luminors', 'bestiary-of-creation', 'book-of-rituals'],
-  darkness: ['book-of-shadows', 'chronicles-of-luminors', 'songs-and-hymns'],
-  comparison: ['wisdom-scrolls', 'bestiary-of-creation'],
-  failure: ['tales-of-creators', 'book-of-rituals', 'songs-and-hymns'],
-  celebration: ['songs-and-hymns', 'poesie-of-freedom'],
-  confusion: ['dialogues-of-masters', 'meditations-on-elements'],
-  lost: ['atlas-of-territories', 'prophecies'],
-  collaboration: ['codex-of-collaboration'],
-  fear: ['chronicles-of-luminors', 'legends-of-arcanea'],
-  scattered: ['meditations-on-elements', 'academy-handbook'],
+  beginning: ["laws-of-arcanea", "academy-handbook", "atlas-of-territories"],
+  stuck: ["chronicles-of-luminors", "bestiary-of-creation", "book-of-rituals"],
+  darkness: ["book-of-shadows", "chronicles-of-luminors", "songs-and-hymns"],
+  comparison: ["wisdom-scrolls", "bestiary-of-creation"],
+  failure: ["tales-of-creators", "book-of-rituals", "songs-and-hymns"],
+  celebration: ["songs-and-hymns", "poesie-of-freedom"],
+  confusion: ["dialogues-of-masters", "meditations-on-elements"],
+  lost: ["atlas-of-territories", "prophecies"],
+  collaboration: ["codex-of-collaboration"],
+  fear: ["chronicles-of-luminors", "legends-of-arcanea"],
+  scattered: ["meditations-on-elements", "academy-handbook"],
 };
 
 // Hz frequency → Gate mapping (hidden depth: typing a frequency reveals its Gate)
-const GATE_FREQUENCIES: Record<string, { gate: string; guardian: string; collections: string[] }> = {
-  '174': { gate: 'Foundation', guardian: 'Lyssandria', collections: ['laws-of-arcanea', 'academy-handbook'] },
-  '285': { gate: 'Flow', guardian: 'Leyla', collections: ['meditations-on-elements', 'tales-of-creators'] },
-  '396': { gate: 'Fire', guardian: 'Draconia', collections: ['chronicles-of-luminors', 'bestiary-of-creation'] },
-  '417': { gate: 'Heart', guardian: 'Maylinn', collections: ['songs-and-hymns', 'codex-of-collaboration'] },
-  '528': { gate: 'Voice', guardian: 'Alera', collections: ['poesie-of-freedom', 'dialogues-of-masters'] },
-  '639': { gate: 'Sight', guardian: 'Lyria', collections: ['prophecies', 'wisdom-scrolls'] },
-  '741': { gate: 'Crown', guardian: 'Aiyami', collections: ['wisdom-scrolls', 'book-of-rituals'] },
-  '852': { gate: 'Starweave', guardian: 'Elara', collections: ['tales-of-creators', 'atlas-of-territories'] },
-  '963': { gate: 'Unity', guardian: 'Ino', collections: ['codex-of-collaboration', 'legends-of-arcanea'] },
-  '1111': { gate: 'Source', guardian: 'Shinkami', collections: ['legends-of-arcanea', 'book-of-shadows'] },
+const GATE_FREQUENCIES: Record<
+  string,
+  { gate: string; guardian: string; collections: string[] }
+> = {
+  "174": {
+    gate: "Foundation",
+    guardian: "Lyssandria",
+    collections: ["laws-of-arcanea", "academy-handbook"],
+  },
+  "285": {
+    gate: "Flow",
+    guardian: "Leyla",
+    collections: ["meditations-on-elements", "tales-of-creators"],
+  },
+  "396": {
+    gate: "Fire",
+    guardian: "Draconia",
+    collections: ["chronicles-of-luminors", "bestiary-of-creation"],
+  },
+  "417": {
+    gate: "Heart",
+    guardian: "Maylinn",
+    collections: ["songs-and-hymns", "codex-of-collaboration"],
+  },
+  "528": {
+    gate: "Voice",
+    guardian: "Alera",
+    collections: ["poesie-of-freedom", "dialogues-of-masters"],
+  },
+  "639": {
+    gate: "Sight",
+    guardian: "Lyria",
+    collections: ["prophecies", "wisdom-scrolls"],
+  },
+  "741": {
+    gate: "Crown",
+    guardian: "Aiyami",
+    collections: ["wisdom-scrolls", "book-of-rituals"],
+  },
+  "852": {
+    gate: "Starweave",
+    guardian: "Elara",
+    collections: ["tales-of-creators", "atlas-of-territories"],
+  },
+  "963": {
+    gate: "Unity",
+    guardian: "Ino",
+    collections: ["codex-of-collaboration", "legends-of-arcanea"],
+  },
+  "1111": {
+    gate: "Source",
+    guardian: "Shinkami",
+    collections: ["legends-of-arcanea", "book-of-shadows"],
+  },
 };
 
-export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBrowseProps) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSituation, setSelectedSituation] = useState<Situation | null>(null);
+export function LibraryBrowse({
+  collections,
+  collectionReadingTimes,
+}: LibraryBrowseProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSituation, setSelectedSituation] = useState<Situation | null>(
+    null,
+  );
 
   // Vocabulary tier: newcomers see "Library", adepts see "Library of Arcanea", luminors see "The Archives"
   const { user } = useAuth();
   // gates_open lives on the user's profile; default to 0 until profile data is wired
-  const gatesOpen: number = (user as { user_metadata?: { gates_open?: number } } | null)
-    ?.user_metadata?.gates_open ?? 0;
-  const libraryLabel = getLabel('library', gatesOpen);
+  const gatesOpen: number =
+    (user as { user_metadata?: { gates_open?: number } } | null)?.user_metadata
+      ?.gates_open ?? 0;
+  const libraryLabel = getLabel("library", gatesOpen);
 
   // Reading progress for collection-level indicators
-  const { progress, getCollectionProgress } = useReadingProgress(user?.id ?? null);
+  const { progress, getCollectionProgress } = useReadingProgress(
+    user?.id ?? null,
+  );
   const totalCollections = collections.length;
 
   // Build "Continue Reading" — recently read texts (most recent first, up to 4)
   const recentlyRead = useMemo(() => {
     const entries = Object.values(progress)
       .filter((p) => p.completed_at)
-      .sort((a, b) => new Date(b.completed_at!).getTime() - new Date(a.completed_at!).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.completed_at!).getTime() -
+          new Date(a.completed_at!).getTime(),
+      )
       .slice(0, 4);
     return entries;
   }, [progress]);
@@ -106,7 +161,9 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
 
     // Hz frequency Easter egg — highlight Gate-associated collections
     if (activeFrequency) {
-      return filtered.filter((c) => activeFrequency.collections.includes(c.slug));
+      return filtered.filter((c) =>
+        activeFrequency.collections.includes(c.slug),
+      );
     }
 
     // Filter by search
@@ -116,13 +173,14 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
         (c) =>
           c.name.toLowerCase().includes(query) ||
           c.description.toLowerCase().includes(query) ||
-          c.readWhen.toLowerCase().includes(query)
+          c.readWhen.toLowerCase().includes(query),
       );
     }
 
     // Filter by situation
     if (selectedSituation) {
-      const recommendedSlugs = SITUATION_TO_COLLECTIONS[selectedSituation] || [];
+      const recommendedSlugs =
+        SITUATION_TO_COLLECTIONS[selectedSituation] || [];
       filtered = filtered.filter((c) => recommendedSlugs.includes(c.slug));
     }
 
@@ -133,7 +191,10 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
     <div className="space-y-12">
       {/* Hero Section */}
       <section className="relative overflow-hidden rounded-3xl border border-cosmic-border bg-gradient-to-br from-cosmic-surface via-cosmic-deep to-cosmic-void p-10">
-        <div className="pointer-events-none absolute inset-0 opacity-40" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-40"
+          aria-hidden="true"
+        >
           <div className="absolute -left-24 top-16 h-72 w-72 rounded-full bg-atlantean-teal/30 blur-3xl" />
           <div className="absolute right-[-10%] top-1/3 h-80 w-80 rounded-full bg-gold-bright/20 blur-3xl" />
           <div className="absolute bottom-0 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-draconic-crimson/10 blur-2xl" />
@@ -142,7 +203,10 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
         <div className="relative max-w-3xl">
           <div className="mb-4 flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-atlantean-teal">
             <span>{libraryLabel}</span>
-            <span className="hidden h-px flex-1 bg-cosmic-border sm:block" aria-hidden="true" />
+            <span
+              className="hidden h-px flex-1 bg-cosmic-border sm:block"
+              aria-hidden="true"
+            />
           </div>
 
           <h2 className="font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl lg:text-6xl">
@@ -173,13 +237,16 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {recentlyRead.map((entry) => {
-              const col = collections.find((c) => c.slug === entry.collection_slug);
+              const col = collections.find(
+                (c) => c.slug === entry.collection_slug,
+              );
               // Derive a readable title from the text slug (e.g. "legends-of-arcanea/the-first-dawn" -> "The First Dawn")
-              const textTitle = entry.text_slug
-                .split('/')
-                .pop()
-                ?.replace(/-/g, ' ')
-                .replace(/\b\w/g, (c) => c.toUpperCase()) ?? entry.text_slug;
+              const textTitle =
+                entry.text_slug
+                  .split("/")
+                  .pop()
+                  ?.replace(/-/g, " ")
+                  .replace(/\b\w/g, (c) => c.toUpperCase()) ?? entry.text_slug;
 
               return (
                 <Link
@@ -188,7 +255,7 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
                   className="group rounded-xl border border-cosmic-border bg-cosmic-surface p-4 transition-all hover:border-atlantean-teal/50 hover:shadow-[0_0_30px_rgba(0,188,212,0.1)]"
                 >
                   <div className="mb-2 flex items-center gap-2">
-                    <span className="text-lg">{col?.icon ?? '📖'}</span>
+                    <span className="text-lg">{col?.icon ?? "📖"}</span>
                     <span className="inline-flex items-center gap-1 rounded-full border border-atlantean-teal/40 bg-atlantean-teal/10 px-2 py-0.5 text-[0.65rem] text-atlantean-teal">
                       Read
                     </span>
@@ -216,8 +283,8 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
             onClick={() => setSelectedSituation(null)}
             className={`rounded-full px-4 py-2 text-sm transition-all ${
               selectedSituation === null
-                ? 'bg-atlantean-teal text-cosmic-deep'
-                : 'border border-cosmic-border bg-cosmic-surface text-text-muted hover:border-atlantean-teal/50 hover:text-atlantean-teal'
+                ? "bg-atlantean-teal text-cosmic-deep"
+                : "border border-cosmic-border bg-cosmic-surface text-text-muted hover:border-atlantean-teal/50 hover:text-atlantean-teal"
             }`}
           >
             All Collections
@@ -227,13 +294,15 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
               key={situation.value}
               onClick={() =>
                 setSelectedSituation(
-                  selectedSituation === situation.value ? null : situation.value
+                  selectedSituation === situation.value
+                    ? null
+                    : situation.value,
                 )
               }
               className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-all ${
                 selectedSituation === situation.value
-                  ? 'bg-gold-bright text-cosmic-deep'
-                  : 'border border-cosmic-border bg-cosmic-surface text-text-muted hover:border-gold-medium/50 hover:text-gold-bright'
+                  ? "bg-gold-bright text-cosmic-deep"
+                  : "border border-cosmic-border bg-cosmic-surface text-text-muted hover:border-gold-medium/50 hover:text-gold-bright"
               }`}
             >
               <span>{situation.icon}</span>
@@ -273,9 +342,11 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
       {activeFrequency && (
         <section className="rounded-xl border border-gold-medium/20 bg-gold-dark/5 p-5">
           <p className="text-sm text-gold-bright">
-            <span className="font-mono text-xs opacity-60">{searchQuery.trim()} Hz</span>
-            {' '}&mdash;{' '}
-            The {activeFrequency.gate} Gate. {activeFrequency.guardian}&apos;s frequency.
+            <span className="font-mono text-xs opacity-60">
+              {searchQuery.trim()} Hz
+            </span>{" "}
+            &mdash; The {activeFrequency.gate} Gate. {activeFrequency.guardian}
+            &apos;s frequency.
           </p>
         </section>
       )}
@@ -284,16 +355,19 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
       <section>
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xs font-semibold uppercase tracking-[0.35em] text-text-muted">
-            {filteredCollections.length} {filteredCollections.length === 1 ? 'Collection' : 'Collections'}
+            {filteredCollections.length}{" "}
+            {filteredCollections.length === 1 ? "Collection" : "Collections"}
           </h2>
         </div>
 
         {filteredCollections.length === 0 ? (
           <div className="rounded-xl border border-cosmic-border bg-cosmic-surface p-12 text-center">
-            <p className="text-lg text-text-muted">No collections match your search.</p>
+            <p className="text-lg text-text-muted">
+              No collections match your search.
+            </p>
             <button
               onClick={() => {
-                setSearchQuery('');
+                setSearchQuery("");
                 setSelectedSituation(null);
               }}
               className="mt-4 text-atlantean-teal hover:underline"
@@ -304,7 +378,9 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
         ) : (
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {filteredCollections.map((collection) => {
-              const colProgress = user ? getCollectionProgress(collection.slug, collection.textCount) : null;
+              const colProgress = user
+                ? getCollectionProgress(collection.slug, collection.textCount)
+                : null;
               return (
                 <CollectionCard
                   key={collection.slug}
@@ -331,14 +407,38 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
               By Format
             </h3>
             <ul className="space-y-2 text-sm text-text-secondary">
-              <li><strong className="text-text-primary">Theory:</strong> Laws of Arcanea</li>
-              <li><strong className="text-text-primary">Story:</strong> Legends, Chronicles, Tales</li>
-              <li><strong className="text-text-primary">Poetry:</strong> Poetry of Freedom</li>
-              <li><strong className="text-text-primary">Practical:</strong> Wisdom Scrolls, Rituals, Handbook</li>
-              <li><strong className="text-text-primary">Dialogue:</strong> Dialogues of Masters</li>
-              <li><strong className="text-text-primary">Meditation:</strong> Meditations on Elements</li>
-              <li><strong className="text-text-primary">Reference:</strong> Bestiary, Atlas</li>
-              <li><strong className="text-text-primary">Song:</strong> Songs and Hymns</li>
+              <li>
+                <strong className="text-text-primary">Theory:</strong> Laws of
+                Arcanea
+              </li>
+              <li>
+                <strong className="text-text-primary">Story:</strong> Legends,
+                Chronicles, Tales
+              </li>
+              <li>
+                <strong className="text-text-primary">Poetry:</strong> Poetry of
+                Freedom
+              </li>
+              <li>
+                <strong className="text-text-primary">Practical:</strong> Wisdom
+                Scrolls, Rituals, Handbook
+              </li>
+              <li>
+                <strong className="text-text-primary">Dialogue:</strong>{" "}
+                Dialogues of Masters
+              </li>
+              <li>
+                <strong className="text-text-primary">Meditation:</strong>{" "}
+                Meditations on Elements
+              </li>
+              <li>
+                <strong className="text-text-primary">Reference:</strong>{" "}
+                Bestiary, Atlas
+              </li>
+              <li>
+                <strong className="text-text-primary">Song:</strong> Songs and
+                Hymns
+              </li>
             </ul>
           </div>
 
@@ -347,14 +447,14 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
               The Library's Promise
             </h3>
             <p className="text-sm text-text-secondary leading-relaxed">
-              If you read these texts honestly—
-              If you let them question you as you question them—
-              If you apply what resonates and release what doesn't—
+              If you read these texts honestly— If you let them question you as
+              you question them— If you apply what resonates and release what
+              doesn't—
               <strong className="text-text-primary"> You will change.</strong>
             </p>
             <p className="mt-4 text-sm text-text-secondary leading-relaxed">
-              Not because the texts have magic power, but because engagement with wisdom
-              changes those who engage.
+              Not because the texts have magic power, but because engagement
+              with wisdom changes those who engage.
             </p>
           </div>
         </div>
@@ -370,84 +470,112 @@ interface CollectionCardProps {
   readingTime?: number;
 }
 
-function CollectionCard({ collection, totalCollections, progress, readingTime }: CollectionCardProps) {
+function CollectionCard({
+  collection,
+  totalCollections,
+  progress,
+  readingTime,
+}: CollectionCardProps) {
   return (
-    <GlowCard color="var(--arc-brand-atlantean-teal)" size={320} className="rounded-2xl border border-white/[0.06] bg-gradient-to-br from-[var(--arc-cosmic-surface)] via-[var(--arc-cosmic-deep)] to-[var(--arc-cosmic-void)] transition-colors hover:border-white/[0.15]">
-    <Link
-      href={`/library/${collection.slug}`}
-      className="group relative block overflow-hidden rounded-2xl p-6"
+    <GlowCard
+      color="var(--arc-brand-atlantean-teal)"
+      size={320}
+      className="rounded-2xl border border-white/[0.06] bg-gradient-to-br from-[var(--arc-cosmic-surface)] via-[var(--arc-cosmic-deep)] to-[var(--arc-cosmic-void)] transition-colors hover:border-white/[0.15]"
     >
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true">
-        <div className="absolute -left-16 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-atlantean-teal/15 blur-3xl" />
-        <div className="absolute right-[-10%] bottom-[-20%] h-48 w-48 rounded-full bg-gold-bright/10 blur-3xl" />
-      </div>
-
-      <div className="relative">
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-3xl">{collection.icon}</span>
-          <span className="rounded-full border border-cosmic-border-bright bg-cosmic-raised px-3 py-1 text-xs uppercase tracking-[0.2em] text-text-muted">
-            {collection.order}/{totalCollections}
-          </span>
+      <Link
+        href={`/library/${collection.slug}`}
+        className="group relative block overflow-hidden rounded-2xl p-6"
+      >
+        <div
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          aria-hidden="true"
+        >
+          <div className="absolute -left-16 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-atlantean-teal/15 blur-3xl" />
+          <div className="absolute right-[-10%] bottom-[-20%] h-48 w-48 rounded-full bg-gold-bright/10 blur-3xl" />
         </div>
 
-        <h3 className="font-display text-xl font-semibold text-text-primary group-hover:text-atlantean-teal transition-colors">
-          {collection.name}
-        </h3>
-
-        <p className="mt-2 text-sm text-text-secondary line-clamp-2">
-          {collection.description}
-        </p>
-
-        <div className="mt-4 rounded-lg border border-gold-medium/20 bg-gold-dark/10 p-3">
-          <p className="text-xs text-gold-bright">
-            <span className="font-semibold">Read when:</span>{' '}
-            <span className="text-gold-light">{collection.readWhen}</span>
-          </p>
-        </div>
-
-        <div className="mt-4 flex items-center justify-between text-xs text-text-muted">
-          <div className="flex items-center gap-2">
-            <span>{collection.textCount} {collection.textCount === 1 ? 'text' : 'texts'}</span>
-            {readingTime != null && readingTime > 0 && (
-              <>
-                <span className="h-3 w-px bg-cosmic-border" aria-hidden="true" />
-                <span>{readingTime} min</span>
-              </>
-            )}
-          </div>
-          <span className="capitalize">{collection.format}</span>
-        </div>
-
-        {/* Reading progress indicator */}
-        {progress && progress.total > 0 && progress.completed > 0 && (
-          <div className="mt-3 flex items-center gap-2">
-            <div
-              className="h-1 flex-1 overflow-hidden rounded-full bg-cosmic-raised"
-              role="progressbar"
-              aria-valuenow={progress.percent}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={`${progress.completed} of ${progress.total} texts read`}
-            >
-              <div
-                className="h-full rounded-full bg-atlantean-teal transition-all duration-500"
-                style={{ width: `${progress.percent}%` }}
-              />
-            </div>
-            <span className="text-[0.65rem] text-atlantean-teal/70">
-              {progress.completed}/{progress.total}
+        <div className="relative">
+          <div className="mb-4 flex items-center justify-between">
+            <span className="text-3xl">{collection.icon}</span>
+            <span className="rounded-full border border-cosmic-border-bright bg-cosmic-raised px-3 py-1 text-xs uppercase tracking-[0.2em] text-text-muted">
+              {collection.order}/{totalCollections}
             </span>
           </div>
-        )}
 
-        <div className="mt-4 flex items-center gap-2 text-sm text-atlantean-teal opacity-0 transition-opacity group-hover:opacity-100">
-          <span>Enter collection</span>
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          <h3 className="font-display text-xl font-semibold text-text-primary group-hover:text-atlantean-teal transition-colors">
+            {collection.name}
+          </h3>
+
+          <p className="mt-2 text-sm text-text-secondary line-clamp-2">
+            {collection.description}
+          </p>
+
+          <div className="mt-4 rounded-lg border border-gold-medium/20 bg-gold-dark/10 p-3">
+            <p className="text-xs text-gold-bright">
+              <span className="font-semibold">Read when:</span>{" "}
+              <span className="text-gold-light">{collection.readWhen}</span>
+            </p>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between text-xs text-text-muted">
+            <div className="flex items-center gap-2">
+              <span>
+                {collection.textCount}{" "}
+                {collection.textCount === 1 ? "text" : "texts"}
+              </span>
+              {readingTime != null && readingTime > 0 && (
+                <>
+                  <span
+                    className="h-3 w-px bg-cosmic-border"
+                    aria-hidden="true"
+                  />
+                  <span>{readingTime} min</span>
+                </>
+              )}
+            </div>
+            <span className="capitalize">{collection.format}</span>
+          </div>
+
+          {/* Reading progress indicator */}
+          {progress && progress.total > 0 && progress.completed > 0 && (
+            <div className="mt-3 flex items-center gap-2">
+              <div
+                className="h-1 flex-1 overflow-hidden rounded-full bg-cosmic-raised"
+                role="progressbar"
+                aria-valuenow={progress.percent}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${progress.completed} of ${progress.total} texts read`}
+              >
+                <div
+                  className="h-full rounded-full bg-atlantean-teal transition-all duration-500"
+                  style={{ width: `${progress.percent}%` }}
+                />
+              </div>
+              <span className="text-[0.65rem] text-atlantean-teal/70">
+                {progress.completed}/{progress.total}
+              </span>
+            </div>
+          )}
+
+          <div className="mt-4 flex items-center gap-2 text-sm text-atlantean-teal opacity-0 transition-opacity group-hover:opacity-100">
+            <span>Enter collection</span>
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
     </GlowCard>
   );
 }
