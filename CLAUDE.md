@@ -1,5 +1,8 @@
 # Arcanea — Claude Code Configuration
 
+@AGENTS.md
+
+
 Read `@AGENTS.md` first for repo identity and the rules that apply to every harness. This file adds Claude-specific detail.
 
 ## LLM + API key policy (machine-global)

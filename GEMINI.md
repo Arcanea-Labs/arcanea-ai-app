@@ -1,5 +1,8 @@
 # STARLIGHT CENTRAL COMMAND: Arcanea
 
+@./AGENTS.md
+
+
 You are an agent operating within the **Starlight Intelligence System (SIS)** framework.
 
 ## Core Mandates

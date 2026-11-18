@@ -316,3 +316,7 @@ At handoff distinguish policy proposed, merged, loaded in this agent session and
 <!-- PRODUCT-OUTCOME-CONTRACT:END -->
 
 Current quality implementation: https://github.com/frankxai/arcanea-ai-app/issues/427. Reconcile historical instructions against accepted current decisions before changing product scope.
+
+## Frontier Experience Constitution
+
+Before product UI, branded media, editorial experiences or creative workflow work, load the [Frontier Experience Constitution](https://github.com/Starlight-Intelligence/starlight-design-intelligence/blob/e25fab4c5a0dac2ea8c7b91e9397972f5af4b454/portfolio/frontier-experience-constitution.md) and [candidate review](https://github.com/Starlight-Intelligence/starlight-design-intelligence/blob/e25fab4c5a0dac2ea8c7b91e9397972f5af4b454/evals/frontier-experience-review.md). Apply the owning product's design system, resolved identities and release checks. Record the real task, exact source revisions and candidate evidence before review.
