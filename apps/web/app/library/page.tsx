@@ -71,7 +71,7 @@ export default async function LibraryPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Premium hero — full-width, above the constrained main */}
+      {/* Premium hero — full-width, above the collection browser */}
       <LibraryHero collectionsCount={collections.length} textsCount={textsCount} />
 
       {/* Decorative divider */}
@@ -85,11 +85,12 @@ export default async function LibraryPage() {
         />
       </div>
 
-      <main className="mx-auto max-w-7xl px-6 pb-24">
+      <div className="mx-auto max-w-7xl px-6 pb-24">
         {/* Tab Navigation */}
-        <nav className="mb-12 flex items-center gap-2 border-b border-white/[0.05] pb-4">
+        <nav aria-label="Library" className="mb-12 flex items-center gap-2 border-b border-white/[0.05] pb-4">
           <Link
             href="/library"
+            aria-current="page"
             className="rounded-xl bg-gradient-to-r from-[var(--arc-brand-atlantean-teal)]/15 to-[var(--arc-brand-cosmic-blue)]/10 border border-[var(--arc-brand-atlantean-teal)]/25 px-4 py-2 text-sm font-semibold text-[var(--arc-brand-atlantean-teal)] shadow-[0_0_12px_rgba(0,188,212,0.08)]"
           >
             Browse Library
@@ -115,7 +116,7 @@ export default async function LibraryPage() {
         </nav>
 
         <LibraryBrowse collections={collections} collectionReadingTimes={collectionReadingTimes} />
-      </main>
+      </div>
     </div>
   );
 }

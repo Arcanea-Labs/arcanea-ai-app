@@ -145,11 +145,11 @@ export function LibraryBrowse({ collections, collectionReadingTimes }: LibraryBr
             <span className="hidden h-px flex-1 bg-cosmic-border sm:block" aria-hidden="true" />
           </div>
 
-          <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl lg:text-6xl">
+          <h2 className="font-display text-4xl font-bold tracking-tight text-text-primary md:text-5xl lg:text-6xl">
             <span className="aurora-text">{totalCollections} Collections</span>
             <br />
             of Wisdom, Legend, and Practice
-          </h1>
+          </h2>
 
           <p className="mt-6 text-xl text-text-secondary leading-relaxed">
             These books are not entertainment. They are equipment for living.
