@@ -20,7 +20,7 @@ function source(file) {
   return fs.readFileSync(path.join(repo, file), "utf8");
 }
 
-function mainLandmarks(file) {
+function jsxElements(file) {
   const ast = ts.createSourceFile(
     file,
     source(file),
@@ -28,24 +28,28 @@ function mainLandmarks(file) {
     true,
     ts.ScriptKind.TSX,
   );
-  const landmarks = [];
+  const elements = [];
   function visit(node) {
     if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
-      const tag = node.tagName.getText(ast);
-      const mainRole = node.attributes.properties.some(
-        (attribute) =>
-          ts.isJsxAttribute(attribute) &&
-          attribute.name.getText(ast) === "role" &&
-          attribute.initializer &&
-          ts.isStringLiteral(attribute.initializer) &&
-          attribute.initializer.text === "main",
-      );
-      if (tag === "main" || mainRole) landmarks.push(node);
+      elements.push(node);
     }
     ts.forEachChild(node, visit);
   }
   visit(ast);
-  return landmarks;
+  return elements;
+}
+
+function mainLandmarks(file) {
+  return jsxElements(file).filter((node) =>
+    node.tagName.getText() === "main" || node.attributes.properties.some(
+      (attribute) =>
+        ts.isJsxAttribute(attribute) &&
+        attribute.name.getText() === "role" &&
+        attribute.initializer &&
+        ts.isStringLiteral(attribute.initializer) &&
+        attribute.initializer.text === "main",
+    ),
+  );
 }
 
 test("the application owns one persistent content landmark", () => {
@@ -95,6 +99,7 @@ for (const file of [
 }
 
 for (const file of [
+  "apps/web/app/library/page.tsx",
   "apps/web/app/worlds/worlds-client.tsx",
   "apps/web/app/worlds/[slug]/page.tsx",
 ]) {
@@ -102,7 +107,18 @@ for (const file of [
     assert.equal(
       mainLandmarks(file).length,
       0,
-      "Loaded world content must not add a second main",
+      "Page content must not add a second main",
     );
   });
 }
+
+test("the library hero owns the primary heading", () => {
+  const directory = "apps/web/app/library";
+  const components = ["page.tsx", "library-hero.tsx", "library-browse.tsx"];
+  const headingOwners = components.flatMap((file) =>
+    jsxElements(`${directory}/${file}`)
+      .filter((node) => /^(?:[\w$.]+\.)?h1$/.test(node.tagName.getText()))
+      .map(() => file),
+  );
+  assert.deepEqual(headingOwners, ["library-hero.tsx"]);
+});
