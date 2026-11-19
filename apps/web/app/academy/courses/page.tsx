@@ -9,7 +9,7 @@ const CATALOGUE: CourseCard[] = COURSES.map((course) => ({
   description: course.description,
   gate: course.gate,
   gateName: course.gateName,
-  element: course.element,
+  guardian: course.guardian,
   difficulty: course.difficulty,
   duration: course.duration,
   color: course.color,

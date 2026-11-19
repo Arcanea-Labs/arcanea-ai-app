@@ -43,3 +43,16 @@ test("each card states the lesson count and duration held in the course data", (
     );
   }
 });
+
+test("course cards identify the Gate guardian instead of displaying a noncanonical element", () => {
+  for (const course of COURSES) {
+    const anchor = html.match(
+      new RegExp(
+        `<a[^>]*href="/academy/courses/${course.slug}"[^>]*>([\\s\\S]*?)</a>`,
+      ),
+    );
+    assert.ok(anchor, course.slug);
+    assert.ok(anchor[1].includes(`Guardian: ${course.guardian}`), course.slug);
+    assert.ok(!anchor[1].includes(`>${course.element}<`), course.slug);
+  }
+});

@@ -6,39 +6,13 @@ import {
   PhGraduationCap,
   PhArrowRight,
   PhSparkle,
-  PhFlame,
-  PhDrop,
-  PhLeaf,
-  PhWind,
-  PhEye,
   PhCrown,
-  PhStar,
   PhCompass,
-  PhLightning,
+  PhShield,
   PhBookOpen,
   PhRocket,
 } from "@/lib/phosphor-icons";
 import { MotionProvider, m } from "@/lib/motion";
-
-const ELEMENT_ICONS: Record<string, typeof PhFlame> = {
-  Fire: PhFlame,
-  Water: PhDrop,
-  Earth: PhLeaf,
-  Wind: PhWind,
-  Spirit: PhEye,
-  Void: PhStar,
-  All: PhSparkle,
-};
-
-const ELEMENT_COLORS: Record<string, string> = {
-  Fire: "var(--arc-fire)",
-  Water: "var(--arc-brand-cosmic-blue)",
-  Earth: "var(--arc-wind)",
-  Wind: "var(--arc-earth)",
-  Spirit: "var(--arc-brand-arcanean-gold)",
-  Void: "var(--arc-void)",
-  All: "var(--arc-brand-atlantean-teal)",
-};
 
 const DIFFICULTY_STYLES: Record<string, { label: string; color: string }> = {
   beginner: { label: "Beginner", color: "var(--arc-wind)" },
@@ -57,7 +31,7 @@ export interface CourseCard {
   description: string;
   gate: number;
   gateName: string;
-  element: string;
+  guardian: string;
   difficulty: string;
   duration: string;
   color: string;
@@ -178,10 +152,6 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
             </h2>
             <div className="space-y-6">
               {courses.map((course) => {
-                const ElIcon = ELEMENT_ICONS[course.element] || PhSparkle;
-                const elColor =
-                  ELEMENT_COLORS[course.element] ||
-                  "var(--arc-brand-atlantean-teal)";
                 const diff = DIFFICULTY_STYLES[course.difficulty];
 
                 return (
@@ -247,12 +217,9 @@ export function CoursesContent({ courses }: { courses: CourseCard[] }) {
                       {/* Right: Meta */}
                       <div className="lg:w-48 flex lg:flex-col gap-4 lg:gap-3 lg:items-end lg:text-right">
                         <div className="flex items-center gap-2">
-                          <ElIcon
-                            className="w-4 h-4"
-                            style={{ color: elColor }}
-                          />
+                          <PhShield className="w-4 h-4 text-neutral-500" />
                           <span className="text-xs text-neutral-500">
-                            {course.element}
+                            Guardian: {course.guardian}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
