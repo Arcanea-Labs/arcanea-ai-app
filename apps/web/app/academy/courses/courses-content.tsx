@@ -1,0 +1,296 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
+"use client";
+
+import Link from "next/link";
+import {
+  PhGraduationCap,
+  PhArrowRight,
+  PhSparkle,
+  PhCrown,
+  PhCompass,
+  PhShield,
+  PhBookOpen,
+  PhRocket,
+} from "@/lib/phosphor-icons";
+import { MotionProvider, m } from "@/lib/motion";
+
+const DIFFICULTY_STYLES: Record<string, { label: string; color: string }> = {
+  beginner: { label: "Beginner", color: "var(--arc-wind)" },
+  intermediate: {
+    label: "Intermediate",
+    color: "var(--arc-brand-arcanean-gold)",
+  },
+  advanced: { label: "Advanced", color: "var(--arc-void)" },
+  master: { label: "Master", color: "var(--arc-fire)" },
+};
+
+export interface CourseCard {
+  slug: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  gate: number;
+  gateName: string;
+  guardian: string;
+  difficulty: string;
+  duration: string;
+  color: string;
+  lessonTitles: string[];
+}
+
+const LEARNING_PATH = [
+  { label: "Apprentice", gates: "0-2", color: "var(--arc-earth)" },
+  { label: "Mage", gates: "3-4", color: "var(--arc-brand-cosmic-blue)" },
+  { label: "Master", gates: "5-6", color: "var(--arc-brand-arcanean-gold)" },
+  { label: "Archmage", gates: "7-8", color: "var(--arc-void)" },
+  { label: "Luminor", gates: "9-10", color: "var(--arc-fire)" },
+];
+
+export function CoursesContent({ courses }: { courses: CourseCard[] }) {
+  const coveredGates = [...new Set(courses.map((course) => course.gateName))];
+
+  return (
+    <MotionProvider>
+      <div className="relative min-h-screen">
+        {/* Background */}
+        <div className="fixed inset-0 -z-10">
+          <div className="absolute inset-0 bg-black" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--arc-brand-arcanean-gold)]/5 via-transparent to-[var(--arc-void)]/5" />
+          <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-[var(--arc-brand-arcanean-gold)]/5 rounded-full blur-[150px]" />
+        </div>
+
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Breadcrumb */}
+          <nav className="pt-8 flex items-center gap-2 text-xs text-neutral-500">
+            <Link
+              href="/academy"
+              className="hover:text-neutral-300 transition-colors"
+            >
+              Academy
+            </Link>
+            <span>/</span>
+            <span className="text-neutral-300">Courses</span>
+          </nav>
+
+          {/* Hero */}
+          <m.section
+            className="pt-8 pb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden px-8 py-14 sm:px-12 sm:py-16">
+              <div className="absolute inset-0 bg-gradient-to-br from-[var(--arc-brand-arcanean-gold)]/10 via-transparent to-[var(--arc-void)]/10 pointer-events-none" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--arc-brand-arcanean-gold)]/8 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative max-w-3xl">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--arc-brand-arcanean-gold)]/30 bg-[var(--arc-brand-arcanean-gold)]/10 mb-6">
+                  <PhGraduationCap className="w-3.5 h-3.5 text-[var(--arc-brand-arcanean-gold)]" />
+                  <span className="text-xs font-mono tracking-widest uppercase text-[var(--arc-brand-arcanean-gold)]">
+                    Academy Courses
+                  </span>
+                </div>
+
+                <h1 className="text-4xl sm:text-5xl font-display font-bold mb-6 tracking-tight">
+                  Master the art of{" "}
+                  <span className="bg-gradient-to-r from-[var(--arc-brand-arcanean-gold)] to-[var(--arc-void)] bg-clip-text text-transparent">
+                    world-building
+                  </span>
+                </h1>
+
+                <p className="text-lg text-neutral-400 leading-relaxed max-w-2xl">
+                  Structured learning paths through the Ten Gates. Each course
+                  maps to a Gate and provides practical lessons, exercises, and
+                  reflections for every stage of creative growth.
+                </p>
+              </div>
+            </div>
+          </m.section>
+
+          {/* Learning Path Visualization */}
+          <section className="pb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--arc-brand-atlantean-teal)]/20 bg-[var(--arc-brand-atlantean-teal)]/8 mb-6">
+              <PhCompass className="w-3 h-3 text-[var(--arc-brand-atlantean-teal)]" />
+              <span className="text-xs font-mono tracking-widest uppercase text-[var(--arc-brand-atlantean-teal)]">
+                Learning Path
+              </span>
+            </div>
+            <h2 className="text-2xl font-display font-bold mb-6">
+              Your journey from Apprentice to Luminor
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {LEARNING_PATH.map((rank, i) => (
+                <div key={rank.label} className="flex items-center gap-3">
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-5 py-3 text-center">
+                    <div
+                      className="font-display font-bold text-sm"
+                      style={{ color: rank.color }}
+                    >
+                      {rank.label}
+                    </div>
+                    <div className="text-[10px] text-neutral-500 font-mono mt-0.5">
+                      Gates {rank.gates}
+                    </div>
+                  </div>
+                  {i < LEARNING_PATH.length - 1 && (
+                    <PhArrowRight className="w-4 h-4 text-neutral-600" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Course Cards */}
+          <m.section
+            className="py-12 border-t border-white/5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            <h2 className="text-2xl font-display font-bold mb-8">
+              Available Courses
+            </h2>
+            <div className="space-y-6">
+              {courses.map((course) => {
+                const diff = DIFFICULTY_STYLES[course.difficulty];
+
+                return (
+                  <Link
+                    key={course.slug}
+                    href={`/academy/courses/${course.slug}`}
+                    className="group block bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-7 hover:border-white/20 hover:bg-white/[0.07] transition-colors duration-300 relative overflow-hidden"
+                  >
+                    <div
+                      className="h-1 w-full absolute top-0 left-0 right-0"
+                      style={{
+                        background: `linear-gradient(90deg, ${course.color}, transparent)`,
+                      }}
+                    />
+
+                    <div className="flex flex-col lg:flex-row gap-6">
+                      {/* Left: Main info */}
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span
+                            className="font-mono text-[10px] uppercase tracking-[0.2em] px-2 py-0.5 rounded-full"
+                            style={{
+                              backgroundColor: `${course.color}15`,
+                              color: course.color,
+                            }}
+                          >
+                            Gate {course.gate} -- {course.gateName}
+                          </span>
+                          <span
+                            className="px-2 py-0.5 rounded-full text-[10px] font-medium"
+                            style={{
+                              backgroundColor: `${diff.color}15`,
+                              color: diff.color,
+                            }}
+                          >
+                            {diff.label}
+                          </span>
+                        </div>
+
+                        <h3 className="font-display text-xl font-bold mb-1 group-hover:text-[var(--arc-brand-arcanean-gold)] transition-colors">
+                          {course.title}
+                        </h3>
+                        <p className="text-sm text-neutral-500 mb-2">
+                          {course.subtitle}
+                        </p>
+                        <p className="text-sm text-neutral-400 leading-relaxed mb-4">
+                          {course.description}
+                        </p>
+
+                        {/* Lessons */}
+                        <div className="flex flex-wrap gap-2">
+                          {course.lessonTitles.map((t) => (
+                            <span
+                              key={t}
+                              className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-neutral-400"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Right: Meta */}
+                      <div className="lg:w-48 flex lg:flex-col gap-4 lg:gap-3 lg:items-end lg:text-right">
+                        <div className="flex items-center gap-2">
+                          <PhShield className="w-4 h-4 text-neutral-500" />
+                          <span className="text-xs text-neutral-500">
+                            Guardian: {course.guardian}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <PhBookOpen className="w-4 h-4 text-neutral-500" />
+                          <span className="text-xs text-neutral-500">
+                            {course.lessonTitles.length} lessons
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <PhCrown className="w-4 h-4 text-neutral-500" />
+                          <span className="text-xs text-neutral-500">
+                            {course.duration}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </m.section>
+
+          {/* Gates without a course — quiz CTA */}
+          <section className="py-12 border-t border-white/5">
+            <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 text-center overflow-hidden">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--arc-brand-arcanean-gold)]/5 via-transparent to-[var(--arc-brand-atlantean-teal)]/5" />
+              <div className="relative">
+                <PhSparkle className="w-7 h-7 text-[var(--arc-brand-arcanean-gold)]/50 mx-auto mb-4" />
+                <h3 className="font-display text-lg font-semibold mb-2">
+                  Not every Gate has a course
+                </h3>
+                <p className="text-sm text-neutral-400 max-w-lg mx-auto mb-6">
+                  The courses above cover the {coveredGates.join(", ")} Gates.
+                  The other Gates have no course today. Take the quiz to
+                  discover which Gate calls to you first.
+                </p>
+                <Link
+                  href="/quiz"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--arc-brand-arcanean-gold)] to-[var(--arc-brand-arcanean-gold)] text-[var(--arc-cosmic-void)] font-semibold text-sm hover:scale-[1.03] transition-transform duration-200 shadow-[0_0_30px_rgba(255,215,0,0.2)]"
+                >
+                  <PhSparkle className="w-4 h-4" />
+                  Take the quiz
+                  <PhArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* CTA */}
+          <section className="py-12 pb-20 text-center">
+            <Link
+              href="/quiz"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-[var(--arc-brand-arcanean-gold)] to-[var(--arc-brand-arcanean-gold)] text-black font-bold text-lg hover:scale-[1.03] transition-transform duration-200 shadow-[0_0_40px_rgba(255,215,0,0.2)]"
+            >
+              <PhRocket className="w-5 h-5" />
+              Discover Your Origin
+              <PhArrowRight className="w-5 h-5" />
+            </Link>
+
+            <div className="mt-6">
+              <Link
+                href="/academy"
+                className="inline-flex items-center gap-2 text-neutral-400 hover:text-[var(--arc-brand-arcanean-gold)] transition-colors text-sm"
+              >
+                <PhArrowRight className="w-4 h-4 rotate-180" />
+                Back to Academy
+              </Link>
+            </div>
+          </section>
+        </main>
+      </div>
+    </MotionProvider>
+  );
+}
