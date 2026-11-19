@@ -11,6 +11,46 @@ import {
 import { Coordinate, World } from "../../packages/schemas/src/atlas-world";
 import { simulation, canon } from "../../apps/web/lib/atlas/fixtures";
 
+function observationKeyWorld(sameTuple = false, sameValue = false): World {
+  const world = structuredClone(simulation);
+  const entity = world.entities.find((e) => e.id === "crossing")!;
+  world.entities.push(
+    { ...entity, id: "a:b" },
+    { ...entity, id: "a" },
+  );
+  const observation = world.records.find((r) => r.id === "crossing-seen")!;
+  world.records = [
+    {
+      ...observation,
+      id: "one",
+      logicalId: "one",
+      fact: {
+        kind: "observation",
+        observerId: "witness-a",
+        entityId: "a:b",
+        predicate: "c",
+        value: "open",
+        confidence: 1,
+      },
+    },
+    {
+      ...observation,
+      id: "two",
+      logicalId: "two",
+      fact: {
+        kind: "observation",
+        observerId: "witness-a",
+        entityId: sameTuple ? "a:b" : "a",
+        predicate: sameTuple ? "c" : "b:c",
+        value: sameValue ? "open" : "closed",
+        confidence: 1,
+      },
+    },
+  ];
+  // Exercise the real import schema as well as engine reference validation.
+  return World.parse(world);
+}
+
 const reader = { role: "reader" as const, maxChapter: 5 };
 const query = {
   chapter: 3,
@@ -18,6 +58,42 @@ const query = {
   knownAt: "2026-11-13T00:00:00Z",
   branchId: "main",
 };
+
+test("unrelated observation tuples cannot fabricate a continuity conflict", () => {
+  const world = observationKeyWorld();
+  assert.deepEqual(validateWorld(world), []);
+  const original = structuredClone(world);
+  const state = reconstruct(world, reader, query);
+  assert.equal(state.records.length, 2);
+  assert.deepEqual(state.conflicts, []);
+  assert.deepEqual(world, original);
+});
+
+test("same observation tuple retains a real attributed conflict", () => {
+  const world = observationKeyWorld(true);
+  assert.deepEqual(validateWorld(world), []);
+  assert.deepEqual(reconstruct(world, reader, query).conflicts, [
+    { entityId: "a:b", predicate: "c", recordIds: ["one", "two"] },
+  ]);
+});
+
+test("agreeing observations do not fabricate a continuity conflict", () => {
+  const world = observationKeyWorld(true, true);
+  assert.deepEqual(validateWorld(world), []);
+  assert.deepEqual(reconstruct(world, reader, query).conflicts, []);
+});
+
+test("unrelated observation non-conflict survives input permutation", () => {
+  const world = observationKeyWorld();
+  const forward = reconstruct(world, reader, query);
+  const reversed = reconstruct(
+    { ...world, records: [...world.records].reverse() },
+    reader,
+    query,
+  );
+  assert.deepEqual(reversed, forward);
+  assert.deepEqual(reversed.conflicts, []);
+});
 test("seed packets are valid and source-backed; canon coordinates remain unknown", () => {
   assert.deepEqual(validateWorld(simulation), []);
   assert.deepEqual(validateWorld(canon), []);

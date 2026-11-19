@@ -157,7 +157,7 @@ export function reconstruct(
     if (r.fact.kind === "position")
       positions.set(r.fact.entityId, r.fact.locationId);
     if (r.fact.kind === "observation") {
-      const key = `${r.fact.entityId}:${r.fact.predicate}`;
+      const key = JSON.stringify([r.fact.entityId, r.fact.predicate]);
       observations.set(key, [...(observations.get(key) || []), r]);
     }
   }
