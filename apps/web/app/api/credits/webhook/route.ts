@@ -3,7 +3,7 @@
  * Stripe Webhook Handler
  *
  * Handles payment and subscription lifecycle events from Stripe:
- *   - checkout.session.completed  (one-time credit pack purchase)
+ *   - checkout.session.completed / async_payment_succeeded (paid credit packs)
  *   - customer.subscription.created / updated / deleted  (Forge subscription)
  *
  * Stripe sends raw body + signature header. We MUST read the raw body
@@ -35,6 +35,7 @@ import { CREDIT_PACKS } from "@/lib/types/credits";
 interface StripeCheckoutSession {
   id?: string;
   mode?: string;
+  payment_status?: string;
   metadata?: Record<string, string> | null;
   customer?: string | null;
   subscription?: string | null;
@@ -60,12 +61,14 @@ interface StripeEvent {
 
 type RelevantEvent =
   | "checkout.session.completed"
+  | "checkout.session.async_payment_succeeded"
   | "customer.subscription.created"
   | "customer.subscription.updated"
   | "customer.subscription.deleted";
 
 const RELEVANT_EVENTS = new Set<string>([
   "checkout.session.completed",
+  "checkout.session.async_payment_succeeded",
   "customer.subscription.created",
   "customer.subscription.updated",
   "customer.subscription.deleted",
@@ -128,11 +131,13 @@ export async function POST(req: Request) {
         // ────────────────────────────────────────────────────────────────────
         // Credit pack purchase completed
         // ────────────────────────────────────────────────────────────────────
-        case "checkout.session.completed": {
+        case "checkout.session.completed":
+        case "checkout.session.async_payment_succeeded": {
           const session = event.data.object as unknown as StripeCheckoutSession;
 
-          // Only process one-time payments (not subscription checkouts)
-          if (session.mode !== "payment") break;
+          // Delayed payments can complete Checkout before settlement.
+          if (session.mode !== "payment" || session.payment_status !== "paid")
+            break;
 
           const userId = session.metadata?.user_id;
           const packId = session.metadata?.pack_id;

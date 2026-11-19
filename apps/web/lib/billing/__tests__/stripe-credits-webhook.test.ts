@@ -69,16 +69,20 @@ function loadWebhook(grant: (g: Grant) => Promise<{ applied: boolean }>) {
   return { POST: exports.POST, legacyWrites };
 }
 
-function checkoutEvent(session: Record<string, unknown>) {
+function checkoutEvent(
+  session: Record<string, unknown>,
+  type = "checkout.session.completed",
+) {
   return new Request("https://arcanea.ai/api/credits/webhook", {
     method: "POST",
     body: JSON.stringify({
       id: "evt_1",
-      type: "checkout.session.completed",
+      type,
       data: {
         object: {
           id: "cs_test_1",
           mode: "payment",
+          payment_status: "paid",
           metadata: {
             user_id: "00000000-0000-0000-0000-000000000001",
             pack_id: "pack-250",
@@ -133,4 +137,26 @@ test("without a payment intent the grant is keyed on the checkout session", asyn
   const res = await POST(checkoutEvent({ payment_intent: null }));
   assert.equal(res.status, 200);
   assert.equal(grants[0].reference, "stripe:cs_test_1");
+});
+
+test("a pending checkout grants only after payment settles", async () => {
+  const grants: Grant[] = [];
+  const { POST } = loadWebhook(async (grant) => {
+    grants.push(grant);
+    return { applied: true };
+  });
+  const session = { payment_intent: "pi_delayed" };
+  for (const payment_status of ["unpaid", "no_payment_required", undefined]) {
+    const response = await POST(checkoutEvent({ ...session, payment_status }));
+    assert.equal(response.status, 200);
+    assert.equal(grants.length, 0);
+  }
+  const settled = await POST(
+    checkoutEvent(session, "checkout.session.async_payment_succeeded"),
+  );
+  assert.equal(settled.status, 200);
+  assert.deepEqual(
+    grants.map((g) => g.reference),
+    ["stripe:pi_delayed"],
+  );
 });
