@@ -1,77 +1,83 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-const path = require('node:path')
-const createNextIntlPlugin = require('next-intl/plugin')
-const { routeRedirects } = require('./route-redirects')
+const path = require("node:path");
+const createNextIntlPlugin = require("next-intl/plugin");
+const { routeRedirects } = require("./route-redirects");
 
-const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const localSupabaseOrigin = (() => {
   try {
-    const url = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '')
-    return url.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)
+    const url = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || "");
+    return url.protocol === "http:" &&
+      ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname)
       ? url.origin
-      : null
+      : null;
   } catch {
-    return null
+    return null;
   }
-})()
-const localSupabaseWebSocket = localSupabaseOrigin?.replace(/^http:/, 'ws:') || ''
+})();
+const localSupabaseWebSocket =
+  localSupabaseOrigin?.replace(/^http:/, "ws:") || "";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
-  serverExternalPackages: ['@opentelemetry/api'],
-  outputFileTracingRoot: path.resolve(__dirname, '../..'),
+  serverExternalPackages: ["@opentelemetry/api"],
+  outputFileTracingRoot: path.resolve(__dirname, "../.."),
   outputFileTracingIncludes: {
-    '/books': ['../../book/**/*'],
-    '/books/**': ['../../book/**/*'],
-    '/authors': ['../../book/**/*'],
-    '/authors/**': ['../../book/**/*'],
-    '/library': ['../../book/**/*'],
-    '/library/**': ['../../book/**/*'],
-    '/living-lore': ['../../book/**/*'],
-    '/living-lore/**': ['../../book/**/*'],
-    '/studio/author': ['../../book/**/*'],
-    '/studio/author/**': ['../../book/**/*'],
-    '/api/ai/author-chat': ['../../book/**/*'],
-    '/api/author/**': ['../../book/**/*'],
-    '/api/books/**': ['../../book/**/*'],
-    '/api/content/**': ['../../book/**/*'],
-    '/api/living-lore/**': ['../../book/**/*'],
-    '/api/saga/**': ['../../book/**/*'],
+    "/books": ["../../book/**/*"],
+    "/books/**": ["../../book/**/*"],
+    "/authors": ["../../book/**/*"],
+    "/authors/**": ["../../book/**/*"],
+    "/library": ["../../book/**/*"],
+    "/library/**": ["../../book/**/*"],
+    "/living-lore": ["../../book/**/*"],
+    "/living-lore/**": ["../../book/**/*"],
+    "/studio/author": ["../../book/**/*"],
+    "/studio/author/**": ["../../book/**/*"],
+    "/api/ai/author-chat": ["../../book/**/*"],
+    "/api/author/**": ["../../book/**/*"],
+    "/api/books/**": ["../../book/**/*"],
+    "/api/content/**": ["../../book/**/*"],
+    "/api/living-lore/**": ["../../book/**/*"],
+    "/api/saga/**": ["../../book/**/*"],
   },
   // Workspace packages with subpath exports — let Next.js/Turbopack compile from
   // source rather than relying on prebuilt dist/. Avoids `Module not found` in
   // CI when the workspace dep hasn't been built before `next build` runs.
-  transpilePackages: ['@arcanea/design-system', '@arcanea/publishing-house', '@arcanea/world-engine', '@starlight/multilingual'],
+  transpilePackages: [
+    "@arcanea/design-system",
+    "@arcanea/publishing-house",
+    "@arcanea/world-engine",
+    "@starlight/multilingual",
+  ],
   // Strip console.log/warn in production builds — keeps bundles lean & avoids
   // leaking debug info. console.error is preserved for runtime diagnostics.
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production'
-      ? { exclude: ['error'] }
-      : false,
+    removeConsole:
+      process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
   turbopack: {
-    root: path.resolve(__dirname, '../..'),
+    root: path.resolve(__dirname, "../.."),
     resolveAlias: {
-      '@opentelemetry/api': { browser: './empty-module.js' },
+      "@opentelemetry/api": { browser: "./empty-module.js" },
     },
   },
   experimental: {
     // Tree-shake barrel exports from large packages — reduces client JS significantly
     optimizePackageImports: [
-      '@phosphor-icons/react',
-      '@radix-ui/react-accordion',
-      '@radix-ui/react-alert-dialog',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-popover',
-      '@radix-ui/react-select',
-      '@radix-ui/react-tabs',
-      '@radix-ui/react-toast',
-      '@radix-ui/react-tooltip',
-      'framer-motion',
-      'react-syntax-highlighter',
+      "@phosphor-icons/react",
+      "@radix-ui/react-accordion",
+      "@radix-ui/react-alert-dialog",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-popover",
+      "@radix-ui/react-select",
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-toast",
+      "@radix-ui/react-tooltip",
+      "framer-motion",
+      "react-syntax-highlighter",
     ],
     // Allow build to continue when individual pages crash during prerendering.
     // Several pages trigger workStore invariant errors due to require() in
@@ -80,45 +86,49 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      ...(localSupabaseOrigin ? [{
-        protocol: 'http',
-        hostname: new URL(localSupabaseOrigin).hostname,
-        port: new URL(localSupabaseOrigin).port,
-      }] : []),
+      ...(localSupabaseOrigin
+        ? [
+            {
+              protocol: "http",
+              hostname: new URL(localSupabaseOrigin).hostname,
+              port: new URL(localSupabaseOrigin).port,
+            },
+          ]
+        : []),
       {
-        protocol: 'https',
-        hostname: 'hcfhyssdzphudaqatxbk.supabase.co',
+        protocol: "https",
+        hostname: "hcfhyssdzphudaqatxbk.supabase.co",
       },
       {
-        protocol: 'https',
-        hostname: '*.supabase.co',
+        protocol: "https",
+        hostname: "*.supabase.co",
       },
       {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
       },
       {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
       },
       {
-        protocol: 'https',
-        hostname: '*.public.blob.vercel-storage.com',
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
       },
       {
-        protocol: 'https',
-        hostname: 'media.starlightintelligence.org',
+        protocol: "https",
+        hostname: "media.starlightintelligence.org",
       },
       {
-        protocol: 'https',
-        hostname: 'arcanea.ai',
+        protocol: "https",
+        hostname: "arcanea.ai",
       },
       {
-        protocol: 'https',
-        hostname: 'www.arcanea.ai',
+        protocol: "https",
+        hostname: "www.arcanea.ai",
       },
     ],
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
     // Guardian portrait breakpoints: covers sm (48), md (256/320), lg (512), hero (896)
     imageSizes: [48, 64, 128, 256, 320, 512],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
@@ -138,56 +148,87 @@ const nextConfig = {
     return routeRedirects;
   },
   async headers() {
-    const { scriptHash } = await import('../../packages/arcanea-creator-starters/scripts/build.mjs');
+    const { scriptHash } =
+      await import("../../packages/arcanea-creator-starters/scripts/build.mjs");
     const starterScriptHash = await scriptHash();
+    const appContentSecurityPolicy = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vercel.live",
+      "style-src 'self' 'unsafe-inline'",
+      `img-src 'self' data: blob: https://imgen.x.ai https://*.supabase.co https://avatars.githubusercontent.com https://lh3.googleusercontent.com https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ""}`,
+      `media-src 'self' https://*.supabase.co https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ""}`,
+      "font-src 'self' data:",
+      `connect-src 'self' https://imgen.x.ai https://*.supabase.co wss://*.supabase.co https://generativelanguage.googleapis.com https://openrouter.ai https://api.anthropic.com https://va.vercel-scripts.com https://vercel.live${localSupabaseOrigin ? ` ${localSupabaseOrigin} ${localSupabaseWebSocket}` : ""}`,
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join("; ");
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
-          { key: 'X-DNS-Prefetch-Control', value: 'on' },
-          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
-          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(self), geolocation=(), interest-cohort=()' },
+          { key: "X-DNS-Prefetch-Control", value: "on" },
           {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vercel.live",
-              "style-src 'self' 'unsafe-inline'",
-              `img-src 'self' data: blob: https://imgen.x.ai https://*.supabase.co https://avatars.githubusercontent.com https://lh3.googleusercontent.com https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ''}`,
-              `media-src 'self' https://*.supabase.co https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ''}`,
-              "font-src 'self' data:",
-              `connect-src 'self' https://imgen.x.ai https://*.supabase.co wss://*.supabase.co https://generativelanguage.googleapis.com https://openrouter.ai https://api.anthropic.com https://va.vercel-scripts.com https://vercel.live${localSupabaseOrigin ? ` ${localSupabaseOrigin} ${localSupabaseWebSocket}` : ''}`,
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self'",
-            ].join('; '),
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Permissions-Policy",
+            value:
+              "camera=(), microphone=(self), geolocation=(), interest-cohort=()",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: appContentSecurityPolicy,
+          },
+        ],
+      },
+      // The consent-gated geographic view needs only this tile origin and its locally generated worker.
+      // Keep these capabilities scoped to this exact page; no geolocation permission is granted.
+      {
+        source: "/atlas/world",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value:
+              appContentSecurityPolicy
+                .replace(
+                  "img-src 'self'",
+                  "img-src 'self' https://tile.openstreetmap.org",
+                )
+                .replace(
+                  "connect-src 'self'",
+                  "connect-src 'self' https://tile.openstreetmap.org",
+                ) + "; worker-src 'self' blob:",
           },
         ],
       },
       // Standalone examples use Google Fonts but no provider or network form.
       // This final route-specific policy leaves the app-wide policy unchanged.
       {
-        source: '/creator-starters/:path*',
-        headers: [{
-          key: 'Content-Security-Policy',
-          value: [
-            "default-src 'none'",
-            `script-src '${starterScriptHash}'`,
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-            "font-src 'self' data: https://fonts.gstatic.com",
-            "img-src 'self' data:",
-            "connect-src 'none'",
-            "frame-ancestors 'none'",
-            "base-uri 'none'",
-            "form-action 'none'",
-          ].join('; '),
-        }],
+        source: "/creator-starters/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'none'",
+              `script-src '${starterScriptHash}'`,
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' data: https://fonts.gstatic.com",
+              "img-src 'self' data:",
+              "connect-src 'none'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+              "form-action 'none'",
+            ].join("; "),
+          },
+        ],
       },
     ];
   },
-}
+};
 
-module.exports = withNextIntl(nextConfig)
+module.exports = withNextIntl(nextConfig);

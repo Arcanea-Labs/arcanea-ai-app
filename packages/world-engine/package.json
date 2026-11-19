@@ -11,6 +11,11 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./atlas-world": {
+      "types": "./dist/atlas-world.d.ts",
+      "import": "./dist/atlas-world.js",
+      "default": "./dist/atlas-world.js"
     }
   },
   "scripts": {
