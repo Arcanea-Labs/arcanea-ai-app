@@ -1,19 +1,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import {
-  ArrowRight, Sparkle, Crown, GraduationCap, Star,
-  Lightning, Book, Scroll, Flame, Drop, Leaf, Wind, Globe,
-  Eye, Heart, Sun, Diamond, Compass,
-} from '@/lib/phosphor-icons';
-import type { PhosphorIcon } from '@/lib/phosphor-icons';
-import { GateGrid } from './gate-grid';
-import { SplitText } from '@/components/motion/split-text';
-import { Magnetic } from '@/components/motion/magnetic';
-import { Reveal, StaggerReveal } from '@/components/motion/reveal';
-import { GlowCard } from '@/components/motion/glow-card';
-import { NumberTicker } from '@/components/motion/number-ticker';
+  ArrowRight,
+  Sparkle,
+  Crown,
+  GraduationCap,
+  Star,
+  Lightning,
+  Book,
+  Scroll,
+  Flame,
+  Drop,
+  Leaf,
+  Wind,
+  Globe,
+  Eye,
+  Heart,
+  Sun,
+  Diamond,
+  Compass,
+} from "@/lib/phosphor-icons";
+import type { PhosphorIcon } from "@/lib/phosphor-icons";
+import { GateGrid } from "./gate-grid";
+import { SplitText } from "@/components/motion/split-text";
+import { Magnetic } from "@/components/motion/magnetic";
+import { Reveal, StaggerReveal } from "@/components/motion/reveal";
+import { GlowCard } from "@/components/motion/glow-card";
+import { NumberTicker } from "@/components/motion/number-ticker";
 
 /* ------------------------------------------------------------------ */
 /*  DATA                                                               */
@@ -46,41 +61,192 @@ interface Rank {
 }
 
 const GATES: Gate[] = [
-  { n: 1, name: 'Foundation', god: 'Lyssandria', beast: 'Kaelith', domain: 'Earth & Survival', color: 'var(--arc-brand-atlantean-teal)', icon: Leaf },
-  { n: 2, name: 'Flow', god: 'Leyla', beast: 'Veloura', domain: 'Creativity & Emotion', color: 'var(--arc-brand-atlantean-teal)', icon: Drop },
-  { n: 3, name: 'Fire', god: 'Draconia', beast: 'Draconis', domain: 'Power & Will', color: 'var(--arc-fire)', icon: Flame },
-  { n: 4, name: 'Heart', god: 'Maylinn', beast: 'Laeylinn', domain: 'Love & Healing', color: 'var(--arc-void)', icon: Heart },
-  { n: 5, name: 'Voice', god: 'Alera', beast: 'Otome', domain: 'Truth & Expression', color: 'var(--arc-brand-atlantean-teal)', icon: Compass },
-  { n: 6, name: 'Sight', god: 'Lyria', beast: 'Yumiko', domain: 'Intuition & Vision', color: 'var(--arc-void)', icon: Eye },
-  { n: 7, name: 'Crown', god: 'Aiyami', beast: 'Sol', domain: 'Enlightenment', color: 'var(--arc-brand-arcanean-gold)', icon: Crown, locked: true },
-  { n: 8, name: 'Starweave', god: 'Elara', beast: 'Vaelith', domain: 'Perspective', color: 'var(--arc-void)', icon: Diamond, locked: true },
-  { n: 9, name: 'Unity', god: 'Ino', beast: 'Kyuro', domain: 'Partnership', color: 'var(--arc-brand-cosmic-blue)', icon: Globe, locked: true },
-  { n: 10, name: 'Source', god: 'Shinkami', beast: 'Source', domain: 'Meta-consciousness', color: 'var(--arc-text-primary)', icon: Sun, locked: true },
+  {
+    n: 1,
+    name: "Foundation",
+    god: "Lyssandria",
+    beast: "Kaelith",
+    domain: "Earth & Survival",
+    color: "var(--arc-brand-atlantean-teal)",
+    icon: Leaf,
+  },
+  {
+    n: 2,
+    name: "Flow",
+    god: "Leyla",
+    beast: "Veloura",
+    domain: "Creativity & Emotion",
+    color: "var(--arc-brand-atlantean-teal)",
+    icon: Drop,
+  },
+  {
+    n: 3,
+    name: "Fire",
+    god: "Draconia",
+    beast: "Draconis",
+    domain: "Power & Will",
+    color: "var(--arc-fire)",
+    icon: Flame,
+  },
+  {
+    n: 4,
+    name: "Heart",
+    god: "Maylinn",
+    beast: "Laeylinn",
+    domain: "Love & Healing",
+    color: "var(--arc-void)",
+    icon: Heart,
+  },
+  {
+    n: 5,
+    name: "Voice",
+    god: "Alera",
+    beast: "Otome",
+    domain: "Truth & Expression",
+    color: "var(--arc-brand-atlantean-teal)",
+    icon: Compass,
+  },
+  {
+    n: 6,
+    name: "Sight",
+    god: "Lyria",
+    beast: "Yumiko",
+    domain: "Intuition & Vision",
+    color: "var(--arc-void)",
+    icon: Eye,
+  },
+  {
+    n: 7,
+    name: "Crown",
+    god: "Aiyami",
+    beast: "Sol",
+    domain: "Enlightenment",
+    color: "var(--arc-brand-arcanean-gold)",
+    icon: Crown,
+    locked: true,
+  },
+  {
+    n: 8,
+    name: "Starweave",
+    god: "Elara",
+    beast: "Vaelith",
+    domain: "Perspective",
+    color: "var(--arc-void)",
+    icon: Diamond,
+    locked: true,
+  },
+  {
+    n: 9,
+    name: "Unity",
+    god: "Ino",
+    beast: "Kyuro",
+    domain: "Partnership",
+    color: "var(--arc-brand-cosmic-blue)",
+    icon: Globe,
+    locked: true,
+  },
+  {
+    n: 10,
+    name: "Source",
+    god: "Shinkami",
+    beast: "Source",
+    domain: "Meta-consciousness",
+    color: "var(--arc-text-primary)",
+    icon: Sun,
+    locked: true,
+  },
 ];
 
 const HOUSES: House[] = [
-  { name: 'Lumina', element: 'Light', color: 'var(--arc-brand-arcanean-gold)', icon: Sun, desc: 'Radiance, clarity, and creation through illumination.' },
-  { name: 'Nero', element: 'Void', color: 'var(--arc-void)', icon: Eye, desc: 'Mystery, potential, and the fertile unknown.' },
-  { name: 'Pyros', element: 'Fire', color: 'var(--arc-fire)', icon: Flame, desc: 'Passion, transformation, and focused will.' },
-  { name: 'Aqualis', element: 'Water', color: 'var(--arc-brand-cosmic-blue)', icon: Drop, desc: 'Flow, healing, and the wisdom of memory.' },
-  { name: 'Terra', element: 'Earth', color: 'var(--arc-wind)', icon: Leaf, desc: 'Stability, growth, and enduring strength.' },
-  { name: 'Ventus', element: 'Wind', color: 'var(--arc-text-primary)', icon: Wind, desc: 'Freedom, speed, and the breath of change.' },
-  { name: 'Synthesis', element: 'All', color: 'var(--arc-brand-atlantean-teal)', icon: Sparkle, desc: 'Unity of all elements into mastery.' },
+  {
+    name: "Lumina",
+    element: "Light",
+    color: "var(--arc-brand-arcanean-gold)",
+    icon: Sun,
+    desc: "Radiance, clarity, and creation through illumination.",
+  },
+  {
+    name: "Nero",
+    element: "Void",
+    color: "var(--arc-void)",
+    icon: Eye,
+    desc: "Mystery, potential, and the fertile unknown.",
+  },
+  {
+    name: "Pyros",
+    element: "Fire",
+    color: "var(--arc-fire)",
+    icon: Flame,
+    desc: "Passion, transformation, and focused will.",
+  },
+  {
+    name: "Aqualis",
+    element: "Water",
+    color: "var(--arc-brand-cosmic-blue)",
+    icon: Drop,
+    desc: "Flow, healing, and the wisdom of memory.",
+  },
+  {
+    name: "Terra",
+    element: "Earth",
+    color: "var(--arc-wind)",
+    icon: Leaf,
+    desc: "Stability, growth, and enduring strength.",
+  },
+  {
+    name: "Ventus",
+    element: "Wind",
+    color: "var(--arc-text-primary)",
+    icon: Wind,
+    desc: "Freedom, speed, and the breath of change.",
+  },
+  {
+    name: "Synthesis",
+    element: "All",
+    color: "var(--arc-brand-atlantean-teal)",
+    icon: Sparkle,
+    desc: "Unity of all elements into mastery.",
+  },
 ];
 
 const RANKS: Rank[] = [
-  { rank: 'Apprentice', gates: '0–2', color: 'var(--arc-earth)', glow: 'rgba(107,114,128,0.35)' },
-  { rank: 'Mage', gates: '3–4', color: 'var(--arc-brand-cosmic-blue)', glow: 'rgba(96,165,250,0.35)' },
-  { rank: 'Master', gates: '5–6', color: 'var(--arc-void)', glow: 'rgba(167,139,250,0.35)' },
-  { rank: 'Archmage', gates: '7–8', color: 'var(--arc-brand-arcanean-gold)', glow: 'rgba(245,158,11,0.35)' },
-  { rank: 'Luminor', gates: '9–10', color: 'var(--arc-brand-arcanean-gold)', glow: 'rgba(255,215,0,0.45)' },
+  {
+    rank: "Apprentice",
+    gates: "0–2",
+    color: "var(--arc-earth)",
+    glow: "rgba(107,114,128,0.35)",
+  },
+  {
+    rank: "Mage",
+    gates: "3–4",
+    color: "var(--arc-brand-cosmic-blue)",
+    glow: "rgba(96,165,250,0.35)",
+  },
+  {
+    rank: "Master",
+    gates: "5–6",
+    color: "var(--arc-void)",
+    glow: "rgba(167,139,250,0.35)",
+  },
+  {
+    rank: "Archmage",
+    gates: "7–8",
+    color: "var(--arc-brand-arcanean-gold)",
+    glow: "rgba(245,158,11,0.35)",
+  },
+  {
+    rank: "Luminor",
+    gates: "9–10",
+    color: "var(--arc-brand-arcanean-gold)",
+    glow: "rgba(255,215,0,0.45)",
+  },
 ];
 
 const STATS = [
-  { label: 'Gates', value: 10, suffix: '' },
-  { label: 'Houses', value: 7, suffix: '' },
-  { label: 'Ranks', value: 5, suffix: '' },
-  { label: 'Guardians', value: 10, suffix: '' },
+  { label: "Gates", value: 10, suffix: "" },
+  { label: "Houses", value: 7, suffix: "" },
+  { label: "Ranks", value: 5, suffix: "" },
+  { label: "Guardians", value: 10, suffix: "" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -90,11 +256,13 @@ const STATS = [
 export function AcademyContent() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[var(--arc-cosmic-void)]">
-
       {/* ============ HERO ============ */}
       <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden px-6">
         {/* Layered ambient orbs */}
-        <div className="pointer-events-none absolute inset-0 -z-0" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 -z-0"
+          aria-hidden="true"
+        >
           <div className="absolute left-[15%] top-[10%] h-[560px] w-[560px] rounded-full bg-[var(--arc-brand-cosmic-blue)]/25 blur-[160px]" />
           <div className="absolute right-[5%] top-[30%] h-[420px] w-[420px] rounded-full bg-[var(--arc-brand-atlantean-teal)]/[0.14] blur-[140px]" />
           <div className="absolute bottom-[5%] left-[5%] h-[380px] w-[380px] rounded-full bg-[var(--arc-brand-arcanean-gold)]/[0.09] blur-[120px]" />
@@ -105,8 +273,8 @@ export function AcademyContent() {
             className="absolute inset-0 opacity-[0.015]"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-              backgroundSize: '60px 60px',
+                "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
@@ -115,7 +283,10 @@ export function AcademyContent() {
           {/* Label pill */}
           <Reveal delay={0}>
             <div className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-5 py-2.5 backdrop-blur-md">
-              <GraduationCap className="h-4 w-4 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
+              <GraduationCap
+                className="h-4 w-4 text-[var(--arc-brand-arcanean-gold)]"
+                weight="fill"
+              />
               <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-[var(--arc-brand-arcanean-gold)]/80">
                 Academy of Creation &amp; Light
               </span>
@@ -136,8 +307,9 @@ export function AcademyContent() {
           {/* Subtitle */}
           <Reveal delay={0.4}>
             <p className="mx-auto mt-7 max-w-2xl font-body text-lg leading-relaxed text-white/55 md:text-xl">
-              A ten-stage progression system built on creative philosophy.
-              Open each Gate. Earn your rank. The deeper you go, the more the system reveals.
+              A ten-stage progression system built on creative philosophy. Open
+              each Gate. Earn your rank. The deeper you go, the more the system
+              reveals.
             </p>
           </Reveal>
 
@@ -173,7 +345,10 @@ export function AcademyContent() {
             </p>
           </Reveal>
 
-          <Link href="/academy/directors-study" className="mt-5 inline-block text-sm text-[var(--arc-brand-atlantean-teal)] underline underline-offset-4">
+          <Link
+            href="/academy/directors-study"
+            className="mt-5 inline-block text-sm text-[var(--arc-brand-atlantean-teal)] underline underline-offset-4"
+          >
             Direct a two-shot scene with Elara
           </Link>
 
@@ -181,9 +356,16 @@ export function AcademyContent() {
           <Reveal delay={0.75}>
             <div className="mx-auto mt-16 grid max-w-lg grid-cols-4 gap-0 divide-x divide-white/[0.06] rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md">
               {STATS.map((s) => (
-                <div key={s.label} className="flex flex-col items-center py-5 px-4">
+                <div
+                  key={s.label}
+                  className="flex flex-col items-center py-5 px-4"
+                >
                   <div className="font-display text-2xl font-bold text-white md:text-3xl">
-                    <NumberTicker value={s.value} suffix={s.suffix} delay={0.9} />
+                    <NumberTicker
+                      value={s.value}
+                      suffix={s.suffix}
+                      delay={0.9}
+                    />
                   </div>
                   <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.2em] text-white/35">
                     {s.label}
@@ -197,7 +379,10 @@ export function AcademyContent() {
 
       {/* ============ TEN GATES ============ */}
       <section className="relative px-6 py-28">
-        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          aria-hidden="true"
+        >
           <div className="absolute left-[40%] top-0 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-[var(--arc-brand-atlantean-teal)]/[0.07] blur-[160px]" />
         </div>
 
@@ -214,8 +399,9 @@ export function AcademyContent() {
                 </span>
               </h2>
               <p className="mx-auto mt-4 max-w-xl font-body text-base leading-relaxed text-white/45">
-                Each Gate is guarded by a God or Goddess and their Godbeast companion.
-                Open them in sequence to ascend the path of creative mastery.
+                Each Gate is guarded by a God or Goddess and their Godbeast
+                companion. Open them in sequence to ascend the path of creative
+                mastery.
               </p>
             </div>
           </Reveal>
@@ -226,7 +412,10 @@ export function AcademyContent() {
 
       {/* ============ SEVEN HOUSES ============ */}
       <section className="relative px-6 py-28">
-        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          aria-hidden="true"
+        >
           <div className="absolute left-1/2 top-[20%] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-[var(--arc-brand-cosmic-blue)]/[0.07] blur-[180px]" />
         </div>
 
@@ -243,14 +432,18 @@ export function AcademyContent() {
                 </span>
               </h2>
               <p className="mx-auto mt-4 max-w-xl font-body text-base leading-relaxed text-white/45">
-                Every creator is sorted into a House based on their elemental affinity.
-                Your House shapes your creative path and your bond with fellow creators.
+                Every creator is sorted into a House based on their elemental
+                affinity. Your House shapes your creative path and your bond
+                with fellow creators.
               </p>
             </div>
           </Reveal>
 
           {/* House cards — 2 / 3 / 4 columns, last row centred */}
-          <StaggerReveal className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" stagger={0.07}>
+          <StaggerReveal
+            className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            stagger={0.07}
+          >
             {HOUSES.map((house) => {
               const Icon = house.icon;
               return (
@@ -269,7 +462,11 @@ export function AcademyContent() {
                         boxShadow: `0 0 20px ${house.color}18`,
                       }}
                     >
-                      <Icon className="h-5 w-5" style={{ color: house.color }} weight="fill" />
+                      <Icon
+                        className="h-5 w-5"
+                        style={{ color: house.color }}
+                        weight="fill"
+                      />
                     </div>
 
                     {/* Name */}
@@ -281,13 +478,17 @@ export function AcademyContent() {
                     </h3>
 
                     {/* Element badge */}
-                    <div className="mt-2 inline-flex items-center rounded-full px-2.5 py-1"
+                    <div
+                      className="mt-2 inline-flex items-center rounded-full px-2.5 py-1"
                       style={{
                         backgroundColor: `${house.color}10`,
                         border: `1px solid ${house.color}20`,
-                      }}>
-                      <span className="font-mono text-[9px] uppercase tracking-[0.2em]"
-                        style={{ color: `${house.color}cc` }}>
+                      }}
+                    >
+                      <span
+                        className="font-mono text-[9px] uppercase tracking-[0.2em]"
+                        style={{ color: `${house.color}cc` }}
+                      >
                         {house.element}
                       </span>
                     </div>
@@ -306,7 +507,10 @@ export function AcademyContent() {
 
       {/* ============ RANKS PROGRESSION ============ */}
       <section className="relative px-6 py-28">
-        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          aria-hidden="true"
+        >
           <div className="absolute left-1/4 bottom-0 h-[400px] w-[400px] rounded-full bg-[var(--arc-brand-arcanean-gold)]/[0.06] blur-[160px]" />
           <div className="absolute right-1/4 top-0 h-[350px] w-[350px] rounded-full bg-[var(--arc-void)]/[0.06] blur-[140px]" />
         </div>
@@ -323,8 +527,8 @@ export function AcademyContent() {
                 </span>
               </h2>
               <p className="mx-auto mt-4 max-w-xl font-body text-base leading-relaxed text-white/45">
-                Open Gates to rise through the ranks. Each rank unlocks deeper understanding
-                and greater creative power across the Academy.
+                Open Gates to rise through the ranks. Each rank unlocks deeper
+                understanding and greater creative power across the Academy.
               </p>
             </div>
           </Reveal>
@@ -343,16 +547,19 @@ export function AcademyContent() {
 
               <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-start md:gap-0 md:justify-between">
                 {RANKS.map((r, i) => {
-                  const isLuminor = r.rank === 'Luminor';
+                  const isLuminor = r.rank === "Luminor";
                   return (
-                    <div key={r.rank} className="flex flex-1 flex-col items-center group">
+                    <div
+                      key={r.rank}
+                      className="flex flex-1 flex-col items-center group"
+                    >
                       {/* Rank badge */}
                       <div
                         className="relative flex h-[76px] w-[76px] items-center justify-center rounded-full border-2 transition-all duration-500 group-hover:scale-110"
                         style={{
                           borderColor: r.color,
                           backgroundColor: `${r.color}0f`,
-                          boxShadow: `0 0 ${isLuminor ? 60 : 30}px ${r.glow}, 0 0 ${isLuminor ? 120 : 60}px ${r.glow.replace('0.35', '0.12').replace('0.45', '0.15')}`,
+                          boxShadow: `0 0 ${isLuminor ? 60 : 30}px ${r.glow}, 0 0 ${isLuminor ? 120 : 60}px ${r.glow.replace("0.35", "0.12").replace("0.45", "0.15")}`,
                         }}
                       >
                         {isLuminor ? (
@@ -413,7 +620,10 @@ export function AcademyContent() {
       {/* ============ BEGIN YOUR JOURNEY — CTA ============ */}
       <section className="relative px-6 py-32">
         {/* Ambient background */}
-        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          aria-hidden="true"
+        >
           <div className="absolute left-1/3 top-[15%] h-[500px] w-[500px] rounded-full bg-[var(--arc-brand-arcanean-gold)]/[0.07] blur-[180px]" />
           <div className="absolute right-1/4 bottom-[10%] h-[450px] w-[450px] rounded-full bg-[var(--arc-brand-cosmic-blue)]/[0.10] blur-[160px]" />
           <div className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--arc-brand-atlantean-teal)]/[0.04] blur-[120px]" />
@@ -425,7 +635,10 @@ export function AcademyContent() {
             <div className="mb-16 text-center">
               <div className="mb-6 flex justify-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--arc-brand-arcanean-gold)]/20 bg-[var(--arc-brand-arcanean-gold)]/[0.08]">
-                  <Scroll className="h-7 w-7 text-[var(--arc-brand-arcanean-gold)]/60" weight="fill" />
+                  <Scroll
+                    className="h-7 w-7 text-[var(--arc-brand-arcanean-gold)]/60"
+                    weight="fill"
+                  />
                 </div>
               </div>
               <h2 className="font-display text-4xl font-bold md:text-5xl lg:text-6xl">
@@ -440,7 +653,11 @@ export function AcademyContent() {
           </Reveal>
 
           {/* Action cards */}
-          <StaggerReveal className="grid gap-4 sm:grid-cols-3" stagger={0.1} delay={0.1}>
+          <StaggerReveal
+            className="grid gap-4 sm:grid-cols-3"
+            stagger={0.1}
+            delay={0.1}
+          >
             {/* Quiz */}
             <Link
               href="/quiz"
@@ -448,14 +665,23 @@ export function AcademyContent() {
             >
               <div
                 className="absolute left-0 right-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                style={{ background: 'linear-gradient(90deg, transparent, var(--arc-brand-arcanean-gold), transparent)' }}
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, var(--arc-brand-arcanean-gold), transparent)",
+                }}
               />
               <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--arc-brand-arcanean-gold)]/20 bg-[var(--arc-brand-arcanean-gold)]/10">
-                <Sparkle className="h-5 w-5 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
+                <Sparkle
+                  className="h-5 w-5 text-[var(--arc-brand-arcanean-gold)]"
+                  weight="fill"
+                />
               </div>
-              <h3 className="font-display text-lg font-semibold text-white">Take the Quiz</h3>
+              <h3 className="font-display text-lg font-semibold text-white">
+                Take the Quiz
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-white/40">
-                Discover your House, your Gate, and the Guardian who walks with you.
+                Discover your House, your Gate, and the Guardian who walks with
+                you.
               </p>
               <div className="mt-6 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--arc-brand-arcanean-gold)]/60 transition-colors group-hover:text-[var(--arc-brand-arcanean-gold)]">
                 Find your origin
@@ -470,14 +696,23 @@ export function AcademyContent() {
             >
               <div
                 className="absolute left-0 right-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                style={{ background: 'linear-gradient(90deg, transparent, var(--arc-brand-atlantean-teal), transparent)' }}
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, var(--arc-brand-atlantean-teal), transparent)",
+                }}
               />
               <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--arc-brand-atlantean-teal)]/20 bg-[var(--arc-brand-atlantean-teal)]/10">
-                <Globe className="h-5 w-5 text-[var(--arc-brand-atlantean-teal)]" weight="fill" />
+                <Globe
+                  className="h-5 w-5 text-[var(--arc-brand-atlantean-teal)]"
+                  weight="fill"
+                />
               </div>
-              <h3 className="font-display text-lg font-semibold text-white">Explore Worlds</h3>
+              <h3 className="font-display text-lg font-semibold text-white">
+                Explore Worlds
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-white/40">
-                Walk through complete creative universes built by others. See what the framework produces.
+                Walk through complete creative universes built by others. See
+                what the framework produces.
               </p>
               <div className="mt-6 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--arc-brand-atlantean-teal)]/60 transition-colors group-hover:text-[var(--arc-brand-atlantean-teal)]">
                 Browse worlds
@@ -492,14 +727,23 @@ export function AcademyContent() {
             >
               <div
                 className="absolute left-0 right-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                style={{ background: 'linear-gradient(90deg, transparent, var(--arc-void), transparent)' }}
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, var(--arc-void), transparent)",
+                }}
               />
               <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--arc-void)]/20 bg-[var(--arc-void)]/10">
-                <Lightning className="h-5 w-5 text-[var(--arc-void)]" weight="fill" />
+                <Lightning
+                  className="h-5 w-5 text-[var(--arc-void)]"
+                  weight="fill"
+                />
               </div>
-              <h3 className="font-display text-lg font-semibold text-white">Start Creating</h3>
+              <h3 className="font-display text-lg font-semibold text-white">
+                Start Creating
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-white/40">
-                Open a conversation with your Guardian. The studio is ready when you are.
+                Open a conversation with your Guardian. The studio is ready when
+                you are.
               </p>
               <div className="mt-6 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--arc-void)]/60 transition-colors group-hover:text-[var(--arc-void)]">
                 Enter the studio
@@ -517,7 +761,10 @@ export function AcademyContent() {
                   className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[var(--arc-brand-atlantean-teal)]/20 bg-[var(--arc-brand-atlantean-teal)]/[0.05] px-10 py-5 font-semibold text-[var(--arc-brand-atlantean-teal)] backdrop-blur-sm transition-all duration-300 hover:border-[var(--arc-brand-atlantean-teal)]/35 hover:bg-[var(--arc-brand-atlantean-teal)]/[0.10] hover:shadow-[0_0_60px_rgba(0,188,212,0.15)]"
                 >
                   <div className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-transparent via-white/[0.05] to-transparent transition-transform duration-700 group-hover:translate-x-[100%]" />
-                  <GraduationCap className="h-5 w-5 relative z-10" weight="fill" />
+                  <GraduationCap
+                    className="h-5 w-5 relative z-10"
+                    weight="fill"
+                  />
                   <span className="relative z-10">Begin Your Journey</span>
                   <ArrowRight className="h-4 w-4 relative z-10 transition-transform group-hover:translate-x-1" />
                 </Link>
