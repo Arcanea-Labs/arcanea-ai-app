@@ -173,6 +173,10 @@ export function AcademyContent() {
             </p>
           </Reveal>
 
+          <Link href="/academy/directors-study" className="mt-5 inline-block text-sm text-[var(--arc-brand-atlantean-teal)] underline underline-offset-4">
+            Direct a two-shot scene with Elara
+          </Link>
+
           {/* Stats row */}
           <Reveal delay={0.75}>
             <div className="mx-auto mt-16 grid max-w-lg grid-cols-4 gap-0 divide-x divide-white/[0.06] rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md">

@@ -1,0 +1,277 @@
+.study {
+  --rule: var(--arc-cosmic-border-bright);
+  --accent: color-mix(in srgb, var(--arc-brand-atlantean-teal) 45%, white);
+  max-width: 1512px;
+  margin: auto;
+  padding: 1.5rem clamp(1rem, 5vw, 5rem) 3rem;
+  background: var(--arc-cosmic-void);
+  color: var(--arc-text-primary);
+  font-family: var(--arc-font-body);
+}
+.breadcrumb,
+.controls,
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.breadcrumb {
+  color: var(--arc-text-secondary);
+  font-size: 0.85rem;
+  padding: 0.5rem 0 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.study a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.hero {
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: clamp(380px, 33vw, 496px);
+  border-bottom: 1px solid var(--rule);
+}
+.heroImage {
+  position: absolute;
+  inset: 0 0 0 32%;
+  z-index: -2;
+}
+.heroImage img,
+.frame img {
+  object-fit: cover;
+  object-position: center 26%;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    var(--arc-cosmic-void) 23%,
+    color-mix(in srgb, var(--arc-cosmic-void) 95%, transparent) 34%,
+    transparent 68%
+  );
+}
+.intro {
+  width: 50%;
+  padding: 2.5rem 0;
+}
+.kicker,
+.frame span {
+  font: 500 0.69rem/1.5 var(--arc-font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.kicker {
+  color: var(--accent);
+}
+.hero h1,
+.study h2,
+.credit strong {
+  font-family: var(--font-editorial), var(--arc-font-editorial);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+}
+.hero h1 {
+  font-size: clamp(4rem, 7vw, 7rem);
+  line-height: 1;
+  margin: 1rem 0;
+}
+.hero blockquote {
+  max-width: 22rem;
+  color: var(--arc-text-primary);
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+}
+.credit {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  font-size: 0.75rem;
+  text-shadow: 0 1px 3px var(--arc-cosmic-void);
+}
+.credit strong {
+  display: block;
+  font-size: 1.8rem;
+}
+.review {
+  padding: 1.75rem 0 0;
+}
+.study h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.1;
+}
+.review > p,
+.direction p,
+.notes p {
+  margin: 0.5rem 0 1rem;
+  color: var(--arc-text-secondary);
+}
+.pair,
+.direction {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.frame {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: 2.35;
+  border: 1px solid var(--rule);
+}
+.frame span {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  background: var(--arc-cosmic-void);
+  padding: 0.2rem 0.4rem;
+}
+.frame .close,
+.frame .mono,
+.frame .mirror {
+  transform: scale(1.48);
+  transform-origin: 49% 24%;
+}
+.frame .mirror {
+  transform: scale(-1.48, 1.48);
+}
+.frame .mono {
+  filter: grayscale(1);
+}
+.study figcaption {
+  margin: 0.5rem 0;
+}
+.controls {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0.5rem 0 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.study button,
+.study select {
+  background: var(--arc-cosmic-deep);
+  color: var(--arc-text-primary);
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  min-height: var(--arc-touch-target);
+}
+.study button {
+  cursor: pointer;
+}
+.study button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.study button.check {
+  background: var(--accent);
+  color: var(--arc-cosmic-void);
+  font-weight: 600;
+}
+.study button:disabled {
+  opacity: var(--arc-disabled-opacity);
+  cursor: default;
+}
+.study :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.feedback {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-left: 2px solid var(--accent);
+  background: var(--arc-cosmic-deep);
+}
+.feedback p {
+  margin-top: 0.25rem;
+}
+.direction {
+  padding: 2rem 0;
+  gap: 2rem;
+}
+.direction h2 {
+  font-size: 2.2rem;
+}
+.direction label,
+.direction select {
+  display: block;
+  width: 100%;
+}
+.direction select {
+  margin-top: 0.5rem;
+}
+.direction span,
+.notes {
+  font-size: 0.85rem;
+  color: var(--arc-text-secondary);
+}
+.direction span {
+  display: inline-block;
+  margin: 0.5rem;
+}
+.notes {
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+}
+.notes summary {
+  cursor: pointer;
+}
+@media (max-width: 700px) {
+  .study {
+    padding-top: 1rem;
+  }
+  .hero {
+    min-height: 430px;
+    align-items: end;
+  }
+  .heroImage {
+    inset: 0 0 32%;
+  }
+  .hero::before {
+    background: linear-gradient(
+      0deg,
+      var(--arc-cosmic-void) 21%,
+      color-mix(in srgb, var(--arc-cosmic-void) 95%, transparent) 34%,
+      transparent 64%
+    );
+  }
+  .intro {
+    width: 100%;
+    padding: 0 0 1.25rem;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 13vw, 5rem);
+  }
+  .credit {
+    bottom: auto;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+  .credit strong {
+    font-size: 1.3rem;
+  }
+  .pair,
+  .tabs {
+    gap: 0.4rem;
+  }
+  .frame {
+    aspect-ratio: 1.36;
+  }
+  .frame span {
+    left: 0.2rem;
+    bottom: 0.2rem;
+    font-size: 0.56rem;
+  }
+  .direction {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .study button {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.85rem;
+  }
+}
