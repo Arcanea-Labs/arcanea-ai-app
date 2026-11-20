@@ -47,6 +47,10 @@
   const image = (a, opts = "") =>
     '<img src="' +
     e(a.img) +
+    '" width="' +
+    Number(a.width) +
+    '" height="' +
+    Number(a.height) +
     '" alt="' +
     e(a.alt || a.title) +
     '" ' +

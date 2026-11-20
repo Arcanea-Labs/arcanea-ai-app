@@ -79,3 +79,43 @@ test("the inventory links a published plate to its traceable, read-only record",
     page.getByRole("link", { name: /buy now|checkout/i }),
   ).toHaveCount(0);
 });
+
+test("the artwork stage reserves its frame while the plate is loading", async ({
+  page,
+}) => {
+  // Capture the real published plate once, then release those same bytes on demand.
+  const delivery = page.waitForResponse(
+    (response) =>
+      response.url().endsWith("/published/kelpie.webp") &&
+      response.status() === 200,
+  );
+  await page.goto(gallery + "#/art/kelpie");
+  const bytes = await (await delivery).body();
+  let releaseImage: () => void = () => {};
+  const imageReady = new Promise<void>((resolve) => {
+    releaseImage = resolve;
+  });
+  await page.route("**/published/kelpie.webp", async (request) => {
+    await imageReady;
+    await request.fulfill({
+      status: 200,
+      contentType: "image/webp",
+      body: bytes,
+    });
+  });
+  try {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    const frame = page.locator(".artstage");
+    const image = frame.locator("img");
+    await expect(image).toHaveAttribute("width", "1024");
+    await expect(image).toHaveAttribute("height", "1536");
+    const before = await frame.boundingBox();
+    releaseImage();
+    await expect
+      .poll(() => image.evaluate((el: HTMLImageElement) => el.naturalWidth))
+      .toBe(1024);
+    expect(await frame.boundingBox()).toEqual(before);
+  } finally {
+    releaseImage();
+  }
+});
