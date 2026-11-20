@@ -1117,3 +1117,59 @@ footer a:last-child {
     height: clamp(260px, 58vh, 580px);
   }
 }
+
+main:empty {
+  min-height: 100vh;
+}
+.atlas-info h2,
+.workgrid .panel h2 {
+  font-size: clamp(1.5rem, 2.4vw, 2.3rem);
+  line-height: 1.1;
+  margin: 10px 0;
+}
+@media (max-width: 650px) {
+  .hero {
+    height: auto;
+    min-height: 0;
+    display: block;
+    padding: 0 0 24px;
+    background: var(--ground);
+  }
+  .hero > img {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 270px;
+    object-fit: contain;
+    background: var(--night);
+  }
+  .hero .veil {
+    display: none;
+  }
+  .hero > div:not(.veil) {
+    padding: 22px var(--gutter) 12px;
+  }
+  .hero .caption {
+    position: static;
+    display: inline-block;
+    margin: 0 var(--gutter);
+    background: transparent;
+    padding: 0;
+    text-align: left;
+  }
+  .hero h1 {
+    margin: 9px 0 13px;
+  }
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--mute);
+  opacity: 1;
+}
+.map text {
+  paint-order: stroke fill;
+  stroke: var(--ground);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}

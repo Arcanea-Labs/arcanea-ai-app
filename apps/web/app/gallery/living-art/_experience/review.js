@@ -662,9 +662,9 @@
         : "") +
       '<p class="eyebrow">' +
       e(focus[2]) +
-      "</p><h3>" +
+      "</p><h2>" +
       e(focus[1]) +
-      '</h3><ul class="small">' +
+      '</h2><ul class="small">' +
       rows +
       "</ul>" +
       (a
@@ -718,7 +718,7 @@
     const a = at.get(selected),
       b = at.get(comparison);
     return (
-      '<section class="wrap"><div class="intro"><p class="eyebrow">Creator visual studio</p><h1>Reference desk</h1><p class="lede">Compare source images and prepare a generation brief. Saved briefs stay in this browser until you export them.</p></div><div class="workgrid block"><section class="panel"><p class="eyebrow">Work order</p><h3>Prepare a brief</h3>' +
+      '<section class="wrap"><div class="intro"><p class="eyebrow">Creator visual studio</p><h1>Reference desk</h1><p class="lede">Compare source images and prepare a generation brief. Saved briefs stay in this browser until you export them.</p></div><div class="workgrid block"><section class="panel"><p class="eyebrow">Work order</p><h2>Prepare a brief</h2>' +
       choose(selected, "subject") +
       choose(comparison, "partner") +
       '<label class="field">Creative direction<textarea id="brief" maxlength="12000" placeholder="Describe the decision in the scene, the identity anchors and the intended use.">' +

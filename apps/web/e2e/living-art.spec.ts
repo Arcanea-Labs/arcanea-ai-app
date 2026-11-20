@@ -28,6 +28,20 @@ test("every review surface remains legible across three viewport widths", async 
           () => document.documentElement.scrollWidth <= window.innerWidth,
         ),
       ).toBe(true);
+      if (view === "/studio/visual") {
+        await expect(
+          page.getByRole("heading", { level: 2, name: "Prepare a brief" }),
+        ).toBeVisible();
+      }
+      if (view === "/atlas") {
+        await expect(page.locator(".atlas-info h2")).toBeVisible();
+        expect(
+          await page
+            .locator(".map text")
+            .first()
+            .evaluate((el) => getComputedStyle(el).paintOrder),
+        ).toMatch(/stroke/);
+      }
       const lead = page.locator("main img").first();
       if (await lead.count()) {
         await lead.scrollIntoViewIfNeeded();
