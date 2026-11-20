@@ -3,6 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import plates from "@/lib/genesis/published-plates.json";
 import s from "./folio.module.css";
+import {
+  museumPlate,
+  plateSource,
+  localPlateCopiesEnabled,
+} from "@/lib/genesis/plate-preview";
+import { GENESIS_STUDY_REVIEW } from "@/lib/shop/catalog";
 
 export const collectionPath = "/collections/genesis";
 export const practicePath = "/collect/genesis-digital";
@@ -42,7 +48,8 @@ export function PlateImage({
   // Only the published collection path is allowed by the existing image optimizer.
   return (
     <Image
-      src={plate.src}
+      src={plateSource(plate)}
+      unoptimized={localPlateCopiesEnabled()}
       width={plate.width}
       height={plate.height}
       alt={decorative ? "" : plate.alt}
@@ -183,7 +190,8 @@ export function PlateDetail({ plate }: { plate: Plate }) {
               <p className={s.label}>Related work · Museum collection</p>
               <h2>Phoenixes and Paulownia</h2>
               <Image
-                src="https://openaccess-cdn.clevelandart.org/1986.2.1/1986.2.1_web.jpg"
+                src={plateSource(museumPlate)}
+                unoptimized={localPlateCopiesEnabled()}
                 width={900}
                 height={420}
                 sizes="(max-width: 700px) 90vw, 34vw"
@@ -231,12 +239,28 @@ export function HeldEdition({ library = false }: { library?: boolean }) {
         Back to the collection
       </Link>
       <p className={s.kicker}>Read-only preview</p>
-      <h1>{library ? "Collector library" : "The Phoenix Screen"}</h1>
+      <h1>{library ? "Collector library" : GENESIS_STUDY_REVIEW.title}</h1>
       <p className={s.lede}>
         {library
           ? "Your private downloads and receipts are available in the local delivery rehearsal."
-          : "A six-page study of a Japanese folding screen, with a complete-screen image, desktop and portrait studies, a source record and a copy of the rights terms. Checkout is held for merchant and release review."}
+          : GENESIS_STUDY_REVIEW.description}
       </p>
+      {!library && (
+        <dl className={s.data}>
+          <div>
+            <dt>Edition</dt>
+            <dd>{GENESIS_STUDY_REVIEW.sku}</dd>
+          </div>
+          <div>
+            <dt>Proposed retail</dt>
+            <dd>€{GENESIS_STUDY_REVIEW.priceEur} · under review</dd>
+          </div>
+          <div>
+            <dt>Checkout</dt>
+            <dd>Held for merchant and release review</dd>
+          </div>
+        </dl>
+      )}
       <div className={s.actions}>
         <Link href={collectionPath + "/phoenix"} className={s.button}>
           Read the Phoenix plate

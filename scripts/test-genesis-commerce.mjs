@@ -63,6 +63,7 @@ function fixture(t, offer = () => loadRehearsalOffer({}, appRoot)) {
     (await get("library")).headers.get("set-cookie").split(";")[0];
   return {
     dbPath,
+    handle: store.handle,
     get,
     post,
     session,
@@ -72,6 +73,65 @@ function fixture(t, offer = () => loadRehearsalOffer({}, appRoot)) {
     },
   };
 }
+
+test("Next-normalized loopback requests retain the browser Host, port and scheme", async (t) => {
+  const { handle, session } = fixture(t);
+  const cookie = await session();
+  const request = (host, origin, forwarded = "") =>
+    handle(
+      new Request("http://localhost:4321/api/genesis/preview/checkout", {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: {
+          Host: host,
+          Origin: origin,
+          Cookie: cookie,
+          "Content-Type": "application/json",
+          "Idempotency-Key": "origin-check",
+          "X-Forwarded-Host": forwarded,
+        },
+      }),
+    );
+  assert.equal(
+    (await request("127.0.0.1:4321", "http://127.0.0.1:4321")).status,
+    201,
+  );
+  assert.equal((await request("[::1]:4321", "http://[::1]:4321")).status, 200);
+  assert.equal(
+    (await request("localhost:4321", "http://127.0.0.1:4321")).status,
+    403,
+  );
+  assert.equal(
+    (await request("127.0.0.1:4321", "https://127.0.0.1:4321")).status,
+    403,
+  );
+  assert.equal(
+    (await request("127.0.0.1:4321", "http://127.0.0.1:9999")).status,
+    403,
+  );
+  assert.equal(
+    (await request("127.0.0.1:4321", "https://other.example", "other.example"))
+      .status,
+    403,
+  );
+  assert.equal(
+    (await request("other.example", "https://other.example", "localhost:4321"))
+      .status,
+    404,
+  );
+  assert.equal(
+    (await request("127.0.0.1:9999", "http://127.0.0.1:9999")).status,
+    404,
+  );
+  assert.equal(
+    (
+      await handle(
+        new Request(base + "library", { headers: { host: "other.example" } }),
+      )
+    ).status,
+    404,
+  );
+});
 
 test("rehearsal requires opt-in, a loopback URL and non-production, non-Vercel runtime", () => {
   const env = { ARCANEA_GENESIS_REHEARSAL: "local" };

@@ -72,9 +72,13 @@ const receipt = await rec.json();
 assert.equal(receipt.fileSha256, fileSha256);
 assert.equal(receipt.paymentProvider, null);
 assert.equal(receipt.permissionSha256, permissionSha256);
-const paid = await fetch(new URL("/api/shop/checkout", base), {
+// The existing paid shop validates Next's normalized local URL. Its host is
+// tested separately so this check reaches the source-owned commercial gate.
+const paidBase = new URL(base);
+paidBase.hostname = "localhost";
+const paid = await fetch(new URL("/api/shop/checkout", paidBase), {
   method: "POST",
-  headers: { Origin: base.origin, "Content-Type": "application/json" },
+  headers: { Origin: paidBase.origin, "Content-Type": "application/json" },
   body: JSON.stringify({ slug: "living-cosmos-first-edition" }),
   redirect: "error",
 });
@@ -104,6 +108,7 @@ console.log(
         license: 200,
         receipt: 200,
         paidCheckoutGate: 503,
+        paidCheckoutOrigin: paidBase.origin,
         cancel: 200,
         canceledDownload: 410,
       },

@@ -20,12 +20,30 @@ const error = (message, status) => json({ error: message }, status);
 const escrowError = () =>
   error("The review file or its permission record could not be verified.", 503);
 
+const localHosts = new Set(["localhost", "127.0.0.1", "[::1]"]);
+
+// Next may normalize 127.0.0.1 to localhost in request.url. Only the original
+// loopback Host on that same port identifies the browser origin. Proxy headers
+// cannot select an origin for a local file-delivery session.
+function localBrowserOrigin(url, host) {
+  if (!localHosts.has(url.hostname)) return null;
+  if (host === null) return url.origin;
+  if (!/^(?:localhost|127\.0\.0\.1|\[::1\])(?::[0-9]{1,5})?$/i.test(host))
+    return null;
+  try {
+    const incoming = new URL(url.protocol + "//" + host);
+    return incoming.port === url.port ? incoming.origin : null;
+  } catch {
+    return null;
+  }
+}
+
 export function rehearsalEnabled(environment, url) {
   return (
     environment.ARCANEA_GENESIS_REHEARSAL === "local" &&
     environment.NODE_ENV !== "production" &&
     !environment.VERCEL &&
-    ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url).hostname)
+    localHosts.has(new URL(url).hostname)
   );
 }
 
@@ -38,7 +56,7 @@ function checkedFile(path, expected) {
 }
 
 // Accepted files come only from operator configuration. Request data never selects a path.
-export function loadRehearsalOffer(environment, appRoot) {
+export function loadRehearsalOffer(environment, appRoot, catalogEdition) {
   const privateConfig = [
     environment.ARCANEA_GENESIS_PREVIEW_ZIP,
     environment.ARCANEA_GENESIS_PREVIEW_SHA256,
@@ -52,15 +70,17 @@ export function loadRehearsalOffer(environment, appRoot) {
     return {
       bytes,
       licenseBytes,
-      sku: "GENESIS-STUDY-01",
-      title: "The Phoenix Screen",
+      sku: catalogEdition?.sku ?? "GENESIS-STUDY-01",
+      title: catalogEdition?.title ?? "The Phoenix Screen",
       description:
-        "An illustrated study of a Japanese folding screen from the Cleveland Museum of Art. Includes the complete screen and two detail crops as three image files, with the study in PDF and HTML.",
+        catalogEdition?.description ??
+        "A museum study in PDF and HTML with three JPEGs: the folding screen and two detail crops.",
       filename: "genesis-the-phoenix-screen.zip",
       type: "application/zip",
       sha256,
       licenseSha256,
       license:
+        catalogEdition?.license ??
         "Source artwork is available under CC0. The enclosed permission record identifies the terms for each part of this review copy.",
     };
   }
@@ -222,7 +242,9 @@ export function openRehearsal({ dbPath, offer, now = Date.now }) {
     }
     if (request.method !== (isRead ? "GET" : "POST"))
       return error("Method not permitted.", 405);
-    if (isWrite && request.headers.get("origin") !== url.origin)
+    const browserOrigin = localBrowserOrigin(url, request.headers.get("host"));
+    if (!browserOrigin) return error("Not available.", 404);
+    if (isWrite && request.headers.get("origin") !== browserOrigin)
       return error("Request origin is not permitted.", 403);
 
     let product;
@@ -430,6 +452,7 @@ export async function handleRehearsal(
   request,
   environment = process.env,
   appRoot = process.cwd(),
+  catalogEdition,
 ) {
   if (!rehearsalEnabled(environment, request.url))
     return error("Not available.", 404);
@@ -441,7 +464,8 @@ export async function handleRehearsal(
       mkdirSync(directory, { recursive: true, mode: 0o700 });
       local = openRehearsal({
         dbPath: join(directory, "review.sqlite"),
-        offer: () => loadRehearsalOffer(environment, resolve(appRoot)),
+        offer: () =>
+          loadRehearsalOffer(environment, resolve(appRoot), catalogEdition),
       });
     }
     return await local.handle(request);
