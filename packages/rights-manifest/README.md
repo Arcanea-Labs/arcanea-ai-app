@@ -88,7 +88,9 @@ Scripts: `npm test`, `npm run type-check`, `npm run build`, `npm run schema:gene
 | `review`                | counsel review, approval receipt, notes                                                                                                                                                    |
 
 Manifest `status` moves `draft → review → approved`, with `revoked` and `disputed` as exits.
-Leaving `draft` requires a content hash and a master file (RM011).
+Leaving `draft` requires a content hash and a master file (RM011). Approval
+requires at least one master whose recorded SHA-256 matches the asset digest.
+Ingest must calculate these digests from the actual bytes.
 
 ## Licence templates
 
