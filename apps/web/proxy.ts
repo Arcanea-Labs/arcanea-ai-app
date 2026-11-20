@@ -21,7 +21,10 @@ export async function proxy(request: NextRequest) {
       process.env.ARCANEA_GENESIS_REHEARSAL !== "local" ||
       !["localhost", "127.0.0.1", "[::1]"].includes(request.nextUrl.hostname)
     ) {
-      return new NextResponse(null, { status: 404, headers: { "Cache-Control": "private, no-store" } });
+      return new NextResponse(null, {
+        status: 404,
+        headers: { "Cache-Control": "private, no-store" },
+      });
     }
     return NextResponse.next({ request: { headers: request.headers } });
   }

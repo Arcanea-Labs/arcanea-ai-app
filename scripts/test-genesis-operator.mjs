@@ -17,20 +17,76 @@ test("private review requires loopback, reviewer credentials and an exact snapsh
     ARCANEA_GENESIS_REHEARSAL: "local",
     ARCANEA_GENESIS_REVIEW_PASSWORD: pass,
     ARCANEA_GENESIS_ASSET_REVIEW_HTML: file,
-    ARCANEA_GENESIS_ASSET_REVIEW_SHA256: createHash("sha256").update(bytes).digest("hex"),
+    ARCANEA_GENESIS_ASSET_REVIEW_SHA256: createHash("sha256")
+      .update(bytes)
+      .digest("hex"),
   };
-  const headers = { host: "localhost:3000", authorization: "Basic " + Buffer.from("reviewer:" + pass).toString("base64") };
-  const request = (values = headers) => new Request("http://localhost:3000/admin/assets", { headers: values });
-  assert.equal((await operatorSnapshot(request(), "assets", { ...env, VERCEL_ENV: "preview" })).status, 404);
-  assert.equal((await operatorSnapshot(request(), "assets", { ...env, NODE_ENV: "production" })).status, 404);
-  assert.equal((await operatorSnapshot(request({ ...headers, host: "example.org" }), "assets", env)).status, 404);
-  assert.equal((await operatorSnapshot(request({ ...headers, "x-forwarded-host": "example.org" }), "assets", env)).status, 404);
-  assert.equal((await operatorSnapshot(request({ ...headers, authorization: "" }), "assets", env)).status, 401);
-  assert.equal((await operatorSnapshot(request(), "releases", env)).status, 503);
+  const headers = {
+    host: "localhost:3000",
+    authorization:
+      "Basic " + Buffer.from("reviewer:" + pass).toString("base64"),
+  };
+  const request = (values = headers) =>
+    new Request("http://localhost:3000/admin/assets", { headers: values });
+  assert.equal(
+    (
+      await operatorSnapshot(request(), "assets", {
+        ...env,
+        VERCEL_ENV: "preview",
+      })
+    ).status,
+    404,
+  );
+  assert.equal(
+    (
+      await operatorSnapshot(request(), "assets", {
+        ...env,
+        NODE_ENV: "production",
+      })
+    ).status,
+    404,
+  );
+  assert.equal(
+    (
+      await operatorSnapshot(
+        request({ ...headers, host: "example.org" }),
+        "assets",
+        env,
+      )
+    ).status,
+    404,
+  );
+  assert.equal(
+    (
+      await operatorSnapshot(
+        request({ ...headers, "x-forwarded-host": "example.org" }),
+        "assets",
+        env,
+      )
+    ).status,
+    404,
+  );
+  assert.equal(
+    (
+      await operatorSnapshot(
+        request({ ...headers, authorization: "" }),
+        "assets",
+        env,
+      )
+    ).status,
+    401,
+  );
+  assert.equal(
+    (await operatorSnapshot(request(), "releases", env)).status,
+    503,
+  );
   const response = await operatorSnapshot(request(), "assets", env);
   assert.equal(response.status, 200);
   assert.equal(await response.text(), bytes);
-  assert.match(response.headers.get("Content-Security-Policy"), /sandbox allow-scripts/);
+  assert.match(
+    response.headers.get("Content-Security-Policy"),
+    /sandbox allow-scripts/,
+  );
   assert.equal(response.headers.get("Cache-Control"), "private, no-store");
   await writeFile(file, "new revision");
   assert.equal((await operatorSnapshot(request(), "assets", env)).status, 503);
