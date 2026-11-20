@@ -47,7 +47,12 @@ export function Practice({ library = false }: { library?: boolean }) {
             "This delivery rehearsal is available only in the private review environment.",
           );
         const data: Shelf = await r.json();
-        if (!data.offer?.title || !data.offer.sha256 || !data.offer.licenseSha256 || !Array.isArray(data.items))
+        if (
+          !data.offer?.title ||
+          !data.offer.sha256 ||
+          !data.offer.licenseSha256 ||
+          !Array.isArray(data.items)
+        )
           throw new Error("The delivery manifest could not be loaded.");
         setShelf(data);
       })
@@ -86,7 +91,9 @@ export function Practice({ library = false }: { library?: boolean }) {
       if (r.status === 409 && (await r.json()).code === "offer_changed") {
         key.current = "";
         setShelf(undefined);
-        setError("The edition or its license changed. Reload the details and confirm the new version.");
+        setError(
+          "The edition or its license changed. Reload the details and confirm the new version.",
+        );
         return;
       }
       if (!r.ok)

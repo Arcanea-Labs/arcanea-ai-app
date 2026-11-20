@@ -160,9 +160,12 @@ async function readCheckout(request) {
     ) {
       return error("Unknown edition or checkout field.", 400);
     }
-    if (![body.fileSha256, body.licenseSha256].every(
-      (value) => typeof value === "string" && /^[a-f0-9]{64}$/.test(value),
-    )) return error("Open the edition and review its current license.", 422);
+    if (
+      ![body.fileSha256, body.licenseSha256].every(
+        (value) => typeof value === "string" && /^[a-f0-9]{64}$/.test(value),
+      )
+    )
+      return error("Open the edition and review its current license.", 422);
     if (confirmations.some((key) => body[key] !== true)) {
       return error("Confirm each permission before rehearsing delivery.", 422);
     }
@@ -258,7 +261,10 @@ export function openRehearsal({ dbPath, offer, now = Date.now }) {
     if (action === "terms") {
       const expected = url.searchParams.get("sha256");
       if (expected && expected !== product.licenseSha256)
-        return error("The license changed. Reopen the edition to read the current terms.", 409);
+        return error(
+          "The license changed. Reopen the edition to read the current terms.",
+          409,
+        );
       return new Response(product.licenseBytes, {
         headers: { ...headers, "Content-Type": "text/plain; charset=utf-8" },
       });
@@ -306,8 +312,18 @@ export function openRehearsal({ dbPath, offer, now = Date.now }) {
         return error("A valid idempotency key is required.", 400);
       const input = await readCheckout(request);
       if (input instanceof Response) return input;
-      if (input.fileSha256 !== product.sha256 || input.licenseSha256 !== product.licenseSha256)
-        return json({ code: "offer_changed", error: "The edition or license changed. Review the current version." }, 409);
+      if (
+        input.fileSha256 !== product.sha256 ||
+        input.licenseSha256 !== product.licenseSha256
+      )
+        return json(
+          {
+            code: "offer_changed",
+            error:
+              "The edition or license changed. Review the current version.",
+          },
+          409,
+        );
       db.exec("BEGIN IMMEDIATE");
       try {
         const priorRequest = db

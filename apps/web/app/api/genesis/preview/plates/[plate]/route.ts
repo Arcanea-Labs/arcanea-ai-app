@@ -2,7 +2,10 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import plates from "@/lib/genesis/published-plates.json";
-import { museumPlate, localPlateCopiesEnabled } from "@/lib/genesis/plate-preview";
+import {
+  museumPlate,
+  localPlateCopiesEnabled,
+} from "@/lib/genesis/plate-preview";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

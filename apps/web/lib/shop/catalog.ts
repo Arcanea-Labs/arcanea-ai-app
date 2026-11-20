@@ -48,11 +48,23 @@ export const GENESIS_STUDY_REVIEW: ShopEdition = {
   format: "Illustrated digital study",
   priceEur: 9,
   priceState: "proposed",
-  license: "Personal reading and display of the editorial folio; CC0 museum image",
-  outcome: "Read a Japanese folding screen closely and use its composition in an original scene.",
-  description: "An illustrated close reading of Phoenixes and Paulownia with an original writing exercise and museum source record. Includes three JPEGs of the museum artwork: the full folding screen and two detail crops.",
-  includes: ["Six-page PDF", "Offline HTML reading edition", "Three JPEG compositions", "Rights sheet and file manifest"],
-  excludes: ["Commercial rights to Arcanea artwork", "NFT or serial certificate", "Generation credits"],
+  license:
+    "Personal reading and display of the editorial folio; CC0 museum image",
+  outcome:
+    "Read a Japanese folding screen closely and use its composition in an original scene.",
+  description:
+    "An illustrated close reading of Phoenixes and Paulownia with an original writing exercise and museum source record. Includes three JPEGs of the museum artwork: the full folding screen and two detail crops.",
+  includes: [
+    "Six-page PDF",
+    "Offline HTML reading edition",
+    "Three JPEG compositions",
+    "Rights sheet and file manifest",
+  ],
+  excludes: [
+    "Commercial rights to Arcanea artwork",
+    "NFT or serial certificate",
+    "Generation credits",
+  ],
   previewHref: "/collect/genesis-digital",
   checkoutEnv: "ARCANEA_SHOP_GENESIS_STUDY_CHECKOUT_URL",
   release: { ...previewRelease },

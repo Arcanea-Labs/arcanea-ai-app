@@ -268,12 +268,18 @@ test("an unsubmitted checkout cannot accept replaced bytes or terms", async (t) 
   product = { ...sample, sha256: hash("new file") };
   assert.equal((await submit({})).status, 409);
   product = { ...sample, licenseSha256: hash("new terms") };
-  assert.equal((await get("terms?sha256=" + first.licenseSha256, cookie)).status, 409);
+  assert.equal(
+    (await get("terms?sha256=" + first.licenseSha256, cookie)).status,
+    409,
+  );
   assert.equal((await submit({})).status, 409);
 
   const updated = await (await get("library", cookie)).json();
   assert.equal(updated.items.length, 0);
-  const current = { fileSha256: updated.offer.sha256, licenseSha256: updated.offer.licenseSha256 };
+  const current = {
+    fileSha256: updated.offer.sha256,
+    licenseSha256: updated.offer.licenseSha256,
+  };
   const granted = await submit(current);
   assert.equal(granted.status, 201);
   assert.equal((await submit(current)).status, 200);
@@ -337,7 +343,13 @@ test(
     );
     const cookie = await session();
     const displayed = (await (await get("library", cookie)).json()).offer;
-    const { orderId } = await (await post("checkout", cookie, { ...form, fileSha256: displayed.sha256, licenseSha256: displayed.licenseSha256 })).json();
+    const { orderId } = await (
+      await post("checkout", cookie, {
+        ...form,
+        fileSha256: displayed.sha256,
+        licenseSha256: displayed.licenseSha256,
+      })
+    ).json();
     const {
       items: [{ sha256 }],
       offer,
