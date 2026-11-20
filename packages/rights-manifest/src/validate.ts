@@ -522,12 +522,28 @@ export function validateRightsManifest(input: unknown): ValidationResult {
         ),
       );
     }
-    if (!m.asset.sourceFiles.some((file) => file.role === "master")) {
+    const masters = m.asset.sourceFiles.filter(
+      (file) => file.role === "master",
+    );
+    const assetDigest = m.asset.contentHash?.value.toLowerCase();
+    if (masters.length === 0) {
       findings.push(
         error(
           "RM011",
           "asset.sourceFiles",
           'At least one source file with role "master" is required once a manifest leaves draft.',
+        ),
+      );
+    } else if (
+      m.status === "approved" &&
+      assetDigest &&
+      !masters.some((file) => file.hash?.value.toLowerCase() === assetDigest)
+    ) {
+      findings.push(
+        error(
+          "RM011",
+          "asset.sourceFiles",
+          "An approved asset requires a master file whose SHA-256 matches asset.contentHash.",
         ),
       );
     }
