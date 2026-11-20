@@ -6,7 +6,7 @@ import s from "./folio.module.css";
 import {
   museumPlate,
   plateSource,
-  useLocalPlateCopies,
+  localPlateCopiesEnabled,
 } from "@/lib/genesis/plate-preview";
 import { GENESIS_STUDY_REVIEW } from "@/lib/shop/catalog";
 
@@ -49,7 +49,7 @@ export function PlateImage({
   return (
     <Image
       src={plateSource(plate)}
-      unoptimized={useLocalPlateCopies()}
+      unoptimized={localPlateCopiesEnabled()}
       width={plate.width}
       height={plate.height}
       alt={decorative ? "" : plate.alt}
@@ -191,7 +191,7 @@ export function PlateDetail({ plate }: { plate: Plate }) {
               <h2>Phoenixes and Paulownia</h2>
               <Image
                 src={plateSource(museumPlate)}
-                unoptimized={useLocalPlateCopies()}
+                unoptimized={localPlateCopiesEnabled()}
                 width={900}
                 height={420}
                 sizes="(max-width: 700px) 90vw, 34vw"

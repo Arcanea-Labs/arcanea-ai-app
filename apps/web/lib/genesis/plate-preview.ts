@@ -6,14 +6,14 @@ export const museumPlate = {
   sha256: "8c0cf008e2f0c467f40408511576f8d99c07d44c083b9200c234c82feb20f81e",
 };
 
-export function useLocalPlateCopies() {
+export function localPlateCopiesEnabled() {
   return Boolean(
     localRehearsalEnabled() && process.env.ARCANEA_GENESIS_PREVIEW_MEDIA_DIR,
   );
 }
 
 export function plateSource(plate: { slug: string; src: string }) {
-  return useLocalPlateCopies()
+  return localPlateCopiesEnabled()
     ? "/api/genesis/preview/plates/" + plate.slug
     : plate.src;
 }

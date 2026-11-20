@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import plates from "@/lib/genesis/published-plates.json";
-import { museumPlate, useLocalPlateCopies } from "@/lib/genesis/plate-preview";
+import { museumPlate, localPlateCopiesEnabled } from "@/lib/genesis/plate-preview";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,7 +18,7 @@ export async function GET(
 ) {
   const root = process.env.ARCANEA_GENESIS_PREVIEW_MEDIA_DIR;
   if (
-    !useLocalPlateCopies() ||
+    !localPlateCopiesEnabled() ||
     !root ||
     !["localhost", "127.0.0.1", "[::1]"].includes(new URL(request.url).hostname)
   ) {
