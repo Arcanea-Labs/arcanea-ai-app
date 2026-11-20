@@ -38,6 +38,26 @@ const previewRelease: EditionRelease = {
   approvedCheckoutPath: null,
 };
 
+// An editorial candidate can be reviewed before it enters the public shop.
+export const GENESIS_STUDY_REVIEW: ShopEdition = {
+  slug: "the-phoenix-screen",
+  sku: "GENESIS-STUDY-01",
+  title: "The Phoenix Screen",
+  subtitle: "Genesis Studies 01",
+  audience: "collectors",
+  format: "Illustrated digital study",
+  priceEur: 9,
+  priceState: "proposed",
+  license: "Personal reading and display of the editorial folio; CC0 museum image",
+  outcome: "Read a Japanese folding screen closely and use its composition in an original scene.",
+  description: "An illustrated close reading of Phoenixes and Paulownia with three screen compositions, an original writing exercise and the museum source record.",
+  includes: ["Six-page PDF", "Offline HTML reading edition", "Three JPEG compositions", "Rights sheet and file manifest"],
+  excludes: ["Commercial rights to Arcanea artwork", "NFT or serial certificate", "Generation credits"],
+  previewHref: "/collect/genesis-digital",
+  checkoutEnv: "ARCANEA_SHOP_GENESIS_STUDY_CHECKOUT_URL",
+  release: { ...previewRelease },
+};
+
 export const SHOP_ORIGIN = "https://www.arcanea.ai";
 export const SHOP_UPDATED = "2026-10-07";
 

@@ -13,6 +13,19 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
+  // The local-only collector rehearsal issues its own browser session.
+  if (request.nextUrl.pathname.startsWith("/api/genesis/preview/")) {
+    if (
+      process.env.NODE_ENV === "production" ||
+      process.env.VERCEL ||
+      process.env.ARCANEA_GENESIS_REHEARSAL !== "local" ||
+      !["localhost", "127.0.0.1", "[::1]"].includes(request.nextUrl.hostname)
+    ) {
+      return new NextResponse(null, { status: 404, headers: { "Cache-Control": "private, no-store" } });
+    }
+    return NextResponse.next({ request: { headers: request.headers } });
+  }
+
   // The MCP endpoint authenticates every request itself with an
   // Authorization: Bearer token (lib/mcp/world-context-auth.ts) and answers
   // 401 with WWW-Authenticate + resource_metadata. MCP clients carry no
