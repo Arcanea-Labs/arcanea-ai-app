@@ -1963,9 +1963,34 @@ describe('Edge Cases', { timeout: 10000 }, () => {
     assert.equal(GUARDIAN_GATES.alera, 'Voice');
     assert.equal(GUARDIAN_GATES.lyria, 'Sight');
     assert.equal(GUARDIAN_GATES.aiyami, 'Crown');
-    assert.equal(GUARDIAN_GATES.elara, 'Shift');
+    assert.equal(GUARDIAN_GATES.elara, 'Starweave');
     assert.equal(GUARDIAN_GATES.ino, 'Unity');
     assert.equal(GUARDIAN_GATES.shinkami, 'Source');
+  });
+
+  it('evaluateRenaissanceGate blocks leaked Hz, Shift gate, and third-party luxin terms', () => {
+    const curator = new Curator();
+    const contaminated = {
+      id: 'contaminated-1',
+      type: 'text',
+      name: 'Drafting Luxin at the Gate of Shift',
+      description: 'Delve into the 852 Hz frequency while drafting sub-red luxin.',
+      content: 'A drafter channels paryl and super-violet luxin at 852 Hz.',
+      tags: ['guardian', 'elara', 'starweave', 'wind', 'arcanea'],
+      guardianId: 'elara',
+      gate: 'Starweave',
+      element: 'Wind',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const res = curator.evaluateRenaissanceGate(contaminated);
+    assert.equal(res.approved, false);
+    assert.equal(res.requiresHumanApproval, true);
+    const codes = res.violations.map((v) => v.code);
+    assert.ok(codes.includes('TASTE_HZ_LEAK'));
+    assert.ok(codes.includes('CANON_GATE8_SHIFT'));
+    assert.ok(codes.includes('IP_LIGHTBRINGER_CONTAMINATION'));
+    assert.ok(codes.includes('VOICE_AI_SLOP'));
   });
 
   it('guardian elements are mapped', () => {

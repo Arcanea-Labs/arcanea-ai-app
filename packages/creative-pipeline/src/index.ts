@@ -30,5 +30,5 @@ export {
 // Classes
 export { PromptEngine } from './prompt-engine.js';
 export { AssetVault } from './asset-vault.js';
-export { Curator } from './curator.js';
+export { Curator, RENAISSANCE_CURATION_CRITERIA } from './curator.js';
 export { CreativeSessionManager } from './creative-session.js';
