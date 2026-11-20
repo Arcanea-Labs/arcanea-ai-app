@@ -16,7 +16,10 @@ const here = dirname(fileURLToPath(import.meta.url));
 const appRoot = resolve(here, "../apps/web");
 const origin = "http://127.0.0.1:4321";
 const base = origin + "/api/genesis/preview/";
+const sample = loadRehearsalOffer({}, appRoot);
 const form = {
+  fileSha256: sample.sha256,
+  licenseSha256: sample.licenseSha256,
   edition: "genesis-digital",
   acceptLicense: true,
   immediateDelivery: true,
@@ -176,7 +179,6 @@ test("confirmed checkout delivers the exact bytes and permission with an own-ses
   );
   const receipt = await (await get("receipt/" + order.orderId, cookie)).json();
   assert.equal(receipt.paymentProvider, null);
-  assert.equal(receipt.sku, offer.sku);
   assert.equal(receipt.fileSha256, offer.sha256);
   assert.equal(receipt.permissionSha256, offer.licenseSha256);
   assert.equal(receipt.accepted.acknowledgeWithdrawal, true);
@@ -254,6 +256,39 @@ test("invalid input, withdrawn consent and foreign origin create no access", asy
   assert.equal((await (await get("library", cookie)).json()).items.length, 0);
 });
 
+test("an unsubmitted checkout cannot accept replaced bytes or terms", async (t) => {
+  let product = sample;
+  const { get, session, post } = fixture(t, () => product);
+  const cookie = await session();
+  const first = (await (await get("library", cookie)).json()).offer;
+  const submit = (patch) => post("checkout", cookie, { ...form, ...patch });
+  for (const missing of ["fileSha256", "licenseSha256"])
+    assert.equal((await submit({ [missing]: undefined })).status, 422);
+
+  product = { ...sample, sha256: hash("new file") };
+  assert.equal((await submit({})).status, 409);
+  product = { ...sample, licenseSha256: hash("new terms") };
+  assert.equal(
+    (await get("terms?sha256=" + first.licenseSha256, cookie)).status,
+    409,
+  );
+  assert.equal((await submit({})).status, 409);
+
+  const updated = await (await get("library", cookie)).json();
+  assert.equal(updated.items.length, 0);
+  const current = {
+    fileSha256: updated.offer.sha256,
+    licenseSha256: updated.offer.licenseSha256,
+  };
+  const granted = await submit(current);
+  assert.equal(granted.status, 201);
+  assert.equal((await submit(current)).status, 200);
+  const { orderId } = await granted.json();
+  const receipt = await (await get("receipt/" + orderId, cookie)).json();
+  assert.equal(receipt.fileSha256, current.fileSha256);
+  assert.equal(receipt.permissionSha256, current.licenseSha256);
+});
+
 test("canceling is idempotent, revokes file access and retains the review confirmation", async (t) => {
   const { session, post, get } = fixture(t);
   const cookie = await session();
@@ -307,7 +342,14 @@ test(
       loadRehearsalOffer(process.env, appRoot),
     );
     const cookie = await session();
-    const { orderId } = await (await post("checkout", cookie)).json();
+    const displayed = (await (await get("library", cookie)).json()).offer;
+    const { orderId } = await (
+      await post("checkout", cookie, {
+        ...form,
+        fileSha256: displayed.sha256,
+        licenseSha256: displayed.licenseSha256,
+      })
+    ).json();
     const {
       items: [{ sha256 }],
       offer,

@@ -74,7 +74,7 @@ export function loadRehearsalOffer(environment, appRoot, catalogEdition) {
       title: catalogEdition?.title ?? "The Phoenix Screen",
       description:
         catalogEdition?.description ??
-        "A private Genesis study folio with an open-access museum artwork and an editorial field study.",
+        "A museum study in PDF and HTML with three JPEGs: the folding screen and two detail crops.",
       filename: "genesis-the-phoenix-screen.zip",
       type: "application/zip",
       sha256,
@@ -117,7 +117,7 @@ function publicOffer(offer) {
     sha256: offer.sha256,
     licenseSha256: offer.licenseSha256,
     byteLength: offer.bytes.length,
-    termsUrl: PREFIX + "terms",
+    termsUrl: PREFIX + "terms?sha256=" + offer.licenseSha256,
     replacementUrl: null,
   };
 }
@@ -147,12 +147,12 @@ async function readCheckout(request) {
       chunks.push(value);
     }
     const body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
-    const fields = [
-      "edition",
+    const confirmations = [
       "acceptLicense",
       "immediateDelivery",
       "acknowledgeWithdrawal",
     ];
+    const fields = ["edition", "fileSha256", "licenseSha256", ...confirmations];
     if (
       !body ||
       Object.keys(body).some((k) => !fields.includes(k)) ||
@@ -160,7 +160,13 @@ async function readCheckout(request) {
     ) {
       return error("Unknown edition or checkout field.", 400);
     }
-    if (fields.slice(1).some((key) => body[key] !== true)) {
+    if (
+      ![body.fileSha256, body.licenseSha256].every(
+        (value) => typeof value === "string" && /^[a-f0-9]{64}$/.test(value),
+      )
+    )
+      return error("Open the edition and review its current license.", 422);
+    if (confirmations.some((key) => body[key] !== true)) {
       return error("Confirm each permission before rehearsing delivery.", 422);
     }
     return body;
@@ -252,10 +258,17 @@ export function openRehearsal({ dbPath, offer, now = Date.now }) {
         return escrowError();
       }
     }
-    if (action === "terms")
+    if (action === "terms") {
+      const expected = url.searchParams.get("sha256");
+      if (expected && expected !== product.licenseSha256)
+        return error(
+          "The license changed. Reopen the edition to read the current terms.",
+          409,
+        );
       return new Response(product.licenseBytes, {
         headers: { ...headers, "Content-Type": "text/plain; charset=utf-8" },
       });
+    }
     const time = now();
     db.prepare("DELETE FROM sessions WHERE expires <= ?").run(time);
     const raw = request.headers
@@ -299,6 +312,18 @@ export function openRehearsal({ dbPath, offer, now = Date.now }) {
         return error("A valid idempotency key is required.", 400);
       const input = await readCheckout(request);
       if (input instanceof Response) return input;
+      if (
+        input.fileSha256 !== product.sha256 ||
+        input.licenseSha256 !== product.licenseSha256
+      )
+        return json(
+          {
+            code: "offer_changed",
+            error:
+              "The edition or license changed. Review the current version.",
+          },
+          409,
+        );
       db.exec("BEGIN IMMEDIATE");
       try {
         const priorRequest = db
