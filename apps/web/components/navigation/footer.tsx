@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useId } from "react";
 import { submitWaitlist } from "@/lib/waitlist/submit";
+import { trackWaitlistJoin } from "@/lib/analytics/track";
 import { ArcaneanMark } from "@/components/brand/arcanea-mark";
 
 const footerLinks = {
@@ -102,6 +103,7 @@ export function Footer() {
     });
     pending.current = false;
     if (result.success) {
+      trackWaitlistJoin({ product: "arcanea", source: "footer" });
       setStatus("success");
       setMessage("Your email is on the updates list.");
       setEmail("");
