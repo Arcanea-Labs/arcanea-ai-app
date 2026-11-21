@@ -3,6 +3,13 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Profile, ProfileStats } from "../types/api-responses";
 
+// Fields readable through the allowlisted `public_profiles` view; private
+// activity and metadata stay on `profiles`, which anonymous clients cannot read.
+export type PublicProfile = Omit<
+  Profile,
+  "updatedAt" | "lastActiveAt" | "metadata"
+>;
+
 export async function getProfile(
   supabase: SupabaseClient,
   userId: string,
@@ -26,7 +33,7 @@ const PUBLIC_PROFILE_COLUMNS =
 export async function getPublicProfile(
   supabase: SupabaseClient,
   userId: string,
-): Promise<Profile | null> {
+): Promise<PublicProfile | null> {
   const { data, error } = await supabase
     .from("public_profiles")
     .select(PUBLIC_PROFILE_COLUMNS)
@@ -35,7 +42,9 @@ export async function getPublicProfile(
 
   if (error || !data) return null;
 
-  return mapProfile(data);
+  const { updatedAt, lastActiveAt, metadata, ...publicFields } =
+    mapProfile(data);
+  return publicFields;
 }
 
 export async function getProfileStats(
@@ -117,7 +126,7 @@ export async function updateProfile(
 export async function getProfileWithStats(
   supabase: SupabaseClient,
   userId: string,
-): Promise<(Profile & { stats: ProfileStats }) | null> {
+): Promise<(PublicProfile & { stats: ProfileStats }) | null> {
   const profile = await getPublicProfile(supabase, userId);
   if (!profile) return null;
 

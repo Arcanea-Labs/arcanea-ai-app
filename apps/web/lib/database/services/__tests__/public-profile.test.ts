@@ -60,3 +60,14 @@ test("getProfileWithStats serves the public API through the view", async () => {
   assert.equal(relations[0], "public_profiles");
   assert.equal(relations.includes("profiles"), false);
 });
+
+test("a public profile carries no field the view does not select", async () => {
+  // The view omits updated_at, last_active_at and metadata; mapping them would
+  // type `undefined` as a string and serve undefined keys from the public API.
+  const { client } = recordingClient(ROW);
+  const profile = await getPublicProfile(client, ROW.id);
+  for (const field of ["updatedAt", "lastActiveAt", "metadata"]) {
+    assert.equal(field in (profile ?? {}), false, `${field} must not appear`);
+  }
+  assert.equal(profile?.createdAt, ROW.created_at);
+});

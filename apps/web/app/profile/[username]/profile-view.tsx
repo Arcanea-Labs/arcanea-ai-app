@@ -23,7 +23,8 @@ import {
   PhSparkle,
   PhFire,
 } from '@/lib/phosphor-icons'
-import type { Profile, ProfileStats, Creation } from '@/lib/database/types/api-responses'
+import type { ProfileStats, Creation } from '@/lib/database/types/api-responses'
+import type { PublicProfile } from '@/lib/database/services/profile-service'
 
 const GATE_COLORS: Record<string, string> = {
   Foundation: 'from-amber-600 to-amber-400',
@@ -56,7 +57,7 @@ const TYPE_ICONS: Record<string, typeof PhImage> = {
 }
 
 interface ProfilePageClientProps {
-  profile: Profile
+  profile: PublicProfile
   stats: ProfileStats
   creations: Creation[]
   isOwnProfile: boolean
