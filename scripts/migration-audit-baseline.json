@@ -4,7 +4,7 @@
     "destructive-statement|supabase/migrations/20250101000004_utility_functions.sql|Destructive statement: DELETE FROM follows WHERE follower_id = p_follower_id AND following_id = p_following_id",
     "destructive-statement|supabase/migrations/20250101000004_utility_functions.sql|Destructive statement: DELETE FROM likes WHERE user_id = p_user_id AND creation_id = p_creation_id",
     "destructive-statement|supabase/migrations/20260816000003_world_forks_backfill_corrections.sql|Destructive statement: ALTER TABLE public.world_forks DROP CONSTRAINT %I', constraint_name); END IF; END $$; DROP POLICY IF EXISTS \"forks_inser",
-    "destructive-statement|supabase/migrations/20261012030707_atomic_chat_snapshots.sql|Destructive statement: ",
+    "destructive-statement|supabase/migrations/20261012030707_atomic_chat_snapshots.sql|Destructive statement: delete from public.chat_messages where session_id=p_session_id and coalesce(client_id,id::text) not in (select value->>'",
     "grant-to-anon|supabase/migrations/20250101000002_rls_policies.sql|Anon grant: GRANT SELECT ON luminors TO anon, authenticated",
     "grant-to-anon|supabase/migrations/20250101000002_rls_policies.sql|Anon grant: GRANT SELECT ON profiles TO anon, authenticated",
     "grant-to-anon|supabase/migrations/20260520000001_arcanea_applications.sql|Anon grant: GRANT INSERT ON public.arcanea_applications TO anon, authenticated",

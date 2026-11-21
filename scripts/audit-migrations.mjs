@@ -197,18 +197,18 @@ export function scanSql(source, file) {
   for (const match of code.matchAll(
     /(?:^|;)\s*(drop\s+(?:table|schema|column)|truncate\b|delete\s+from)/gim,
   )) {
+    // The match can begin at the previous statement's `;`; start at the keyword
+    // so statementEnd does not stop immediately and report an empty statement.
+    const start = (match.index ?? 0) + match[0].length - match[1].length;
     const statement = code
-      .slice(
-        match.index ?? 0,
-        statementEnd(code.slice(match.index ?? 0)) + (match.index ?? 0),
-      )
+      .slice(start, statementEnd(code.slice(start)) + start)
       .replace(/\s+/g, " ")
       .trim()
       .slice(0, 120);
     add(
       "destructive-statement",
       "high",
-      match.index ?? 0,
+      start,
       `Destructive statement: ${statement}`,
     );
   }

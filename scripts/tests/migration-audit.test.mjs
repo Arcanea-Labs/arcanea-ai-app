@@ -425,3 +425,28 @@ test("every current finding is baselined, so the ratchet is actually applied", (
     [],
   );
 });
+
+test("a destructive statement after an earlier one is reported with its own text", () => {
+  // The match begins at the preceding `;`, so slicing from the match index once
+  // produced an empty statement and an empty baseline fingerprint that any later
+  // destructive statement in the same file would also have matched.
+  const findings = scanSql(
+    "select 1;\ndrop table public.chat_snapshots;\n",
+    "second.sql",
+  ).filter((finding) => finding.rule === "destructive-statement");
+  assert.equal(findings.length, 1);
+  assert.equal(
+    findings[0].message,
+    "Destructive statement: drop table public.chat_snapshots",
+  );
+});
+
+test("no baseline fingerprint is an empty destructive statement", () => {
+  const { fingerprints } = JSON.parse(
+    readFileSync(join(ROOT, "scripts/migration-audit-baseline.json"), "utf8"),
+  );
+  assert.deepEqual(
+    fingerprints.filter((value) => value.endsWith("Destructive statement: ")),
+    [],
+  );
+});

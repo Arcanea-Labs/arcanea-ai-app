@@ -18,6 +18,26 @@ export async function getProfile(
   return mapProfile(data)
 }
 
+// Anonymous clients cannot read `profiles` (20261107000001_arcanea_p0_security.sql);
+// public pages read the allowlisted `public_profiles` view instead.
+const PUBLIC_PROFILE_COLUMNS =
+  'id, display_name, avatar_url, bio, magic_rank, gates_open, active_gate, guardian, academy_house, xp, level, streak_days, created_at'
+
+export async function getPublicProfile(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<Profile | null> {
+  const { data, error } = await supabase
+    .from('public_profiles')
+    .select(PUBLIC_PROFILE_COLUMNS)
+    .eq('id', userId)
+    .single()
+
+  if (error || !data) return null
+
+  return mapProfile(data)
+}
+
 export async function getProfileStats(
   supabase: SupabaseClient,
   userId: string
@@ -83,7 +103,7 @@ export async function getProfileWithStats(
   supabase: SupabaseClient,
   userId: string
 ): Promise<(Profile & { stats: ProfileStats }) | null> {
-  const profile = await getProfile(supabase, userId)
+  const profile = await getPublicProfile(supabase, userId)
   if (!profile) return null
 
   const stats = await getProfileStats(supabase, userId)

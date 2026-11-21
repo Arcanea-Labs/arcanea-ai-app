@@ -2,7 +2,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { getProfile, getProfileStats } from '@/lib/database/services/profile-service'
+import { getPublicProfile, getProfileStats } from '@/lib/database/services/profile-service'
 import { getUserCreations } from '@/lib/database/services/creation-service'
 import { ProfilePageClient } from './profile-view'
 
@@ -13,7 +13,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { username: userId } = await params
   const supabase = await createClient()
-  const profile = await getProfile(supabase, userId)
+  const profile = await getPublicProfile(supabase, userId)
 
   if (!profile) {
     return { title: 'Profile Not Found' }
@@ -36,7 +36,7 @@ export default async function ProfilePage({ params }: PageProps) {
   const supabase = await createClient()
 
   const [profile, stats, creations] = await Promise.all([
-    getProfile(supabase, userId),
+    getPublicProfile(supabase, userId),
     getProfileStats(supabase, userId),
     getUserCreations(supabase, userId, { status: 'published', visibility: 'public' }),
   ])
