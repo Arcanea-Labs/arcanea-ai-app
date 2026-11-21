@@ -1,42 +1,82 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
 // Profile Service — matches actual Supabase schema
-import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Profile, ProfileStats } from '../types/api-responses'
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Profile, ProfileStats } from "../types/api-responses";
+
+// Fields readable through the allowlisted `public_profiles` view; private
+// activity and metadata stay on `profiles`, which anonymous clients cannot read.
+export type PublicProfile = Omit<
+  Profile,
+  "updatedAt" | "lastActiveAt" | "metadata"
+>;
 
 export async function getProfile(
   supabase: SupabaseClient,
-  userId: string
+  userId: string,
 ): Promise<Profile | null> {
   const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .single()
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
 
-  if (error || !data) return null
+  if (error || !data) return null;
 
-  return mapProfile(data)
+  return mapProfile(data);
+}
+
+// Anonymous clients cannot read `profiles` (20261107000001_arcanea_p0_security.sql);
+// public pages read the allowlisted `public_profiles` view instead.
+const PUBLIC_PROFILE_COLUMNS =
+  "id, display_name, avatar_url, bio, magic_rank, gates_open, active_gate, guardian, academy_house, xp, level, streak_days, created_at";
+
+export async function getPublicProfile(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<PublicProfile | null> {
+  const { data, error } = await supabase
+    .from("public_profiles")
+    .select(PUBLIC_PROFILE_COLUMNS)
+    .eq("id", userId)
+    .single();
+
+  if (error || !data) return null;
+
+  const { updatedAt, lastActiveAt, metadata, ...publicFields } =
+    mapProfile(data);
+  return publicFields;
 }
 
 export async function getProfileStats(
   supabase: SupabaseClient,
-  userId: string
+  userId: string,
 ): Promise<ProfileStats> {
   const [creations, followers, following, userCreations] = await Promise.all([
-    supabase.from('creations').select('id', { count: 'exact', head: true }).eq('user_id', userId),
-    supabase.from('follows').select('follower_id', { count: 'exact', head: true }).eq('following_id', userId),
-    supabase.from('follows').select('following_id', { count: 'exact', head: true }).eq('follower_id', userId),
-    supabase.from('creations').select('id').eq('user_id', userId),
-  ])
+    supabase
+      .from("creations")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId),
+    supabase
+      .from("follows")
+      .select("follower_id", { count: "exact", head: true })
+      .eq("following_id", userId),
+    supabase
+      .from("follows")
+      .select("following_id", { count: "exact", head: true })
+      .eq("follower_id", userId),
+    supabase.from("creations").select("id").eq("user_id", userId),
+  ]);
 
-  let likesCount = 0
-  const creationIds = (userCreations.data ?? []).map((c: { id: string }) => c.id)
+  let likesCount = 0;
+  const creationIds = (userCreations.data ?? []).map(
+    (c: { id: string }) => c.id,
+  );
   if (creationIds.length > 0) {
     const likes = await supabase
-      .from('likes')
-      .select('user_id', { count: 'exact', head: true })
-      .in('creation_id', creationIds)
-    likesCount = likes.count ?? 0
+      .from("likes")
+      .select("user_id", { count: "exact", head: true })
+      .in("creation_id", creationIds);
+    likesCount = likes.count ?? 0;
   }
 
   return {
@@ -45,49 +85,53 @@ export async function getProfileStats(
     followingCount: following.count ?? 0,
     likesReceived: likesCount,
     totalViews: 0,
-  }
+  };
 }
 
 export async function updateProfile(
   supabase: SupabaseClient,
   userId: string,
-  updates: Partial<Profile>
+  updates: Partial<Profile>,
 ): Promise<Profile | null> {
-  const payload: Record<string, unknown> = {}
-  if (updates.displayName !== undefined) payload.display_name = updates.displayName
-  if (updates.avatarUrl !== undefined) payload.avatar_url = updates.avatarUrl
-  if (updates.bio !== undefined) payload.bio = updates.bio
-  if (updates.activeGate !== undefined) payload.active_gate = updates.activeGate
-  if (updates.guardian !== undefined) payload.guardian = updates.guardian
-  if (updates.academyHouse !== undefined) payload.academy_house = updates.academyHouse
-  if (updates.metadata !== undefined) payload.metadata = updates.metadata
-  if (updates.gatesOpen !== undefined) payload.gates_open = updates.gatesOpen
-  if (updates.magicRank !== undefined) payload.magic_rank = updates.magicRank
-  if (updates.streakDays !== undefined) payload.streak_days = updates.streakDays
-  if (updates.xp !== undefined) payload.xp = updates.xp
-  if (updates.level !== undefined) payload.level = updates.level
+  const payload: Record<string, unknown> = {};
+  if (updates.displayName !== undefined)
+    payload.display_name = updates.displayName;
+  if (updates.avatarUrl !== undefined) payload.avatar_url = updates.avatarUrl;
+  if (updates.bio !== undefined) payload.bio = updates.bio;
+  if (updates.activeGate !== undefined)
+    payload.active_gate = updates.activeGate;
+  if (updates.guardian !== undefined) payload.guardian = updates.guardian;
+  if (updates.academyHouse !== undefined)
+    payload.academy_house = updates.academyHouse;
+  if (updates.metadata !== undefined) payload.metadata = updates.metadata;
+  if (updates.gatesOpen !== undefined) payload.gates_open = updates.gatesOpen;
+  if (updates.magicRank !== undefined) payload.magic_rank = updates.magicRank;
+  if (updates.streakDays !== undefined)
+    payload.streak_days = updates.streakDays;
+  if (updates.xp !== undefined) payload.xp = updates.xp;
+  if (updates.level !== undefined) payload.level = updates.level;
 
   const { data, error } = await supabase
-    .from('profiles')
+    .from("profiles")
     .update(payload)
-    .eq('id', userId)
+    .eq("id", userId)
     .select()
-    .single()
+    .single();
 
-  if (error || !data) return null
+  if (error || !data) return null;
 
-  return mapProfile(data)
+  return mapProfile(data);
 }
 
 export async function getProfileWithStats(
   supabase: SupabaseClient,
-  userId: string
-): Promise<(Profile & { stats: ProfileStats }) | null> {
-  const profile = await getProfile(supabase, userId)
-  if (!profile) return null
+  userId: string,
+): Promise<(PublicProfile & { stats: ProfileStats }) | null> {
+  const profile = await getPublicProfile(supabase, userId);
+  if (!profile) return null;
 
-  const stats = await getProfileStats(supabase, userId)
-  return { ...profile, stats }
+  const stats = await getProfileStats(supabase, userId);
+  return { ...profile, stats };
 }
 
 function mapProfile(data: Record<string, unknown>): Profile {
@@ -96,11 +140,11 @@ function mapProfile(data: Record<string, unknown>): Profile {
     displayName: data.display_name as string,
     avatarUrl: data.avatar_url as string | null,
     bio: data.bio as string | null,
-    magicRank: (data.magic_rank || 'Apprentice') as Profile['magicRank'],
+    magicRank: (data.magic_rank || "Apprentice") as Profile["magicRank"],
     gatesOpen: (data.gates_open || 0) as number,
-    activeGate: data.active_gate as Profile['activeGate'],
-    guardian: data.guardian as Profile['guardian'],
-    academyHouse: data.academy_house as Profile['academyHouse'],
+    activeGate: data.active_gate as Profile["activeGate"],
+    guardian: data.guardian as Profile["guardian"],
+    academyHouse: data.academy_house as Profile["academyHouse"],
     xp: (data.xp || 0) as number,
     level: (data.level || 1) as number,
     streakDays: (data.streak_days || 0) as number,
@@ -108,5 +152,5 @@ function mapProfile(data: Record<string, unknown>): Profile {
     metadata: data.metadata as Record<string, unknown> | null,
     createdAt: data.created_at as string,
     updatedAt: data.updated_at as string,
-  }
+  };
 }

@@ -258,3 +258,22 @@ test("rolling back means dropping the view; the table grant stays revoked until 
     await db.close();
   }
 });
+
+test("a profile with a NULL is_active stays hidden from the view, as RLS hides it", async () => {
+  const db = await freshDatabase();
+  try {
+    await db.exec(`
+      insert into public.profiles (id, username, display_name, is_active)
+      values ('33333333-3333-4333-8333-333333333333', 'unset', 'Unset', null);
+    `);
+    const view = await asRole(
+      db,
+      "anon",
+      "select username from public.public_profiles",
+    );
+    assert.equal(view.ok, true, view.message);
+    assert.deepEqual(view.rows, []);
+  } finally {
+    await db.close();
+  }
+});
