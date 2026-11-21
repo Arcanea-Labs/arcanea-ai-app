@@ -92,6 +92,8 @@ An independent review raised these. Each was confirmed by reading the files at t
 
 The green `test:security` row above does not cover these paths. #725 stays out of the merge order until they are fixed, with a test for each.
 
+**Fix path: #770** (`agent/claude/pcv-06-pr725-fix`, head `2447886`, draft, stacked on #725). It addresses all three defects, each with a test that fails at `d630533`. Its stated result is `test:security` 38/38. I have not re-run #770 here. Merge #770 into #725 first, then #725 into main, and only after the migration sign-off below.
+
 ### #725: Starlight Review block, assessed
 
 The external `Starlight Review` check (cf-checker) is the only red check on #725. It flags:
@@ -142,7 +144,7 @@ Both re-runs are 12 commits behind main and touch `pnpm-lock.yaml`. Use `@depend
 
 Every day on the branch build is a day of uncapped key exposure, and promotion has no feature cost. The question is only who signs off the main build and when.
 
-**Decision 2: #725's migration path.** Merging #725 lands `supabase/migrations/20261107000001_arcanea_p0_security.sql`. No workflow in this repo applies migrations, so merge ≠ apply. Someone with Supabase access must apply it deliberately and run the advisor afterwards. Name that person before merging. First, #725 needs the three blocking defects above fixed: the signed-out profile reads, the `is_active` filter and the audit fingerprint. Then decide on the Starlight `REQUEST_CHANGES` block, whose high finding is assessed above as a false positive.
+**Decision 2: #725's migration path.** Merging #725 lands `supabase/migrations/20261107000001_arcanea_p0_security.sql`. No workflow in this repo applies migrations, so merge ≠ apply. Someone with Supabase access must apply it deliberately and run the advisor afterwards. Name that person before merging. The migration must be applied **before** the deploy that ships #770's route changes, because those routes read `public_profiles`, which only that migration creates. First, the three blocking defects above must be fixed, which #770 proposes to do. Then decide on the Starlight `REQUEST_CHANGES` block, whose high finding is assessed above as a false positive.
 
 **Decision 3: Genesis stack.** Merge #767 then #765, or merge #765 alone and close #767. Both leave the same tree.
 
