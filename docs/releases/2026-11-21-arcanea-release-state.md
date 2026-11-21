@@ -58,13 +58,13 @@ Production and main both resolve **next 16.4.1**. #744 ("bump next to 16.4.5") c
 
 ### Recommended order
 
-| #   | PR                                           | Head      | Why here                                                                                                                                                  |
-| --- | -------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **#763** artwork master digest               | `c45826e` | Smallest blast radius (3 files, `packages/rights-manifest` only), 0 behind main                                                                           |
-| 2   | **#725** P0 security definer + anon profiles | `d630533` | Security priority. Disjoint files from the rest. Carries a migration (see owner gate)                                                                     |
-| 3   | **#767** Genesis collector review            | `31cff71` | Base of the Genesis stack                                                                                                                                 |
-| 4   | **#765** Genesis displayed license           | `858639b` | **Strict superset of #767** (`#767 ⊂ #765`). After #767 lands, #765 reduces to its 3 reconcile commits. Merging #765 alone and closing #767 is equivalent |
-| 5   | **#676** web-excellence install              | `b010fa1` | Tooling, CI hooks, agents. Last so a hook change can't gate the product merges above. 18 behind main                                                      |
+| #   | PR                                           | Head      | Why here                                                                                                                                                                         |
+| --- | -------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **#763** artwork master digest               | `c45826e` | Smallest blast radius (3 files, `packages/rights-manifest` only), 0 behind main                                                                                                  |
+| 2   | **#725** P0 security definer + anon profiles | `d630533` | **Held: not merge-ready at this head.** Three verified defects, see "#725: blocking defects" below. Merges cleanly and tests pass, but the tests miss these. Re-slot after a fix |
+| 3   | **#767** Genesis collector review            | `31cff71` | Base of the Genesis stack                                                                                                                                                        |
+| 4   | **#765** Genesis displayed license           | `858639b` | **Strict superset of #767** (`#767 ⊂ #765`). After #767 lands, #765 reduces to its 3 reconcile commits. Merging #765 alone and closing #767 is equivalent                        |
+| 5   | **#676** web-excellence install              | `b010fa1` | Tooling, CI hooks, agents. Last so a hook change can't gate the product merges above. 18 behind main                                                                             |
 
 ### Evidence
 
@@ -82,6 +82,16 @@ All commands ran on an integration branch built by `git merge --no-ff` of each P
 | web       | `52d3371` | `pnpm turbo run type-check --filter=@arcanea/web`                                                                                            | ✓ exit 0, 0 TS errors                                                 |
 | web       | `52d3371` | `pnpm turbo run build --filter=@arcanea/web`                                                                                                 | ✓ 9/9 turbo tasks                                                     |
 
+### #725: blocking defects (verified in source at `d630533`)
+
+An independent review raised these. Each was confirmed by reading the files at the stated lines:
+
+1. **Signed-out profile pages break.** The migration revokes anon `SELECT` on `public.profiles`. `apps/web/app/profile/[username]/page.tsx` (lines 16, 39) and `apps/web/app/api/profile/[userId]` still call `getProfile()`, which does `.from('profiles').select('*')` (`apps/web/lib/database/services/profile-service.ts:11`). Anonymous reads must move to `public_profiles`.
+2. **The view leaks inactive profiles.** `public_profiles` filters `where coalesce(is_active, true)`. The RLS policy it replaces for anon (`20250101000002_rls_policies.sql`, "Public profiles are viewable by everyone") requires `is_active = TRUE`. The view runs with owner rights and bypasses RLS, so rows with a NULL `is_active` become public. The filter needs strict truth (`(to_jsonb(p)->>'is_active')::boolean is true`).
+3. **The audit baseline has an empty fingerprint.** `scripts/migration-audit-baseline.json` holds `destructive-statement|…/20261012030707_atomic_chat_snapshots.sql|Destructive statement: ` with an empty statement. In `scripts/audit-migrations.mjs` (~line 200), the regex match begins at the preceding `;`. The slice then starts on that `;`, and `statementEnd` stops immediately. Any new destructive statement in that file would produce the same empty fingerprint and pass `--fail-on high`.
+
+The green `test:security` row above does not cover these paths. #725 stays out of the merge order until they are fixed, with a test for each.
+
 ### #725: Starlight Review block, assessed
 
 The external `Starlight Review` check (cf-checker) is the only red check on #725. It flags:
@@ -91,7 +101,7 @@ The external `Starlight Review` check (cf-checker) is the only red check on #725
 - **low**, `profiles/[username]/route.ts:39`: structural cast. Cosmetic.
 - Expect the Supabase advisor to flag `public_profiles` as a "security definer view". That is the intended design (an allowlisted projection over a table anon can no longer read), and it should be acknowledged rather than "fixed" with `security_invoker`, which would return zero rows to anon.
 
-Of the two model reviewers, one approved and one requested changes, and the request rests on the high finding above.
+Of the two model reviewers, one approved and one requested changes, and the request rests on the high finding above. Starlight's finding is still assessed as a false positive. Its block nevertheless lands on a PR that does have real defects, listed in the section above.
 
 ### #762 (not in the merge set)
 
@@ -132,7 +142,7 @@ Both re-runs are 12 commits behind main and touch `pnpm-lock.yaml`. Use `@depend
 
 Every day on the branch build is a day of uncapped key exposure, and promotion has no feature cost. The question is only who signs off the main build and when.
 
-**Decision 2: #725's migration path.** Merging #725 lands `supabase/migrations/20261107000001_arcanea_p0_security.sql`. No workflow in this repo applies migrations, so merge ≠ apply. Someone with Supabase access must apply it deliberately and run the advisor afterwards. Name that person before merging. It also overrides the Starlight `REQUEST_CHANGES` block, whose high finding is assessed above as a false positive.
+**Decision 2: #725's migration path.** Merging #725 lands `supabase/migrations/20261107000001_arcanea_p0_security.sql`. No workflow in this repo applies migrations, so merge ≠ apply. Someone with Supabase access must apply it deliberately and run the advisor afterwards. Name that person before merging. First, #725 needs the three blocking defects above fixed: the signed-out profile reads, the `is_active` filter and the audit fingerprint. Then decide on the Starlight `REQUEST_CHANGES` block, whose high finding is assessed above as a false positive.
 
 **Decision 3: Genesis stack.** Merge #767 then #765, or merge #765 alone and close #767. Both leave the same tree.
 
