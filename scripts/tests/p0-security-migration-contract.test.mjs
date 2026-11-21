@@ -70,6 +70,12 @@ test("intentional anon grants are documented, not silently expanded", () => {
 test("the public view hides profiles whose is_active is not true, as the RLS policy does", () => {
   // The view runs with its owner's rights and skips RLS, whose policy is
   // `is_active = TRUE`; treating NULL as active would publish hidden profiles.
-  assert.match(view, /where \(to_jsonb\(p\) ->> 'is_active'\)::boolean is true;/);
-  assert.doesNotMatch(view, /coalesce\(\(to_jsonb\(p\) ->> 'is_active'\)::boolean, true\)/);
+  assert.match(
+    view,
+    /where \(to_jsonb\(p\) ->> 'is_active'\)::boolean is true;/,
+  );
+  assert.doesNotMatch(
+    view,
+    /coalesce\(\(to_jsonb\(p\) ->> 'is_active'\)::boolean, true\)/,
+  );
 });
