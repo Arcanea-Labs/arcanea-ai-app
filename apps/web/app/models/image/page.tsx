@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   title: "Image Generation Arena | Arcanea \u2014 Compare AI Art Models",
   description:
-    "Compare AI image generation models side by side. FLUX vs DALL-E vs Midjourney vs Gemini. Transparent pricing, text rendering quality, speed benchmarks, and style control ratings for every major image AI.",
+    "Compare selected image generation models, including FLUX, DALL-E, Midjourney, and Gemini. Explore historical catalog prices and Arcanea editorial ratings for text rendering and style control.",
   keywords: [
     "AI image generation comparison",
     "best AI art models",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     url: "https://www.arcanea.ai/models/image",
     title: "Image Generation Arena",
     description:
-      "Transparent comparison of 8 image generation models. Pricing, speed, text rendering, and style control rated side by side.",
+      "Compare selected image models using historical catalog data and Arcanea editorial ratings for text rendering and style control.",
     type: "website",
   },
 };
@@ -58,7 +58,7 @@ function ImageArenaJsonLd() {
     url: "https://www.arcanea.ai/models/image",
     name: "Image Generation Arena",
     description:
-      "AI image generation model comparison with pricing, benchmarks, and quality ratings.",
+      "Selected image generation models with historical pricing and Arcanea editorial ratings.",
     publisher: {
       "@type": "Organization",
       name: "Arcanea",
@@ -86,7 +86,7 @@ function ProviderGrid() {
       <SectionHeading
         tag="Model Comparison"
         title="Image Generation Models"
-        subtitle="Every model we track, with transparent pricing, speed, and quality ratings. No affiliate links, no bias."
+        subtitle="Historical catalog prices alongside Arcanea editorial ratings for text rendering and style control."
       />
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {models.map((model) => (
@@ -282,16 +282,16 @@ export default function ImageArenaPage() {
             Image Generation Arena
           </h1>
           <p className="text-lg text-white/50 max-w-2xl mx-auto leading-relaxed">
-            Transparent comparison of every major image generation model.
-            Pricing, speed, text rendering quality, and style control rated
-            without bias for creators who need to choose the right tool.
+            Compare selected models for text rendering, style control and image production.
+            The April catalog contains reference prices, speed estimates and editorial quality ratings.
+            Check the provider for current rates and availability before a paid run.
           </p>
           <div className="mt-6 flex items-center justify-center gap-6 text-xs text-white/30">
             <span>{models.length} models tracked</span>
             <span className="w-1 h-1 rounded-full bg-white/20" />
             <span>{providers.size} providers</span>
             <span className="w-1 h-1 rounded-full bg-white/20" />
-            <span>Updated April 2026</span>
+            <span>April 2026 catalog snapshot</span>
           </div>
         </header>
 
