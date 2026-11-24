@@ -275,7 +275,7 @@ export default function RecordsPage() {
                     Listen on Spotify
                   </a>
                   <Link
-                    href="/studio/music"
+                    href="/music-studio"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 text-white font-semibold hover:bg-white/10 transition-all"
                   >
                     <Sparkle className="w-4 h-4 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
@@ -430,7 +430,7 @@ export default function RecordsPage() {
                     Listen on Spotify
                   </a>
                   <Link
-                    href="/studio/music"
+                    href="/music-studio"
                     className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-white font-semibold hover:bg-white/10 transition-all"
                   >
                     <Sparkle className="w-4 h-4 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
