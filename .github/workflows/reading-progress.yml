@@ -111,7 +111,7 @@ jobs:
         with:
           name: reading-progress-${{ env.SOURCE_COMMIT }}-attempt-${{ github.run_attempt }}
           path: screenshots/reading-progress/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: error
 
   authenticated-recovery:
@@ -165,5 +165,5 @@ jobs:
         with:
           name: reading-progress-auth-${{ env.SOURCE_COMMIT }}-attempt-${{ github.run_attempt }}
           path: screenshots/reading-progress-auth/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: error

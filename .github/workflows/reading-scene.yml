@@ -131,7 +131,7 @@ jobs:
             screenshots/reading-scene-database/
             screenshots/reading-scene-auth/
           if-no-files-found: warn
-          retention-days: 2
+          retention-days: 1
   independent-review:
     if: github.event_name == 'workflow_dispatch' && inputs.review_budget_usd == '1' && github.actor == 'frankxai' && github.ref_name == 'agent/codex/reading-scene-20261010'
     needs: verify
@@ -158,4 +158,4 @@ jobs:
           name: reading-scene-review-${{ github.sha }}-${{ github.run_attempt }}
           path: screenshots/reading-scene-review/
           if-no-files-found: error
-          retention-days: 2
+          retention-days: 1

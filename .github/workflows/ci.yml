@@ -413,7 +413,7 @@ jobs:
         with:
           name: mcp-consumer-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/mcp-consumer/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
       - name: Verify Luminor public-read timeout
@@ -495,7 +495,7 @@ jobs:
         with:
           name: reader-entry-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/reader-entry/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
       - name: Verify Firstlight collection and cooperation at three viewports
@@ -538,7 +538,7 @@ jobs:
         with:
           name: atlas-geography-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: .visual-proof/atlas-after/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
       - name: Upload Firstlight review evidence
@@ -548,7 +548,7 @@ jobs:
         with:
           name: firstlight-02-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: apps/web/test-results/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
       - name: Verify community signup and recovery in the built browser
@@ -570,7 +570,7 @@ jobs:
         with:
           name: community-capture-built-app-${{ github.sha }}
           path: screenshots/community-capture/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
       - name: Select MCP reader browser scope
@@ -648,7 +648,7 @@ jobs:
         with:
           name: galleries-built-app-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
       - name: Build summary
@@ -701,7 +701,7 @@ jobs:
         with:
           name: author-preview-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/author-hosted/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
   world-preview:
@@ -742,7 +742,7 @@ jobs:
         with:
           name: world-preview-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/world-service/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
   author-independent-review:
@@ -790,7 +790,7 @@ jobs:
         with:
           name: hub-review-${{ github.ref_name == 'agent/codex/review-handover-20261010' && inputs.review_hub_head || '5326dc36c78f' }}-attempt-${{ github.run_attempt }}
           path: screenshots/hub-review/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
       - name: Review complete exact source using the existing independent provider
         if: (github.ref_name != 'agent/codex/review-handover-20261010' || !inputs.review_hub_release) && !(github.ref_name == 'agent/codex/world-creator-recovery-20261010' && inputs.world_live_generation)
@@ -804,7 +804,7 @@ jobs:
         with:
           name: author-review-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/author-review/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
   generation-preview:
@@ -843,7 +843,7 @@ jobs:
         with:
           name: generation-preview-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/generation-service/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
   project-document-preview:
@@ -880,7 +880,7 @@ jobs:
         with:
           name: project-document-preview-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/project-document-service/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
   provider-account-preview:
@@ -915,7 +915,7 @@ jobs:
         with:
           name: provider-settings-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/provider-settings/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
   private-imagine-preview:
@@ -950,7 +950,7 @@ jobs:
         with:
           name: private-imagine-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: screenshots/private-imagine/
-          retention-days: 2
+          retention-days: 1
           if-no-files-found: warn
 
   # ============================================
