@@ -57,6 +57,14 @@ test("validateBookPlan accepts a valid plan and defaults notes and forbiddenTerm
   assert.equal(r.value.writingStyle.notes, "");
 });
 
+test("optional string fields accept an empty string, required ones do not", () => {
+  const ok = validateBookPlan({ ...goodPlan, writingStyle: { ...goodPlan.writingStyle, notes: "" } });
+  assert.equal(ok.ok, true);
+  const bad = validateBookPlan({ ...goodPlan, title: "" });
+  assert.equal(bad.ok, false);
+  assert.ok(bad.errors.includes("book_plan.title must be a non-empty string"));
+});
+
 test("validateBookPlan rejects duplicate and malformed rule keys", () => {
   const r = validateBookPlan({
     ...goodPlan,

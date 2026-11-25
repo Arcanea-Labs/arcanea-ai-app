@@ -200,7 +200,7 @@ function isObj(v: unknown): v is Obj {
 
 function str(o: Obj, key: string, path: string, errors: string[], optional = false): string {
   const v = o[key];
-  if (v === undefined && optional) return "";
+  if (optional && (v === undefined || v === "")) return "";
   if (typeof v !== "string" || v.trim().length === 0) {
     errors.push(`${path}.${key} must be a non-empty string`);
     return "";
