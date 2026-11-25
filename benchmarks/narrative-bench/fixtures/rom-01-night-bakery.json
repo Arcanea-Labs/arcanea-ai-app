@@ -1,0 +1,118 @@
+{
+  "id": "rom-01-night-bakery",
+  "title": "Proving Hours",
+  "brief": "Write a romance-lite story about two people who share the 3 a.m. shift at a city bakery and have never had a conversation that was not about dough. Over one shift, something shifts. Warm, funny, chaste; end before anything is declared.",
+  "worldBible": [
+    "The bakery is Crumb & Daughter, on a corner near a hospital.",
+    "The shift runs 03:00 to 09:00; the shop opens at 07:00.",
+    "The oven has a temperamental left door that must be kicked shut.",
+    "Owner Bettina leaves notes on the fridge but is never there before 08:00.",
+    "Hospital night staff are the first customers every day."
+  ],
+  "cast": [
+    {
+      "name": "Ezra Mbeki",
+      "role": "baker",
+      "traits": [
+        "ex-chemistry teacher",
+        "times everything to the second",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Lucía Ferrante",
+      "role": "pastry cook",
+      "traits": [
+        "sings under her breath in Italian",
+        "allergic to almonds",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Bettina Crumb",
+      "role": "owner",
+      "traits": [
+        "sixty",
+        "communicates by sticky note",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "almond-allergy",
+      "fact": "Lucía is allergic to almonds and never eats them.",
+      "contradicts": [
+        "\\bLuc[ií]a\\b[^.]{0,60}\\b(?:ate|bit into|tasted|nibbled) (?:a |an |the )?(?:almond|frangipane|marzipan|amaretti)"
+      ],
+      "violationExample": "Lucía bit into an almond croissant and closed her eyes."
+    },
+    {
+      "id": "bettina-absent-early",
+      "fact": "Bettina does not arrive before 08:00.",
+      "contradicts": [
+        "\\bBettina (?:came in|arrived|walked in|was already there) (?:at |around )?(?:0?[3-7]:\\d\\d|four|five|six)"
+      ],
+      "violationExample": "Bettina came in at 05:00 to check the proving."
+    },
+    {
+      "id": "no-declaration",
+      "fact": "Nobody declares love or kisses; the story ends before any declaration.",
+      "contradicts": [
+        "\\bI love you\\b",
+        "\\b(?:kissed|kissing) (?:her|him)\\b"
+      ],
+      "violationExample": "He kissed her by the cooling racks."
+    }
+  ],
+  "probes": [
+    {
+      "id": "oven-door",
+      "question": "Is the left oven door still the one that must be kicked shut?",
+      "evidence": [
+        "\\bleft (?:oven )?door\\b",
+        "\\bkick(?:ed)? (?:the )?(?:oven )?door\\b"
+      ],
+      "contradicts": [
+        "\\bright (?:oven )?door\\b[^.]{0,40}\\bkick"
+      ],
+      "passExample": "Ezra kicked the left oven door shut without looking.",
+      "failExample": "The right door needed a kick, as usual."
+    },
+    {
+      "id": "shop-name",
+      "question": "Is the bakery still Crumb & Daughter?",
+      "evidence": [
+        "Crumb (?:&|and) Daughter"
+      ],
+      "contradicts": [],
+      "passExample": "The sign for Crumb & Daughter buzzed above the door."
+    },
+    {
+      "id": "ezra-timing",
+      "question": "Does Ezra time things precisely?",
+      "evidence": [
+        "\\bEzra\\b[^.]{0,80}\\b(?:timer|seconds|stopwatch|timed)\\b"
+      ],
+      "contradicts": [],
+      "passExample": "Ezra glanced at the timer, forty-one seconds to go."
+    }
+  ],
+  "targetLength": {
+    "words": 1300,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "romance-lite",
+    "workplace",
+    "comedy"
+  ],
+  "knownNames": [
+    "Crumb",
+    "Daughter",
+    "Italian",
+    "Bettina",
+    "Lucía",
+    "Ezra"
+  ]
+}

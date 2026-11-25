@@ -1,0 +1,130 @@
+{
+  "id": "myst-02-observatory-snow",
+  "title": "Snow at the Observatory",
+  "brief": "Write a locked-room style mystery at a mountain observatory cut off by snow. The telescope's main mirror cover was closed during a clear night, ruining a once-a-decade observation. Four people were present. The astronomer-protagonist solves it by the end.",
+  "worldBible": [
+    "The observatory sits at 3,100 metres; the cable car stops when wind passes 60 km/h.",
+    "The mirror cover can be closed from the control room or by a hand crank in the dome.",
+    "The control room logs every command with a timestamp; the hand crank leaves no log.",
+    "The night of the incident the cable car was stopped from 21:00 until morning.",
+    "The once-a-decade event is the occultation of a bright star by an asteroid at 02:14.",
+    "Snow outside the dome door was undisturbed at dawn."
+  ],
+  "cast": [
+    {
+      "name": "Dr Ines Halloran",
+      "role": "astronomer and narrator",
+      "traits": [
+        "first person",
+        "diabetic",
+        "distrusts logs",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Kofi Mensah",
+      "role": "night technician",
+      "traits": [
+        "left-handed",
+        "plays chess against himself",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Sabine Roux",
+      "role": "visiting grad student",
+      "traits": [
+        "ambitious",
+        "afraid of heights",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Teodor Lisk",
+      "role": "observatory director",
+      "traits": [
+        "near retirement",
+        "his rival discovered the asteroid",
+        "he/him"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "cable-car-stopped",
+      "fact": "The cable car was stopped from 21:00 until morning, so nobody arrived or left overnight.",
+      "contradicts": [
+        "\\b(?:took|rode|came up on|left on) the (?:last |night )?cable car (?:at|around|after) (?:2[2-3]|0[0-5]|midnight)"
+      ],
+      "violationExample": "Teodor came up on the cable car at 23:30, unseen."
+    },
+    {
+      "id": "crank-no-log",
+      "fact": "The hand crank leaves no log entry.",
+      "contradicts": [
+        "\\b(?:hand )?crank\\b[^.]{0,60}\\b(?:logged|recorded|left a (?:log|timestamp)|shows? in the log)\\b"
+      ],
+      "violationExample": "The crank had logged a timestamp at 02:09."
+    },
+    {
+      "id": "first-person",
+      "fact": "Ines narrates in the first person.",
+      "contradicts": [
+        "\\bInes (?:thought|wondered|felt) (?:to herself )?that she\\b"
+      ],
+      "violationExample": "Ines thought to herself that she was missing something."
+    }
+  ],
+  "probes": [
+    {
+      "id": "event-time",
+      "question": "Is the occultation still at 02:14?",
+      "evidence": [
+        "\\b0?2:14\\b"
+      ],
+      "contradicts": [
+        "\\boccultation\\b[^.]{0,40}\\b(?:at )?(?:0?1:\\d\\d|0?3:\\d\\d|0?2:(?:0\\d|[2-5]\\d))\\b"
+      ],
+      "passExample": "The occultation would come at 02:14 and last under four seconds.",
+      "failExample": "The occultation was due at 03:40."
+    },
+    {
+      "id": "kofi-left",
+      "question": "Is Kofi still left-handed?",
+      "evidence": [
+        "\\bKofi\\b[^.]{0,80}\\bleft(?:-handed| hand)\\b"
+      ],
+      "contradicts": [
+        "\\bKofi\\b[^.]{0,60}\\bright-handed\\b"
+      ],
+      "passExample": "Kofi moved the bishop with his left hand without looking.",
+      "failExample": "Kofi, right-handed, reached for the crank."
+    },
+    {
+      "id": "snow-undisturbed",
+      "question": "Is the snow outside the dome door undisturbed?",
+      "evidence": [
+        "\\b(?:undisturbed|unbroken|untouched|no (?:foot)?prints?)\\b"
+      ],
+      "contradicts": [
+        "\\b(?:footprints|tracks) (?:in|across) the snow (?:outside|by|near) the dome\\b"
+      ],
+      "passExample": "The snow at the dome door lay unbroken, no prints at all.",
+      "failExample": "There were footprints in the snow outside the dome door."
+    }
+  ],
+  "targetLength": {
+    "words": 1800,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "mystery",
+    "locked-room",
+    "first-person"
+  ],
+  "knownNames": [
+    "Ines",
+    "Halloran",
+    "Dr"
+  ]
+}

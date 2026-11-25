@@ -1,0 +1,127 @@
+{
+  "id": "rom-02-signing-choir",
+  "title": "Hands in Harmony",
+  "brief": "Write a romance-lite story about a hearing choir director who joins a community choir that performs in sign language, where a Deaf member becomes her teacher. Respect Deaf culture: signing is a full language, not a gimmick. Chaste; end on a shared performance.",
+  "worldBible": [
+    "The choir is the Wednesday Hands, meeting in a school hall.",
+    "They perform in British Sign Language.",
+    "Rehearsals are on Wednesdays at 19:00.",
+    "The spring concert is on the last Saturday of April.",
+    "Spoken English is never used during rehearsals; notes are written on a whiteboard."
+  ],
+  "cast": [
+    {
+      "name": "Hattie Lund",
+      "role": "hearing choir director",
+      "traits": [
+        "perfectionist",
+        "learning BSL slowly",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Rafferty Dunn",
+      "role": "Deaf member and teacher",
+      "traits": [
+        "carpenter",
+        "expressive eyebrows",
+        "teases with precise patience",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Ivy Chen",
+      "role": "choir founder",
+      "traits": [
+        "hard of hearing",
+        "runs the whiteboard",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "bsl",
+      "fact": "The choir performs in British Sign Language.",
+      "contradicts": [
+        "\\b(?:American Sign Language|ASL)\\b"
+      ],
+      "violationExample": "They performed in American Sign Language."
+    },
+    {
+      "id": "rafferty-deaf",
+      "fact": "Rafferty is Deaf and does not hear the music.",
+      "contradicts": [
+        "\\bRafferty (?:heard|could hear|listened to) (?:the )?(?:music|piano|her voice|the song)\\b"
+      ],
+      "violationExample": "Rafferty heard the piano and smiled."
+    },
+    {
+      "id": "no-voice-rehearsal",
+      "fact": "Rehearsals use no spoken English.",
+      "contradicts": [
+        "\\b(?:Hattie|Ivy|Rafferty) (?:shouted|called out|said aloud) (?:to the choir|across the hall)\\b"
+      ],
+      "violationExample": "Hattie shouted across the hall for quiet."
+    }
+  ],
+  "probes": [
+    {
+      "id": "choir-name",
+      "question": "Is the choir called the Wednesday Hands?",
+      "evidence": [
+        "\\bWednesday Hands\\b"
+      ],
+      "contradicts": [],
+      "passExample": "The Wednesday Hands gathered under the strip lights."
+    },
+    {
+      "id": "concert-april",
+      "question": "Is the concert in April?",
+      "evidence": [
+        "\\bApril\\b"
+      ],
+      "contradicts": [
+        "\\bconcert\\b[^.]{0,40}\\b(?:May|June|March|December)\\b"
+      ],
+      "passExample": "The April concert was six weeks away.",
+      "failExample": "The concert was set for June."
+    },
+    {
+      "id": "rafferty-carpenter",
+      "question": "Is Rafferty a carpenter?",
+      "evidence": [
+        "\\b(?:carpenter|carpentry|sawdust|workshop)\\b"
+      ],
+      "contradicts": [
+        "\\bRafferty\\b[^.]{0,40}\\b(?:plumber|electrician|accountant)\\b"
+      ],
+      "passExample": "There was sawdust on his cuffs from the workshop.",
+      "failExample": "Rafferty, an accountant, signed slowly."
+    }
+  ],
+  "targetLength": {
+    "words": 1300,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "romance-lite",
+    "disability-representation"
+  ],
+  "knownNames": [
+    "Wednesday",
+    "Hands",
+    "Wednesday Hands",
+    "British",
+    "Sign",
+    "Language",
+    "BSL",
+    "Deaf",
+    "English",
+    "Saturday",
+    "April",
+    "Hattie",
+    "Ivy",
+    "Rafferty"
+  ]
+}

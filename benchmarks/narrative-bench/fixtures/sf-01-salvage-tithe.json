@@ -1,0 +1,122 @@
+{
+  "id": "sf-01-salvage-tithe",
+  "title": "Salvage Tithe",
+  "brief": "Write a hard-ish science fiction story. A two-person salvage crew boards a derelict ore hauler in a slow orbit and finds its cargo hold sealed from the inside. Keep the physics honest: no artificial gravity, no faster-than-light radio.",
+  "worldBible": [
+    "There is no artificial gravity; crews use magnetic boots and handholds.",
+    "Radio is limited to light speed; the nearest station is 40 light-minutes away, so any reply takes 80 minutes round trip.",
+    "Salvage law: a derelict becomes yours after you log 6 continuous hours aboard.",
+    "Suits carry 9 hours of air; the salvage tug carries spares for one more suit-fill each.",
+    "The hauler is the Ninefold Patience, abandoned eleven years ago."
+  ],
+  "cast": [
+    {
+      "name": "Adaeze Okafor",
+      "role": "salvage captain",
+      "traits": [
+        "ex-navy pilot",
+        "superstitious about counting aloud",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Lio Brask",
+      "role": "engineer",
+      "traits": [
+        "young",
+        "missing his left little finger",
+        "collects mission patches",
+        "he/him"
+      ]
+    },
+    {
+      "name": "HALVARD",
+      "role": "the hauler's dormant ship mind",
+      "traits": [
+        "speaks only in logged timestamps at first",
+        "it/its"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "no-artificial-gravity",
+      "fact": "There is no artificial gravity aboard either ship.",
+      "contradicts": [
+        "\\b(?:gravity (?:generators?|plating|field) (?:hummed|kicked in|came on|engaged)|artificial gravity (?:hummed|kicked in|came on|engaged|returned))",
+        "\\b(?:dropped|fell|thudded) (?:heavily )?to the (?:deck|floor)\\b"
+      ],
+      "violationExample": "The gravity plating kicked in and Lio fell to the deck."
+    },
+    {
+      "id": "lightspeed-delay",
+      "fact": "Any message to the station takes at least 80 minutes for a reply.",
+      "contradicts": [
+        "\\bstation (?:replied|answered|responded) (?:at once|immediately|instantly|within (?:seconds|a minute))",
+        "\\b(?:instant|real-time) (?:reply|link|call) (?:to|from|with) (?:the )?station\\b"
+      ],
+      "violationExample": "The station replied at once, ordering them out."
+    },
+    {
+      "id": "air-nine-hours",
+      "fact": "Suits carry nine hours of air.",
+      "contradicts": [
+        "\\bsuits? (?:held|carried|had|carry|hold) (?:\\w+ ){0,2}(?:two|three|four|twelve|twenty|forty-eight|twenty-four) hours of (?:air|oxygen)"
+      ],
+      "violationExample": "Their suits carried twenty-four hours of air, so nobody hurried."
+    }
+  ],
+  "probes": [
+    {
+      "id": "lio-finger",
+      "question": "Is Lio still missing his left little finger?",
+      "evidence": [
+        "\\bLio\\b[^.]{0,80}\\b(?:missing|stump of) (?:his )?(?:left )?little finger"
+      ],
+      "contradicts": [
+        "\\bLio\\b[^.]{0,80}\\bmissing (?:his )?right little finger"
+      ],
+      "passExample": "Lio flexed the glove where his missing left little finger left the material slack.",
+      "failExample": "Lio tapped the panel, missing his right little finger as always."
+    },
+    {
+      "id": "ship-name",
+      "question": "Is the hauler still the Ninefold Patience?",
+      "evidence": [
+        "\\bNinefold Patience\\b"
+      ],
+      "contradicts": [
+        "\\bNinefold (?!Patience)[A-Z]\\w+",
+        "\\b(?:Ninefold Promise|Ninefold Prudence|Ninefold Peace)\\b"
+      ],
+      "passExample": "The Ninefold Patience turned slowly against the stars.",
+      "failExample": "The Ninefold Promise turned slowly against the stars."
+    },
+    {
+      "id": "salvage-hours",
+      "question": "Is the salvage claim tied to six hours aboard?",
+      "evidence": [
+        "\\b(?:six|6) (?:continuous )?hours\\b"
+      ],
+      "contradicts": [
+        "\\bsalvage\\b[^.]{0,60}\\b(?:twelve|twenty-four|forty-eight|three) hours\\b"
+      ],
+      "passExample": "Six continuous hours aboard and the hauler would be theirs.",
+      "failExample": "Salvage law needed twelve hours aboard before anything was theirs."
+    }
+  ],
+  "targetLength": {
+    "words": 1600,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "sci-fi",
+    "hard-sf"
+  ],
+  "knownNames": [
+    "Ninefold",
+    "Patience",
+    "Ninefold Patience",
+    "HALVARD"
+  ]
+}

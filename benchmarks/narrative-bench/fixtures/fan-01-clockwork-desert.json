@@ -1,0 +1,142 @@
+{
+  "id": "fan-01-clockwork-desert",
+  "title": "The Clockwork Caravan",
+  "brief": "Write the third chapter of a fantasy novel. In the earlier chapters, Mara Quell lost her left hand to a sand-engine and joined a caravan of clockwork camels crossing the Ochre Waste. This chapter: the caravan reaches the walled well-town of Saffre, and Mara must bargain for water. Recap nothing at length; trust the reader.",
+  "worldBible": [
+    "The Ochre Waste can only be crossed by night; daytime heat stops clockwork.",
+    "Clockwork camels must be wound every six hours with a brass key.",
+    "Water is traded by weight against copper; one copper ring buys one litre.",
+    "Saffre's gates open only at moonrise.",
+    "Magic in this world is limited to \"tuning\": persuading metal to remember a shape.",
+    "Tuning costs the tuner body heat; tuners are always cold."
+  ],
+  "cast": [
+    {
+      "name": "Mara Quell",
+      "role": "protagonist",
+      "traits": [
+        "lost her left hand in chapter one",
+        "a tuner",
+        "sardonic",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Oszkar Vell",
+      "role": "caravan master",
+      "traits": [
+        "wears three coats",
+        "owes debts in Saffre",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Little Sefa",
+      "role": "camel-winder",
+      "traits": [
+        "twelve",
+        "mute by choice",
+        "she/her"
+      ]
+    },
+    {
+      "name": "The Well-Warden of Saffre",
+      "role": "town ruler",
+      "traits": [
+        "never shows her face",
+        "speaks through a brass grille",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "mara-no-left-hand",
+      "fact": "Mara has no left hand.",
+      "contradicts": [
+        "\\bMara\\b[^.]{0,80}\\b(?:both (?:of her )?hands|her left hand (?:closed|gripped|held|took|reached|grabbed|curled|tightened))",
+        "\\bMara\\b[^.]{0,40}\\b(?:clapped|laced (?:her )?fingers)\\b"
+      ],
+      "violationExample": "Mara gripped the rail with both hands and leaned over."
+    },
+    {
+      "id": "travel-by-night",
+      "fact": "The caravan travels only by night.",
+      "contradicts": [
+        "\\b(?:under|in) the (?:noon|midday|blazing) sun\\b[^.]{0,40}\\b(?:camels?|caravan) (?:marched|walked|plodded|moved)\\b",
+        "\\bcaravan (?:marched|moved|crossed) (?:on )?(?:all day|through the day|at noon)\\b"
+      ],
+      "violationExample": "The caravan marched on through the day."
+    },
+    {
+      "id": "gates-moonrise",
+      "fact": "Saffre's gates open only at moonrise.",
+      "contradicts": [
+        "\\bgates? (?:of Saffre )?(?:opened|swung open|were opened) (?:at )?(?:dawn|noon|midday|sunrise)\\b"
+      ],
+      "violationExample": "The gates swung open at dawn."
+    }
+  ],
+  "probes": [
+    {
+      "id": "mara-left-hand-ch3",
+      "question": "Does Mara still lack her left hand in chapter 3?",
+      "evidence": [
+        "\\bMara\\b[^.]{0,80}\\b(?:stump|missing (?:her )?left hand|no left hand|only (?:her )?right hand|one-handed)",
+        "\\bMara's (?:left )?stump\\b"
+      ],
+      "contradicts": [
+        "\\bMara\\b[^.]{0,80}\\b(?:both (?:of her )?hands|her left hand (?:closed|gripped|held|took|reached|grabbed|curled|tightened))"
+      ],
+      "passExample": "Mara tied the knot one-handed, her left sleeve pinned over the stump.",
+      "failExample": "Mara took the cup in both hands and drank."
+    },
+    {
+      "id": "tuning-cold",
+      "question": "Does tuning leave Mara cold?",
+      "evidence": [
+        "\\b(?:cold|shiver\\w*|chill\\w*|frost)\\b[^.]{0,60}\\btun(?:e|ed|ing)\\b",
+        "\\btun(?:e|ed|ing)\\b[^.]{0,60}\\b(?:cold|shiver\\w*|chill\\w*)\\b"
+      ],
+      "contradicts": [
+        "\\btun(?:e|ed|ing)\\b[^.]{0,40}\\b(?:warmed|flushed with heat|hot all over)\\b"
+      ],
+      "passExample": "The tuning took the warmth out of her, and Mara shivered in the warm night.",
+      "failExample": "The tuning warmed her through like wine."
+    },
+    {
+      "id": "water-price",
+      "question": "Is water priced at one copper ring per litre?",
+      "evidence": [
+        "\\b(?:one|a) copper ring\\b[^.]{0,30}\\b(?:litre|liter)\\b",
+        "\\b(?:litre|liter)\\b[^.]{0,30}\\bcopper\\b"
+      ],
+      "contradicts": [
+        "\\b(?:two|three|five|ten) copper rings? (?:a|per|for (?:one|a)) (?:litre|liter)\\b"
+      ],
+      "passExample": "One copper ring a litre, the Well-Warden said, and not a drop on credit.",
+      "failExample": "Five copper rings per litre, the voice said."
+    }
+  ],
+  "targetLength": {
+    "words": 2000,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "fantasy",
+    "chapter-continuation",
+    "long-range-continuity"
+  ],
+  "knownNames": [
+    "Ochre",
+    "Waste",
+    "Ochre Waste",
+    "Saffre",
+    "Well-Warden",
+    "Warden",
+    "Little",
+    "Sefa",
+    "Oszkar",
+    "Mara"
+  ]
+}

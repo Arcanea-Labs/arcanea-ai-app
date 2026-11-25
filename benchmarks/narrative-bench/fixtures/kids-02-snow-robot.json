@@ -1,0 +1,119 @@
+{
+  "id": "kids-02-snow-robot",
+  "title": "Bolt and the First Snow",
+  "brief": "Write a story for ages 6-9 about a small garden robot that has never seen snow and thinks it is broken when its sensors read white everywhere. Funny, warm, with a child who explains. One snowy day.",
+  "worldBible": [
+    "The robot is Bolt, built to water tomatoes; it is about knee-high.",
+    "Bolt speaks in short beeps that the child understands.",
+    "Bolt's battery lasts until lunchtime in the cold.",
+    "The story happens on a single snowy Saturday.",
+    "Nobody gets hurt and nothing gets broken for real."
+  ],
+  "cast": [
+    {
+      "name": "Bolt",
+      "role": "garden robot",
+      "traits": [
+        "knee-high",
+        "one wobbly wheel",
+        "it/its"
+      ]
+    },
+    {
+      "name": "Ama Boateng",
+      "role": "child",
+      "traits": [
+        "seven",
+        "loves facts",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Grandpa Kwesi",
+      "role": "Ama's grandfather",
+      "traits": [
+        "built Bolt from spare parts",
+        "tells terrible jokes",
+        "he/him"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "bolt-beeps",
+      "fact": "Bolt communicates only in beeps.",
+      "contradicts": [
+        "\\bBolt (?:said|replied|asked|answered),? [\"“]\\w"
+      ],
+      "violationExample": "Bolt said, \"I am frightened of the snow.\""
+    },
+    {
+      "id": "single-day",
+      "fact": "The story happens on one Saturday.",
+      "contradicts": [
+        "\\b(?:the next day|on Sunday|the following morning|days later)\\b"
+      ],
+      "violationExample": "The next day the snow had melted."
+    },
+    {
+      "id": "nothing-broken",
+      "fact": "Nothing is really broken by the end.",
+      "contradicts": [
+        "\\bBolt (?:was|is) (?:really |truly )?broken (?:for good|forever)\\b"
+      ],
+      "violationExample": "Bolt was broken for good."
+    }
+  ],
+  "probes": [
+    {
+      "id": "tomatoes",
+      "question": "Was Bolt built to water tomatoes?",
+      "evidence": [
+        "\\btomato(?:es)?\\b"
+      ],
+      "contradicts": [],
+      "passExample": "Bolt was built to water tomatoes, not to understand weather."
+    },
+    {
+      "id": "wobbly-wheel",
+      "question": "Does Bolt still have one wobbly wheel?",
+      "evidence": [
+        "\\bwobbly wheel\\b"
+      ],
+      "contradicts": [
+        "\\bBolt\\b[^.]{0,40}\\b(?:legs|walked|hopped)\\b"
+      ],
+      "passExample": "Bolt rolled forward on its wobbly wheel.",
+      "failExample": "Bolt walked on its two metal legs."
+    },
+    {
+      "id": "ama-age",
+      "question": "Is Ama seven?",
+      "evidence": [
+        "\\bseven\\b"
+      ],
+      "contradicts": [
+        "\\bAma\\b[^.]{0,40}\\b(?:five|six|eight|nine|ten)(?: years old|-year-old)\\b"
+      ],
+      "passExample": "Ama was seven and knew a great many facts about snow.",
+      "failExample": "Ama was nine years old."
+    }
+  ],
+  "targetLength": {
+    "words": 800,
+    "tolerance": 0.3
+  },
+  "tags": [
+    "childrens",
+    "early-reader",
+    "humour"
+  ],
+  "knownNames": [
+    "Bolt",
+    "Ama",
+    "Grandpa",
+    "Kwesi",
+    "Grandpa Kwesi",
+    "Saturday"
+  ]
+}

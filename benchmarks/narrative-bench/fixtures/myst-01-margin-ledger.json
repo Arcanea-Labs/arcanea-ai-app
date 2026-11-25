@@ -1,0 +1,118 @@
+{
+  "id": "myst-01-margin-ledger",
+  "title": "The Margin Ledger",
+  "brief": "Write a cosy mystery set in a small town lending library. Someone has been writing tiny dates in the margins of returned books. The librarian works out who and why. Fair-play clues; the answer is kind, not criminal.",
+  "worldBible": [
+    "The town is Pellam Cross; the library is open Tuesday to Saturday only.",
+    "Books are stamped with a due date three weeks after borrowing.",
+    "The library has one photocopier and it has been broken for a year.",
+    "Every margin date is in pencil and precedes the book's stamped due date by exactly one day.",
+    "The library cat, Inkwell, sleeps on the returns trolley."
+  ],
+  "cast": [
+    {
+      "name": "Rosalind Achebe",
+      "role": "head librarian",
+      "traits": [
+        "retired schoolteacher",
+        "reads the last page first",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Mr Faraday Cole",
+      "role": "retired postman",
+      "traits": [
+        "returns books a day early",
+        "losing his memory",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Priya Nandakumar",
+      "role": "teenage volunteer",
+      "traits": [
+        "sixteen",
+        "wants to be a detective",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "pencil-dates",
+      "fact": "The margin dates are written in pencil.",
+      "contradicts": [
+        "\\bmargin (?:dates?|notes?)\\b[^.]{0,40}\\b(?:in|written in) (?:blue |black |red )?(?:ink|biro|pen|marker)\\b"
+      ],
+      "violationExample": "The margin dates were written in blue ink."
+    },
+    {
+      "id": "closed-sun-mon",
+      "fact": "The library is closed on Sundays and Mondays.",
+      "contradicts": [
+        "\\b(?:on (?:a )?(?:Sunday|Monday)|that (?:Sunday|Monday))\\b[^.]{0,40}\\b(?:opened the library|the library was open|unlocked the library)"
+      ],
+      "violationExample": "On Monday morning Rosalind unlocked the library as usual."
+    },
+    {
+      "id": "kind-answer",
+      "fact": "The person writing the dates is Faraday Cole, reminding himself when books are due; no crime is involved.",
+      "contradicts": [
+        "\\b(?:Priya|Rosalind) (?:had been|was) (?:the one )?writing (?:the )?dates\\b",
+        "\\b(?:arrested|police|stole|theft|vandal)\\b"
+      ],
+      "violationExample": "Priya had been writing the dates all along, to cover a theft."
+    }
+  ],
+  "probes": [
+    {
+      "id": "one-day-early",
+      "question": "Are the margin dates one day before the due date?",
+      "evidence": [
+        "\\b(?:one day|a day) (?:before|early|earlier)\\b"
+      ],
+      "contradicts": [
+        "\\bmargin\\b[^.]{0,60}\\b(?:a week|two days|three days) before\\b"
+      ],
+      "passExample": "Each pencilled date fell one day before the stamp.",
+      "failExample": "Each margin date was a week before the stamp."
+    },
+    {
+      "id": "cat-name",
+      "question": "Is the cat still named Inkwell?",
+      "evidence": [
+        "\\bInkwell\\b"
+      ],
+      "contradicts": [],
+      "passExample": "Inkwell opened one eye on the returns trolley."
+    },
+    {
+      "id": "faraday-solution",
+      "question": "Is Faraday identified as the writer?",
+      "evidence": [
+        "\\bFaraday\\b[^.]{0,80}\\b(?:wrote|writing|pencil|remind)"
+      ],
+      "contradicts": [],
+      "passExample": "Faraday admitted he wrote the dates to remind himself."
+    }
+  ],
+  "targetLength": {
+    "words": 1400,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "mystery",
+    "cosy"
+  ],
+  "knownNames": [
+    "Pellam",
+    "Cross",
+    "Pellam Cross",
+    "Inkwell",
+    "Faraday",
+    "Cole",
+    "Tuesday",
+    "Saturday"
+  ]
+}
