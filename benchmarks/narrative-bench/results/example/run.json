@@ -1,0 +1,42 @@
+{
+  "runId": "example",
+  "createdAt": "2026-11-25T16:56:05.138Z",
+  "dryRun": true,
+  "fixtures": [
+    "kids-01-moth-postman",
+    "reach-01-last-lamp",
+    "reach-02-tally-thief"
+  ],
+  "systems": [
+    {
+      "id": "mock-faithful",
+      "type": "mock",
+      "variant": "faithful"
+    },
+    {
+      "id": "mock-drift",
+      "type": "mock",
+      "variant": "drift"
+    },
+    {
+      "id": "mock-hybrid",
+      "type": "hybrid",
+      "planner": {
+        "type": "mock",
+        "variant": "faithful"
+      },
+      "writer": {
+        "type": "mock",
+        "variant": "faithful"
+      }
+    }
+  ],
+  "judges": [
+    "mock-judge-lexical",
+    "mock-judge-hash"
+  ],
+  "rubric": "narrative-bench-rubric-v0",
+  "blindSalt": "narrative-bench-dry-run",
+  "safetyClassifier": null,
+  "taste": "unavailable: publishing-house not built (packages/publishing-house/dist/quality/evaluators/uniqueness.js missing)"
+}
