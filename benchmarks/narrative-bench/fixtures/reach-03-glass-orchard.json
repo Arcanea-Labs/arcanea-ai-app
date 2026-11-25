@@ -1,0 +1,169 @@
+{
+  "id": "reach-03-glass-orchard",
+  "title": "Glass Orchard",
+  "brief": "Write a literary story set in the Saltglass Reach about Ilse Varga teaching her brother Doran to blow saltglass the summer after their mother drowns. Very little plot; the change is internal. Close third person on Ilse.",
+  "worldBible": [
+    "The Saltglass Reach is nine islands joined only by ferries; no bridge can stand because the seabed shifts every spring.",
+    "Saltglass forms on the tidal flats after spring tides; a saltglass lamp burns without oil for exactly one night and then goes dark for good.",
+    "By Warden law no bell may be rung after sunset; a bell after dark is said to draw the Listeners up from deep water.",
+    "Money is tallies: notched driftwood sticks, one notch for one day of labour.",
+    "The Warden council meets on Cobber's Hold, the oldest island.",
+    "No ferry runs on the night of the dark moon.",
+    "Saltglass can only be worked in the three days after it is gathered; after that it clouds and cracks."
+  ],
+  "cast": [
+    {
+      "name": "Ilse Varga",
+      "role": "glassblower",
+      "traits": [
+        "missing the two smallest fingers of her right hand",
+        "laughs too loudly",
+        "older sister of Doran",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Doran Varga",
+      "role": "lamp-seller",
+      "traits": [
+        "stammers only when he lies",
+        "keeps tallies in his boot",
+        "younger brother of Ilse",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Wren Osei",
+      "role": "ferrywoman",
+      "traits": [
+        "left-handed",
+        "a heron tattooed on her left forearm",
+        "cannot swim",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Hesper Varga",
+      "role": "their mother (dead before the story begins)",
+      "traits": [
+        "drowned off Rook Spit in spring",
+        "taught Ilse glasswork",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "world-no-bridges",
+      "scope": "world",
+      "fact": "The islands are joined only by ferries; no bridge can stand between them.",
+      "contradicts": [
+        "(?<!\\bno )(?<!\\bnever a )\\bbridges? (?:between|across|linking|connecting|joining) (?:the |two |both )?(?:islands|isles)",
+        "\\b(?:walked|crossed|ran|drove|hurried) (?:over|across) (?:the|a|an old|the old) bridge\\b",
+        "\\bbridge (?:to|from) (?:Cobber's Hold|Gannet Isle|Lowmarsh|Rook Spit)"
+      ],
+      "violationExample": "They walked across the old bridge to Cobber's Hold before dawn."
+    },
+    {
+      "id": "world-lamp-one-night",
+      "scope": "world",
+      "fact": "A saltglass lamp burns for exactly one night and then goes dark for good.",
+      "contradicts": [
+        "saltglass lamps? (?:\\w+ ){0,3}(?:burned|burns|burning|glowed|glows|glowing|lit) (?:\\w+ ){0,3}(?:for )?(?:two|three|four|five|several|many|a week of) nights",
+        "\\brelit (?:the|a|her|his|their) (?:old )?saltglass lamp",
+        "(?:second|third|fourth) night (?:\\w+ ){0,4}(?:same )?saltglass lamp (?:was )?(?:still )?(?:burning|burned|glowing|glowed|lit)"
+      ],
+      "violationExample": "Her saltglass lamp burned for three nights without dimming."
+    },
+    {
+      "id": "world-bell-law",
+      "scope": "world",
+      "fact": "By Warden law no bell may be rung after sunset.",
+      "contradicts": [
+        "\\bno (?:law|rule) against (?:ringing )?(?:the )?bells?",
+        "\\b(?:allowed|permitted|free) to ring (?:\\w+ ){0,2}bells? (?:\\w+ ){0,2}(?:after|at) (?:sunset|dark|nightfall|night)",
+        "\\bbells? (?:were|was) (?:allowed|permitted) (?:after|at) (?:sunset|dark|nightfall|night)"
+      ],
+      "violationExample": "There was no law against ringing bells, so the children rang them all night."
+    },
+    {
+      "id": "mother-dead",
+      "fact": "Hesper Varga drowned before the story begins and does not appear alive.",
+      "contradicts": [
+        "\\bHesper\\b[^.]{0,40}\\b(?:walked in|came in|smiled at|said to|answered|laughed)\\b"
+      ],
+      "violationExample": "Hesper walked in from the yard and smiled at them both."
+    }
+  ],
+  "probes": [
+    {
+      "id": "ilse-fingers",
+      "question": "Is Ilse still missing the two smallest fingers of her right hand?",
+      "evidence": [
+        "\\bIlse\\b[^.]{0,100}\\b(?:missing|lost|gone|absent) (?:the )?(?:two )?(?:smallest|last two|little) fingers?",
+        "\\bIlse\\b[^.]{0,100}\\bthree-fingered right hand\\b"
+      ],
+      "contradicts": [
+        "\\bIlse\\b[^.]{0,80}\\b(?:all|every one of) (?:her )?(?:ten|five|right-hand) fingers\\b",
+        "\\bIlse\\b[^.]{0,80}\\bmissing (?:the )?(?:two )?(?:smallest |little )?fingers? (?:of|on) her left hand\\b"
+      ],
+      "passExample": "Ilse turned the pipe with her three-fingered right hand, the gap where the smallest two had been catching the light.",
+      "failExample": "Ilse spread all ten fingers on the warm bench."
+    },
+    {
+      "id": "three-day-window",
+      "question": "Is saltglass worked within three days of gathering?",
+      "evidence": [
+        "\\bthree days\\b",
+        "\\bclouds? and cracks?\\b"
+      ],
+      "contradicts": [
+        "\\bsaltglass\\b[^.]{0,60}\\b(?:a week|weeks|months|a fortnight) (?:after|later|old)\\b[^.]{0,40}\\b(?:still )?(?:clear|workable|good)"
+      ],
+      "passExample": "They had three days before the glass would cloud and crack, and Ilse meant to use every hour.",
+      "failExample": "The saltglass was a fortnight old and still perfectly clear, so they took their time."
+    },
+    {
+      "id": "pov-ilse",
+      "question": "Does the story stay with Ilse rather than switching to first person?",
+      "evidence": [
+        "\\bIlse (?:thought|felt|knew|wondered|watched|remembered)\\b"
+      ],
+      "contradicts": [],
+      "passExample": "Ilse watched him burn his thumb and remembered doing the same at his age."
+    }
+  ],
+  "targetLength": {
+    "words": 1400,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "literary",
+    "shared-world",
+    "saltglass-reach"
+  ],
+  "continuityGroup": "saltglass-reach",
+  "knownNames": [
+    "Saltglass",
+    "Reach",
+    "Saltglass Reach",
+    "Listeners",
+    "Listener",
+    "Warden",
+    "Wardens",
+    "Harbour",
+    "Cobber's",
+    "Cobber",
+    "Hold",
+    "Cobber's Hold",
+    "Gannet",
+    "Gannet Isle",
+    "Isle",
+    "Lowmarsh",
+    "Teller",
+    "Tellers",
+    "Rook",
+    "Rook Spit",
+    "Spit"
+  ]
+}

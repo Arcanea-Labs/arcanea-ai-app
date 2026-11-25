@@ -1,0 +1,162 @@
+{
+  "id": "reach-06-choose-the-channel",
+  "title": "Choose the Channel",
+  "brief": "Write a short interactive-fiction branch set in the Saltglass Reach. Wren Osei is caught by fog mid-crossing. Write the opening passage, then two labelled branches (\"Choice A: follow the gull\" and \"Choice B: hold the compass bearing\"), each 300-450 words with its own ending. Both branches must respect every world rule.",
+  "worldBible": [
+    "The Saltglass Reach is nine islands joined only by ferries; no bridge can stand because the seabed shifts every spring.",
+    "Saltglass forms on the tidal flats after spring tides; a saltglass lamp burns without oil for exactly one night and then goes dark for good.",
+    "By Warden law no bell may be rung after sunset; a bell after dark is said to draw the Listeners up from deep water.",
+    "Money is tallies: notched driftwood sticks, one notch for one day of labour.",
+    "The Warden council meets on Cobber's Hold, the oldest island.",
+    "No ferry runs on the night of the dark moon.",
+    "Gulls in the Reach roost only on inhabited islands, so following one leads to people."
+  ],
+  "cast": [
+    {
+      "name": "Wren Osei",
+      "role": "ferrywoman",
+      "traits": [
+        "left-handed",
+        "a heron tattooed on her left forearm",
+        "cannot swim",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Pell Tamsin",
+      "role": "Harbour Warden",
+      "traits": [
+        "old",
+        "blind in his right eye",
+        "walks with a blackthorn cane",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Bram Iley",
+      "role": "passenger, a travelling tinker",
+      "traits": [
+        "talks constantly",
+        "carries a caged linnet",
+        "he/him"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "world-no-bridges",
+      "scope": "world",
+      "fact": "The islands are joined only by ferries; no bridge can stand between them.",
+      "contradicts": [
+        "(?<!\\bno )(?<!\\bnever a )\\bbridges? (?:between|across|linking|connecting|joining) (?:the |two |both )?(?:islands|isles)",
+        "\\b(?:walked|crossed|ran|drove|hurried) (?:over|across) (?:the|a|an old|the old) bridge\\b",
+        "\\bbridge (?:to|from) (?:Cobber's Hold|Gannet Isle|Lowmarsh|Rook Spit)"
+      ],
+      "violationExample": "They walked across the old bridge to Cobber's Hold before dawn."
+    },
+    {
+      "id": "world-lamp-one-night",
+      "scope": "world",
+      "fact": "A saltglass lamp burns for exactly one night and then goes dark for good.",
+      "contradicts": [
+        "saltglass lamps? (?:\\w+ ){0,3}(?:burned|burns|burning|glowed|glows|glowing|lit) (?:\\w+ ){0,3}(?:for )?(?:two|three|four|five|several|many|a week of) nights",
+        "\\brelit (?:the|a|her|his|their) (?:old )?saltglass lamp",
+        "(?:second|third|fourth) night (?:\\w+ ){0,4}(?:same )?saltglass lamp (?:was )?(?:still )?(?:burning|burned|glowing|glowed|lit)"
+      ],
+      "violationExample": "Her saltglass lamp burned for three nights without dimming."
+    },
+    {
+      "id": "world-bell-law",
+      "scope": "world",
+      "fact": "By Warden law no bell may be rung after sunset.",
+      "contradicts": [
+        "\\bno (?:law|rule) against (?:ringing )?(?:the )?bells?",
+        "\\b(?:allowed|permitted|free) to ring (?:\\w+ ){0,2}bells? (?:\\w+ ){0,2}(?:after|at) (?:sunset|dark|nightfall|night)",
+        "\\bbells? (?:were|was) (?:allowed|permitted) (?:after|at) (?:sunset|dark|nightfall|night)"
+      ],
+      "violationExample": "There was no law against ringing bells, so the children rang them all night."
+    },
+    {
+      "id": "wren-cannot-swim",
+      "fact": "Wren cannot swim.",
+      "contradicts": [
+        "\\bWren\\b[^.]{0,60}\\b(?:swam|swims|dived in|strong swimmer)\\b"
+      ],
+      "violationExample": "Wren dived in and swam hard for the shore."
+    }
+  ],
+  "probes": [
+    {
+      "id": "two-branches",
+      "question": "Are both labelled branches present?",
+      "evidence": [
+        "Choice A[\\s\\S]{0,4000}Choice B"
+      ],
+      "contradicts": [],
+      "passExample": "Choice A: follow the gull. The fog thinned. Choice B: hold the compass bearing. The fog held."
+    },
+    {
+      "id": "wren-left-handed",
+      "question": "Is Wren still left-handed (never described as right-handed)?",
+      "evidence": [
+        "\\bWren\\b[^.]{0,80}\\bleft hand\\b",
+        "\\bWren\\b[^.]{0,40}\\bleft-handed\\b",
+        "\\bleft-handed\\b[^.]{0,40}\\bWren\\b"
+      ],
+      "contradicts": [
+        "\\bWren\\b[^.]{0,60}\\bright-handed\\b",
+        "\\bWren\\b[^.]{0,80}\\bher (?:dominant|writing|stronger|good) hand,? (?:her|the) right\\b"
+      ],
+      "passExample": "Wren worked the tiller with her left hand, as she always had.",
+      "failExample": "Wren, who was right-handed, signed the ledger quickly."
+    },
+    {
+      "id": "linnet",
+      "question": "Does Bram still carry a linnet (not some other bird)?",
+      "evidence": [
+        "\\blinnet\\b"
+      ],
+      "contradicts": [
+        "\\bBram\\b[^.]{0,60}\\b(?:canary|parrot|finch|sparrow) (?:in a cage|cage)\\b"
+      ],
+      "passExample": "The linnet in its cage went silent as the fog closed in.",
+      "failExample": "Bram's canary cage rattled against the gunwale."
+    }
+  ],
+  "targetLength": {
+    "words": 1100,
+    "tolerance": 0.3
+  },
+  "tags": [
+    "interactive-fiction",
+    "branching",
+    "shared-world",
+    "saltglass-reach"
+  ],
+  "continuityGroup": "saltglass-reach",
+  "knownNames": [
+    "Saltglass",
+    "Reach",
+    "Saltglass Reach",
+    "Listeners",
+    "Listener",
+    "Warden",
+    "Wardens",
+    "Harbour",
+    "Cobber's",
+    "Cobber",
+    "Hold",
+    "Cobber's Hold",
+    "Gannet",
+    "Gannet Isle",
+    "Isle",
+    "Lowmarsh",
+    "Teller",
+    "Tellers",
+    "Rook",
+    "Rook Spit",
+    "Spit",
+    "Choice A",
+    "Choice B"
+  ]
+}

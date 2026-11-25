@@ -1,0 +1,120 @@
+{
+  "id": "sf-02-census-of-the-long-ship",
+  "title": "Census of the Long Ship",
+  "brief": "Write a science fiction story set on a generation ship in its 212th year. The ship's census officer finds one more living person aboard than the records allow. Tone: humane, curious, not a thriller.",
+  "worldBible": [
+    "The ship is the Wending, launched 212 years ago, population capped at 4,000 by law.",
+    "Every birth requires a licence issued only after a death.",
+    "There are four rings: Root, Stem, Leaf and Seed; Seed ring is closed and cold.",
+    "Earth is never contacted; the last message received was in year 31.",
+    "People are named for the ring and year they were born, e.g. Halden Leaf-187."
+  ],
+  "cast": [
+    {
+      "name": "Ottoline Stem-170",
+      "role": "census officer",
+      "traits": [
+        "forty-two",
+        "meticulous",
+        "hums old lullabies",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Pim",
+      "role": "the uncounted child",
+      "traits": [
+        "about eight",
+        "speaks in questions",
+        "was raised in the Seed ring",
+        "they/them"
+      ]
+    },
+    {
+      "name": "Halden Leaf-187",
+      "role": "hydroponics tech",
+      "traits": [
+        "Ottoline's friend",
+        "bad at lying",
+        "he/him"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "cap-4000",
+      "fact": "The population cap is 4,000.",
+      "contradicts": [
+        "\\b(?:cap|limit|capped|maximum)\\b[^.]{0,30}\\b(?:3,?000|5,?000|10,?000|two thousand|five thousand)\\b"
+      ],
+      "violationExample": "The law capped them at 5,000 souls."
+    },
+    {
+      "id": "year-212",
+      "fact": "The story takes place in year 212 of the voyage.",
+      "contradicts": [
+        "\\byear (?:211|213|200|300|112)\\b",
+        "\\b(?:two hundred and (?:eleven|thirteen))(?:th)? year\\b"
+      ],
+      "violationExample": "It was year 300 of the voyage and nobody remembered Earth."
+    },
+    {
+      "id": "no-earth-contact",
+      "fact": "No message from Earth has arrived since year 31.",
+      "contradicts": [
+        "\\b(?:message|signal|transmission) from Earth (?:arrived|came|was received)\\b(?![^.]{0,30}\\byear 31\\b)"
+      ],
+      "violationExample": "A message from Earth arrived that morning, the first in a century."
+    }
+  ],
+  "probes": [
+    {
+      "id": "pim-seed-ring",
+      "question": "Was Pim raised in the Seed ring?",
+      "evidence": [
+        "\\bSeed ring\\b"
+      ],
+      "contradicts": [
+        "\\bPim\\b[^.]{0,60}\\braised in (?:the )?(?:Root|Stem|Leaf) ring\\b"
+      ],
+      "passExample": "Pim had grown up in the Seed ring, among the cold seed vaults.",
+      "failExample": "Pim had been raised in the Leaf ring like everyone else."
+    },
+    {
+      "id": "ship-name",
+      "question": "Is the ship still the Wending?",
+      "evidence": [
+        "\\bWending\\b"
+      ],
+      "contradicts": [],
+      "passExample": "The Wending turned on, as it always had."
+    },
+    {
+      "id": "naming-convention",
+      "question": "Do named adults follow the Ring-Year pattern?",
+      "evidence": [
+        "\\b[A-Z][a-z]+ (?:Root|Stem|Leaf|Seed)-\\d{1,3}\\b"
+      ],
+      "contradicts": [],
+      "passExample": "Halden Leaf-187 met her at the hatch."
+    }
+  ],
+  "targetLength": {
+    "words": 1500,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "sci-fi",
+    "generation-ship"
+  ],
+  "knownNames": [
+    "Wending",
+    "Root",
+    "Stem",
+    "Leaf",
+    "Seed",
+    "Earth",
+    "Ottoline",
+    "Halden"
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "id": "lit-01-hearing-aids",
+  "title": "Volume",
+  "brief": "Write a literary story about a retired piano tuner, newly fitted with hearing aids, who hears his wife's voice clearly for the first time in eight years and realises how much he had been guessing. One afternoon, one kitchen. No epiphany speeches.",
+  "worldBible": [
+    "Present day, a terraced house in a northern English town.",
+    "The hearing aids are behind-the-ear, fitted that morning.",
+    "His wife has been speaking louder for years without saying so.",
+    "The piano in the front room has not been tuned since he retired.",
+    "It is raining for the entire story."
+  ],
+  "cast": [
+    {
+      "name": "Arthur Penhaligon",
+      "role": "retired piano tuner",
+      "traits": [
+        "seventy-four",
+        "proud of his ear",
+        "stubborn",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Maud Penhaligon",
+      "role": "his wife",
+      "traits": [
+        "seventy-one",
+        "sings while cooking",
+        "has a slight lisp he never knew about",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Clem",
+      "role": "their grown son (on the phone only)",
+      "traits": [
+        "impatient",
+        "lives abroad",
+        "he/him"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "rain-throughout",
+      "fact": "It rains throughout the afternoon.",
+      "contradicts": [
+        "\\b(?:the rain (?:stopped|cleared|had stopped)|sun came out|sunlight (?:poured|flooded))\\b"
+      ],
+      "violationExample": "By four the rain had stopped and the sun came out."
+    },
+    {
+      "id": "single-kitchen",
+      "fact": "The story stays in the house over one afternoon.",
+      "contradicts": [
+        "\\b(?:the next (?:day|morning|week)|days later|a week later|months later)\\b"
+      ],
+      "violationExample": "A week later he took the aids back to the clinic."
+    },
+    {
+      "id": "clem-phone-only",
+      "fact": "Clem appears only on the phone.",
+      "contradicts": [
+        "\\bClem (?:walked in|came in|arrived|hugged|sat down at)\\b"
+      ],
+      "violationExample": "Clem walked in shaking the rain off his coat."
+    }
+  ],
+  "probes": [
+    {
+      "id": "arthur-age",
+      "question": "Is Arthur seventy-four?",
+      "evidence": [
+        "\\bseventy-four\\b",
+        "\\b74\\b"
+      ],
+      "contradicts": [
+        "\\bArthur\\b[^.]{0,40}\\b(?:sixty|eighty)[- ]\\w+\\b"
+      ],
+      "passExample": "At seventy-four he had not expected to learn anything new about her.",
+      "failExample": "Arthur, eighty-one and stubborn, refused the tea."
+    },
+    {
+      "id": "maud-lisp",
+      "question": "Does Arthur notice Maud's lisp?",
+      "evidence": [
+        "\\blisp\\b"
+      ],
+      "contradicts": [],
+      "passExample": "There it was, a small lisp on the s, forty years of it."
+    },
+    {
+      "id": "piano-untuned",
+      "question": "Is the piano still untuned since his retirement?",
+      "evidence": [
+        "\\b(?:untuned|out of tune|not been tuned|hadn't been tuned)\\b"
+      ],
+      "contradicts": [
+        "\\b(?:the piano|it) (?:was|had been) (?:freshly |recently )?tuned (?:last|this) (?:week|month)\\b"
+      ],
+      "passExample": "The piano in the front room had not been tuned since he retired.",
+      "failExample": "The piano had been tuned last month by a young man from town."
+    }
+  ],
+  "targetLength": {
+    "words": 1300,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "literary",
+    "domestic"
+  ],
+  "knownNames": [
+    "Arthur",
+    "Maud",
+    "English"
+  ]
+}
