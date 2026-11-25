@@ -1,0 +1,3 @@
+# Run outputs stay local. Only the tiny dry-run example is committed.
+results/*
+!results/example/

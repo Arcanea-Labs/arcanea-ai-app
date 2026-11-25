@@ -1,0 +1,61 @@
+{
+  "$comment": "Copy this file outside the repo and edit it. Configs hold env-var NAMES only, never keys. Prices are USD per million tokens; leave pricing out when unknown and receipts record usdEstimate: null. Model ids and base URLs here are examples to replace with what you actually run.",
+  "systems": [
+    {
+      "id": "mock",
+      "type": "mock",
+      "variant": "faithful"
+    },
+    {
+      "id": "frontier",
+      "type": "openai-compatible",
+      "baseUrl": "https://ai-gateway.vercel.sh/v1",
+      "model": "provider/frontier-model-id",
+      "apiKeyEnv": "AI_GATEWAY_API_KEY",
+      "maxTokens": 4096,
+      "temperature": 0.8
+    },
+    {
+      "id": "pagestorm-vllm",
+      "type": "openai-compatible",
+      "mode": "completions",
+      "baseUrl": "http://localhost:8000/v1",
+      "model": "Pageshift-Entertainment/pagestorm-research-preview-14b-full-book",
+      "maxTokens": 4096,
+      "temperature": 0.8,
+      "unsafeModel": true,
+      "pricing": {
+        "inputPerMTok": 0,
+        "outputPerMTok": 0,
+        "source": "local GPU; hardware cost not included"
+      }
+    },
+    {
+      "id": "hybrid",
+      "type": "hybrid",
+      "planner": {
+        "baseUrl": "https://ai-gateway.vercel.sh/v1",
+        "model": "provider/frontier-model-id",
+        "apiKeyEnv": "AI_GATEWAY_API_KEY"
+      },
+      "writer": {
+        "mode": "completions",
+        "baseUrl": "http://localhost:8000/v1",
+        "model": "Pageshift-Entertainment/pagestorm-research-preview-14b-full-book",
+        "unsafeModel": true
+      }
+    }
+  ],
+  "judges": {
+    "provider": "workers-ai",
+    "models": [
+      "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+      "@cf/openai/gpt-oss-120b"
+    ],
+    "spreadThreshold": 3
+  },
+  "safetyClassifier": {
+    "type": "workers-ai",
+    "model": "@cf/meta/llama-guard-3-8b"
+  }
+}
