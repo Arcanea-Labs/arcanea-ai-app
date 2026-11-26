@@ -48,11 +48,6 @@ const navLinks: NavLink[] = [
       {
         title: "Agents",
         items: [
-          {
-            href: "/agent",
-            label: "Arcanea Agent",
-            desc: "Desktop app + profile",
-          },
           { href: "/agents", label: "Marketplace", desc: "Specialist agents" },
           { href: "/forge/companion", label: "Forge", desc: "Create your own" },
         ],

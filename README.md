@@ -2,8 +2,8 @@
 
 # Arcanea
 
-**The imagination layer for AI.**
-Superintelligent prompts that make every model feel like magic.
+**Build living worlds with AI agents.**
+Start with the [free World Starter](https://www.arcanea.ai/shop/sample). Its worked scene shows how a world's rules shape a character's choices. Download the editable scene and continuity records to build your own.
 
 [![arcanea.ai](https://img.shields.io/badge/arcanea.ai-live-00bcd4?style=flat-square)](https://arcanea.ai)
 [![npm](https://img.shields.io/badge/npm-@arcanea-00bcd4?style=flat-square&logo=npm)](https://www.npmjs.com/org/arcanea)

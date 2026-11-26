@@ -20,7 +20,6 @@ const footerLinks = {
       { href: "/cinema-studio", label: "Cinema Studio" },
       { href: "/canvas", label: "Canvas" },
       { href: "/forge", label: "Forge" },
-      { href: "/agent", label: "Arcanea Agent" },
       { href: "/agents", label: "Agents" },
     ],
   },
