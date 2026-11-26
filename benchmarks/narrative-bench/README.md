@@ -101,6 +101,7 @@ Receipts record latency for each stage. Tokens come from the API `usage` field w
 **PageStorm models had no safety training and cannot refuse.** Before any person sees their output, it must go through a safety classifier. The harness enforces this:
 
 - A system marked `"unsafeModel": true` will not run unless the config names a `safetyClassifier`. The example config uses Llama Guard on Workers AI.
+- The classifier sees at most the first `maxInputChars` characters of each output (default 24000, about 6k tokens). Text past the limit is not classified. Set `"safetyClassifier": { "type": "workers-ai", "maxInputChars": 32000 }` to change it; keep it at or above your longest expected output and within the classifier model's context window. It must be a positive integer, or the run refuses to start.
 - If the classifier does not clear an output, the output is withheld from `results.jsonl` (replaced by a marker) and is never sent to the judges. Its deterministic scores are still computed by machine.
 - `summary.md` never contains output text.
 - A classifier lowers the risk but does not remove it. Treat the raw `results/` directories of PageStorm runs as sensitive and keep them out of the repo. The `.gitignore` already does this.

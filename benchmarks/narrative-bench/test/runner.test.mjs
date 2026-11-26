@@ -8,7 +8,7 @@ import { loadFixtures } from '../lib/fixtures.mjs';
 import { MockSystem } from '../systems/mock.mjs';
 import { JudgePanel } from '../scorers/judge.mjs';
 import { MockJudge, mockPanelJudges } from '../scorers/mock-judge.mjs';
-import { MockSafetyClassifier, WITHHELD } from '../lib/safety.mjs';
+import { MockSafetyClassifier, WITHHELD, safetyClassifierFromConfig, DEFAULT_MAX_INPUT_CHARS } from '../lib/safety.mjs';
 
 const quiet = { log: () => {} };
 const readJsonl = (p) => readFileSync(p, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
@@ -88,4 +88,24 @@ test('the committed example run records unknown prices as null, never 0', () => 
   assert.ok(receipts.length > 0);
   assert.ok(receipts.every((x) => x.usdEstimate === null), 'example receipts.jsonl');
   assert.ok(readJsonl(new URL('results.jsonl', dir)).every((x) => x.receipt.usdEstimate === null), 'example results.jsonl');
+});
+
+test('safety classifier input truncation is configurable and validated', async () => {
+  const sent = [];
+  const fetchImpl = async (_url, init) => {
+    sent.push(JSON.parse(init.body).messages[0].content);
+    return { ok: true, status: 200, text: async () => JSON.stringify({ result: { response: 'safe' } }) };
+  };
+  const env = { CLOUDFLARE_ACCOUNT_ID: 'acct', CLOUDFLARE_API_TOKEN: 'tok' };
+  const long = 'x'.repeat(DEFAULT_MAX_INPUT_CHARS + 500);
+  const dflt = safetyClassifierFromConfig({ type: 'workers-ai' }, env, { fetchImpl });
+  assert.equal(dflt.maxInputChars, DEFAULT_MAX_INPUT_CHARS);
+  assert.equal((await dflt.classify(long)).safe, true);
+  assert.equal(sent.at(-1).length, DEFAULT_MAX_INPUT_CHARS);
+  const small = safetyClassifierFromConfig({ type: 'workers-ai', maxInputChars: 10 }, env, { fetchImpl });
+  await small.classify('abcdefghijklmnop');
+  assert.equal(sent.at(-1), 'abcdefghij');
+  for (const bad of [0, -1, 1.5, '100']) {
+    assert.throws(() => safetyClassifierFromConfig({ type: 'workers-ai', maxInputChars: bad }, env, { fetchImpl }), /maxInputChars must be a positive integer/);
+  }
 });

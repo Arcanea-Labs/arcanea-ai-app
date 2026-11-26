@@ -7,10 +7,25 @@ import { gatewayUrl, extractWorkersAiText, DEFAULT_GATEWAY } from '../scorers/wo
 
 export const WITHHELD = '[withheld: safety classifier did not clear this output]';
 
+/**
+ * Default number of characters of an output sent to the classifier. Text past
+ * the limit is NOT classified, so keep it at or above the longest output you
+ * expect, within the classifier model's context window. Override per config
+ * with `safetyClassifier.maxInputChars`.
+ */
+export const DEFAULT_MAX_INPUT_CHARS = 24000;
+
+export function resolveMaxInputChars(value) {
+  if (value === undefined || value === null) return DEFAULT_MAX_INPUT_CHARS;
+  if (!Number.isInteger(value) || value <= 0) throw new Error(`safetyClassifier.maxInputChars must be a positive integer, got ${JSON.stringify(value)}`);
+  return value;
+}
+
 export class WorkersAiSafetyClassifier {
-  constructor({ accountId, apiToken, model = '@cf/meta/llama-guard-3-8b', gateway = DEFAULT_GATEWAY, fetchImpl = globalThis.fetch }) {
+  constructor({ accountId, apiToken, model = '@cf/meta/llama-guard-3-8b', gateway = DEFAULT_GATEWAY, maxInputChars, fetchImpl = globalThis.fetch }) {
     if (!accountId || !apiToken) throw new Error('WorkersAiSafetyClassifier: CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN required');
     this.id = `workers-ai:${model}`;
+    this.maxInputChars = resolveMaxInputChars(maxInputChars);
     this.url = gatewayUrl(accountId, gateway, model);
     Object.defineProperty(this, '_token', { value: apiToken, enumerable: false });
     Object.defineProperty(this, '_fetch', { value: fetchImpl, enumerable: false });
@@ -20,7 +35,7 @@ export class WorkersAiSafetyClassifier {
     const res = await this._fetch(this.url, {
       method: 'POST',
       headers: { authorization: `Bearer ${this._token}`, 'content-type': 'application/json' },
-      body: JSON.stringify({ messages: [{ role: 'user', content: String(text).slice(0, 24000) }] }),
+      body: JSON.stringify({ messages: [{ role: 'user', content: String(text).slice(0, this.maxInputChars) }] }),
     });
     const raw = await res.text();
     if (!res.ok) throw new Error(`safety classifier HTTP ${res.status}`);
@@ -45,7 +60,7 @@ export class MockSafetyClassifier {
 export function safetyClassifierFromConfig(cfg, env = process.env, { fetchImpl } = {}) {
   if (!cfg) return null;
   if (cfg.type === 'workers-ai')
-    return new WorkersAiSafetyClassifier({ accountId: env.CLOUDFLARE_ACCOUNT_ID, apiToken: env.CLOUDFLARE_API_TOKEN, model: cfg.model, gateway: cfg.gateway, ...(fetchImpl ? { fetchImpl } : {}) });
+    return new WorkersAiSafetyClassifier({ accountId: env.CLOUDFLARE_ACCOUNT_ID, apiToken: env.CLOUDFLARE_API_TOKEN, model: cfg.model, gateway: cfg.gateway, maxInputChars: cfg.maxInputChars, ...(fetchImpl ? { fetchImpl } : {}) });
   if (cfg.type === 'mock') return new MockSafetyClassifier(cfg);
   throw new Error(`unknown safetyClassifier type ${cfg.type}`);
 }
