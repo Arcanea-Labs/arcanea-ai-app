@@ -15,6 +15,12 @@
  * The loaded module is checked for the exports the tools use, so a stale
  * build (e.g. a world-engine dist built before the continuity module existed)
  * produces a clear error instead of a TypeError deep inside a tool.
+ *
+ * Inside the monorepo, world-engine's dist/continuity/ and narrative-planner's
+ * dist/ are git-ignored build output, so a fresh checkout has no engines (and
+ * world-engine's tracked dist/index.js re-exports the missing continuity
+ * module). Every "unavailable" error names the exact command that fixes it:
+ * ENGINE_BUILD_COMMAND, which runs scripts/build-narrative-engines.mjs.
  */
 
 // ── Engine surfaces (structural, so this package keeps no type dependency) ──
@@ -107,12 +113,19 @@ export interface NarrativeEngines {
   planner?: () => Promise<NarrativePlannerModule>;
 }
 
+/** The command that builds the engines inside this monorepo (from the repo root). */
+export const ENGINE_BUILD_COMMAND = "pnpm --filter @arcanea/mcp-server build:engines";
+/** The same build without pnpm, from the repo root. */
+export const ENGINE_BUILD_SCRIPT = "node packages/arcanea-mcp/scripts/build-narrative-engines.mjs";
+
 export class NarrativeEngineUnavailable extends Error {
   readonly engine: string;
+  readonly buildCommand: string;
   constructor(engine: string, message: string) {
     super(message);
     this.name = "NarrativeEngineUnavailable";
     this.engine = engine;
+    this.buildCommand = ENGINE_BUILD_COMMAND;
   }
 }
 
@@ -134,18 +147,26 @@ export function missingExports(mod: unknown, names: readonly string[]): string[]
   return names.filter((name) => typeof record[name] !== "function");
 }
 
-async function loadEngine<T>(
-  engine: string,
-  packageName: string,
-  siblingDir: string,
-  required: readonly string[],
-): Promise<T> {
+function siblingCandidates(packageName: string, siblingDir: string): string[] {
   // Specifiers are variables so tsc does not try to resolve them at build time.
-  const candidates: string[] = [
+  return [
     packageName,
     // dist/tools/narrative-engines.js -> packages/<siblingDir>/dist/index.js
     new URL(`../../../${siblingDir}/dist/index.js`, import.meta.url).href,
   ];
+}
+
+/**
+ * Exported for tests: tries each specifier in order and returns the first
+ * module that has every required export, or throws NarrativeEngineUnavailable
+ * with the build command and every attempt's reason.
+ */
+export async function loadEngineFrom<T>(
+  engine: string,
+  packageName: string,
+  candidates: readonly string[],
+  required: readonly string[],
+): Promise<T> {
   const problems: string[] = [];
   for (const specifier of candidates) {
     let mod: unknown;
@@ -157,12 +178,18 @@ async function loadEngine<T>(
     }
     const missing = missingExports(mod, required);
     if (missing.length === 0) return mod as T;
-    problems.push(`${specifier}: build is missing exports ${missing.join(", ")} (rebuild ${packageName})`);
+    problems.push(`${specifier}: build is missing exports ${missing.join(", ")} (stale build of ${packageName})`);
   }
   throw new NarrativeEngineUnavailable(
     engine,
-    `${packageName} could not be loaded. Build it in this monorepo or install it next to @arcanea/mcp-server. Tried: ${problems.join(" | ")}`,
+    `${packageName} could not be loaded. In the Arcanea monorepo, build the engines from the repo root with: ` +
+      `${ENGINE_BUILD_COMMAND} (or ${ENGINE_BUILD_SCRIPT}). ` +
+      `Outside the monorepo, install ${packageName} next to @arcanea/mcp-server. Tried: ${problems.join(" | ")}`,
   );
+}
+
+function loadEngine<T>(engine: string, packageName: string, siblingDir: string, required: readonly string[]): Promise<T> {
+  return loadEngineFrom<T>(engine, packageName, siblingCandidates(packageName, siblingDir), required);
 }
 
 let worldEngineCache: Promise<WorldEngineContinuity> | undefined;

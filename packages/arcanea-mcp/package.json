@@ -23,6 +23,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "build:engines": "node scripts/build-narrative-engines.mjs",
     "dev": "tsc --watch",
     "start": "node dist/cli.js",
     "clean": "rm -rf dist",

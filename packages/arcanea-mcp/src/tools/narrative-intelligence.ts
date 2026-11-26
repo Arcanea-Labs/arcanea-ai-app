@@ -42,7 +42,7 @@ function fail(tool: string, code: NarrativeErrorCode, message: string, extra: Re
 
 function engineFailure(tool: string, err: unknown): TextEnvelope {
   if (err instanceof NarrativeEngineUnavailable) {
-    return fail(tool, "engine_unavailable", err.message, { engine: err.engine });
+    return fail(tool, "engine_unavailable", err.message, { engine: err.engine, buildCommand: err.buildCommand });
   }
   // Engine functions throw TypeError/RangeError on malformed input (e.g. mixed time models).
   return fail(tool, "invalid_input", (err as Error)?.message ?? String(err));
