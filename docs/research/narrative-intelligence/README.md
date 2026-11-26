@@ -2,6 +2,8 @@
 
 Author: Claude Opus 5.5 (Claude Code session for Arcanea Labs), 2026-11-25. Revision 1.
 Review state: unreviewed. It needs a sign-off from a different provider through pr-gate.
+> **Update 2026-11-26 (ADR-006, decided by Frank):** PageStorm is dropped. Arcanea builds on frontier models (Claude, GPT, Gemini, and open models on Workers AI) plus skills, running mainly on the user's own subscriptions through the official CLIs, and compares LLMs with each other. The Pageshift research below is kept as the source of the method ideas (staged planning, extraction-plus-rule diagnostics, chosen-content diversity); nothing in the plan depends on running PageStorm.
+
 Paper extraction: Cloudflare Workers AI `@cf/deepseek-ai/deepseek-v4.1-flash-1017` pulled the sections out. Every number below was checked against the paper text before it was written here.
 
 ## Sources read
@@ -54,7 +56,8 @@ Paper extraction: Cloudflare Workers AI `@cf/deepseek-ai/deepseek-v4.1-flash-101
 |---|---|---|
 | Staged prompt → preview → plan → chapter plan → scene → text | **Reimplement clean-room** as a model-independent planner | `packages/narrative-planner` |
 | Structure-only constrained decoding | **Reimplement** with hand-written JSON validators per stage | `packages/narrative-planner` |
-| PageStorm 14B weights | **Use as an optional provider** over an OpenAI-compatible vLLM endpoint, behind a mandatory safety classifier | `PageStormVllmModel` |
+| PageStorm 14B weights | **Not used** (ADR-006). Earlier plan was an optional vLLM provider (ADR-003, superseded) | none |
+| Frontier models and open models | **Use as the writers and planners**, mainly through the user's own subscriptions via official CLIs (`claude -p`, `codex exec`, `gemini -p`), with API endpoints as an option; the safety classifier gate applies to any `unsafeModel` | `benchmarks/narrative-bench` `cli` and `openai-compatible` systems |
 | pagestorm Python package | **Do not use or vendor** (no licence) | none |
 | LongPage traces | **Learn the schema; do not redistribute; no fixtures from it.** Gutenberg IDs were stripped, so per-book provenance and public-domain status outside the US can't be checked | ADR-001 |
 | Extraction plus deterministic-rule diagnostics | **Adopt the method** with our own extraction prompts and rules; this is the core of benchmark v1 | `benchmarks/narrative-bench` |
@@ -78,6 +81,6 @@ Where Arcanea can go further than the paper: their stated weak point is long-ran
 | Staged planner, continuity checks, diversity metrics | Open-source library (`@arcanea/narrative-planner`, world-engine continuity) | Public |
 | Plan / check-continuity / score-diversity | MCP tools on `@arcanea/mcp-server` | Public |
 | Narrative benchmark fixtures and harness | Open benchmark (CC-BY-4.0 fixtures) | Public |
-| PageStorm runs, judge panels, result history | Private research infrastructure | Private |
+| Model-comparison runs, judge panels, result history | Private research infrastructure | Private |
 | Guided universe-to-book writing | Paid creator experience in arcanea.ai, after a gate PASS (waitlist first) | Product, human-gated |
 | Generated Arcanea fiction | Candidate entertainment assets; canon promotion only with a human approval record | Human-gated |

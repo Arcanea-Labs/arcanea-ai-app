@@ -16,21 +16,6 @@
       "temperature": 0.8
     },
     {
-      "id": "pagestorm-vllm",
-      "type": "openai-compatible",
-      "mode": "completions",
-      "baseUrl": "http://localhost:8000/v1",
-      "model": "Pageshift-Entertainment/pagestorm-research-preview-14b-full-book",
-      "maxTokens": 4096,
-      "temperature": 0.8,
-      "unsafeModel": true,
-      "pricing": {
-        "inputPerMTok": 0,
-        "outputPerMTok": 0,
-        "source": "local GPU; hardware cost not included"
-      }
-    },
-    {
       "id": "hybrid",
       "type": "hybrid",
       "planner": {
@@ -39,10 +24,9 @@
         "apiKeyEnv": "AI_GATEWAY_API_KEY"
       },
       "writer": {
-        "mode": "completions",
-        "baseUrl": "http://localhost:8000/v1",
-        "model": "Pageshift-Entertainment/pagestorm-research-preview-14b-full-book",
-        "unsafeModel": true
+        "baseUrl": "https://ai-gateway.vercel.sh/v1",
+        "model": "provider/other-frontier-model-id",
+        "apiKeyEnv": "AI_GATEWAY_API_KEY"
       }
     },
     {

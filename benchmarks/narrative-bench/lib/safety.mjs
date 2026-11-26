@@ -1,5 +1,5 @@
-// Safety classifier gate. PageStorm (and any base model without safety
-// training) must not have its output read by a person, or stored in clear
+// Safety classifier gate. Any model marked unsafeModel (for example an open base
+// model without safety training) must not have its output read by a person, or stored in clear
 // text, until a classifier has looked at it.
 //
 // Classifier interface: { id, async classify(text) -> { safe: boolean, label: string } }

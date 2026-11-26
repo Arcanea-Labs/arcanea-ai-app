@@ -1,5 +1,5 @@
 // Any OpenAI-compatible endpoint: frontier APIs behind a compatible gateway,
-// or PageStorm served by vLLM (`vllm serve ... --port 8000` exposes /v1).
+// or an open model served by vLLM (`vllm serve ... --port 8000` exposes /v1).
 //
 // Config:
 //   { type: "openai-compatible", id, baseUrl, model, apiKeyEnv?, mode?: "chat"|"completions",

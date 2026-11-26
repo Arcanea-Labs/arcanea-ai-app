@@ -1,9 +1,9 @@
 # Arcanea Narrative Benchmark v0
 
-This benchmark compares three kinds of fiction systems on the same 20 original briefs:
+This benchmark compares fiction systems built on different LLMs on the same 20 original briefs (ADR-006: frontier models plus skills, mainly on the user's own subscriptions):
 
-- specialised models (PageStorm served through vLLM)
-- frontier APIs (any OpenAI-compatible endpoint)
+- frontier models through their official CLIs on the user's own subscription (`cli`: `claude -p`, `codex exec`, `gemini -p`)
+- frontier or open models through any OpenAI-compatible endpoint (`openai-compatible`, e.g. Vercel AI Gateway or Workers AI)
 - a hybrid pipeline that plans with one model and writes with another
 - `hybrid-arcanea`: plans with `@arcanea/narrative-planner`, checks continuity between chapters with `@arcanea/world-engine`, and scores plan following with `@arcanea/narrative-diagnostics`
 
@@ -19,7 +19,7 @@ Background and design decisions are in `docs/research/narrative-intelligence/` (
 fixtures/            20 JSON briefs + PROVENANCE.md (CC-BY-4.0, original)
 lib/                 fixture loader/validator, text utils, receipts, safety gate
 scorers/             deterministic scorers, judge interface + rubric, Workers AI judge, mock judges, TASTE bridge
-systems/             mock, openai-compatible (frontier or vLLM), hybrid, hybrid-arcanea
+systems/             mock, cli (official CLIs on a subscription), openai-compatible, hybrid, hybrid-arcanea
 runner.mjs           CLI
 systems.example.json example config (env-var names only, no keys)
 results/example/     one tiny committed dry run; every other results/ dir is git-ignored
@@ -115,14 +115,13 @@ Receipts record latency for each stage. Tokens come from the API `usage` field w
 
 ## Safety
 
-**PageStorm models had no safety training and cannot refuse.** Before any person sees their output, it must go through a safety classifier. The harness enforces this:
+Some models (for example open base models) had no safety training and cannot refuse. Mark any such system `"unsafeModel": true`; before any person sees its output, it must go through a safety classifier. This is a general rule for every model and system type (ADR-006). The harness enforces this:
 
 - A system marked `"unsafeModel": true` will not run unless the config names a `safetyClassifier`. The example config uses Llama Guard on Workers AI.
 - The classifier sees at most the first `maxInputChars` characters of each output (default 24000, about 6k tokens). Text past the limit is not classified. Set `"safetyClassifier": { "type": "workers-ai", "maxInputChars": 32000 }` to change it; keep it at or above your longest expected output and within the classifier model's context window. It must be a positive integer, or the run refuses to start.
 - If the classifier does not clear an output, the output is withheld from `results.jsonl` (replaced by a marker) and is never sent to the judges. Its deterministic scores are still computed by machine.
 - `summary.md` never contains output text.
-- A classifier lowers the risk but does not remove it. Treat the raw `results/` directories of PageStorm runs as sensitive and keep them out of the repo. The `.gitignore` already does this.
-- Only run PageStorm on a local GPU or on an ephemeral GPU approved per run (ADR-003).
+- A classifier lowers the risk but does not remove it. Treat the raw `results/` directories of `unsafeModel` runs as sensitive and keep them out of the repo. The `.gitignore` already does this.
 
 ## Fixtures
 
@@ -144,8 +143,7 @@ Six fixtures share the invented Saltglass Reach micro-world, which tests continu
 - **Pageshift-style diagnostics** (ADR-004 v1): LLM evidence extraction plus deterministic pass/fail rules for the seven writing-quality diagnostics. v0 only has lexical probes.
 - **Plan-following decay by chapter, live.** `hybrid-arcanea` scores it per chapter, but no live run has been done. The other systems write single passages.
 - **Model-chosen-content diversity**: the share of content the prompt did not require, compared across N samples per prompt. v0 diversity is lexical, within one text.
-- **The PageStorm scaffold.** `mode: "completions"` sends a plain prompt. It does not drive PageStorm's staged preview → plan → chapter template, so v0 under-represents what that model does with its own scaffold.
 - **Continuity-state re-grounding** in the hybrid pipeline (ADR-005). The v0 `hybrid` is plan then write only. `hybrid-arcanea` checks continuity between chapters but only from planned scenes (who is where, in what order). It does not extract state from the prose or feed findings back into the next prompt.
 - **Human editorial judgement and judge calibration.** There is no human-labelled set yet, so judge accuracy is unknown and only disagreement can be shown.
 - **Statistical significance.** With 20 fixtures and one sample each, no confidence intervals are computed. Do not rank systems on small differences.
-- **Cost of local GPUs, and safety-classifier false negatives.**
+- **Cost of subscription runs** (`cli` receipts record `usdEstimate: null`, `pricingSource: "subscription"`), **cost of local GPUs, and safety-classifier false negatives.**
