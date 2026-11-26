@@ -10,6 +10,7 @@ type Offer = {
   filename: string;
   license: string;
   sha256: string;
+  licenseSha256: string;
   termsUrl: string;
 };
 type Item = {
@@ -46,7 +47,12 @@ export function Practice({ library = false }: { library?: boolean }) {
             "This delivery rehearsal is available only in the private review environment.",
           );
         const data: Shelf = await r.json();
-        if (!data.offer?.title || !Array.isArray(data.items))
+        if (
+          !data.offer?.title ||
+          !data.offer.sha256 ||
+          !data.offer.licenseSha256 ||
+          !Array.isArray(data.items)
+        )
           throw new Error("The delivery manifest could not be loaded.");
         setShelf(data);
       })
@@ -75,11 +81,21 @@ export function Practice({ library = false }: { library?: boolean }) {
         },
         body: JSON.stringify({
           edition: "genesis-digital",
+          fileSha256: shelf.offer.sha256,
+          licenseSha256: shelf.offer.licenseSha256,
           acceptLicense: f.has("license"),
           immediateDelivery: f.has("immediate"),
           acknowledgeWithdrawal: f.has("withdrawal"),
         }),
       });
+      if (r.status === 409 && (await r.json()).code === "offer_changed") {
+        key.current = "";
+        setShelf(undefined);
+        setError(
+          "The edition or its license changed. Reload the details and confirm the new version.",
+        );
+        return;
+      }
       if (!r.ok)
         throw new Error(
           r.status === 401

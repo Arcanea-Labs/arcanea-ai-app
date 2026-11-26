@@ -28,6 +28,8 @@ const headers = {
 };
 const body = JSON.stringify({
   edition: "genesis-digital",
+  fileSha256: offer.sha256,
+  licenseSha256: offer.licenseSha256,
   acceptLicense: true,
   immediateDelivery: true,
   acknowledgeWithdrawal: true,

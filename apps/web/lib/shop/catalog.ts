@@ -53,7 +53,7 @@ export const GENESIS_STUDY_REVIEW: ShopEdition = {
   outcome:
     "Read a Japanese folding screen closely and use its composition in an original scene.",
   description:
-    "An illustrated close reading of Phoenixes and Paulownia with three screen compositions, an original writing exercise and the museum source record.",
+    "An illustrated close reading of Phoenixes and Paulownia with an original writing exercise and museum source record. Includes three JPEGs of the museum artwork: the full folding screen and two detail crops.",
   includes: [
     "Six-page PDF",
     "Offline HTML reading edition",

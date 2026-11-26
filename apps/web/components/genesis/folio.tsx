@@ -81,7 +81,7 @@ export function Gallery() {
               Browse the plates <span aria-hidden="true">↓</span>
             </a>
             <Link className={s.textLink} href={practicePath}>
-              Edition details
+              The Phoenix Screen study
             </Link>
           </div>
         </div>
@@ -217,7 +217,7 @@ export function PlateDetail({ plate }: { plate: Plate }) {
           )}
           <div className={s.actions}>
             <Link className={s.button} href={practicePath}>
-              Edition details
+              Explore the museum study
             </Link>
             <Link
               href={collectionPath + "/" + next.slug}
