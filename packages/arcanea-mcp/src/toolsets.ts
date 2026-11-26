@@ -77,6 +77,11 @@ export const TOOLSETS = {
     "get_arcanea_bridge_status",
   ],
   library: ["search_sovereign_depths", "search_weight_of_wonders"],
+  narrative: [
+    "narrative_plan_story",
+    "narrative_check_continuity",
+    "narrative_score_diversity",
+  ],
 } as const satisfies Record<string, readonly string[]>;
 
 export type ToolsetName = keyof typeof TOOLSETS;
@@ -224,6 +229,10 @@ export const TOOL_CATALOG: Readonly<Record<string, ToolHints>> = {
   get_arcanea_bridge_status: READ,
   search_sovereign_depths: READ_REMOTE,
   search_weight_of_wonders: READ_REMOTE,
+  // Writes nothing; calls a model when one is configured.
+  narrative_plan_story: READ_REMOTE,
+  narrative_check_continuity: READ,
+  narrative_score_diversity: READ,
 };
 
 /** "generate_character" -> "Generate character" (sentence case). */
