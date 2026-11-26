@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node C:/Users/frank/Arcanea/scripts/hooks/sis-session-start.js 2>/dev/null || true",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/scripts/hooks/sis-session-start.js\" 2>/dev/null || true",
             "timeout": 5000,
             "continueOnError": true
           },
@@ -97,7 +97,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node C:/Users/frank/Arcanea/scripts/hooks/sis-pre-compact.js 2>/dev/null || true",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/scripts/hooks/sis-pre-compact.js\" 2>/dev/null || true",
             "timeout": 5000,
             "continueOnError": true
           }
@@ -109,7 +109,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node C:/Users/frank/Arcanea/scripts/hooks/sis-session-end.js 2>/dev/null || true",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/scripts/hooks/sis-session-end.js\" 2>/dev/null || true",
             "timeout": 5000,
             "continueOnError": true
           },
@@ -146,7 +146,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "node \"C:/Users/frank/Arcanea/.claude/statusline.mjs\""
+    "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/statusline.mjs\""
   },
   "permissions": {
     "allow": [],
