@@ -11,7 +11,7 @@
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/excellence-session-start.sh 2>/dev/null || true",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/excellence-session-start.sh\" 2>/dev/null || true",
             "timeout": 5000,
             "continueOnError": true
           }
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/estate-guard-session.py",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/estate-guard-session.py\"",
             "timeout": 10
           }
         ]
@@ -43,7 +43,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/excellence-prompt-submit.sh 2>/dev/null || true",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/excellence-prompt-submit.sh\" 2>/dev/null || true",
             "timeout": 2000,
             "continueOnError": true
           }
@@ -65,7 +65,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/excellence-pre-write.sh 2>/dev/null || true",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/excellence-pre-write.sh\" 2>/dev/null || true",
             "timeout": 2000,
             "continueOnError": true
           }
@@ -86,7 +86,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/estate-guard-gate.py",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/estate-guard-gate.py\"",
             "timeout": 10
           }
         ]
@@ -115,7 +115,7 @@
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/excellence-stop.sh 2>/dev/null || true",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/excellence-stop.sh\" 2>/dev/null || true",
             "timeout": 3000,
             "continueOnError": true
           }
@@ -137,7 +137,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/estate-guard-taint.py",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/estate-guard-taint.py\"",
             "timeout": 15
           }
         ]
