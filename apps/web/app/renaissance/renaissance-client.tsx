@@ -812,7 +812,10 @@ export function RenaissanceClient() {
           <div className="ren-card">
             <h3>Record Founding Cohort Signal</h3>
             {waitlistState === "done" ? (
-              <p style={{ marginTop: "12px", color: brand.aquamarine }} role="status">
+              <p
+                style={{ marginTop: "12px", color: brand.aquamarine }}
+                role="status"
+              >
                 {waitlistMsg ?? "Your Founding Cohort signal is recorded."}
               </p>
             ) : (
