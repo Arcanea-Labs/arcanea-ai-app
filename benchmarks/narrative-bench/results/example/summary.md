@@ -1,6 +1,6 @@
 # Narrative Bench v0 — run `example`
 
-- Created: 2026-11-25T16:56:05.138Z
+- Created: 2026-11-26T00:05:43.138Z
 - Mode: **dry run** (mock systems, mock judges; numbers below test the pipeline, not any model)
 - Fixtures: 3 · Systems: mock-faithful, mock-drift, mock-hybrid
 - Judges: mock-judge-lexical, mock-judge-hash · Rubric: narrative-bench-rubric-v0
@@ -43,7 +43,7 @@ Panel disagreement (spread ≥ threshold on a 1-10 score, or differing editorial
 
 | System | p50 latency (ms) | input tok | output tok | token source | USD |
 |---|---|---|---|---|---|
-| mock-faithful | 0 | 1171 | 4647 | estimate-chars-div-4 | $0.0000 |
-| mock-drift | 0 | 1171 | 2343 | estimate-chars-div-4 | $0.0000 |
-| mock-hybrid | 0 | 2535 | 4763 | estimate-chars-div-4 | $0.0000 |
+| mock-faithful | 0 | 1171 | 4647 | estimate-chars-div-4 | unknown |
+| mock-drift | 0 | 1171 | 2343 | estimate-chars-div-4 | unknown |
+| mock-hybrid | 0 | 2535 | 4763 | estimate-chars-div-4 | unknown |
 

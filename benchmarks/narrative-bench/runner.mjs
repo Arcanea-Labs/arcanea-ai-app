@@ -116,8 +116,9 @@ export async function runBenchmark({ runId, fixtures, systems, panel = null, sal
           latencyMs: j.latencyMs,
           inputTokens: j.usage?.inputTokens ?? null,
           outputTokens: j.usage?.outputTokens ?? null,
-          usdEstimate: j.judge.startsWith('mock-') ? 0 : null,
-          priceSource: j.judge.startsWith('mock-') ? 'mock: free' : null,
+          // Judge prices are not configured, mocks included: unknown is null, never 0.
+          usdEstimate: null,
+          priceSource: null,
         });
       }
     }

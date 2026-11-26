@@ -79,7 +79,8 @@ export class MockSystem {
           usage: null,
           promptText: prompt.system + prompt.user,
           outputText: text,
-          pricing: { inputPerMTok: 0, outputPerMTok: 0, source: 'mock: free' },
+          // A mock has no price. Unknown is null, never 0.
+          pricing: null,
         }),
       ],
     };

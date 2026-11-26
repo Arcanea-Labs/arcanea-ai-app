@@ -25,6 +25,9 @@ test('dry run end to end: offline, writes results, receipts and summary', async 
   assert.equal(receipts.filter((x) => x.kind === 'system').length, 20 * 4); // hybrid has 2 stages
   assert.equal(receipts.filter((x) => x.kind === 'judge').length, 60 * 2);
   assert.ok(receipts.every((x) => 'latencyMs' in x && 'usdEstimate' in x));
+  // Mocks and judges carry no price: unknown must be null, never 0.
+  assert.ok(receipts.every((x) => x.usdEstimate === null), 'every dry-run receipt has usdEstimate null');
+  assert.ok(rows.every((x) => x.receipt.usdEstimate === null));
   const summary = readFileSync(join(dir, 'summary.md'), 'utf8');
   assert.match(summary, /dry run/);
   assert.match(summary, /\| mock-faithful \| 20\/20 \| 66\/66 \| 59 \/ 0 \/ 0 \|/);
@@ -33,6 +36,8 @@ test('dry run end to end: offline, writes results, receipts and summary', async 
   assert.match(summary, /\| mock-drift \| saltglass-reach \| 2\/3 \|/);
   assert.match(summary, /never pooled/);
   assert.equal(r.meta.judges.length, 2);
+  assert.match(summary, /\| mock-faithful \|[^\n]*\| unknown \|/);
+  assert.doesNotMatch(summary, /\$0\.0000/);
   await assert.rejects(main(['--dry-run', '--out', out, '--run-id', 't1', '--no-taste'], quiet), /--overwrite/);
 });
 
@@ -75,4 +80,12 @@ test('argument parsing rejects unknown flags and requires values', () => {
   assert.deepEqual(parseArgs(['--fixtures', 'a,b', '--limit', '2']).fixtures, ['a', 'b']);
   assert.throws(() => parseArgs(['--bogus']), /unknown argument/);
   assert.throws(() => parseArgs(['--systems']), /needs a value/);
+});
+
+test('the committed example run records unknown prices as null, never 0', () => {
+  const dir = new URL('../results/example/', import.meta.url);
+  const receipts = readJsonl(new URL('receipts.jsonl', dir));
+  assert.ok(receipts.length > 0);
+  assert.ok(receipts.every((x) => x.usdEstimate === null), 'example receipts.jsonl');
+  assert.ok(readJsonl(new URL('results.jsonl', dir)).every((x) => x.receipt.usdEstimate === null), 'example results.jsonl');
 });

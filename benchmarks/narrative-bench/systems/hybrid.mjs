@@ -25,7 +25,7 @@ class MockStageClient {
     const text = stage === 'plan' ? fixture.cast.map((c, i) => `${i + 1}. ${c.name} moves the story forward.`).join('\n') : mockText(fixture, this.cfg.variant ?? 'faithful');
     return {
       text,
-      receipt: stageReceipt({ stage, model: `mock:${this.cfg.variant ?? 'faithful'}`, latencyMs: 0, usage: null, promptText: prompt.system + prompt.user, outputText: text, pricing: { inputPerMTok: 0, outputPerMTok: 0, source: 'mock: free' } }),
+      receipt: stageReceipt({ stage, model: `mock:${this.cfg.variant ?? 'faithful'}`, latencyMs: 0, usage: null, promptText: prompt.system + prompt.user, outputText: text, pricing: null }),
     };
   }
 }
