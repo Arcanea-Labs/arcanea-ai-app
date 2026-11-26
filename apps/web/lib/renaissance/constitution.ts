@@ -10,13 +10,12 @@
  * Authority: STAGING -> Ready for Creator lock. Enforced by `runIndependentCriticalReview()`.
  */
 
+import { brand, cosmic } from "@arcanea/design-system";
+
 export const DESIGN_CONSTITUTION_VERSION = "3.1.0-renaissance" as const;
 
 export type SurfaceModeId =
-  | "product-ui"
-  | "prism-realism"
-  | "cel-cinematic"
-  | "codex-graphic";
+  "product-ui" | "prism-realism" | "cel-cinematic" | "codex-graphic";
 
 export interface SurfaceModeSpec {
   id: SurfaceModeId;
@@ -50,16 +49,16 @@ export const SURFACE_MODES: Record<SurfaceModeId, SurfaceModeSpec> = {
       "arcanea-studio model router controls",
     ],
     backgroundTokens: {
-      void: "#0b0e14",
-      deep: "#121826",
-      surface: "#1a2332",
-      elevated: "#232f42",
+      void: cosmic.void,
+      deep: cosmic.deep,
+      surface: cosmic.surface,
+      elevated: cosmic.raised,
     },
     accentTokens: {
-      primaryTeal: "#00bcd4",
-      secondaryBlue: "#0d47a1",
-      canonGold: "#ffd700",
-      successAquamarine: "#7fffd4",
+      primaryTeal: brand.atlanteanTeal,
+      secondaryBlue: brand.cosmicBlue,
+      canonGold: brand.arcaneanGold,
+      successAquamarine: brand.aquamarine,
     },
     lightingAndMaterialRules: [
       "Chrome stays neutral (#09090b to #121826); artwork and world cards supply the color.",
@@ -78,23 +77,24 @@ export const SURFACE_MODES: Record<SurfaceModeId, SurfaceModeSpec> = {
   "prism-realism": {
     id: "prism-realism",
     name: "Arcanean Prism Realism (Flagship World & Live-Action Cinema)",
-    ratioFormula: "75% physical cinema / 25% anime silhouette & ocular lighting intelligence",
+    ratioFormula:
+      "75% physical cinema / 25% anime silhouette & ocular lighting intelligence",
     primarySurfaces: [
       "Chronicles of Arcanea book covers and chapter plates",
       "Pilot 01: The Name That Starts a War",
       "Firstlight II and Sovereign Depths key art",
     ],
     backgroundTokens: {
-      void: "#0b0e14",
-      deep: "#121826",
-      surface: "#1a2332",
-      elevated: "#232f42",
+      void: cosmic.void,
+      deep: cosmic.deep,
+      surface: cosmic.surface,
+      elevated: cosmic.raised,
     },
     accentTokens: {
-      primaryTeal: "#00bcd4",
-      secondaryBlue: "#0d47a1",
-      canonGold: "#ffd700",
-      successAquamarine: "#7fffd4",
+      primaryTeal: brand.atlanteanTeal,
+      secondaryBlue: brand.cosmicBlue,
+      canonGold: brand.arcaneanGold,
+      successAquamarine: brand.aquamarine,
     },
     lightingAndMaterialRules: [
       "Materials carry labor and mineral wear: load-bearing basalt, coral-pink volcanic stone, salt-stained linen, repaired iron.",
@@ -110,23 +110,24 @@ export const SURFACE_MODES: Record<SurfaceModeId, SurfaceModeSpec> = {
   "cel-cinematic": {
     id: "cel-cinematic",
     name: "Cel-Cinematic (Contemporary Anime Production Mode)",
-    ratioFormula: "65% sakuga keyframe graphic clarity / 35% atmospheric multi-plane depth",
+    ratioFormula:
+      "65% sakuga keyframe graphic clarity / 35% atmospheric multi-plane depth",
     primarySurfaces: [
       "AnimeLegends x Arcanea Remotion shorts",
       "Pilot 02: Dawn Over Sector Four (The Dawnsworn)",
       "Trinity mascot bumpers (Mira -> Kage -> Akashi)",
     ],
     backgroundTokens: {
-      void: "#0b0e14",
-      deep: "#121826",
-      surface: "#1a2332",
-      elevated: "#232f42",
+      void: cosmic.void,
+      deep: cosmic.deep,
+      surface: cosmic.surface,
+      elevated: cosmic.raised,
     },
     accentTokens: {
-      primaryTeal: "#00bcd4",
-      secondaryBlue: "#0d47a1",
-      canonGold: "#ffd700",
-      successAquamarine: "#7fffd4",
+      primaryTeal: brand.atlanteanTeal,
+      secondaryBlue: brand.cosmicBlue,
+      canonGold: brand.arcaneanGold,
+      successAquamarine: brand.aquamarine,
     },
     lightingAndMaterialRules: [
       "Sharp graphic shadow shapes with deliberate 2s/3s hold frames before kinetic release.",
@@ -142,23 +143,24 @@ export const SURFACE_MODES: Record<SurfaceModeId, SurfaceModeSpec> = {
   "codex-graphic": {
     id: "codex-graphic",
     name: "Codex Graphic (In-World Archival & Cartographic Mode)",
-    ratioFormula: "80% architectural & cartographic diagram / 20% gold-leaf & teal telemetry",
+    ratioFormula:
+      "80% architectural & cartographic diagram / 20% gold-leaf & teal telemetry",
     primarySurfaces: [
       "Athenaeum field manuals and Worldbuilder Production Edition plates",
       "Pilot 03: The Storm Orchard of Orvess watershed schematic",
       "Ten Gates & Godbeast Chord structural diagrams",
     ],
     backgroundTokens: {
-      void: "#0b0e14",
-      deep: "#121826",
-      surface: "#1a2332",
-      elevated: "#232f42",
+      void: cosmic.void,
+      deep: cosmic.deep,
+      surface: cosmic.surface,
+      elevated: cosmic.raised,
     },
     accentTokens: {
-      primaryTeal: "#00bcd4",
-      secondaryBlue: "#0d47a1",
-      canonGold: "#ffd700",
-      successAquamarine: "#7fffd4",
+      primaryTeal: brand.atlanteanTeal,
+      secondaryBlue: brand.cosmicBlue,
+      canonGold: brand.arcaneanGold,
+      successAquamarine: brand.aquamarine,
     },
     lightingAndMaterialRules: [
       "High-contrast vector linework in Arcanean Gold (#ffd700) and Atlantean Teal (#00bcd4) over Cosmic Void (#0b0e14).",
@@ -235,7 +237,10 @@ export const GODBEAST_MORPHOLOGY_LOCKS: readonly GodbeastMorphologySpec[] = [
     canonicalFormTitle: "The Ringback",
     morphologyDirective:
       "Colossal stone-and-basalt wyrm closed into a load-bearing annulus with six load-limbs and a recessed face inside the ring; redistributes seismic and structural weight.",
-    forbiddenClichés: ["Generic four-legged earth golem", "Humanoid rock giant"],
+    forbiddenClichés: [
+      "Generic four-legged earth golem",
+      "Humanoid rock giant",
+    ],
   },
   {
     id: "veloura",
@@ -305,7 +310,10 @@ export const GODBEAST_MORPHOLOGY_LOCKS: readonly GodbeastMorphologySpec[] = [
     canonicalFormTitle: "The Loom-Owl Serpent",
     morphologyDirective:
       "Nocturnal owl-serpent chimera with six ocular aperture rings that refract unseen trajectories without theatrical crystal-ball tropes.",
-    forbiddenClichés: ["Snowy owl on a wizard shoulder", "Floating eyeball monster"],
+    forbiddenClichés: [
+      "Snowy owl on a wizard shoulder",
+      "Floating eyeball monster",
+    ],
   },
   {
     id: "sol",
@@ -316,7 +324,8 @@ export const GODBEAST_MORPHOLOGY_LOCKS: readonly GodbeastMorphologySpec[] = [
     guardianName: "Aiyami",
     chordCount: 7,
     readiness: "blocked-by-contradiction",
-    canonicalFormTitle: "The Sevenfold Zenith (Blocked Pending Canon Reconciliation)",
+    canonicalFormTitle:
+      "The Sevenfold Zenith (Blocked Pending Canon Reconciliation)",
     morphologyDirective:
       "Blocked from public render until Creator resolves the local Godbeast record contradiction between feline-solar and geometric-heliostat descriptions.",
     forbiddenClichés: ["Lion with fire mane", "Generic angel"],
@@ -358,7 +367,8 @@ export const GODBEAST_MORPHOLOGY_LOCKS: readonly GodbeastMorphologySpec[] = [
     guardianName: "Shinkami",
     chordCount: 10,
     readiness: "blocked-by-contradiction",
-    canonicalFormTitle: "The Unrefracted Threshold (Blocked Pending Canon Reconciliation)",
+    canonicalFormTitle:
+      "The Unrefracted Threshold (Blocked Pending Canon Reconciliation)",
     morphologyDirective:
       "Blocked from direct creature depiction; manifests only as the ten-chord acoustic and prismatic convergence of the preceding nine Gates.",
     forbiddenClichés: ["Giant glowing humanoid deity", "Final boss monster"],

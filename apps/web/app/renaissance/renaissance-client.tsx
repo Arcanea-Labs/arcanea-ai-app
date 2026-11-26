@@ -2,25 +2,52 @@
 
 import { useState, FormEvent } from "react";
 import Link from "next/link";
+import { brand, cosmic, semantic, text } from "@arcanea/design-system";
 import {
-  ARCANEA_DESIGN_CONSTITUTION_VERSION,
+  DESIGN_CONSTITUTION_VERSION,
   SURFACE_MODES,
   GODBEAST_MORPHOLOGY_LOCKS,
   NARRATIVE_BIBLE_VERSION,
-  FOUR_ALTITUDE_CAST_ARCHITECTURE,
+  FLAGSHIP_CAST_DOSSIERS,
   SPECTRUM_WEAVING_LEXICON,
-  CINEMATIC_PILOTS,
-  EDITORIAL_POD_SEATS,
+  CINEMATIC_PILOT_PACKAGES,
+  ARCANEA_CHANNEL_COMMAND_POD,
   APPROVAL_PIPELINE_STAGES,
   runIndependentCriticalReview,
-  GATE_G5_REVENUE_EXPERIMENT,
+  REVENUE_EXPERIMENT_SPEC,
   SHOP_DEMAND_ROLES,
   SHOP_PRICE_BANDS,
   encodeShopWaitlistSource,
-  type ShopDemandRole,
-  type ShopPriceBand,
+  type BuyerRoleId,
+  type FairPriceBandId,
+  type NarrativeAltitudeId,
 } from "@/lib/renaissance";
 import { submitWaitlist } from "@/lib/waitlist/submit";
+
+const ALTITUDE_TITLES: Record<NarrativeAltitudeId, string> = {
+  "confluence-public-center": "Confluence Public Center",
+  "field-franchise-dawnsworn": "Field Franchise (Dawnsworn)",
+  "living-lore-and-ecology": "Living Lore & Ecology",
+  "cosmology-and-academies": "Cosmology & Academies",
+};
+
+const ALTITUDES = (Object.keys(ALTITUDE_TITLES) as NarrativeAltitudeId[]).map(
+  (id) => ({
+    id,
+    title: ALTITUDE_TITLES[id],
+    cast: FLAGSHIP_CAST_DOSSIERS.filter((char) => char.altitude === id),
+  }),
+);
+
+const SURFACE_MODE_LIST = Object.values(SURFACE_MODES);
+
+const LEXICON_ROWS = Object.entries(
+  SPECTRUM_WEAVING_LEXICON.canonicalReplacements,
+).map(([quarantinedTerm, arcaneanTerm]) => ({ quarantinedTerm, arcaneanTerm }));
+
+const BLOCKED_GODBEAST_COUNT = GODBEAST_MORPHOLOGY_LOCKS.filter(
+  (gb) => gb.readiness === "blocked-by-contradiction",
+).length;
 
 const CRITIC_PRESETS = [
   {
@@ -57,30 +84,36 @@ export function RenaissanceClient() {
   const [presetId, setPresetId] = useState("clean");
 
   // Waitlist state
-  const [editionSlug, setEditionSlug] = useState("worldbuilder-production-edition");
-  const [role, setRole] = useState<ShopDemandRole>("worldbuilder");
-  const [priceBand, setPriceBand] = useState<ShopPriceBand>("eur99");
+  const [editionSlug, setEditionSlug] = useState(
+    "worldbuilder-production-edition",
+  );
+  const [role, setRole] = useState<BuyerRoleId>("worldbuilder");
+  const [priceBand, setPriceBand] = useState<FairPriceBandId>("eur99");
   const [email, setEmail] = useState("");
-  const [waitlistState, setWaitlistState] = useState<"idle" | "submitting" | "done" | "error">("idle");
+  const [waitlistState, setWaitlistState] = useState<
+    "idle" | "submitting" | "done" | "error"
+  >("idle");
   const [waitlistMsg, setWaitlistMsg] = useState<string | null>(null);
 
-  const activeAltitude = FOUR_ALTITUDE_CAST_ARCHITECTURE[altitudeIndex] ?? FOUR_ALTITUDE_CAST_ARCHITECTURE[0];
-  const activePilot = CINEMATIC_PILOTS[pilotIndex] ?? CINEMATIC_PILOTS[0];
+  const activeAltitude = ALTITUDES[altitudeIndex] ?? ALTITUDES[0];
+  const activePilot =
+    CINEMATIC_PILOT_PACKAGES[pilotIndex] ?? CINEMATIC_PILOT_PACKAGES[0];
   const activeShot = activePilot.shots[shotIndex] ?? activePilot.shots[0];
-  const activeSurface = SURFACE_MODES[surfaceIndex] ?? SURFACE_MODES[0];
-  const activePreset = CRITIC_PRESETS.find((p) => p.id === presetId) ?? CRITIC_PRESETS[0];
+  const activeSurface = SURFACE_MODE_LIST[surfaceIndex] ?? SURFACE_MODE_LIST[0];
+  const activePreset =
+    CRITIC_PRESETS.find((p) => p.id === presetId) ?? CRITIC_PRESETS[0];
 
   const criticResult = runIndependentCriticalReview({
-    assetId: `test-${activePreset.id}`,
+    id: `test-${activePreset.id}`,
     title: activePreset.title,
-    surfaceMode: activePreset.surfaceMode,
-    bodyText: activePreset.bodyText,
-    producerSeatId: activePreset.producerSeatId,
-    reviewerSeatId: activePreset.reviewerSeatId,
-    hasRightsManifest: activePreset.hasRightsManifest,
-    claimsLiveDeployment: activePreset.claimsLiveDeployment,
-    hasVerifiedDeploymentEvidence: false,
+    surface: "lore-staging",
+    publicText: activePreset.bodyText,
+    rightsVerified: activePreset.hasRightsManifest,
+    humanApproved: false,
   });
+  const criticBlockers = criticResult.findings.filter(
+    (f) => f.severity === "blocker",
+  );
 
   async function handleCohortSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -88,9 +121,9 @@ export function RenaissanceClient() {
     setWaitlistMsg(null);
     const source = encodeShopWaitlistSource(editionSlug, role, priceBand);
     const result = await submitWaitlist(email, source);
-    if (result.ok) {
+    if (result.success) {
       setWaitlistState("done");
-      setWaitlistMsg(result.message);
+      setWaitlistMsg(null);
       setEmail("");
       return;
     }
@@ -117,15 +150,18 @@ export function RenaissanceClient() {
       <section className="ren-hero">
         <div>
           <p className="ren-eyebrow">
-            EXECUTIVE CREATIVE &amp; ENGINEERING COUNCIL · {ARCANEA_DESIGN_CONSTITUTION_VERSION}
+            EXECUTIVE CREATIVE &amp; ENGINEERING COUNCIL ·{" "}
+            {DESIGN_CONSTITUTION_VERSION}
           </p>
           <h1>
-            A world people remember, return to, and <em>eventually help build.</em>
+            A world people remember, return to, and{" "}
+            <em>eventually help build.</em>
           </h1>
           <p className="ren-lead">
-            Integrating the Mythology Architect, Celestial Art Director, Cultural Communications
-            Director, and Starlight Production Engineer across 1.82M manuscript words, 428 curated
-            visuals, 845 Suno tracks, and fail-closed production governance.
+            Integrating the Mythology Architect, Celestial Art Director,
+            Cultural Communications Director, and Starlight Production Engineer
+            across 1.82M manuscript words, 428 curated visuals, 845 Suno tracks,
+            and fail-closed production governance.
           </p>
           <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
             <a href="#pilot-screening" className="shop-button">
@@ -145,22 +181,33 @@ export function RenaissanceClient() {
           </div>
         </div>
 
-        <aside className="ren-ledger-panel" aria-label="Measured estate baseline">
+        <aside
+          className="ren-ledger-panel"
+          aria-label="Measured estate baseline"
+        >
           <div className="ren-ledger-row">
             <span>Manuscript Corpus</span>
-            <span className="ren-mono-tag">[MEASURED] 1,821,000 words · 4 EPUBs</span>
+            <span className="ren-mono-tag">
+              [MEASURED] 1,821,000 words · 4 EPUBs
+            </span>
           </div>
           <div className="ren-ledger-row">
             <span>Visual Archive &amp; Exhibitions</span>
-            <span className="ren-mono-tag">[MEASURED] 428 curated plates · 4 exhibitions</span>
+            <span className="ren-mono-tag">
+              [MEASURED] 428 curated plates · 4 exhibitions
+            </span>
           </div>
           <div className="ren-ledger-row">
             <span>Sonic Catalog (Suno)</span>
-            <span className="ren-mono-tag">[MEASURED] 845 tracks · 26,193 plays</span>
+            <span className="ren-mono-tag">
+              [MEASURED] 845 tracks · 26,193 plays
+            </span>
           </div>
           <div className="ren-ledger-row">
             <span>Production Compute Cap</span>
-            <span className="ren-mono-tag ren-mono-tag-gold">[RULED] $0.13 / slice · $40/mo cap</span>
+            <span className="ren-mono-tag ren-mono-tag-gold">
+              [RULED] $0.13 / slice · $40/mo cap
+            </span>
           </div>
           <div className="ren-ledger-row">
             <span>Commerce &amp; Rights Posture</span>
@@ -175,32 +222,44 @@ export function RenaissanceClient() {
       <section id="narrative-bible" className="ren-section">
         <div className="ren-section-header">
           <div>
-            <p className="ren-eyebrow">WORKSTREAM I · MYTHOLOGY ARCHITECT ({NARRATIVE_BIBLE_VERSION})</p>
+            <p className="ren-eyebrow">
+              WORKSTREAM I · MYTHOLOGY ARCHITECT ({NARRATIVE_BIBLE_VERSION})
+            </p>
             <h2>Four-Altitude Narrative Bible &amp; Native Spectrum Lexicon</h2>
           </div>
-          <span className="ren-mono-tag">CANON_LOCKED.md Compliant · RM008 Quarantined</span>
+          <span className="ren-mono-tag">
+            CANON_LOCKED.md Compliant · RM008 Quarantined
+          </span>
         </div>
 
-        <div className="ren-tabs" role="tablist" aria-label="Narrative Altitudes">
-          {FOUR_ALTITUDE_CAST_ARCHITECTURE.map((layer, idx) => (
+        <div
+          className="ren-tabs"
+          role="tablist"
+          aria-label="Narrative Altitudes"
+        >
+          {ALTITUDES.map((layer, idx) => (
             <button
-              key={layer.altitude}
+              key={layer.id}
               type="button"
               role="tab"
               aria-selected={altitudeIndex === idx}
               className={`ren-tab ${altitudeIndex === idx ? "is-active" : ""}`}
               onClick={() => setAltitudeIndex(idx)}
             >
-              Altitude {idx + 1}: {layer.title.split("(")[0].trim()}
+              Altitude {idx + 1}: {layer.title}
             </button>
           ))}
         </div>
 
         <div className="ren-grid-2">
           <div className="ren-card">
-            <span className="ren-mono-tag">{activeAltitude.provenance}</span>
+            <span className="ren-mono-tag">{activeAltitude.id}</span>
             <h3 style={{ marginTop: "12px" }}>{activeAltitude.title}</h3>
-            <p style={{ marginBottom: "16px" }}>{activeAltitude.dramaticFunction}</p>
+            <p style={{ marginBottom: "16px" }}>
+              {activeAltitude.cast.length} flagship dossier
+              {activeAltitude.cast.length === 1 ? "" : "s"} at this altitude.
+              Every dossier stays STAGING until canon review promotes it.
+            </p>
             <p
               style={{
                 padding: "12px 14px",
@@ -210,14 +269,23 @@ export function RenaissanceClient() {
                 fontSize: "13px",
               }}
             >
-              <strong>Cross-Altitude Bridge:</strong> {activeAltitude.canonicalBridgeRule}
+              <strong>Ontology boundary:</strong>{" "}
+              {SPECTRUM_WEAVING_LEXICON.quarantineRuleId} blocks third-party
+              spectrum terms at every altitude.
             </p>
           </div>
 
           <div className="ren-card">
             <h3>Canonical Figures at This Altitude</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "12px" }}>
-              {activeAltitude.primaryCast.map((char) => (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+                marginTop: "12px",
+              }}
+            >
+              {activeAltitude.cast.map((char) => (
                 <div
                   key={char.id}
                   style={{
@@ -225,13 +293,23 @@ export function RenaissanceClient() {
                     borderBottom: "1px solid rgba(255,255,255,0.06)",
                   }}
                 >
-                  <div style={{ display: "flex", justifyContent: "space-between", gap: "8px" }}>
-                    <strong style={{ fontSize: "14px" }}>{char.canonicalName}</strong>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "8px",
+                    }}
+                  >
+                    <strong style={{ fontSize: "14px" }}>
+                      {char.canonicalName}
+                    </strong>
                     <span className="ren-mono-tag" style={{ fontSize: "11px" }}>
-                      {char.gateOrElement}
+                      {char.primaryGate} · {char.canonStatus}
                     </span>
                   </div>
-                  <p style={{ fontSize: "13px", marginTop: "4px" }}>{char.dramaticWoundAndChoice}</p>
+                  <p style={{ fontSize: "13px", marginTop: "4px" }}>
+                    {char.dramaticFunction}
+                  </p>
                 </div>
               ))}
             </div>
@@ -239,8 +317,19 @@ export function RenaissanceClient() {
         </div>
 
         <div className="ren-card" style={{ marginTop: "24px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px", marginBottom: "14px" }}>
-            <h3>Canonical Native Arcanean Spectrum Lexicon (RM008 Quarantine)</h3>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "12px",
+              marginBottom: "14px",
+            }}
+          >
+            <h3>
+              Canonical Native Arcanean Spectrum Lexicon (RM008 Quarantine)
+            </h3>
             <span className="ren-mono-tag ren-mono-tag-gold">
               Replaces comparative Lightbringer terms in PRISM_LUXIN_SYSTEM.md
             </span>
@@ -251,21 +340,22 @@ export function RenaissanceClient() {
                 <tr>
                   <th>Quarantined Term ([BLOCKED])</th>
                   <th>Canonical Arcanean Term ([RULED])</th>
-                  <th>Gate Resonance</th>
-                  <th>Physical &amp; Dramatic Behavior</th>
                 </tr>
               </thead>
               <tbody>
-                {SPECTRUM_WEAVING_LEXICON.map((entry) => (
-                  <tr key={entry.arcaneanTerm}>
-                    <td style={{ fontFamily: "var(--arc-font-mono, monospace)", color: "#ff8a80" }}>
+                {LEXICON_ROWS.map((entry) => (
+                  <tr key={entry.quarantinedTerm}>
+                    <td
+                      style={{
+                        fontFamily: "var(--arc-font-mono, monospace)",
+                        color: semantic.error,
+                      }}
+                    >
                       {entry.quarantinedTerm}
                     </td>
                     <td>
                       <strong>{entry.arcaneanTerm}</strong>
                     </td>
-                    <td>{entry.gateResonance}</td>
-                    <td>{entry.physicalBehavior}</td>
                   </tr>
                 ))}
               </tbody>
@@ -278,18 +368,21 @@ export function RenaissanceClient() {
       <section id="pilot-screening" className="ren-section">
         <div className="ren-section-header">
           <div>
-            <p className="ren-eyebrow">CINEMATIC PILOT PACKAGES · REMOTION &amp; STUDIO PIPELINE</p>
+            <p className="ren-eyebrow">
+              CINEMATIC PILOT PACKAGES · REMOTION &amp; STUDIO PIPELINE
+            </p>
             <h2>Three Production-Ready Pilot Specifications</h2>
           </div>
           <span className="ren-mono-tag ren-mono-tag-gold">
-            release_state: &quot;script&quot; (Fail-Closed Until Human Render Gate)
+            release_state: &quot;script&quot; (Fail-Closed Until Human Render
+            Gate)
           </span>
         </div>
 
         <div className="ren-tabs" role="tablist" aria-label="Cinematic Pilots">
-          {CINEMATIC_PILOTS.map((pilot, idx) => (
+          {CINEMATIC_PILOT_PACKAGES.map((pilot, idx) => (
             <button
-              key={pilot.id}
+              key={pilot.pilotId}
               type="button"
               role="tab"
               aria-selected={pilotIndex === idx}
@@ -299,7 +392,8 @@ export function RenaissanceClient() {
                 setShotIndex(0);
               }}
             >
-              Pilot 0{idx + 1}: {pilot.title} ({pilot.durationSeconds}s · {pilot.surfaceMode})
+              Pilot 0{idx + 1}: {pilot.title} ({pilot.runtimeSec}s ·{" "}
+              {pilot.visualMode})
             </button>
           ))}
         </div>
@@ -307,18 +401,36 @@ export function RenaissanceClient() {
         <div className="ren-grid-2">
           <div>
             <div className="ren-stage-frame" style={{ padding: "24px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", marginBottom: "14px", flexWrap: "wrap" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginBottom: "14px",
+                  flexWrap: "wrap",
+                }}
+              >
                 <span className="ren-mono-tag">
-                  SHOT {activeShot.shotId} · {activeShot.durationSeconds}s · {activeShot.cameraAndLens}
+                  SHOT {activeShot.shotNumber} · {activeShot.durationSec}s ·{" "}
+                  {activeShot.cameraAndLens}
                 </span>
                 <span className="ren-mono-tag ren-mono-tag-gold">
-                  Surface: {activePilot.surfaceMode}
+                  Surface: {activePilot.visualMode}
                 </span>
               </div>
               <h3 style={{ fontSize: "20px", margin: "0 0 10px" }}>
-                {activePilot.title} — Shot {shotIndex + 1} of {activePilot.shots.length}
+                {activePilot.title} — Shot {shotIndex + 1} of{" "}
+                {activePilot.shots.length}
               </h3>
-              <p style={{ fontSize: "14px", color: "#d7deec", lineHeight: 1.65, marginBottom: "16px" }}>
+              <p
+                style={{
+                  fontSize: "14px",
+                  color: text.primary,
+                  lineHeight: 1.65,
+                  marginBottom: "16px",
+                }}
+              >
                 {activeShot.visualAction}
               </p>
               <blockquote
@@ -331,31 +443,50 @@ export function RenaissanceClient() {
                   fontFamily: "var(--arc-font-editorial, Georgia, serif)",
                   fontStyle: "italic",
                   fontSize: "18px",
-                  color: "#f5f5f7",
+                  color: text.primary,
                 }}
               >
-                {activeShot.dialogueOrCaption}
+                {activeShot.dialogueOrVoiceover}
               </blockquote>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: "12px", flexWrap: "wrap", fontSize: "12px", color: "#a3adc2" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "12px",
+                  flexWrap: "wrap",
+                  fontSize: "12px",
+                  color: text.secondary,
+                }}
+              >
                 <span>
-                  <strong>Lighting &amp; Color:</strong> {activeShot.lightingAndColorNote}
+                  <strong>Lighting &amp; Color:</strong>{" "}
+                  {activeShot.lightingAndColor}
                 </span>
                 <span>
-                  <strong>Sound Cue:</strong> {activeShot.soundCue}
+                  <strong>Sound Cue:</strong> {activeShot.soundAndMusicCue}
                 </span>
               </div>
             </div>
 
-            <div className="ren-shot-strip" role="group" aria-label="Pilot storyboard shots">
+            <div
+              className="ren-shot-strip"
+              role="group"
+              aria-label="Pilot storyboard shots"
+            >
               {activePilot.shots.map((s, idx) => (
                 <button
-                  key={s.shotId}
+                  key={s.shotNumber}
                   type="button"
                   className={`ren-shot-btn ${shotIndex === idx ? "is-active" : ""}`}
                   onClick={() => setShotIndex(idx)}
                 >
-                  <div style={{ fontFamily: "var(--arc-font-mono, monospace)", fontWeight: 600 }}>
-                    {s.shotId} ({s.durationSeconds}s)
+                  <div
+                    style={{
+                      fontFamily: "var(--arc-font-mono, monospace)",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {s.shotNumber} ({s.durationSec}s)
                   </div>
                   <div style={{ marginTop: "4px", opacity: 0.85 }}>
                     {s.cameraAndLens.split("·")[0]}
@@ -366,29 +497,35 @@ export function RenaissanceClient() {
           </div>
 
           <div className="ren-card">
-            <span className="ren-mono-tag">{activePilot.id}</span>
+            <span className="ren-mono-tag">{activePilot.pilotId}</span>
             <h3 style={{ marginTop: "12px" }}>{activePilot.subtitle}</h3>
             <p style={{ marginBottom: "14px" }}>{activePilot.logline}</p>
             <div className="ren-ledger-row">
               <span>Emotional Core</span>
-              <span style={{ textAlign: "right", maxWidth: "60%" }}>{activePilot.emotionalCore}</span>
+              <span style={{ textAlign: "right", maxWidth: "60%" }}>
+                {activePilot.emotionalPremise}
+              </span>
             </div>
             <div className="ren-ledger-row">
               <span>Suno Score Direction</span>
               <span style={{ textAlign: "right", maxWidth: "60%" }}>
-                {activePilot.sunoScoreBrief.styleVoice} ({activePilot.sunoScoreBrief.tempoBpm} BPM ·{" "}
-                {activePilot.sunoScoreBrief.keySignature})
+                {activePilot.audioScore.sunoStyleVoice} (
+                {activePilot.audioScore.bpm} BPM ·{" "}
+                {activePilot.audioScore.keySignature})
               </span>
             </div>
             <div className="ren-ledger-row">
               <span>Reference Track Pairing</span>
-              <span className="ren-mono-tag">{activePilot.sunoScoreBrief.referenceTrackTitle}</span>
+              <span className="ren-mono-tag">
+                {activePilot.audioScore.trackTitle}
+              </span>
             </div>
             <div className="ren-ledger-row">
               <span>Compute Cost Envelope</span>
               <span className="ren-mono-tag ren-mono-tag-gold">
-                ${activePilot.estimatedCostUsd.storyboardSlice.toFixed(2)} slice / $
-                {activePilot.estimatedCostUsd.fullRenderEstimate.toFixed(2)} full render
+                ${activePilot.economics.storyboardSliceCostUsd.toFixed(2)} slice
+                / ${activePilot.economics.estimatedFullRenderCostUsd.toFixed(2)}{" "}
+                full render
               </span>
             </div>
           </div>
@@ -399,14 +536,23 @@ export function RenaissanceClient() {
       <section id="design-constitution" className="ren-section">
         <div className="ren-section-header">
           <div>
-            <p className="ren-eyebrow">WORKSTREAM II · CELESTIAL ART DIRECTOR</p>
-            <h2>Design Constitution ({ARCANEA_DESIGN_CONSTITUTION_VERSION}) &amp; Godbeast Locks</h2>
+            <p className="ren-eyebrow">
+              WORKSTREAM II · CELESTIAL ART DIRECTOR
+            </p>
+            <h2>
+              Design Constitution ({DESIGN_CONSTITUTION_VERSION}) &amp; Godbeast
+              Locks
+            </h2>
           </div>
-          <span className="ren-mono-tag">8 Morphology Locked · 2 Canon Contradiction Blocked</span>
+          <span className="ren-mono-tag">
+            {GODBEAST_MORPHOLOGY_LOCKS.length - BLOCKED_GODBEAST_COUNT}{" "}
+            Morphology Locked · {BLOCKED_GODBEAST_COUNT} Canon Contradiction
+            Blocked
+          </span>
         </div>
 
         <div className="ren-tabs" role="tablist" aria-label="Surface Modes">
-          {SURFACE_MODES.map((m, idx) => (
+          {SURFACE_MODE_LIST.map((m, idx) => (
             <button
               key={m.id}
               type="button"
@@ -421,13 +567,25 @@ export function RenaissanceClient() {
         </div>
 
         <div className="ren-card" style={{ marginBottom: "28px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "12px",
+            }}
+          >
             <h3>{activeSurface.name}</h3>
             <span className="ren-mono-tag">Mode ID: {activeSurface.id}</span>
           </div>
-          <p style={{ marginTop: "8px", marginBottom: "14px" }}>{activeSurface.lightingRule}</p>
+          <p style={{ marginTop: "8px", marginBottom: "14px" }}>
+            {activeSurface.lightingAndMaterialRules.join(" ")}
+          </p>
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-            {Object.entries(activeSurface.palette).map(([key, hex]) => (
+            {Object.entries({
+              ...activeSurface.backgroundTokens,
+              ...activeSurface.accentTokens,
+            }).map(([key, hex]) => (
               <div
                 key={key}
                 style={{
@@ -460,23 +618,37 @@ export function RenaissanceClient() {
 
         <div className="ren-grid-3">
           {GODBEAST_MORPHOLOGY_LOCKS.map((gb) => (
-            <div key={gb.gateNumber} className="ren-card">
-              <div style={{ display: "flex", justifyContent: "space-between", gap: "8px", marginBottom: "8px" }}>
+            <div key={gb.id} className="ren-card">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "8px",
+                  marginBottom: "8px",
+                }}
+              >
                 <span className="ren-mono-tag">
-                  Gate {gb.gateNumber} · {gb.gateName}
+                  Gate {gb.gateIndex} · {gb.gateName}
                 </span>
                 <span
                   className={`ren-mono-tag ${
-                    gb.productionStatus === "CANON_CONTRADICTION_BLOCK" ? "ren-mono-tag-gold" : ""
+                    gb.readiness === "blocked-by-contradiction"
+                      ? "ren-mono-tag-gold"
+                      : ""
                   }`}
                 >
-                  {gb.productionStatus}
+                  {gb.readiness}
                 </span>
               </div>
               <h3>
-                {gb.godbeast} <span style={{ fontWeight: 400, color: "#a3adc2" }}>({gb.guardian})</span>
+                {gb.name}{" "}
+                <span style={{ fontWeight: 400, color: text.secondary }}>
+                  ({gb.guardianName})
+                </span>
               </h3>
-              <p style={{ marginTop: "6px", fontSize: "13px" }}>{gb.lockedMorphology}</p>
+              <p style={{ marginTop: "6px", fontSize: "13px" }}>
+                {gb.morphologyDirective}
+              </p>
             </div>
           ))}
         </div>
@@ -486,10 +658,14 @@ export function RenaissanceClient() {
       <section id="critic-gate" className="ren-section">
         <div className="ren-section-header">
           <div>
-            <p className="ren-eyebrow">WORKSTREAM III &amp; IV · INDEPENDENT CRITICAL REVIEW</p>
+            <p className="ren-eyebrow">
+              WORKSTREAM III &amp; IV · INDEPENDENT CRITICAL REVIEW
+            </p>
             <h2>Live Critic Sandbox (verity-sloane · Maker != Checker)</h2>
           </div>
-          <span className="ren-mono-tag">Pass Threshold &gt;= 85/100 · Auto-Approve Disabled</span>
+          <span className="ren-mono-tag">
+            Pass Threshold &gt;= 85/100 · Auto-Approve Disabled
+          </span>
         </div>
 
         <div className="ren-tabs">
@@ -508,29 +684,47 @@ export function RenaissanceClient() {
         <div className="ren-grid-2">
           <div className="ren-card">
             <h3>Inspected Candidate Payload</h3>
-            <p style={{ marginTop: "8px", fontFamily: "var(--arc-font-mono, monospace)", fontSize: "12px" }}>
-              Producer: {activePreset.producerSeatId} · Independent Critic: {activePreset.reviewerSeatId}
+            <p
+              style={{
+                marginTop: "8px",
+                fontFamily: "var(--arc-font-mono, monospace)",
+                fontSize: "12px",
+              }}
+            >
+              Producer: {activePreset.producerSeatId} · Independent Critic:{" "}
+              {activePreset.reviewerSeatId}
             </p>
             <p
               style={{
                 marginTop: "14px",
                 padding: "14px",
                 borderRadius: "8px",
-                background: "#080b11",
+                background: cosmic.void,
                 border: "1px solid rgba(255,255,255,0.08)",
-                color: "#f5f5f7",
+                color: text.primary,
               }}
             >
               {activePreset.bodyText}
             </p>
             <div style={{ marginTop: "16px" }}>
-              <h4 style={{ fontSize: "13px", marginBottom: "8px", color: "#a3adc2" }}>
-                7-Stage Pipeline &amp; Editorial Pod ({EDITORIAL_POD_SEATS.length} Seats)
+              <h4
+                style={{
+                  fontSize: "13px",
+                  marginBottom: "8px",
+                  color: text.secondary,
+                }}
+              >
+                7-Stage Pipeline &amp; Editorial Pod (
+                {ARCANEA_CHANNEL_COMMAND_POD.length} Seats)
               </h4>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                 {APPROVAL_PIPELINE_STAGES.map((st) => (
-                  <span key={st.stageId} className="ren-mono-tag" style={{ fontSize: "11px" }}>
-                    {st.order}. {st.name} ({st.ownerSeatId})
+                  <span
+                    key={st.stageId}
+                    className="ren-mono-tag"
+                    style={{ fontSize: "11px" }}
+                  >
+                    {st.stageOrder}. {st.stageId} ({st.ownerSeat})
                   </span>
                 ))}
               </div>
@@ -538,21 +732,35 @@ export function RenaissanceClient() {
           </div>
 
           <div className="ren-card">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <h3>Critic Verdict: {criticResult.verdict.toUpperCase()}</h3>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h3>Critic Verdict: {criticResult.passed ? "PASS" : "REJECT"}</h3>
               <span className="ren-mono-tag ren-mono-tag-gold">
-                Score: {criticResult.overallScore} / 100
+                Score: {criticResult.computedScore} / 100
               </span>
             </div>
-            {criticResult.blockers.length === 0 ? (
-              <p style={{ marginTop: "12px", color: "#7fffd4" }}>
-                Zero blockers detected. Ready for Stage 6 Human HMAC Approval (human:frank).
+            {criticBlockers.length === 0 ? (
+              <p style={{ marginTop: "12px", color: brand.aquamarine }}>
+                Zero blockers detected. Ready for Stage 6 Human HMAC Approval
+                (human:frank).
               </p>
             ) : (
-              <ul style={{ marginTop: "12px", paddingLeft: "18px", color: "#ff8a80", fontSize: "13px" }}>
-                {criticResult.blockers.map((b) => (
-                  <li key={b} style={{ marginBottom: "6px" }}>
-                    {b}
+              <ul
+                style={{
+                  marginTop: "12px",
+                  paddingLeft: "18px",
+                  color: semantic.error,
+                  fontSize: "13px",
+                }}
+              >
+                {criticBlockers.map((b) => (
+                  <li key={b.code} style={{ marginBottom: "6px" }}>
+                    {b.code}: {b.message}
                   </li>
                 ))}
               </ul>
@@ -562,10 +770,16 @@ export function RenaissanceClient() {
       </section>
 
       {/* SECTION 5: GATE G5 FOUNDING COHORT DEMAND CAPTURE */}
-      <section id="founding-cohort" className="ren-section" style={{ borderBottom: "none" }}>
+      <section
+        id="founding-cohort"
+        className="ren-section"
+        style={{ borderBottom: "none" }}
+      >
         <div className="ren-section-header">
           <div>
-            <p className="ren-eyebrow">REVENUE EXPERIMENT · {GATE_G5_REVENUE_EXPERIMENT.experimentId}</p>
+            <p className="ren-eyebrow">
+              REVENUE EXPERIMENT · {REVENUE_EXPERIMENT_SPEC.experimentId}
+            </p>
             <h2>Gate G5 Founding Cohort Demand Capture</h2>
           </div>
           <span className="ren-mono-tag ren-mono-tag-gold">
@@ -575,12 +789,19 @@ export function RenaissanceClient() {
 
         <div className="ren-grid-2">
           <div className="ren-card">
-            <h3>{GATE_G5_REVENUE_EXPERIMENT.title}</h3>
+            <h3>{REVENUE_EXPERIMENT_SPEC.freeGiftBeforeAsk.title}</h3>
             <p style={{ marginTop: "8px", marginBottom: "16px" }}>
-              {GATE_G5_REVENUE_EXPERIMENT.hypothesis}
+              {REVENUE_EXPERIMENT_SPEC.governingRule}
             </p>
-            <ul style={{ paddingLeft: "18px", fontSize: "13px", color: "#a3adc2", lineHeight: 1.65 }}>
-              {GATE_G5_REVENUE_EXPERIMENT.foundingCohortBenefits.map((benefit) => (
+            <ul
+              style={{
+                paddingLeft: "18px",
+                fontSize: "13px",
+                color: text.secondary,
+                lineHeight: 1.65,
+              }}
+            >
+              {REVENUE_EXPERIMENT_SPEC.foundingCohortBenefits.map((benefit) => (
                 <li key={benefit} style={{ marginBottom: "6px" }}>
                   {benefit}
                 </li>
@@ -591,13 +812,21 @@ export function RenaissanceClient() {
           <div className="ren-card">
             <h3>Record Founding Cohort Signal</h3>
             {waitlistState === "done" ? (
-              <p style={{ marginTop: "12px", color: "#7fffd4" }} role="status">
+              <p
+                style={{ marginTop: "12px", color: brand.aquamarine }}
+                role="status"
+              >
                 {waitlistMsg ?? "Your Founding Cohort signal is recorded."}
               </p>
             ) : (
               <form
                 onSubmit={handleCohortSubmit}
-                style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "12px" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                  marginTop: "12px",
+                }}
               >
                 <label style={{ fontSize: "13px" }}>
                   Target Edition
@@ -611,14 +840,15 @@ export function RenaissanceClient() {
                       marginTop: "4px",
                       padding: "10px",
                       borderRadius: "8px",
-                      background: "#080b11",
-                      color: "#f5f5f7",
+                      background: cosmic.void,
+                      color: text.primary,
                       border: "1px solid rgba(255,255,255,0.16)",
                     }}
                   >
-                    {GATE_G5_REVENUE_EXPERIMENT.editionsUnderTest.map((ed) => (
-                      <option key={ed.slug} value={ed.slug}>
-                        {ed.title} (proposed €{ed.proposedPriceEur})
+                    {SHOP_PRICE_BANDS.map((band) => (
+                      <option key={band.tierMapping} value={band.tierMapping}>
+                        {band.label.split(" — ")[1] ?? band.label} (proposed €
+                        {band.amountEur})
                       </option>
                     ))}
                   </select>
@@ -628,7 +858,7 @@ export function RenaissanceClient() {
                   Your Primary Craft Role
                   <select
                     value={role}
-                    onChange={(e) => setRole(e.target.value as ShopDemandRole)}
+                    onChange={(e) => setRole(e.target.value as BuyerRoleId)}
                     disabled={waitlistState === "submitting"}
                     style={{
                       display: "block",
@@ -636,8 +866,8 @@ export function RenaissanceClient() {
                       marginTop: "4px",
                       padding: "10px",
                       borderRadius: "8px",
-                      background: "#080b11",
-                      color: "#f5f5f7",
+                      background: cosmic.void,
+                      color: text.primary,
                       border: "1px solid rgba(255,255,255,0.16)",
                     }}
                   >
@@ -653,7 +883,9 @@ export function RenaissanceClient() {
                   Fair One-Time Price Band
                   <select
                     value={priceBand}
-                    onChange={(e) => setPriceBand(e.target.value as ShopPriceBand)}
+                    onChange={(e) =>
+                      setPriceBand(e.target.value as FairPriceBandId)
+                    }
                     disabled={waitlistState === "submitting"}
                     style={{
                       display: "block",
@@ -661,8 +893,8 @@ export function RenaissanceClient() {
                       marginTop: "4px",
                       padding: "10px",
                       borderRadius: "8px",
-                      background: "#080b11",
-                      color: "#f5f5f7",
+                      background: cosmic.void,
+                      color: text.primary,
                       border: "1px solid rgba(255,255,255,0.16)",
                     }}
                   >
@@ -689,8 +921,8 @@ export function RenaissanceClient() {
                       marginTop: "4px",
                       padding: "10px",
                       borderRadius: "8px",
-                      background: "#080b11",
-                      color: "#f5f5f7",
+                      background: cosmic.void,
+                      color: text.primary,
                       border: "1px solid rgba(255,255,255,0.16)",
                     }}
                   />
@@ -706,7 +938,10 @@ export function RenaissanceClient() {
                     : "Join Founding Cohort Waitlist"}
                 </button>
                 {waitlistState === "error" && waitlistMsg && (
-                  <p style={{ color: "#ff8a80", fontSize: "13px" }} role="alert">
+                  <p
+                    style={{ color: semantic.error, fontSize: "13px" }}
+                    role="alert"
+                  >
                     {waitlistMsg}
                   </p>
                 )}
