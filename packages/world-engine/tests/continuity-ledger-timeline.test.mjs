@@ -187,6 +187,17 @@ test("finds an ordering cycle and names every constraint and scene in it", () =>
   assert.equal(orderTimeline([ev("a"), ev("b"), ev("c")], [{ a: "a", relation: "before", b: "a" }]), null);
 });
 
+test("a self 'before' or 'after' constraint is reported once, not also as a cycle", () => {
+  for (const relation of ["before", "after"]) {
+    const findings = checkTimeline([ev("a")], [{ a: "a", relation, b: "a", sceneRef: "ch3/s1" }]);
+    assert.equal(findings.length, 1, relation);
+    assert.equal(findings[0].code, "SELF_CONSTRAINT");
+    assert.equal(findings[0].severity, "error");
+  }
+  const during = checkTimeline([ev("a")], [{ a: "a", relation: "during", b: "a" }]);
+  assert.deepEqual(during.map((f) => [f.code, f.severity]), [["SELF_CONSTRAINT", "info"]]);
+});
+
 test("mutual 'during' is an equality, not a cycle; but it contradicts different anchors", () => {
   const mutual = [
     { a: "x", relation: "during", b: "y" },

@@ -189,7 +189,9 @@ export function checkTimeline(
     if (c.a === c.b) {
       findings.push(finding("SELF_CONSTRAINT", c.relation === "during" ? "info" : "error",
         `constraint "${constraintLabel(c)}" relates "${c.a}" to itself`, [c.sceneRef], [c.a]));
-      if (c.relation === "during") continue;
+      // Already reported. A strict self-edge would also surface as a
+      // duplicate TIMELINE_CYCLE, so no self-constraint adds edges.
+      continue;
     }
     const refs = [c.sceneRef, byId.get(c.a)!.sceneRef, byId.get(c.b)!.sceneRef].filter((r): r is string => !!r);
     const why = `${c.a} ${c.relation} ${c.b}`;
