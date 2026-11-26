@@ -1,6 +1,6 @@
 {
   "runId": "example",
-  "createdAt": "2026-11-26T00:05:43.138Z",
+  "createdAt": "2026-11-26T00:10:10.405Z",
   "dryRun": true,
   "fixtures": [
     "kids-01-moth-postman",
@@ -28,6 +28,17 @@
       "writer": {
         "type": "mock",
         "variant": "faithful"
+      }
+    },
+    {
+      "id": "hybrid-arcanea",
+      "type": "hybrid-arcanea",
+      "chapters": 3,
+      "planner": {
+        "type": "mock"
+      },
+      "extractor": {
+        "type": "mock"
       }
     }
   ],

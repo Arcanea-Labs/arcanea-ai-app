@@ -19,11 +19,12 @@ test('dry run end to end: offline, writes results, receipts and summary', async 
   const dir = join(out, 't1');
   for (const f of ['run.json', 'results.jsonl', 'receipts.jsonl', 'summary.md']) assert.ok(existsSync(join(dir, f)), f);
   const rows = readJsonl(join(dir, 'results.jsonl'));
-  assert.equal(rows.length, 20 * 3);
+  assert.equal(rows.length, 20 * 4);
   assert.ok(rows.every((x) => x.ok && x.judge && x.judge.judges.length === 2));
   const receipts = readJsonl(join(dir, 'receipts.jsonl'));
-  assert.equal(receipts.filter((x) => x.kind === 'system').length, 20 * 4); // hybrid has 2 stages
-  assert.equal(receipts.filter((x) => x.kind === 'judge').length, 60 * 2);
+  // mock 1 + mock 1 + hybrid 2 + hybrid-arcanea (4 book + 3 chapters x 2 planner stages + 3 extractions = 13)
+  assert.equal(receipts.filter((x) => x.kind === 'system').length, 20 * 17);
+  assert.equal(receipts.filter((x) => x.kind === 'judge').length, 80 * 2);
   assert.ok(receipts.every((x) => 'latencyMs' in x && 'usdEstimate' in x));
   // Mocks and judges carry no price: unknown must be null, never 0.
   assert.ok(receipts.every((x) => x.usdEstimate === null), 'every dry-run receipt has usdEstimate null');
@@ -35,6 +36,7 @@ test('dry run end to end: offline, writes results, receipts and summary', async 
   assert.match(summary, /\| mock-faithful \| saltglass-reach \| 3\/3 \|/);
   assert.match(summary, /\| mock-drift \| saltglass-reach \| 2\/3 \|/);
   assert.match(summary, /never pooled/);
+  assert.match(summary, /\| hybrid-arcanea \| 20 \| 0 \| none \| 20\/20 \| 100 \| mock \|/);
   assert.equal(r.meta.judges.length, 2);
   assert.match(summary, /\| mock-faithful \|[^\n]*\| unknown \|/);
   assert.doesNotMatch(summary, /\$0\.0000/);

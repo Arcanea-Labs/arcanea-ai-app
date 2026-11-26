@@ -83,6 +83,9 @@ export async function runBenchmark({ runId, fixtures, systems, panel = null, sal
           row.safety = { classifier: safetyClassifier.id, safe: verdict.safe, label: verdict.label };
         }
         row.deterministic = await scoreDeterministic(text, fx, { taste });
+        // Structured pipeline signals carry no output text, so they are kept even when text is withheld.
+        if (out.continuity) row.continuity = out.continuity;
+        if (out.diagnostics) row.diagnostics = out.diagnostics;
         row.ok = true;
         if (row.safety && !row.safety.safe) {
           row.text = WITHHELD;
@@ -186,6 +189,19 @@ export function renderSummary({ runId, meta, rows, receipts, fixtures }) {
       const flagged = jr.filter((r) => r.judge.disagreement.disagree).length;
       const incomplete = jr.filter((r) => !r.judge.complete).length;
       L.push(`- ${s}: ${flagged}/${jr.length} items flagged; ${incomplete} items with a failed judge`);
+    }
+    L.push('');
+  }
+
+  const piped = rows.filter((r) => r.continuity || r.diagnostics);
+  if (piped.length) {
+    L.push('## Pipeline signals (hybrid-arcanea)', '');
+    L.push('| System | Items | Continuity errors (items) | Canon flags | Plan following pass | Mean plan-following % | Extractor |', '|---|---|---|---|---|---|---|');
+    for (const s of [...new Set(piped.map((r) => r.systemId))]) {
+      const rs = piped.filter((r) => r.systemId === s);
+      const pf = rs.map((r) => r.diagnostics?.planFollowing).filter(Boolean);
+      const flags = [...new Set(rs.flatMap((r) => r.continuity?.canonFlags ?? []))];
+      L.push(`| ${s} | ${rs.length} | ${rs.filter((r) => r.continuity?.errors).length} | ${flags.length ? flags.join(', ') : 'none'} | ${pf.filter((p) => p.pass).length}/${pf.length} | ${fmt(mean(pf.flatMap((p) => p.curve.map((c) => c.percent))), 1)} | ${[...new Set(pf.map((p) => p.extractor))].join(', ') || '—'} |`);
     }
     L.push('');
   }

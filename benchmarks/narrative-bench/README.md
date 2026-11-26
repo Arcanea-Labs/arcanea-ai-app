@@ -5,6 +5,7 @@ This benchmark compares three kinds of fiction systems on the same 20 original b
 - specialised models (PageStorm served through vLLM)
 - frontier APIs (any OpenAI-compatible endpoint)
 - a hybrid pipeline that plans with one model and writes with another
+- `hybrid-arcanea`: plans with `@arcanea/narrative-planner`, checks continuity between chapters with `@arcanea/world-engine`, and scores plan following with `@arcanea/narrative-diagnostics`
 
 It measures consistency, length adherence, lexical diversity, character drift, blind LLM-panel judgements of literary quality, originality and editorial acceptance, and latency and cost.
 
@@ -18,14 +19,20 @@ Background and design decisions are in `docs/research/narrative-intelligence/` (
 fixtures/            20 JSON briefs + PROVENANCE.md (CC-BY-4.0, original)
 lib/                 fixture loader/validator, text utils, receipts, safety gate
 scorers/             deterministic scorers, judge interface + rubric, Workers AI judge, mock judges, TASTE bridge
-systems/             mock, openai-compatible (frontier or vLLM), hybrid
+systems/             mock, openai-compatible (frontier or vLLM), hybrid, hybrid-arcanea
 runner.mjs           CLI
 systems.example.json example config (env-var names only, no keys)
 results/example/     one tiny committed dry run; every other results/ dir is git-ignored
 test/                node --test suite
 ```
 
-This is plain Node ESM. It needs Node 20 or later and has no dependencies.
+This is plain Node ESM. It needs Node 20 or later and has no dependencies. The `hybrid-arcanea` system, which is part of the dry run, imports three workspace packages from their built `dist/` by relative path, so build them first:
+
+```bash
+tsc -p packages/world-engine && tsc -p packages/narrative-planner && tsc -p packages/narrative-diagnostics
+```
+
+Without the builds, the `hybrid-arcanea` rows are recorded as errors and the other systems still run.
 
 ## How to run
 
@@ -92,6 +99,16 @@ Rules:
 
 Judge clients are injected: anything with `{id, family, complete({system, user})}` works. The suite ships `WorkersAiJudge` (live) and `MockJudge` (offline; scores derive from the text only and are deliberately not a quality signal).
 
+### hybrid-arcanea pipeline (`systems/hybrid-arcanea.mjs`)
+
+Config: `{ "type": "hybrid-arcanea", "chapters": 3, "planner": ..., "extractor": ..., "continuity": { "stopOnError": false } }`.
+
+1. **Plan and write.** `runStory` from `@arcanea/narrative-planner` runs the staged protocol: preview, book plan, chapter plan, cast, then scene breakdown and chapter text for each chapter. The structural canon gate reviews every stage. `planner` is `{ "type": "mock" }` or an OpenAI-compatible client config (wrapped as a `NarrativeModel`). Planner prices use the client's `pricing`; without one, receipts are `null`.
+2. **Continuity between chapters.** After each chapter's scene breakdown, and before that chapter's prose, the planned scenes become `world-engine` ledger events (character locations) and timeline events (scene order). `detectImpossibleTransitions` and `checkTimeline` run over every scene so far. Each check is stored per chapter in `results.jsonl` under `continuity`. With `stopOnError: true`, a continuity error stops the run and the row is recorded as an error.
+3. **Plan following.** `runPlanFollowing` from `@arcanea/narrative-diagnostics` scores each chapter against its plan bullets and stores the curve under `diagnostics`. `extractor` is `{ "type": "mock" }` or `{ "type": "workers-ai", "model"? }`, which reads `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`.
+
+In the dry run, `MockNarrativeModel` plans from the fixture's own text, and `MockExtractor` replays evidence from a word-overlap heuristic. A 100% plan-following score there shows only that the wiring works. The summary adds a "Pipeline signals" table for systems that report these fields.
+
 ### Latency and cost
 
 Receipts record latency for each stage. Tokens come from the API `usage` field when it is reported. Otherwise they are estimated as chars/4, and the receipt says so (`tokensSource`). `usdEstimate` is computed only when the config gives a price for that system. Otherwise it is `null`, and the summary prints `unknown`. Hardware cost for local vLLM is not included.
@@ -125,10 +142,10 @@ Six fixtures share the invented Saltglass Reach micro-world, which tests continu
 ## Not measured yet
 
 - **Pageshift-style diagnostics** (ADR-004 v1): LLM evidence extraction plus deterministic pass/fail rules for the seven writing-quality diagnostics. v0 only has lexical probes.
-- **Plan-following decay by chapter.** Fixtures are single passages. No multi-chapter generation is scored.
+- **Plan-following decay by chapter, live.** `hybrid-arcanea` scores it per chapter, but no live run has been done. The other systems write single passages.
 - **Model-chosen-content diversity**: the share of content the prompt did not require, compared across N samples per prompt. v0 diversity is lexical, within one text.
 - **The PageStorm scaffold.** `mode: "completions"` sends a plain prompt. It does not drive PageStorm's staged preview → plan → chapter template, so v0 under-represents what that model does with its own scaffold.
-- **Continuity-state re-grounding** in the hybrid pipeline (ADR-005). The v0 hybrid is plan then write only.
+- **Continuity-state re-grounding** in the hybrid pipeline (ADR-005). The v0 `hybrid` is plan then write only. `hybrid-arcanea` checks continuity between chapters but only from planned scenes (who is where, in what order). It does not extract state from the prose or feed findings back into the next prompt.
 - **Human editorial judgement and judge calibration.** There is no human-labelled set yet, so judge accuracy is unknown and only disagreement can be shown.
 - **Statistical significance.** With 20 fixtures and one sample each, no confidence intervals are computed. Do not rank systems on small differences.
 - **Cost of local GPUs, and safety-classifier false negatives.**
