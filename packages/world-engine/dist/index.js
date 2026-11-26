@@ -14,4 +14,8 @@ export { analyzeElementalBalance, detectRoles, detectGaps, generateConflict, wea
 export { ELEMENT_AESTHETICS, RANK_VISUAL, ART_DIRECTION, characterToImagePrompt, locationToImagePrompt, creatureToImagePrompt, } from "./visual.js";
 // Temporal Multiverse Engine (Realms, Corridors, Linguistics, Chronology, Sandersonian Toll, Monomyth)
 export { LINGUISTIC_FAMILIES, CANONICAL_REALMS, CANONICAL_EPOCHS, CANONICAL_GUARDIANS, GATE_TOLL_REGISTRY, MONOMYTH_STAGES, getCanonicalRealms, getLinguisticFamilies, getCanonicalEpochs, getCanonicalGuardians, getMonomythStages, getMonomythStage, calculateCorridorResonance, calculateSandersonianMagicToll, generateRealmName, traceEntityProvenance, } from "./temporal-multiverse-engine.js";
+export { projectAtlasStaging, atlasAtMoment } from "./geography.js";
+// Narrative continuity (plans, character ledger, timeline, world rules,
+// diversity metrics, promotion guard) — pure, model-independent.
+export * from "./continuity/index.js";
 //# sourceMappingURL=index.js.map
