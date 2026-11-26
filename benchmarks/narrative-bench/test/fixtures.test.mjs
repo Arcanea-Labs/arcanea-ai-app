@@ -33,6 +33,21 @@ test('validator rejects malformed fixtures', () => {
   assert.ok(errs.some((e) => /cast must hold/.test(e)));
 });
 
+test('validator requires knownNames and checks aliases when present', () => {
+  const missing = structuredClone(fixtures[0]);
+  delete missing.knownNames;
+  assert.ok(validateFixture(missing).includes('missing field knownNames'));
+  const wrongType = structuredClone(fixtures[0]);
+  wrongType.knownNames = ['Ok', 3];
+  assert.ok(validateFixture(wrongType).some((e) => /knownNames must be an array of non-empty strings/.test(e)));
+  const badAlias = structuredClone(fixtures[0]);
+  badAlias.cast[0].aliases = 'Roz';
+  assert.ok(validateFixture(badAlias).some((e) => /aliases must be an array of non-empty strings/.test(e)));
+  const goodAlias = structuredClone(fixtures[0]);
+  goodAlias.cast[0].aliases = ['Roz'];
+  assert.deepEqual(validateFixture(goodAlias), []);
+});
+
 test('every check behaves on its own examples (fixture self-test)', () => {
   for (const f of fixtures) {
     const allContra = [...f.mustHold.flatMap((m) => m.contradicts), ...f.probes.flatMap((p) => p.contradicts ?? [])];

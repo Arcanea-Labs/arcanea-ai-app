@@ -5,7 +5,9 @@ import { fileURLToPath } from 'node:url';
 
 export const FIXTURE_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'fixtures');
 
-const REQUIRED = ['id', 'title', 'brief', 'worldBible', 'cast', 'mustHold', 'probes', 'targetLength', 'tags'];
+const REQUIRED = ['id', 'title', 'brief', 'worldBible', 'cast', 'knownNames', 'mustHold', 'probes', 'targetLength', 'tags'];
+
+const isStringList = (v) => Array.isArray(v) && v.every((s) => typeof s === 'string' && s.trim().length > 0);
 
 function checkRegexList(list, where, errors) {
   if (!Array.isArray(list)) return errors.push(`${where} must be an array of regex strings`);
@@ -29,7 +31,11 @@ export function validateFixture(f) {
   if (!Array.isArray(f.cast) || f.cast.length < 3 || f.cast.length > 6) errors.push('cast must hold 3-6 characters');
   for (const c of f.cast ?? []) {
     if (!c.name || !Array.isArray(c.traits) || !c.traits.length) errors.push(`cast entry needs name and traits: ${JSON.stringify(c)}`);
+    if (c.aliases !== undefined && !isStringList(c.aliases)) errors.push(`cast ${c.name} aliases must be an array of non-empty strings`);
   }
+  // The drift scorer treats knownNames as the allow-list for capitalised
+  // non-cast tokens; a missing list would flag every place name as drift.
+  if (!isStringList(f.knownNames)) errors.push('knownNames must be an array of non-empty strings');
   if (!Array.isArray(f.mustHold) || !f.mustHold.length) errors.push('mustHold must be a non-empty array');
   for (const m of f.mustHold ?? []) {
     if (!m.id || !m.fact) errors.push(`mustHold entry needs id and fact: ${JSON.stringify(m)}`);
