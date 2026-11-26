@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import Link from "next/link";
+import { brand, cosmic, semantic, text } from "@arcanea/design-system";
 import {
   DESIGN_CONSTITUTION_VERSION,
   SURFACE_MODES,
@@ -347,7 +348,7 @@ export function RenaissanceClient() {
                     <td
                       style={{
                         fontFamily: "var(--arc-font-mono, monospace)",
-                        color: "#ff8a80",
+                        color: semantic.error,
                       }}
                     >
                       {entry.quarantinedTerm}
@@ -425,7 +426,7 @@ export function RenaissanceClient() {
               <p
                 style={{
                   fontSize: "14px",
-                  color: "#d7deec",
+                  color: text.primary,
                   lineHeight: 1.65,
                   marginBottom: "16px",
                 }}
@@ -442,7 +443,7 @@ export function RenaissanceClient() {
                   fontFamily: "var(--arc-font-editorial, Georgia, serif)",
                   fontStyle: "italic",
                   fontSize: "18px",
-                  color: "#f5f5f7",
+                  color: text.primary,
                 }}
               >
                 {activeShot.dialogueOrVoiceover}
@@ -454,7 +455,7 @@ export function RenaissanceClient() {
                   gap: "12px",
                   flexWrap: "wrap",
                   fontSize: "12px",
-                  color: "#a3adc2",
+                  color: text.secondary,
                 }}
               >
                 <span>
@@ -641,7 +642,7 @@ export function RenaissanceClient() {
               </div>
               <h3>
                 {gb.name}{" "}
-                <span style={{ fontWeight: 400, color: "#a3adc2" }}>
+                <span style={{ fontWeight: 400, color: text.secondary }}>
                   ({gb.guardianName})
                 </span>
               </h3>
@@ -698,9 +699,9 @@ export function RenaissanceClient() {
                 marginTop: "14px",
                 padding: "14px",
                 borderRadius: "8px",
-                background: "#080b11",
+                background: cosmic.void,
                 border: "1px solid rgba(255,255,255,0.08)",
-                color: "#f5f5f7",
+                color: text.primary,
               }}
             >
               {activePreset.bodyText}
@@ -710,7 +711,7 @@ export function RenaissanceClient() {
                 style={{
                   fontSize: "13px",
                   marginBottom: "8px",
-                  color: "#a3adc2",
+                  color: text.secondary,
                 }}
               >
                 7-Stage Pipeline &amp; Editorial Pod (
@@ -744,7 +745,7 @@ export function RenaissanceClient() {
               </span>
             </div>
             {criticBlockers.length === 0 ? (
-              <p style={{ marginTop: "12px", color: "#7fffd4" }}>
+              <p style={{ marginTop: "12px", color: brand.aquamarine }}>
                 Zero blockers detected. Ready for Stage 6 Human HMAC Approval
                 (human:frank).
               </p>
@@ -753,7 +754,7 @@ export function RenaissanceClient() {
                 style={{
                   marginTop: "12px",
                   paddingLeft: "18px",
-                  color: "#ff8a80",
+                  color: semantic.error,
                   fontSize: "13px",
                 }}
               >
@@ -796,7 +797,7 @@ export function RenaissanceClient() {
               style={{
                 paddingLeft: "18px",
                 fontSize: "13px",
-                color: "#a3adc2",
+                color: text.secondary,
                 lineHeight: 1.65,
               }}
             >
@@ -811,7 +812,7 @@ export function RenaissanceClient() {
           <div className="ren-card">
             <h3>Record Founding Cohort Signal</h3>
             {waitlistState === "done" ? (
-              <p style={{ marginTop: "12px", color: "#7fffd4" }} role="status">
+              <p style={{ marginTop: "12px", color: brand.aquamarine }} role="status">
                 {waitlistMsg ?? "Your Founding Cohort signal is recorded."}
               </p>
             ) : (
@@ -836,8 +837,8 @@ export function RenaissanceClient() {
                       marginTop: "4px",
                       padding: "10px",
                       borderRadius: "8px",
-                      background: "#080b11",
-                      color: "#f5f5f7",
+                      background: cosmic.void,
+                      color: text.primary,
                       border: "1px solid rgba(255,255,255,0.16)",
                     }}
                   >
@@ -862,8 +863,8 @@ export function RenaissanceClient() {
                       marginTop: "4px",
                       padding: "10px",
                       borderRadius: "8px",
-                      background: "#080b11",
-                      color: "#f5f5f7",
+                      background: cosmic.void,
+                      color: text.primary,
                       border: "1px solid rgba(255,255,255,0.16)",
                     }}
                   >
@@ -889,8 +890,8 @@ export function RenaissanceClient() {
                       marginTop: "4px",
                       padding: "10px",
                       borderRadius: "8px",
-                      background: "#080b11",
-                      color: "#f5f5f7",
+                      background: cosmic.void,
+                      color: text.primary,
                       border: "1px solid rgba(255,255,255,0.16)",
                     }}
                   >
@@ -917,8 +918,8 @@ export function RenaissanceClient() {
                       marginTop: "4px",
                       padding: "10px",
                       borderRadius: "8px",
-                      background: "#080b11",
-                      color: "#f5f5f7",
+                      background: cosmic.void,
+                      color: text.primary,
                       border: "1px solid rgba(255,255,255,0.16)",
                     }}
                   />
@@ -935,7 +936,7 @@ export function RenaissanceClient() {
                 </button>
                 {waitlistState === "error" && waitlistMsg && (
                   <p
-                    style={{ color: "#ff8a80", fontSize: "13px" }}
+                    style={{ color: semantic.error, fontSize: "13px" }}
                     role="alert"
                   >
                     {waitlistMsg}

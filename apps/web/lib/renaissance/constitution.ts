@@ -10,6 +10,8 @@
  * Authority: STAGING -> Ready for Creator lock. Enforced by `runIndependentCriticalReview()`.
  */
 
+import { brand, cosmic } from "@arcanea/design-system";
+
 export const DESIGN_CONSTITUTION_VERSION = "3.1.0-renaissance" as const;
 
 export type SurfaceModeId =
@@ -50,16 +52,16 @@ export const SURFACE_MODES: Record<SurfaceModeId, SurfaceModeSpec> = {
       "arcanea-studio model router controls",
     ],
     backgroundTokens: {
-      void: "#0b0e14",
-      deep: "#121826",
-      surface: "#1a2332",
-      elevated: "#232f42",
+      void: cosmic.void,
+      deep: cosmic.deep,
+      surface: cosmic.surface,
+      elevated: cosmic.raised,
     },
     accentTokens: {
-      primaryTeal: "#00bcd4",
-      secondaryBlue: "#0d47a1",
-      canonGold: "#ffd700",
-      successAquamarine: "#7fffd4",
+      primaryTeal: brand.atlanteanTeal,
+      secondaryBlue: brand.cosmicBlue,
+      canonGold: brand.arcaneanGold,
+      successAquamarine: brand.aquamarine,
     },
     lightingAndMaterialRules: [
       "Chrome stays neutral (#09090b to #121826); artwork and world cards supply the color.",
@@ -85,16 +87,16 @@ export const SURFACE_MODES: Record<SurfaceModeId, SurfaceModeSpec> = {
       "Firstlight II and Sovereign Depths key art",
     ],
     backgroundTokens: {
-      void: "#0b0e14",
-      deep: "#121826",
-      surface: "#1a2332",
-      elevated: "#232f42",
+      void: cosmic.void,
+      deep: cosmic.deep,
+      surface: cosmic.surface,
+      elevated: cosmic.raised,
     },
     accentTokens: {
-      primaryTeal: "#00bcd4",
-      secondaryBlue: "#0d47a1",
-      canonGold: "#ffd700",
-      successAquamarine: "#7fffd4",
+      primaryTeal: brand.atlanteanTeal,
+      secondaryBlue: brand.cosmicBlue,
+      canonGold: brand.arcaneanGold,
+      successAquamarine: brand.aquamarine,
     },
     lightingAndMaterialRules: [
       "Materials carry labor and mineral wear: load-bearing basalt, coral-pink volcanic stone, salt-stained linen, repaired iron.",
@@ -117,16 +119,16 @@ export const SURFACE_MODES: Record<SurfaceModeId, SurfaceModeSpec> = {
       "Trinity mascot bumpers (Mira -> Kage -> Akashi)",
     ],
     backgroundTokens: {
-      void: "#0b0e14",
-      deep: "#121826",
-      surface: "#1a2332",
-      elevated: "#232f42",
+      void: cosmic.void,
+      deep: cosmic.deep,
+      surface: cosmic.surface,
+      elevated: cosmic.raised,
     },
     accentTokens: {
-      primaryTeal: "#00bcd4",
-      secondaryBlue: "#0d47a1",
-      canonGold: "#ffd700",
-      successAquamarine: "#7fffd4",
+      primaryTeal: brand.atlanteanTeal,
+      secondaryBlue: brand.cosmicBlue,
+      canonGold: brand.arcaneanGold,
+      successAquamarine: brand.aquamarine,
     },
     lightingAndMaterialRules: [
       "Sharp graphic shadow shapes with deliberate 2s/3s hold frames before kinetic release.",
@@ -149,16 +151,16 @@ export const SURFACE_MODES: Record<SurfaceModeId, SurfaceModeSpec> = {
       "Ten Gates & Godbeast Chord structural diagrams",
     ],
     backgroundTokens: {
-      void: "#0b0e14",
-      deep: "#121826",
-      surface: "#1a2332",
-      elevated: "#232f42",
+      void: cosmic.void,
+      deep: cosmic.deep,
+      surface: cosmic.surface,
+      elevated: cosmic.raised,
     },
     accentTokens: {
-      primaryTeal: "#00bcd4",
-      secondaryBlue: "#0d47a1",
-      canonGold: "#ffd700",
-      successAquamarine: "#7fffd4",
+      primaryTeal: brand.atlanteanTeal,
+      secondaryBlue: brand.cosmicBlue,
+      canonGold: brand.arcaneanGold,
+      successAquamarine: brand.aquamarine,
     },
     lightingAndMaterialRules: [
       "High-contrast vector linework in Arcanean Gold (#ffd700) and Atlantean Teal (#00bcd4) over Cosmic Void (#0b0e14).",
