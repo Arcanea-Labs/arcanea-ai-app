@@ -58,7 +58,7 @@ Each run writes `results/<runId>/`:
 |---|---|
 | `run.json` | Fixture ids, system configs (env-var names only), judge ids, rubric version, blind salt, safety classifier, TASTE availability |
 | `results.jsonl` | One row per system × fixture: output text (or a withheld marker), deterministic scores, judge panel result, totals |
-| `receipts.jsonl` | One row per generation stage and per judge call: latency, input/output tokens, token source, `usdEstimate` (null when the price is unknown) |
+| `receipts.jsonl` | One row per generation stage and per judge call: latency, input/output tokens, token source, `usdEstimate` (null when the price is unknown; `cli` rows add `pricingSource: "subscription"`) |
 | `summary.md` | Tables per system |
 
 Judge env overrides: `NARRATIVE_BENCH_JUDGE_MODELS` (comma list) and `NARRATIVE_BENCH_AI_GATEWAY` (default `starlight-review`). The judge endpoint is `https://gateway.ai.cloudflare.com/v1/{account}/starlight-review/workers-ai/{model}`.
@@ -98,6 +98,17 @@ Rules:
 - **Failures are recorded.** A judge that errors or returns unparseable output is stored with its error, and the item is marked `complete: false`. Scores are never guessed.
 
 Judge clients are injected: anything with `{id, family, complete({system, user})}` works. The suite ships `WorkersAiJudge` (live) and `MockJudge` (offline; scores derive from the text only and are deliberately not a quality signal).
+
+### cli systems (`systems/cli.mjs`)
+
+Config: `{ "type": "cli", "id", "command", "args": [...], "promptVia": "stdin" | "arg", "model"?, "timeoutMs"?, "maxOutputBytes"?, "keepApiKeyEnv"? }`. See the `claude-cli`, `codex-cli` and `gemini-cli` examples in `systems.example.json`, and check their flags against the CLI version you have installed.
+
+- Runs an official CLI on the user's own subscription (ADR-006). The CLI must already be logged in; the harness holds no keys and rejects `apiKeyEnv`.
+- Spawned with an argv array and `shell: false`; `shell` in the config is rejected. The prompt (system + user) goes on stdin (default) or as exactly one extra argv element after `args` (`promptVia: "arg"`). It is never interpolated into a command string.
+- API-key env vars (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, anything ending in `_API_KEY`, ...) are removed from the child's environment, so a CLI cannot quietly fall back to API billing. `keepApiKeyEnv: true` turns that off.
+- `timeoutMs` (default 600000) kills a hung CLI; `maxOutputBytes` (default 4 MiB) caps stdout. A non-zero exit or empty stdout is an error row.
+- Receipts: measured latency, chars/4 token estimates, `usdEstimate: null`, `pricingSource: "subscription"`.
+- `hybrid` planner/writer and the `hybrid-arcanea` planner accept a `{ "type": "cli", ... }` client config too.
 
 ### hybrid-arcanea pipeline (`systems/hybrid-arcanea.mjs`)
 

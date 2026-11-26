@@ -1,8 +1,10 @@
 // Hybrid agentic pipeline v0: plan with one model, write with another.
 //   { type: "hybrid", id, planner: <client config>, writer: <client config> }
+// A client config is { type: "mock" }, { type: "cli", command, args, ... } or an OpenAI-compatible config.
 // Each stage gets its own receipt. A continuity-state re-grounding step
 // (ADR-005) is not wired in yet; see README "Not measured yet".
 import { OpenAICompatibleClient } from './openai-compatible.mjs';
+import { CliClient } from './cli.mjs';
 import { mockText } from './mock.mjs';
 import { stageReceipt } from '../lib/receipts.mjs';
 
@@ -31,7 +33,9 @@ class MockStageClient {
 }
 
 function stageClient(cfg, deps) {
-  return cfg.type === 'mock' ? new MockStageClient(cfg) : new OpenAICompatibleClient({ ...cfg, id: cfg.id ?? cfg.model }, deps);
+  if (cfg.type === 'mock') return new MockStageClient(cfg);
+  if (cfg.type === 'cli') return new CliClient({ ...cfg, id: cfg.id ?? cfg.model ?? cfg.command }, deps);
+  return new OpenAICompatibleClient({ ...cfg, id: cfg.id ?? cfg.model }, deps);
 }
 
 export class HybridSystem {

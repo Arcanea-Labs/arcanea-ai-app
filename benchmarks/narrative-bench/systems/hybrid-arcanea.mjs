@@ -1,7 +1,7 @@
 // Hybrid Arcanea pipeline: plan → check continuity between chapters → score.
 //
 //   { type: "hybrid-arcanea", id, chapters?: 3,
-//     planner:   { type: "mock" } | <openai-compatible client config>,
+//     planner:   { type: "mock" } | { type: "cli", command, args, ... } | <openai-compatible client config>,
 //     extractor: { type: "mock" } | { type: "workers-ai", model? },
 //     continuity?: { stopOnError?: false } }
 //
@@ -25,6 +25,7 @@ import { existsSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { OpenAICompatibleClient } from './openai-compatible.mjs';
+import { CliClient } from './cli.mjs';
 import { mockText } from './mock.mjs';
 import { stageReceipt } from '../lib/receipts.mjs';
 
@@ -107,7 +108,7 @@ function mockPlanner(P, fixture, n) {
 /** Adapts the bench's OpenAI-compatible client to the planner's NarrativeModel. */
 class ClientNarrativeModel {
   constructor(client) {
-    this.provider = 'openai-compatible';
+    this.provider = client instanceof CliClient ? 'cli' : 'openai-compatible';
     this.client = client;
   }
   async generate(req) {
@@ -204,7 +205,10 @@ export class HybridArcaneaSystem {
     this.cfg = { ...cfg, chapters: n };
     this.unsafeModel = !!cfg.planner.unsafeModel;
     this.markers = [cfg.id, cfg.planner.model].filter(Boolean);
-    this.client = cfg.planner.type === 'mock' ? null : new OpenAICompatibleClient({ ...cfg.planner, id: cfg.planner.id ?? cfg.planner.model }, deps);
+    const plannerId = cfg.planner.id ?? cfg.planner.model ?? cfg.planner.command;
+    if (cfg.planner.type === 'mock') this.client = null;
+    else if (cfg.planner.type === 'cli') this.client = new CliClient({ ...cfg.planner, id: plannerId }, deps);
+    else this.client = new OpenAICompatibleClient({ ...cfg.planner, id: plannerId }, deps);
     Object.defineProperty(this, 'env', { value: deps.env ?? process.env, enumerable: false });
   }
 
