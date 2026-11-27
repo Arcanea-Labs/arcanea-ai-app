@@ -8,8 +8,10 @@
 // Safety of the call:
 // - The process is spawned with an argv array and `shell: false`. The prompt
 //   never becomes part of a shell string: it goes on stdin (default) or as
-//   exactly one extra argv element (`promptVia: "arg"`).
+//   exactly one extra argv element (`promptVia: "arg"`). An arg prompt that
+//   starts with "-" is refused, so the CLI can never parse it as an option.
 // - API-key env vars (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, ...)
+//   and any other *_API_KEY / *_API_TOKEN name (matched case-blind)
 //   are removed from the child's environment by default, so the CLI uses the
 //   subscription login instead of silently billing an API account. Set
 //   `keepApiKeyEnv: true` only if you mean to.
@@ -43,7 +45,7 @@ function childEnv(env, keep) {
   for (const k of Object.keys(out)) {
     // Windows env names are case-insensitive, so match on the upper-cased name.
     const name = k.toUpperCase();
-    if (API_KEY_ENV.includes(name) || /_API_KEY$/.test(name)) delete out[k];
+    if (API_KEY_ENV.includes(name) || /_API_(?:KEY|TOKEN)$/.test(name)) delete out[k];
   }
   return out;
 }
@@ -127,6 +129,8 @@ export class CliClient {
     const prompt = system ? `${system}\n\n${user}` : user;
     const viaArg = c.promptVia === 'arg';
     const label = `system ${c.id}`;
+    if (viaArg && prompt.startsWith('-'))
+      throw new Error(`${label}: prompt starts with "-" and would be read as an option by ${basename(c.command)}; use promptVia "stdin"`);
     const r = await runCli({
       command: c.command,
       args: viaArg ? [...c.args, prompt] : [...c.args],

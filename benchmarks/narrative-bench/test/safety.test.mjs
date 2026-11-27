@@ -74,3 +74,15 @@ test('a withheld output leaks no verbatim spans through its deterministic scores
   assert.equal(d.drift.unknownNames.length, 1);
   assert.equal(d.drift.unknownNames[0].count, 2);
 });
+
+test('only an exact "safe" verdict clears an output; any other reply fails closed', async () => {
+  const classifierAnswering = (response) =>
+    new WorkersAiSafetyClassifier({
+      accountId: 'a',
+      apiToken: 't',
+      fetchImpl: async () => ({ ok: true, status: 200, text: async () => JSON.stringify({ result: { response } }) }),
+    });
+  for (const ok of ['safe', 'Safe', '  safe\n', 'safe\n']) assert.equal((await classifierAnswering(ok).classify('x')).safe, true, `"${ok}" should clear`);
+  for (const bad of ['unsafe\nS1', 'safety unclear', 'safe-ish, could not classify', 'safeguards triggered', '', 'I cannot classify this'])
+    assert.equal((await classifierAnswering(bad).classify('x')).safe, false, `"${bad}" should fail closed`);
+});

@@ -67,8 +67,9 @@ export class WorkersAiSafetyClassifier {
     const raw = await res.text();
     if (!res.ok) throw new Error(`safety classifier HTTP ${res.status}`);
     const out = extractWorkersAiText(JSON.parse(raw)).trim().toLowerCase();
-    // Llama Guard answers "safe" or "unsafe\nS<n>". Anything else fails closed.
-    return { safe: out.startsWith('safe'), label: out.split('\n').join(' ').slice(0, 40) };
+    // Llama Guard answers "safe" or "unsafe\nS<n>". Only a first line of exactly
+    // "safe" clears the output; anything else ("safety unclear", "", ...) fails closed.
+    return { safe: out.split('\n')[0].trim() === 'safe', label: out.split('\n').join(' ').slice(0, 40) };
   }
 }
 

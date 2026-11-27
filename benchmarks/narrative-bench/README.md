@@ -104,8 +104,8 @@ Judge clients are injected: anything with `{id, family, complete({system, user})
 Config: `{ "type": "cli", "id", "command", "args": [...], "promptVia": "stdin" | "arg", "model"?, "timeoutMs"?, "maxOutputBytes"?, "keepApiKeyEnv"? }`. See the `claude-cli`, `codex-cli` and `gemini-cli` examples in `systems.example.json`, and check their flags against the CLI version you have installed.
 
 - Runs an official CLI on the user's own subscription (ADR-006). The CLI must already be logged in; the harness holds no keys and rejects `apiKeyEnv`.
-- Spawned with an argv array and `shell: false`; `shell` in the config is rejected. The prompt (system + user) goes on stdin (default) or as exactly one extra argv element after `args` (`promptVia: "arg"`). It is never interpolated into a command string.
-- API-key env vars (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, anything ending in `_API_KEY`, ...) are removed from the child's environment, so a CLI cannot quietly fall back to API billing. `keepApiKeyEnv: true` turns that off.
+- Spawned with an argv array and `shell: false`; `shell` in the config is rejected. The prompt (system + user) goes on stdin (default) or as exactly one extra argv element after `args` (`promptVia: "arg"`). It is never interpolated into a command string. An `arg` prompt that starts with `-` is refused, so the CLI cannot read it as an option.
+- API-key env vars (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, anything ending in `_API_KEY` or `_API_TOKEN`, matched case-blind, ...) are removed from the child's environment, so a CLI cannot quietly fall back to API billing. `keepApiKeyEnv: true` turns that off.
 - `timeoutMs` (default 600000) kills a hung CLI; `maxOutputBytes` (default 4 MiB) caps stdout. A non-zero exit or empty stdout is an error row.
 - Receipts: measured latency, chars/4 token estimates, `usdEstimate: null`, `pricingSource: "subscription"`.
 - `hybrid` planner/writer and the `hybrid-arcanea` planner accept a `{ "type": "cli", ... }` client config too.
@@ -129,8 +129,8 @@ Receipts record latency for each stage. Tokens come from the API `usage` field w
 Some models (for example open base models) had no safety training and cannot refuse. Mark any such system `"unsafeModel": true`; before any person sees its output, it must go through a safety classifier. This is a general rule for every model and system type (ADR-006). The harness enforces this:
 
 - A system marked `"unsafeModel": true` will not run unless the config names a `safetyClassifier`. The example config uses Llama Guard on Workers AI.
-- The classifier reads each output in windows of `maxInputChars` characters (default 24000, about 6k tokens) and marks the output unsafe if any window is unsafe, so no text goes unclassified. Set `"safetyClassifier": { "type": "workers-ai", "maxInputChars": 32000 }` to change the window; keep it within the classifier model's context window. It must be a positive integer, or the run refuses to start.
-- If the classifier does not clear an output, the output is withheld from `results.jsonl` (replaced by a marker) and is never sent to the judges. Its deterministic scores are still computed by machine.
+- The classifier reads each output in windows of `maxInputChars` characters (default 24000, about 6k tokens) and marks the output unsafe if any window is unsafe, so no text goes unclassified. Only a reply whose first line is exactly `safe` clears an output; any other reply fails closed. Set `"safetyClassifier": { "type": "workers-ai", "maxInputChars": 32000 }` to change the window; keep it within the classifier model's context window. It must be a positive integer, or the run refuses to start.
+- If the classifier does not clear an output, the output is withheld from `results.jsonl` (replaced by a marker) and is never sent to the judges. Its deterministic scores are still computed by machine, with every quoted span (regex `evidence`, drift name tokens) stripped so only ids, statuses and counts are stored.
 - `summary.md` never contains output text.
 - A classifier lowers the risk but does not remove it. Treat the raw `results/` directories of `unsafeModel` runs as sensitive and keep them out of the repo. The `.gitignore` already does this.
 

@@ -129,3 +129,18 @@ test('hybrid-arcanea accepts a cli planner', () => {
   const sys = createSystem({ id: 'ha-cli', type: 'hybrid-arcanea', planner: { type: 'cli', command: fake, args: ['echo-stdin'] }, extractor: { type: 'mock' } }, { env: {} });
   assert.ok(sys.client instanceof CliClient);
 });
+
+test('*_API_TOKEN env vars are stripped too, in any case', async () => {
+  const env = { PATH: process.env.PATH, REPLICATE_API_TOKEN: 'r', hf_api_token: 'h', Vendor_Api_Token: 'v', HOME_TOKEN_HINT: 'keep' };
+  const stripped = await new CliClient(cfg({ args: ['env'] }), { env }).complete({ system: '', user: 'hi' });
+  assert.deepEqual(JSON.parse(stripped.text), ['HOME_TOKEN_HINT']);
+});
+
+test('a prompt passed as an argv element can never be read as a CLI option', async () => {
+  const client = new CliClient(cfg({ args: ['echo-arg'], promptVia: 'arg' }), { env: {} });
+  await assert.rejects(client.complete({ system: '', user: '--model=attacker-chosen' }), /would be read as an option/);
+  await assert.rejects(client.complete({ system: '', user: '-p evil' }), /would be read as an option/);
+  // stdin delivery has no such ambiguity.
+  const viaStdin = await new CliClient(cfg({ args: ['echo-stdin'] }), { env: {} }).complete({ system: '', user: '--flag-looking prose' });
+  assert.equal(viaStdin.text, 'STORY<--flag-looking prose>');
+});
