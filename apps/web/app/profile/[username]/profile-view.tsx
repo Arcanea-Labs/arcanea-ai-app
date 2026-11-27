@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import {
   PhPencilSimple,
   PhStar,
@@ -22,29 +22,34 @@ import {
   PhFile,
   PhSparkle,
   PhFire,
-} from '@/lib/phosphor-icons'
-import type { Profile, ProfileStats, Creation } from '@/lib/database/types/api-responses'
+} from "@/lib/phosphor-icons";
+import type {
+  ProfileStats,
+  Creation,
+} from "@/lib/database/types/api-responses";
+import type { PublicProfile } from "@/lib/database/services/profile-service";
 
 const GATE_COLORS: Record<string, string> = {
-  Foundation: 'from-amber-600 to-amber-400',
-  Flow: 'from-blue-600 to-blue-400',
-  Fire: 'from-red-600 to-orange-400',
-  Heart: 'from-pink-600 to-rose-400',
-  Voice: 'from-emerald-600 to-emerald-400',
-  Sight: 'from-indigo-600 to-indigo-400',
-  Crown: 'from-[var(--arc-brand-cosmic-blue)] to-[var(--arc-brand-atlantean-teal)]',
-  Starweave: 'from-purple-600 to-fuchsia-400',
-  Unity: 'from-cyan-600 to-teal-400',
-  Source: 'from-yellow-500 to-amber-300',
-}
+  Foundation: "from-amber-600 to-amber-400",
+  Flow: "from-blue-600 to-blue-400",
+  Fire: "from-red-600 to-orange-400",
+  Heart: "from-pink-600 to-rose-400",
+  Voice: "from-emerald-600 to-emerald-400",
+  Sight: "from-indigo-600 to-indigo-400",
+  Crown:
+    "from-[var(--arc-brand-cosmic-blue)] to-[var(--arc-brand-atlantean-teal)]",
+  Starweave: "from-purple-600 to-fuchsia-400",
+  Unity: "from-cyan-600 to-teal-400",
+  Source: "from-yellow-500 to-amber-300",
+};
 
 const RANK_ICONS: Record<string, string> = {
-  Apprentice: 'I',
-  Mage: 'II',
-  Master: 'III',
-  Archmage: 'IV',
-  Luminor: 'V',
-}
+  Apprentice: "I",
+  Mage: "II",
+  Master: "III",
+  Archmage: "IV",
+  Luminor: "V",
+};
 
 const TYPE_ICONS: Record<string, typeof PhImage> = {
   image: PhImage,
@@ -53,13 +58,13 @@ const TYPE_ICONS: Record<string, typeof PhImage> = {
   audio: PhMusicNote,
   text: PhFile,
   mixed: PhSparkle,
-}
+};
 
 interface ProfilePageClientProps {
-  profile: Profile
-  stats: ProfileStats
-  creations: Creation[]
-  isOwnProfile: boolean
+  profile: PublicProfile;
+  stats: ProfileStats;
+  creations: Creation[];
+  isOwnProfile: boolean;
 }
 
 export function ProfilePageClient({
@@ -68,21 +73,26 @@ export function ProfilePageClient({
   creations,
   isOwnProfile,
 }: ProfilePageClientProps) {
-  const [activeTab, setActiveTab] = useState<'creations' | 'about'>('creations')
+  const [activeTab, setActiveTab] = useState<"creations" | "about">(
+    "creations",
+  );
 
   const gateGradient = profile.activeGate
-    ? GATE_COLORS[profile.activeGate] || 'from-[var(--arc-brand-atlantean-teal)] to-[var(--arc-brand-cosmic-blue)]'
-    : 'from-[var(--arc-brand-atlantean-teal)] to-[var(--arc-brand-cosmic-blue)]'
+    ? GATE_COLORS[profile.activeGate] ||
+      "from-[var(--arc-brand-atlantean-teal)] to-[var(--arc-brand-cosmic-blue)]"
+    : "from-[var(--arc-brand-atlantean-teal)] to-[var(--arc-brand-cosmic-blue)]";
 
   const initials = profile.displayName
     ? profile.displayName.slice(0, 2).toUpperCase()
-    : '??'
+    : "??";
 
   return (
     <LazyMotion features={domAnimation} strict>
       <div className="min-h-screen bg-black">
         {/* Hero banner with gradient */}
-        <div className={`h-48 sm:h-56 bg-gradient-to-r ${gateGradient} relative`}>
+        <div
+          className={`h-48 sm:h-56 bg-gradient-to-r ${gateGradient} relative`}
+        >
           <div className="absolute inset-0 bg-black/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
         </div>
@@ -91,7 +101,9 @@ export function ProfilePageClient({
           {/* Profile Header */}
           <div className="flex flex-col sm:flex-row items-start gap-6 mb-8">
             {/* Avatar */}
-            <div className={`w-32 h-32 sm:w-36 sm:h-36 rounded-full p-1 bg-gradient-to-br ${gateGradient} shrink-0`}>
+            <div
+              className={`w-32 h-32 sm:w-36 sm:h-36 rounded-full p-1 bg-gradient-to-br ${gateGradient} shrink-0`}
+            >
               <div className="w-full h-full rounded-full bg-black overflow-hidden flex items-center justify-center">
                 {profile.avatarUrl ? (
                   <Image
@@ -138,38 +150,68 @@ export function ProfilePageClient({
               <div className="flex flex-wrap gap-2 mt-4">
                 {/* Magic Rank */}
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/[0.06] text-sm font-body">
-                  <PhStar size={14} weight="duotone" className="text-yellow-400" />
+                  <PhStar
+                    size={14}
+                    weight="duotone"
+                    className="text-yellow-400"
+                  />
                   <span className="text-white/[0.60]">{profile.magicRank}</span>
-                  <span className="text-white/[0.25] text-xs">{RANK_ICONS[profile.magicRank]}</span>
+                  <span className="text-white/[0.25] text-xs">
+                    {RANK_ICONS[profile.magicRank]}
+                  </span>
                 </span>
 
                 {/* Gates Open */}
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/[0.06] text-sm font-body">
-                  <PhLightning size={14} weight="duotone" className="text-cyan-400" />
-                  <span className="text-white/[0.60]">{profile.gatesOpen}/10 Gates</span>
+                  <PhLightning
+                    size={14}
+                    weight="duotone"
+                    className="text-cyan-400"
+                  />
+                  <span className="text-white/[0.60]">
+                    {profile.gatesOpen}/10 Gates
+                  </span>
                 </span>
 
                 {/* Active Gate */}
                 {profile.activeGate && (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/[0.06] text-sm font-body">
-                    <PhFire size={14} weight="duotone" className="text-orange-400" />
-                    <span className="text-white/[0.60]">{profile.activeGate} Gate</span>
+                    <PhFire
+                      size={14}
+                      weight="duotone"
+                      className="text-orange-400"
+                    />
+                    <span className="text-white/[0.60]">
+                      {profile.activeGate} Gate
+                    </span>
                   </span>
                 )}
 
                 {/* Guardian */}
                 {profile.guardian && (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/[0.06] text-sm font-body">
-                    <PhShieldStar size={14} weight="duotone" className="text-[var(--arc-brand-atlantean-teal)]" />
-                    <span className="text-white/[0.60]">{profile.guardian}</span>
+                    <PhShieldStar
+                      size={14}
+                      weight="duotone"
+                      className="text-[var(--arc-brand-atlantean-teal)]"
+                    />
+                    <span className="text-white/[0.60]">
+                      {profile.guardian}
+                    </span>
                   </span>
                 )}
 
                 {/* Academy House */}
                 {profile.academyHouse && (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/[0.06] text-sm font-body">
-                    <PhGraduationCap size={14} weight="duotone" className="text-emerald-400" />
-                    <span className="text-white/[0.60]">House {profile.academyHouse}</span>
+                    <PhGraduationCap
+                      size={14}
+                      weight="duotone"
+                      className="text-emerald-400"
+                    />
+                    <span className="text-white/[0.60]">
+                      House {profile.academyHouse}
+                    </span>
                   </span>
                 )}
               </div>
@@ -178,9 +220,21 @@ export function ProfilePageClient({
 
           {/* Stats Row */}
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
-            <StatCard label="Creations" value={stats.creationsCount} icon={PhSparkle} />
-            <StatCard label="Followers" value={stats.followersCount} icon={PhUsers} />
-            <StatCard label="Following" value={stats.followingCount} icon={PhUserPlus} />
+            <StatCard
+              label="Creations"
+              value={stats.creationsCount}
+              icon={PhSparkle}
+            />
+            <StatCard
+              label="Followers"
+              value={stats.followersCount}
+              icon={PhUsers}
+            />
+            <StatCard
+              label="Following"
+              value={stats.followingCount}
+              icon={PhUserPlus}
+            />
             <StatCard label="XP" value={profile.xp} icon={PhLightning} />
             <StatCard label="Level" value={profile.level} icon={PhStar} />
           </div>
@@ -188,22 +242,28 @@ export function ProfilePageClient({
           {/* Tabs */}
           <div className="border-b border-white/[0.06] mb-8">
             <div className="flex gap-1">
-              {(['creations', 'about'] as const).map((tab) => (
+              {(["creations", "about"] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`relative px-5 py-3 font-body text-sm font-medium transition-colors ${
                     activeTab === tab
-                      ? 'text-white'
-                      : 'text-white/[0.25] hover:text-white/[0.40]'
+                      ? "text-white"
+                      : "text-white/[0.25] hover:text-white/[0.40]"
                   }`}
                 >
-                  {tab === 'creations' ? `Creations (${creations.length})` : 'About'}
+                  {tab === "creations"
+                    ? `Creations (${creations.length})`
+                    : "About"}
                   {activeTab === tab && (
                     <m.div
                       layoutId="profileTab"
                       className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${gateGradient}`}
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30,
+                      }}
                     />
                   )}
                 </button>
@@ -212,7 +272,7 @@ export function ProfilePageClient({
           </div>
 
           {/* Tab Content */}
-          {activeTab === 'creations' && (
+          {activeTab === "creations" && (
             <m.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -220,8 +280,14 @@ export function ProfilePageClient({
             >
               {creations.length === 0 ? (
                 <div className="text-center py-20">
-                  <PhSparkle size={48} weight="duotone" className="text-white/[0.12] mx-auto mb-4" />
-                  <p className="text-white/[0.25] font-body text-lg">No creations yet</p>
+                  <PhSparkle
+                    size={48}
+                    weight="duotone"
+                    className="text-white/[0.12] mx-auto mb-4"
+                  />
+                  <p className="text-white/[0.25] font-body text-lg">
+                    No creations yet
+                  </p>
                   {isOwnProfile && (
                     <Link
                       href="/studio"
@@ -234,14 +300,18 @@ export function ProfilePageClient({
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-12">
                   {creations.map((creation, i) => (
-                    <CreationCard key={creation.id} creation={creation} index={i} />
+                    <CreationCard
+                      key={creation.id}
+                      creation={creation}
+                      index={i}
+                    />
                   ))}
                 </div>
               )}
             </m.div>
           )}
 
-          {activeTab === 'about' && (
+          {activeTab === "about" && (
             <m.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -250,18 +320,25 @@ export function ProfilePageClient({
             >
               {/* Bio Card */}
               <div className="bg-black/40 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-6">
-                <h3 className="text-lg font-display font-bold text-white mb-3">About</h3>
+                <h3 className="text-lg font-display font-bold text-white mb-3">
+                  About
+                </h3>
                 <p className="text-white/[0.40] font-body leading-relaxed">
-                  {profile.bio || 'This creator has not written a bio yet.'}
+                  {profile.bio || "This creator has not written a bio yet."}
                 </p>
               </div>
 
               {/* Journey Details */}
               <div className="bg-black/40 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-6">
-                <h3 className="text-lg font-display font-bold text-white mb-4">Journey</h3>
+                <h3 className="text-lg font-display font-bold text-white mb-4">
+                  Journey
+                </h3>
                 <div className="space-y-3">
                   <DetailRow label="Magic Rank" value={profile.magicRank} />
-                  <DetailRow label="Gates Open" value={`${profile.gatesOpen} of 10`} />
+                  <DetailRow
+                    label="Gates Open"
+                    value={`${profile.gatesOpen} of 10`}
+                  />
                   {profile.activeGate && (
                     <DetailRow label="Active Gate" value={profile.activeGate} />
                   )}
@@ -269,24 +346,32 @@ export function ProfilePageClient({
                     <DetailRow label="Guardian" value={profile.guardian} />
                   )}
                   {profile.academyHouse && (
-                    <DetailRow label="Academy House" value={profile.academyHouse} />
+                    <DetailRow
+                      label="Academy House"
+                      value={profile.academyHouse}
+                    />
                   )}
                   <DetailRow label="XP" value={profile.xp.toLocaleString()} />
                   <DetailRow label="Level" value={String(profile.level)} />
                   {profile.streakDays > 0 && (
-                    <DetailRow label="Streak" value={`${profile.streakDays} days`} />
+                    <DetailRow
+                      label="Streak"
+                      value={`${profile.streakDays} days`}
+                    />
                   )}
                 </div>
               </div>
 
               {/* Member Since */}
               <div className="bg-black/40 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-6">
-                <h3 className="text-lg font-display font-bold text-white mb-3">Member Since</h3>
+                <h3 className="text-lg font-display font-bold text-white mb-3">
+                  Member Since
+                </h3>
                 <p className="text-white/[0.40] font-body">
-                  {new Date(profile.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
+                  {new Date(profile.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </p>
               </div>
@@ -295,7 +380,7 @@ export function ProfilePageClient({
         </div>
       </div>
     </LazyMotion>
-  )
+  );
 }
 
 function StatCard({
@@ -303,19 +388,23 @@ function StatCard({
   value,
   icon: Icon,
 }: {
-  label: string
-  value: number
-  icon: typeof PhSparkle
+  label: string;
+  value: number;
+  icon: typeof PhSparkle;
 }) {
   return (
     <div className="bg-black/40 backdrop-blur-xl border border-white/[0.06] rounded-xl p-4 text-center">
-      <Icon size={18} weight="duotone" className="text-white/[0.25] mx-auto mb-1" />
+      <Icon
+        size={18}
+        weight="duotone"
+        className="text-white/[0.25] mx-auto mb-1"
+      />
       <div className="text-xl font-display font-bold text-white">
         {value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value}
       </div>
       <div className="text-xs text-white/[0.25] font-body">{label}</div>
     </div>
-  )
+  );
 }
 
 function DetailRow({ label, value }: { label: string; value: string }) {
@@ -324,11 +413,17 @@ function DetailRow({ label, value }: { label: string; value: string }) {
       <span className="text-white/[0.25] font-body text-sm">{label}</span>
       <span className="text-white font-body text-sm">{value}</span>
     </div>
-  )
+  );
 }
 
-function CreationCard({ creation, index }: { creation: Creation; index: number }) {
-  const TypeIcon = TYPE_ICONS[creation.type] || PhFile
+function CreationCard({
+  creation,
+  index,
+}: {
+  creation: Creation;
+  index: number;
+}) {
+  const TypeIcon = TYPE_ICONS[creation.type] || PhFile;
 
   return (
     <m.div
@@ -351,7 +446,11 @@ function CreationCard({ creation, index }: { creation: Creation; index: number }
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <TypeIcon size={48} weight="duotone" className="text-white/[0.06]" />
+              <TypeIcon
+                size={48}
+                weight="duotone"
+                className="text-white/[0.06]"
+              />
             </div>
           )}
 
@@ -395,13 +494,11 @@ function CreationCard({ creation, index }: { creation: Creation; index: number }
               {creation.likeCount}
             </span>
             {creation.gate && (
-              <span className="ml-auto text-white/[0.12]">
-                {creation.gate}
-              </span>
+              <span className="ml-auto text-white/[0.12]">{creation.gate}</span>
             )}
           </div>
         </div>
       </Link>
     </m.div>
-  )
+  );
 }

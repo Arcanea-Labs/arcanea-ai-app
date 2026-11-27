@@ -74,7 +74,7 @@ select
   (to_jsonb(p) ->> 'is_verified')::boolean as is_verified,
   (to_jsonb(p) ->> 'created_at')::timestamptz as created_at
 from public.profiles p
-where coalesce((to_jsonb(p) ->> 'is_active')::boolean, true);
+where (to_jsonb(p) ->> 'is_active')::boolean is true;
 
 revoke all on public.public_profiles from public, anon, authenticated;
 grant select on public.public_profiles to anon, authenticated;
