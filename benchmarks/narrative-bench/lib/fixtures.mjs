@@ -30,7 +30,7 @@ export function validateFixture(f) {
     errors.push('worldBible must hold 5-10 rules');
   if (!Array.isArray(f.cast) || f.cast.length < 3 || f.cast.length > 6) errors.push('cast must hold 3-6 characters');
   for (const c of f.cast ?? []) {
-    if (!c.name || !Array.isArray(c.traits) || !c.traits.length) errors.push(`cast entry needs name and traits: ${JSON.stringify(c)}`);
+    if (typeof c.name !== 'string' || !c.name.trim() || !Array.isArray(c.traits) || !c.traits.length) errors.push(`cast entry needs name and traits: ${JSON.stringify(c)}`);
     if (c.aliases !== undefined && !isStringList(c.aliases)) errors.push(`cast ${c.name} aliases must be an array of non-empty strings`);
   }
   // The drift scorer treats knownNames as the allow-list for capitalised

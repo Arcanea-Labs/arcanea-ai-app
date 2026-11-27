@@ -87,3 +87,12 @@ test('fixtures use no Arcanea canon names and the writing prompt never leaks pro
     for (const p of f.probes) assert.ok(!user.includes(p.question), `${f.id}: probe question leaked`);
   }
 });
+
+test('a cast name must be a non-empty string', () => {
+  const [base] = loadFixtures();
+  for (const name of [42, '   ', null]) {
+    const bad = { ...base, cast: base.cast.map((c, i) => (i === 0 ? { ...c, name } : c)) };
+    assert.ok(validateFixture(bad).some((e) => /cast entry needs name and traits/.test(e)), `name ${JSON.stringify(name)} should be refused`);
+  }
+  assert.deepEqual(validateFixture(base), []);
+});
