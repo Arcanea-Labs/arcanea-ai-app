@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useSyncExternalStore } from 'react';
-import Script from 'next/script';
+import { useSyncExternalStore } from "react";
+import Script from "next/script";
 import {
   DATADOG_RUM_SCRIPT_URL,
   allowsRumMeasurement,
   datadogRumConfig,
   redactRumEvent,
-} from '@/lib/datadog-rum-config';
+} from "@/lib/datadog-rum-config";
 
 type PrivacyNavigator = Navigator & { globalPrivacyControl?: boolean };
 
@@ -22,7 +22,8 @@ declare global {
 }
 
 const config = datadogRumConfig({
-  NEXT_PUBLIC_DD_RUM_APPLICATION_ID: process.env.NEXT_PUBLIC_DD_RUM_APPLICATION_ID,
+  NEXT_PUBLIC_DD_RUM_APPLICATION_ID:
+    process.env.NEXT_PUBLIC_DD_RUM_APPLICATION_ID,
   NEXT_PUBLIC_DD_RUM_CLIENT_TOKEN: process.env.NEXT_PUBLIC_DD_RUM_CLIENT_TOKEN,
   NEXT_PUBLIC_DD_RUM_SAMPLE_RATE: process.env.NEXT_PUBLIC_DD_RUM_SAMPLE_RATE,
   NEXT_PUBLIC_DD_RUM_ENV: process.env.NEXT_PUBLIC_DD_RUM_ENV,
@@ -40,7 +41,7 @@ function initRum() {
   rumInitialized = true;
   window.DD_RUM.init({
     ...config,
-    trackingConsent: 'granted',
+    trackingConsent: "granted",
     beforeSend: redactRumEvent,
   });
 }

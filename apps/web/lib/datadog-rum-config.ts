@@ -7,16 +7,21 @@
  * Keep this file free of relative imports so `node --test` can load it directly.
  */
 
-export const DATADOG_RUM_SITE = 'datadoghq.eu';
-export const DATADOG_RUM_SCRIPT_ORIGIN = 'https://www.datadoghq-browser-agent.com';
+export const DATADOG_RUM_SITE = "datadoghq.eu";
+export const DATADOG_RUM_SCRIPT_ORIGIN =
+  "https://www.datadoghq-browser-agent.com";
 export const DATADOG_RUM_SCRIPT_URL = `${DATADOG_RUM_SCRIPT_ORIGIN}/eu1/v6/datadog-rum.js`;
 export const DATADOG_RUM_INTAKE_SOURCES = [
-  'https://browser-intake-datadoghq.eu',
-  'https://*.browser-intake-datadoghq.eu',
+  "https://browser-intake-datadoghq.eu",
+  "https://*.browser-intake-datadoghq.eu",
 ] as const;
 
-const CREDENTIAL_PATH_PREFIXES = ['/auth/', '/api/auth/', '/onboarding/'] as const;
-const EXPLICIT_DO_NOT_TRACK = new Set(['1', 'yes', 'true', 'on']);
+const CREDENTIAL_PATH_PREFIXES = [
+  "/auth/",
+  "/api/auth/",
+  "/onboarding/",
+] as const;
+const EXPLICIT_DO_NOT_TRACK = new Set(["1", "yes", "true", "on"]);
 
 export function allowsRumMeasurement(
   doNotTrack: string | null | undefined,
@@ -44,13 +49,14 @@ export function redactRumPath(pathname: string): string {
   return prefix ? `${prefix}:token` : pathname;
 }
 
-const escapeRegExp = (text: string): string => text.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+const escapeRegExp = (text: string): string =>
+  text.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
 
 export function scrubCredentialPaths(text: string): string {
   return CREDENTIAL_PATH_PREFIXES.reduce(
     (scrubbed, prefix) =>
       scrubbed.replace(
-        new RegExp(`${escapeRegExp(prefix)}[^\\s"'?#)\\]>]+`, 'gi'),
+        new RegExp(`${escapeRegExp(prefix)}[^\\s"'?#)\\]>]+`, "gi"),
         `${prefix}:token`,
       ),
     text,
@@ -59,7 +65,7 @@ export function scrubCredentialPaths(text: string): string {
 
 export function redactRumUrl(raw: string): string {
   try {
-    const parsed = new URL(raw, 'https://arcanea.invalid');
+    const parsed = new URL(raw, "https://arcanea.invalid");
     const pathname = redactRumPath(parsed.pathname);
     return /^https?:\/\//i.test(raw) ? `${parsed.origin}${pathname}` : pathname;
   } catch {
@@ -76,23 +82,29 @@ export type RumEvent = {
 
 function pathOf(url: string): string {
   try {
-    return new URL(url, 'https://arcanea.invalid').pathname;
+    return new URL(url, "https://arcanea.invalid").pathname;
   } catch {
     return url.split(/[?#]/, 1)[0];
   }
 }
 
 export function redactRumEvent(event: RumEvent): boolean {
-  const onCredentialPage = Boolean(event.view?.url && isSensitiveRumPath(pathOf(event.view.url)));
-  if (onCredentialPage && event.type !== 'view') return false;
+  const onCredentialPage = Boolean(
+    event.view?.url && isSensitiveRumPath(pathOf(event.view.url)),
+  );
+  if (onCredentialPage && event.type !== "view") return false;
 
   if (event.view?.url) event.view.url = redactRumUrl(event.view.url);
   if (event.view?.name) event.view.name = scrubCredentialPaths(event.view.name);
-  if (event.view) event.view.referrer = '';
-  if (event.resource?.url) event.resource.url = redactRumUrl(event.resource.url);
-  if (event.error?.resource?.url) event.error.resource.url = redactRumUrl(event.error.resource.url);
-  if (event.error?.message) event.error.message = scrubCredentialPaths(event.error.message);
-  if (event.error?.stack) event.error.stack = scrubCredentialPaths(event.error.stack);
+  if (event.view) event.view.referrer = "";
+  if (event.resource?.url)
+    event.resource.url = redactRumUrl(event.resource.url);
+  if (event.error?.resource?.url)
+    event.error.resource.url = redactRumUrl(event.error.resource.url);
+  if (event.error?.message)
+    event.error.message = scrubCredentialPaths(event.error.message);
+  if (event.error?.stack)
+    event.error.stack = scrubCredentialPaths(event.error.stack);
   return true;
 }
 
@@ -104,11 +116,11 @@ export type DatadogRumConfig = {
   applicationId: string;
   clientToken: string;
   site: typeof DATADOG_RUM_SITE;
-  service: 'arcanea-ai';
+  service: "arcanea-ai";
   env: string;
   sessionSampleRate: number;
   sessionReplaySampleRate: 0;
-  defaultPrivacyLevel: 'mask';
+  defaultPrivacyLevel: "mask";
   trackUserInteractions: false;
   trackResources: false;
 };
@@ -130,11 +142,14 @@ export function datadogRumConfig(env: DatadogRumEnv): DatadogRumConfig | null {
     applicationId,
     clientToken,
     site: DATADOG_RUM_SITE,
-    service: 'arcanea-ai',
-    env: env.NEXT_PUBLIC_DD_RUM_ENV?.trim() || env.NEXT_PUBLIC_VERCEL_ENV?.trim() || 'production',
+    service: "arcanea-ai",
+    env:
+      env.NEXT_PUBLIC_DD_RUM_ENV?.trim() ||
+      env.NEXT_PUBLIC_VERCEL_ENV?.trim() ||
+      "production",
     sessionSampleRate: parseSampleRate(env.NEXT_PUBLIC_DD_RUM_SAMPLE_RATE),
     sessionReplaySampleRate: 0,
-    defaultPrivacyLevel: 'mask',
+    defaultPrivacyLevel: "mask",
     trackUserInteractions: false,
     trackResources: false,
   };
