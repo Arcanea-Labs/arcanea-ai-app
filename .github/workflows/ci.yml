@@ -57,7 +57,7 @@ jobs:
     # superseded draft iterations. Playwright in the Build job is a *step*
     # skip on drafts, not a job skip, so the required Build context still
     # earns turbo build + unit tests.
-    runs-on: ubuntu-latest
+    runs-on: ${{ (vars.CI_RUNNER == 'blacksmith' || vars.BLACKSMITH_RUNNER == 'true') && github.event.repository.fork == false && (github.event_name == 'push' || github.event.pull_request.head.repo.id == github.event.repository.id) && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-latest' }}
     timeout-minutes: 5
 
     steps:
@@ -107,7 +107,7 @@ jobs:
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
-    runs-on: ubuntu-latest
+    runs-on: ${{ (vars.CI_RUNNER == 'blacksmith' || vars.BLACKSMITH_RUNNER == 'true') && github.event.repository.fork == false && (github.event_name == 'push' || github.event.pull_request.head.repo.id == github.event.repository.id) && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-latest' }}
     needs: install
     # Runs even when install failed, so this required context fails instead of
     # skipping; a skipped required check is counted as satisfied. !cancelled()
@@ -304,7 +304,7 @@ jobs:
   # ============================================
   typecheck:
     name: TypeScript
-    runs-on: ubuntu-latest
+    runs-on: ${{ (vars.CI_RUNNER == 'blacksmith' || vars.BLACKSMITH_RUNNER == 'true') && github.event.repository.fork == false && (github.event_name == 'push' || github.event.pull_request.head.repo.id == github.event.repository.id) && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-latest' }}
     needs: install
     if: ${{ !cancelled() }}
     timeout-minutes: 8
@@ -337,14 +337,24 @@ jobs:
       - name: TypeScript check (via turbo — builds workspace deps first)
         # Preserve Turbo's exit code directly, including crashes without an
         # "error TS" diagnostic. A log match is not a typecheck verdict.
-        run: pnpm turbo run type-check --filter=@arcanea/web
+        env:
+          _TURBO_API: ${{ vars.TURBO_API }}
+          _TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+          _TURBO_TOKEN: ${{ (github.event_name == 'push' || github.event.pull_request.head.repo.id == github.event.repository.id) && secrets.TURBO_TOKEN || '' }}
+        run: |
+          if [ -n "$_TURBO_API" ] && [ -n "$_TURBO_TOKEN" ]; then
+            export TURBO_API="$_TURBO_API"
+            export TURBO_TEAM="${_TURBO_TEAM:-starlight}"
+            export TURBO_TOKEN="$_TURBO_TOKEN"
+          fi
+          pnpm turbo run type-check --filter=@arcanea/web
 
   # ============================================
   # BUILD — production build verification
   # ============================================
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ (vars.CI_RUNNER == 'blacksmith' || vars.BLACKSMITH_RUNNER == 'true') && github.event.repository.fork == false && (github.event_name == 'push' || github.event.pull_request.head.repo.id == github.event.repository.id) && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-latest' }}
     needs: [install, lint]
     if: ${{ !cancelled() }}
     timeout-minutes: 15
@@ -376,10 +386,19 @@ jobs:
           key: modules-${{ runner.os }}-${{ runner.arch }}-node${{ env.NODE_VERSION }}-pnpm${{ env.PNPM_VERSION }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Build web app (via turbo — builds workspace deps first)
-        run: pnpm turbo run build --filter=@arcanea/web
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key' }}
+          _TURBO_API: ${{ vars.TURBO_API }}
+          _TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+          _TURBO_TOKEN: ${{ (github.event_name == 'push' || github.event.pull_request.head.repo.id == github.event.repository.id) && secrets.TURBO_TOKEN || '' }}
+        run: |
+          if [ -n "$_TURBO_API" ] && [ -n "$_TURBO_TOKEN" ]; then
+            export TURBO_API="$_TURBO_API"
+            export TURBO_TEAM="${_TURBO_TEAM:-starlight}"
+            export TURBO_TOKEN="$_TURBO_TOKEN"
+          fi
+          pnpm turbo run build --filter=@arcanea/web
 
       - name: Verify creator starter source, interactions and generated downloads
         run: |
@@ -961,7 +980,7 @@ jobs:
   # ============================================
   ci-status:
     name: CI Status
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs:
       [
         install,
