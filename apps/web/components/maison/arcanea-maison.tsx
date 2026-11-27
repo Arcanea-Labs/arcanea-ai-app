@@ -105,7 +105,7 @@ export function CollectRoom() {
           </p>
           <div className={styles.actions}>
             <Link className={styles.button} href="/collect/genesis">
-              Enter Genesis <span aria-hidden="true">↗</span>
+              Enter Genesis <span aria-hidden="true">↗︎</span>
             </Link>
             <Link className={styles.textLink} href="/commissions">
               Explore a commission
@@ -230,7 +230,7 @@ export function PhoenixScreenRoom() {
           </p>
           <div className={styles.actions}>
             <a className={styles.button} href={museum}>
-              Read the museum record ↗
+              Read the museum record ↗︎
             </a>
           </div>
         </div>
@@ -284,7 +284,27 @@ export function CommissionRoom() {
             </a>
           </div>
         </div>
-        <Screen />
+        <figure className={styles.heroArt}>
+          <Link href="/gallery/sovereign-depths">
+            <Image
+              src="/images/sovereign-depths/d02.webp"
+              width={1672}
+              height={941}
+              alt="The Pelagic Cathedral rising through a deep green underwater landscape."
+              sizes="(max-width: 800px) 94vw, 57vw"
+              loading="eager"
+              fetchPriority="high"
+            />
+          </Link>
+          <figcaption className={styles.caption}>
+            <span>
+              <i>The Pelagic Cathedral</i> · Sovereign Depths
+            </span>
+            <Link href="/gallery/sovereign-depths">
+              View the Arcanea gallery
+            </Link>
+          </figcaption>
+        </figure>
       </header>
       <section
         className={`${styles.section} ${styles.split}`}
@@ -312,8 +332,9 @@ export function CommissionRoom() {
             rounds. Timing and usage rights are agreed in the written proposal.
           </p>
           <p>
-            The screen above is a museum reference for visual reading. The
-            sample shows the shape of an original creative brief.
+            The artwork above comes from the published Sovereign Depths gallery.
+            The editable sample shows how a setting moves from premise to
+            production.
           </p>
         </div>
       </section>
@@ -336,7 +357,7 @@ export function CommissionRoom() {
           </p>
           <div className={styles.actions}>
             <a className={styles.button} href={mail}>
-              Open the enquiry draft ↗
+              Open the enquiry draft ↗︎
             </a>
             <a className={styles.textLink} href={`mailto:${enquiryAddress}`}>
               {enquiryAddress}
