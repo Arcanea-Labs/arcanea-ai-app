@@ -3,22 +3,35 @@ import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.arcanea.ai";
+  const allow = ["/", "/api/health"];
+  const disallow = [
+    "/private/",
+    "/api/",
+    "/_next/",
+    "/auth/",
+    "/dashboard/",
+    "/settings/",
+    "/onboarding/",
+    "/profile/edit/",
+  ];
 
   return {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/api/health"],
-        disallow: [
-          "/private/",
-          "/api/",
-          "/_next/",
-          "/auth/",
-          "/dashboard/",
-          "/settings/",
-          "/onboarding/",
-          "/profile/edit/",
+        allow,
+        disallow,
+      },
+      {
+        userAgent: [
+          "OAI-SearchBot",
+          "Claude-SearchBot",
+          "PerplexityBot",
+          "Google-Extended",
+          "GPTBot",
         ],
+        allow,
+        disallow,
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
