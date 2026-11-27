@@ -1,0 +1,46 @@
+{
+  "source": "57f5ab7424fb4092a65c76228862f09eaa85b01e",
+  "deployment": "dpl_63KDzBTwcJHhix68N7e3PseiU7C5",
+  "environment": "Hosted Next.js HTTP responses via authenticated Vercel deployment access",
+  "checks": [
+    {
+      "name": "chapter-one",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "name": "reader-secret-boundary",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "name": "character-observation-boundary",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "name": "canon-unplaced",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "name": "author-query-denial",
+      "status": 400,
+      "pass": true
+    },
+    {
+      "name": "world-document-policy",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "name": "chapter-document-policy",
+      "status": 200,
+      "pass": true
+    }
+  ],
+  "limitations": [
+    "Not a substitute for a complete authenticated private-world browser flow.",
+    "Hosted GPU-enabled R3F and MapLibre interactions remain unverified."
+  ]
+}
