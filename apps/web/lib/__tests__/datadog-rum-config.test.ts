@@ -93,7 +93,8 @@ test("redactRumEvent drops exact auth/onboarding routes, percent-encoded paths, 
     type: "error",
     view: { url: "https://www.arcanea.ai/auth?code=SECRET_OAUTH_CODE" },
     error: {
-      message: "Auth failed at https://www.arcanea.ai/auth?code=SECRET_OAUTH_CODE",
+      message:
+        "Auth failed at https://www.arcanea.ai/auth?code=SECRET_OAUTH_CODE",
     },
   };
   assert.equal(redactRumEvent(authError), false);
@@ -102,7 +103,8 @@ test("redactRumEvent drops exact auth/onboarding routes, percent-encoded paths, 
     type: "error",
     view: { url: "https://www.arcanea.ai/chat" },
     error: {
-      message: "Redirected to https://www.arcanea.ai/auth/callback?code=SECRET_CODE",
+      message:
+        "Redirected to https://www.arcanea.ai/auth/callback?code=SECRET_CODE",
       stack: "at run (https://www.arcanea.ai/api/chat?token=SECRET_TOK&page=1)",
     },
   };
