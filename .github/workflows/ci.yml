@@ -340,7 +340,7 @@ jobs:
         env:
           _TURBO_API: ${{ vars.TURBO_API }}
           _TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-          _TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          _TURBO_TOKEN: ${{ (github.event_name == 'push' || github.event.pull_request.head.repo.id == github.event.repository.id) && secrets.TURBO_TOKEN || '' }}
         run: |
           if [ -n "$_TURBO_API" ] && [ -n "$_TURBO_TOKEN" ]; then
             export TURBO_API="$_TURBO_API"
@@ -391,7 +391,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key' }}
           _TURBO_API: ${{ vars.TURBO_API }}
           _TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-          _TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          _TURBO_TOKEN: ${{ (github.event_name == 'push' || github.event.pull_request.head.repo.id == github.event.repository.id) && secrets.TURBO_TOKEN || '' }}
         run: |
           if [ -n "$_TURBO_API" ] && [ -n "$_TURBO_TOKEN" ]; then
             export TURBO_API="$_TURBO_API"
