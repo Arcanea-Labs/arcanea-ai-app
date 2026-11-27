@@ -44,3 +44,33 @@ test('--run-id that carries a path is refused before anything is written', () =>
     assert.match(r.stderr + r.stdout, /--run-id must be a plain name/);
   }
 });
+
+test('a withheld output leaks no verbatim spans through its deterministic scores', async () => {
+  const { runBenchmark } = await import('../runner.mjs');
+  const { loadFixtures } = await import('../lib/fixtures.mjs');
+  const { MockSafetyClassifier } = await import('../lib/safety.mjs');
+  const fixtures = loadFixtures(undefined, { only: ['hor-01-thermostat'] });
+  // Each line trips a scorer that quotes the output: mustHold, probe evidence, alias drift, unknown names.
+  const text = [
+    'UNSAFE-MARKER. It reset itself at 03:45 again, secretphrase alpha.',
+    'The thermostat had been unplugged for two days.',
+    'Then Jass Arkwright listened. Later Jass Arkwright waited.',
+    'At dusk Vexmoor knocked. Soon Vexmoor whispered.',
+  ].join('\n\n');
+  const sys = { id: 'base', markers: [], unsafeModel: true, async generate() { return { text, stages: [] }; } };
+  const { rows } = await runBenchmark({ runId: 'x', fixtures, systems: [sys], safetyClassifier: new MockSafetyClassifier({ unsafeMarkers: ['UNSAFE-MARKER'] }), taste: false });
+  const row = rows[0];
+  assert.equal(row.withheld, true);
+  const stored = JSON.stringify(row);
+  for (const span of ['03:45', 'secretphrase', 'Jass', 'Vexmoor']) assert.ok(!stored.includes(span), `withheld row still carries "${span}"`);
+  // Probe questions come from the fixture; the matched span ("unplugged") would come from the output.
+  assert.ok(!stored.includes('"evidence"'), 'withheld row still carries a regex evidence span');
+  // The counts that the summary table reads survive redaction.
+  const d = row.deterministic;
+  assert.equal(d.mustHold.violated, 1);
+  assert.equal(d.probes.pass >= 1, true);
+  assert.equal(d.drift.aliasDrift.length, 1);
+  assert.equal(d.drift.aliasDrift[0].count, 2);
+  assert.equal(d.drift.unknownNames.length, 1);
+  assert.equal(d.drift.unknownNames[0].count, 2);
+});

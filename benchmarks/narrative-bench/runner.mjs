@@ -17,7 +17,7 @@ import { mockPanelJudges } from './scorers/mock-judge.mjs';
 import { workersAiJudgesFromEnv } from './scorers/workers-ai-judge.mjs';
 import { createSystem, DRY_RUN_SYSTEMS } from './systems/index.mjs';
 import { totalReceipt } from './lib/receipts.mjs';
-import { safetyClassifierFromConfig, WITHHELD } from './lib/safety.mjs';
+import { safetyClassifierFromConfig, redactWithheldScores, WITHHELD } from './lib/safety.mjs';
 import { mean, median, round, prng, hash32 } from './lib/text.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -90,6 +90,7 @@ export async function runBenchmark({ runId, fixtures, systems, panel = null, sal
         if (row.safety && !row.safety.safe) {
           row.text = WITHHELD;
           row.withheld = true;
+          row.deterministic = redactWithheldScores(row.deterministic);
         } else {
           row.text = text;
           if (out.plan) row.plan = out.plan;

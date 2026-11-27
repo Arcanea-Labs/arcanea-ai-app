@@ -8,6 +8,24 @@ import { gatewayUrl, extractWorkersAiText, DEFAULT_GATEWAY } from '../scorers/wo
 export const WITHHELD = '[withheld: safety classifier did not clear this output]';
 
 /**
+ * Deterministic scores of a withheld output with every verbatim span removed:
+ * regex `evidence` matches and the drift scorer's name tokens are quoted from
+ * the output, so they would carry withheld text into results.jsonl. Ids,
+ * statuses, fixture cast names and every count the summary reads are kept.
+ */
+export function redactWithheldScores(det) {
+  const out = structuredClone(det);
+  for (const group of [out.mustHold, out.probes]) {
+    for (const item of group?.items ?? []) delete item.evidence;
+  }
+  if (out.drift) {
+    out.drift.aliasDrift = (out.drift.aliasDrift ?? []).map(({ castName, count }) => ({ found: '[withheld]', castName, count }));
+    out.drift.unknownNames = (out.drift.unknownNames ?? []).map(({ count }) => ({ name: '[withheld]', count }));
+  }
+  return out;
+}
+
+/**
  * Characters sent to the classifier per request, within the classifier model's
  * context window. Longer outputs are classified window by window and count as
  * unsafe if any window is. Override per config with `safetyClassifier.maxInputChars`.
