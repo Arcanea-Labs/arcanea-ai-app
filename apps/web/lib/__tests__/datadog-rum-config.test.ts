@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  DATADOG_RUM_INTAKE_SOURCES,
+  DATADOG_RUM_SCRIPT_ORIGIN,
   DATADOG_RUM_SITE,
   allowsRumMeasurement,
   datadogRumConfig,
+  datadogRumCspSources,
   isSensitiveRumPath,
   redactRumEvent,
   redactRumUrl,
@@ -78,5 +81,52 @@ test("redactRumEvent strips query/hash/referrer and redacts auth paths", () => {
       view: { url: "https://www.arcanea.ai/auth/callback-secret" },
     }),
     false,
+  );
+});
+
+test("redactRumEvent drops exact auth/onboarding routes, percent-encoded paths, and query secrets in errors", () => {
+  assert.equal(isSensitiveRumPath("/auth"), true);
+  assert.equal(isSensitiveRumPath("/%61uth/callback"), true);
+  assert.equal(isSensitiveRumPath("/chat"), false);
+
+  const authError = {
+    type: "error",
+    view: { url: "https://www.arcanea.ai/auth?code=SECRET_OAUTH_CODE" },
+    error: {
+      message: "Auth failed at https://www.arcanea.ai/auth?code=SECRET_OAUTH_CODE",
+    },
+  };
+  assert.equal(redactRumEvent(authError), false);
+
+  const chatError = {
+    type: "error",
+    view: { url: "https://www.arcanea.ai/chat" },
+    error: {
+      message: "Redirected to https://www.arcanea.ai/auth/callback?code=SECRET_CODE",
+      stack: "at run (https://www.arcanea.ai/api/chat?token=SECRET_TOK&page=1)",
+    },
+  };
+  assert.equal(redactRumEvent(chatError), true);
+  assert.equal(
+    chatError.error.message,
+    "Redirected to https://www.arcanea.ai/auth/:token",
+  );
+  assert.equal(
+    chatError.error.stack,
+    "at run (https://www.arcanea.ai/api/chat?token=:redacted&page=1)",
+  );
+});
+
+test("datadogRumCspSources stays empty when disabled and returns EU script/intake origins when enabled", () => {
+  assert.deepEqual(datadogRumCspSources({}), { scriptSrc: [], connectSrc: [] });
+  assert.deepEqual(
+    datadogRumCspSources({
+      NEXT_PUBLIC_DD_RUM_APPLICATION_ID: "app-1",
+      NEXT_PUBLIC_DD_RUM_CLIENT_TOKEN: "pub-1",
+    }),
+    {
+      scriptSrc: [DATADOG_RUM_SCRIPT_ORIGIN],
+      connectSrc: DATADOG_RUM_INTAKE_SOURCES,
+    },
   );
 });
