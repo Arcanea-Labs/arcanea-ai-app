@@ -15,16 +15,33 @@ export const practicePath = "/collect/genesis-digital";
 export const libraryPath = "/account/library";
 export type Plate = (typeof plates)[number];
 
-export function Shell({ children }: { children: ReactNode }) {
+export function Shell({
+  children,
+  collection = collectionPath,
+}: {
+  children: ReactNode;
+  collection?: string;
+}) {
   return (
     <section className={s.shell} aria-label="Arcanea Genesis">
       <header className={s.top}>
-        <Link href={collectionPath} className={s.brand}>
+        <Link href={collection} className={s.brand}>
           Arcanea <span>/</span> Genesis
         </Link>
         <nav aria-label="Genesis collection">
-          <Link href={collectionPath + "#plates"}>Field plates</Link>
-          <Link href={libraryPath}>My library</Link>
+          <Link
+            href={
+              collection +
+              (collection === collectionPath ? "#plates" : "#field-plates")
+            }
+          >
+            Field plates
+          </Link>
+          {collection === collectionPath ? (
+            <Link href={libraryPath}>My library</Link>
+          ) : (
+            <Link href="/commissions">Commissions</Link>
+          )}
         </nav>
       </header>
       {children}
@@ -142,16 +159,32 @@ export function Gallery() {
   );
 }
 
-export function PlateDetail({ plate }: { plate: Plate }) {
+export function PlateDetail({
+  plate,
+  collection = collectionPath,
+  detailBase = collectionPath,
+  studyHref = practicePath,
+}: {
+  plate: Plate;
+  collection?: string;
+  detailBase?: string;
+  studyHref?: string;
+}) {
   const next = plates[(plates.indexOf(plate) + 1) % plates.length];
   return (
-    <Shell>
+    <Shell collection={collection}>
       <div className={s.detail}>
         <figure className={s.singleArt}>
           <PlateImage plate={plate} priority />
         </figure>
         <article className={s.detailCopy}>
-          <Link href={collectionPath + "#plates"} className={s.textLink}>
+          <Link
+            href={
+              collection +
+              (collection === collectionPath ? "#plates" : "#field-plates")
+            }
+            className={s.textLink}
+          >
             All field plates
           </Link>
           <p className={s.kicker}>Mythic Commons · Plate {plate.plate}</p>
@@ -209,20 +242,17 @@ export function PlateDetail({ plate }: { plate: Plate }) {
                 Read the museum record
               </a>
               <p>
-                <Link className={s.textLink} href={practicePath}>
+                <Link className={s.textLink} href={studyHref}>
                   Open The Phoenix Screen study folio
                 </Link>
               </p>
             </aside>
           )}
           <div className={s.actions}>
-            <Link className={s.button} href={practicePath}>
+            <Link className={s.button} href={studyHref}>
               Explore the museum study
             </Link>
-            <Link
-              href={collectionPath + "/" + next.slug}
-              className={s.textLink}
-            >
+            <Link href={detailBase + "/" + next.slug} className={s.textLink}>
               Next plate · {next.name}
             </Link>
           </div>
