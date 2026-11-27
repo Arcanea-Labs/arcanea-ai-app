@@ -67,7 +67,7 @@ test('a prompt full of shell metacharacters is never run by a shell (stdin and a
 });
 
 test('API-key env vars are stripped from the child by default', async () => {
-  const env = { PATH: process.env.PATH, ANTHROPIC_API_KEY: 'a', OPENAI_API_KEY: 'o', GEMINI_API_KEY: 'g', SOME_VENDOR_API_KEY: 's', HOME_TOKEN_HINT: 'keep' };
+  const env = { PATH: process.env.PATH, ANTHROPIC_API_KEY: 'a', OPENAI_API_KEY: 'o', GEMINI_API_KEY: 'g', SOME_VENDOR_API_KEY: 's', openai_api_key: 'l', HOME_TOKEN_HINT: 'keep' };
   const stripped = await new CliClient(cfg({ args: ['env'] }), { env }).complete({ system: '', user: 'hi' });
   assert.deepEqual(JSON.parse(stripped.text), ['HOME_TOKEN_HINT']);
   const kept = await new CliClient(cfg({ args: ['env'], keepApiKeyEnv: true }), { env }).complete({ system: '', user: 'hi' });

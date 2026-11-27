@@ -92,7 +92,7 @@ test('the committed example run records unknown prices as null, never 0', () => 
   assert.ok(readJsonl(new URL('results.jsonl', dir)).every((x) => x.receipt.usdEstimate === null), 'example results.jsonl');
 });
 
-test('safety classifier input truncation is configurable and validated', async () => {
+test('safety classifier window size is configurable and validated', async () => {
   const sent = [];
   const fetchImpl = async (_url, init) => {
     sent.push(JSON.parse(init.body).messages[0].content);
@@ -103,10 +103,11 @@ test('safety classifier input truncation is configurable and validated', async (
   const dflt = safetyClassifierFromConfig({ type: 'workers-ai' }, env, { fetchImpl });
   assert.equal(dflt.maxInputChars, DEFAULT_MAX_INPUT_CHARS);
   assert.equal((await dflt.classify(long)).safe, true);
-  assert.equal(sent.at(-1).length, DEFAULT_MAX_INPUT_CHARS);
+  // Nothing past the window is skipped: the tail goes in a second request.
+  assert.deepEqual(sent.splice(0).map((s) => s.length), [DEFAULT_MAX_INPUT_CHARS, 500]);
   const small = safetyClassifierFromConfig({ type: 'workers-ai', maxInputChars: 10 }, env, { fetchImpl });
   await small.classify('abcdefghijklmnop');
-  assert.equal(sent.at(-1), 'abcdefghij');
+  assert.deepEqual(sent, ['abcdefghij', 'klmnop']);
   for (const bad of [0, -1, 1.5, '100']) {
     assert.throws(() => safetyClassifierFromConfig({ type: 'workers-ai', maxInputChars: bad }, env, { fetchImpl }), /maxInputChars must be a positive integer/);
   }

@@ -39,7 +39,12 @@ const KILL_GRACE_MS = 2000;
 
 function childEnv(env, keep) {
   const out = { ...env };
-  if (!keep) for (const k of Object.keys(out)) if (API_KEY_ENV.includes(k) || /_API_KEY$/.test(k)) delete out[k];
+  if (keep) return out;
+  for (const k of Object.keys(out)) {
+    // Windows env names are case-insensitive, so match on the upper-cased name.
+    const name = k.toUpperCase();
+    if (API_KEY_ENV.includes(name) || /_API_KEY$/.test(name)) delete out[k];
+  }
   return out;
 }
 

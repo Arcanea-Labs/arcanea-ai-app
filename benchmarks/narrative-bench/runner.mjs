@@ -263,6 +263,8 @@ export async function main(argv = process.argv.slice(2), { env = process.env, lo
   const safetyClassifier = safetyClassifierFromConfig(cfg.safetyClassifier, env);
 
   const runId = args.runId ?? (args.dryRun ? 'dry-run-' : 'run-') + new Date().toISOString().replace(/[:.]/g, '-');
+  // runId becomes a directory under the results folder, so it must be a plain name.
+  if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(runId) || runId.includes('..')) throw new Error(`--run-id must be a plain name (letters, digits, . _ -), got ${JSON.stringify(runId)}`);
   const salt = args.dryRun ? 'narrative-bench-dry-run' : newSalt();
   const { rows, receipts } = await runBenchmark({ runId, fixtures, systems, panel, salt, safetyClassifier, taste: args.taste, log });
   const tasteRow = rows.find((r) => r.ok)?.deterministic?.taste;
