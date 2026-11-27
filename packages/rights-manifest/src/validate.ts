@@ -40,6 +40,38 @@ const grantsCommercial = (grant: LicenseGrant): boolean =>
 const isLive = (grant: LicenseGrant): boolean =>
   grant.status === "proposed" || grant.status === "active";
 
+const SHA256_HEX = /^[0-9a-f]{64}$/;
+
+/** Returns a lower-cased SHA-256 hex digest, or undefined for anything else. */
+const normalizeSha256 = (value: unknown): string | undefined => {
+  if (typeof value !== "string") return undefined;
+  const lower = value.toLowerCase();
+  return SHA256_HEX.test(lower) ? lower : undefined;
+};
+
+/** Non-object entries are skipped so a malformed entry can never throw. */
+export const isMasterEntry = (entry: unknown): boolean =>
+  typeof entry === "object" &&
+  entry !== null &&
+  (entry as { role?: unknown }).role === "master";
+
+/**
+ * True only when the asset digest is a well-formed SHA-256 and at least one
+ * master file carries the same well-formed digest. Never throws.
+ */
+export const hasMatchingMasterDigest = (
+  masters: readonly unknown[],
+  assetDigest: unknown,
+): boolean => {
+  const expected = normalizeSha256(assetDigest);
+  if (!expected) return false;
+  return masters.some((file) => {
+    if (typeof file !== "object" || file === null) return false;
+    const hash = (file as { hash?: { value?: unknown } | null }).hash;
+    return normalizeSha256(hash?.value) === expected;
+  });
+};
+
 /**
  * Parse and cross-check a rights manifest.
  *
@@ -522,10 +554,7 @@ export function validateRightsManifest(input: unknown): ValidationResult {
         ),
       );
     }
-    const masters = m.asset.sourceFiles.filter(
-      (file) => file.role === "master",
-    );
-    const assetDigest = m.asset.contentHash?.value.toLowerCase();
+    const masters = m.asset.sourceFiles.filter(isMasterEntry);
     if (masters.length === 0) {
       findings.push(
         error(
@@ -536,8 +565,7 @@ export function validateRightsManifest(input: unknown): ValidationResult {
       );
     } else if (
       m.status === "approved" &&
-      assetDigest &&
-      !masters.some((file) => file.hash?.value.toLowerCase() === assetDigest)
+      !hasMatchingMasterDigest(masters, m.asset.contentHash?.value)
     ) {
       findings.push(
         error(

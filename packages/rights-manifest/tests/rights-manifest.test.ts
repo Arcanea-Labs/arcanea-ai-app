@@ -16,6 +16,7 @@ import {
   withinCeiling,
   type RightsManifestInput,
 } from "../src/index.ts";
+import { hasMatchingMasterDigest } from "../src/validate.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const examplesDir = join(here, "../examples");
@@ -282,34 +283,111 @@ test("RM011: leaving draft requires a content hash and a master file", () => {
   );
 });
 
-test("RM011: approval binds the asset digest to a master, never a preview", () => {
+const DIGEST_A = "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90";
+const DIGEST_B = "0f1e2d3c4b5a69788796a5b4c3d2e1f00f1e2d3c4b5a69788796a5b4c3d2e1f0";
+const DIGEST_C = "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210";
+
+const bindingFixture = (
+  assetDigest: string,
+  masterDigests: readonly string[],
+  previewDigest?: string,
+): RightsManifestInput => {
   const m = approvedFixture();
-  const assetHash = m.asset.contentHash!;
-  const files = m.asset.sourceFiles!;
-  const master = files.find((file) => file.role === "master")!;
-  const preview = files.find((file) => file.role === "preview")!;
-  preview.hash = assetHash;
-
-  for (const masterHash of [
-    undefined,
-    { ...assetHash, value: "0".repeat(64) },
-  ]) {
-    master.hash = masterHash;
-    const result = isReleaseReady(m);
-    assert.equal(result.ready, false);
-    assert.ok(
-      result.reasons.some((reason) =>
-        reason.startsWith("RM011 asset.sourceFiles:"),
-      ),
-    );
-  }
-
+  m.asset.contentHash = { algorithm: "sha256", value: assetDigest };
+  const files: NonNullable<typeof m.asset.sourceFiles> = masterDigests.map(
+    (value, index) => ({
+      uri: `blob://fixtures/master-${index}.png`,
+      role: "master" as const,
+      mimeType: "image/png",
+      hash: { algorithm: "sha256" as const, value },
+    }),
+  );
   files.push({
-    ...master,
-    uri: "blob://fixtures/current-master.png",
-    hash: { ...assetHash, value: assetHash.value.toUpperCase() },
+    uri: "blob://fixtures/preview.webp",
+    role: "preview",
+    mimeType: "image/webp",
+    ...(previewDigest
+      ? { hash: { algorithm: "sha256" as const, value: previewDigest } }
+      : {}),
   });
-  assert.equal(isReleaseReady(m).ready, true);
+  m.asset.sourceFiles = files;
+  return m;
+};
+
+const bindingFails = (m: RightsManifestInput): boolean =>
+  isReleaseReady(m).reasons.some((r) => r.startsWith("RM011 asset.sourceFiles:"));
+
+test("RM011: one master with the matching digest passes", () => {
+  assert.equal(isReleaseReady(bindingFixture(DIGEST_A, [DIGEST_A])).ready, true);
+});
+
+test("RM011: one master with a different digest fails", () => {
+  const m = bindingFixture(DIGEST_A, [DIGEST_B]);
+  assert.equal(isReleaseReady(m).ready, false);
+  assert.ok(bindingFails(m));
+});
+
+test("RM011: two mismatching masters fail even when a preview matches", () => {
+  const m = bindingFixture(DIGEST_A, [DIGEST_B, DIGEST_C], DIGEST_A);
+  assert.equal(isReleaseReady(m).ready, false);
+  assert.ok(bindingFails(m));
+});
+
+test("RM011: two masters pass when only the second matches", () => {
+  assert.equal(
+    isReleaseReady(bindingFixture(DIGEST_A, [DIGEST_B, DIGEST_A])).ready,
+    true,
+  );
+});
+
+test("RM011: digest comparison folds case", () => {
+  assert.notEqual(DIGEST_A, DIGEST_A.toUpperCase());
+  assert.equal(
+    isReleaseReady(bindingFixture(DIGEST_A, [DIGEST_A.toUpperCase()])).ready,
+    true,
+  );
+  assert.equal(
+    isReleaseReady(bindingFixture(DIGEST_A.toUpperCase(), [DIGEST_A])).ready,
+    true,
+  );
+});
+
+test("RM011: malformed hashes yield a failure, never an exception", () => {
+  const m = bindingFixture(DIGEST_A, [DIGEST_A]);
+  const hash = m.asset.sourceFiles![0]!.hash as Record<string, unknown>;
+  for (const value of [undefined, null, 42, {}, "short", ""]) {
+    hash.value = value;
+    assert.doesNotThrow(() => isReleaseReady(m));
+    assert.equal(isReleaseReady(m).ready, false);
+  }
+  delete (m.asset.sourceFiles![0] as Record<string, unknown>).hash;
+  assert.equal(isReleaseReady(m).ready, false);
+});
+
+test("RM011: binding helper rejects malformed digests and entries without throwing", () => {
+  const master = (value: unknown) => ({ role: "master", hash: { value } });
+  assert.equal(hasMatchingMasterDigest([master(DIGEST_A)], DIGEST_A), true);
+  assert.equal(hasMatchingMasterDigest([master("")], ""), false);
+  assert.equal(hasMatchingMasterDigest([master("abc")], "abc"), false);
+  assert.equal(hasMatchingMasterDigest([master(DIGEST_A)], undefined), false);
+  assert.equal(hasMatchingMasterDigest([master(DIGEST_A)], 42), false);
+  assert.equal(hasMatchingMasterDigest([master(undefined)], DIGEST_A), false);
+  assert.equal(hasMatchingMasterDigest([master(null)], DIGEST_A), false);
+  assert.equal(hasMatchingMasterDigest([{ role: "master" }], DIGEST_A), false);
+  assert.equal(
+    hasMatchingMasterDigest([null, undefined, master(DIGEST_A)], DIGEST_A),
+    true,
+  );
+  assert.equal(
+    hasMatchingMasterDigest([master("z".repeat(64))], "z".repeat(64)),
+    false,
+  );
+});
+
+test("RM011: a malformed entry after a valid master does not throw", () => {
+  const m = bindingFixture(DIGEST_A, [DIGEST_A]);
+  m.asset.sourceFiles!.push(null as never);
+  assert.doesNotThrow(() => validateRightsManifest(m));
 });
 
 test("RM012: official canon needs a verified creator and a human approval receipt", () => {
