@@ -71,7 +71,7 @@ export function DatadogRum() {
       id="datadog-rum"
       src={DATADOG_RUM_SCRIPT_URL}
       strategy="afterInteractive"
-      onLoad={initRum}
+      onReady={initRum}
     />
   );
 }
