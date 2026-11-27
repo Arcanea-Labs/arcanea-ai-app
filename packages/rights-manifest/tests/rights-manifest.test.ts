@@ -282,6 +282,36 @@ test("RM011: leaving draft requires a content hash and a master file", () => {
   );
 });
 
+test("RM011: approval binds the asset digest to a master, never a preview", () => {
+  const m = approvedFixture();
+  const assetHash = m.asset.contentHash!;
+  const files = m.asset.sourceFiles!;
+  const master = files.find((file) => file.role === "master")!;
+  const preview = files.find((file) => file.role === "preview")!;
+  preview.hash = assetHash;
+
+  for (const masterHash of [
+    undefined,
+    { ...assetHash, value: "0".repeat(64) },
+  ]) {
+    master.hash = masterHash;
+    const result = isReleaseReady(m);
+    assert.equal(result.ready, false);
+    assert.ok(
+      result.reasons.some((reason) =>
+        reason.startsWith("RM011 asset.sourceFiles:"),
+      ),
+    );
+  }
+
+  files.push({
+    ...master,
+    uri: "blob://fixtures/current-master.png",
+    hash: { ...assetHash, value: assetHash.value.toUpperCase() },
+  });
+  assert.equal(isReleaseReady(m).ready, true);
+});
+
 test("RM012: official canon needs a verified creator and a human approval receipt", () => {
   const m = loadExample("living-cosmos-first-edition.draft.json");
   m.asset.canonStatus = "official-canon";
