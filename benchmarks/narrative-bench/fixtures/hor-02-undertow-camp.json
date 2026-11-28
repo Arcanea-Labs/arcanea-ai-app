@@ -1,0 +1,131 @@
+{
+  "id": "hor-02-undertow-camp",
+  "title": "The Lake Counts Back",
+  "brief": "Write a horror-lite campfire story for ages 12+. At a summer canoe camp, the head count at the lake is always one more than the roster, and nobody can say who the extra camper is. Creepy, not violent; the ending leaves the question open.",
+  "worldBible": [
+    "Camp Lantern Pine sits on Wexley Lake; canoes go out in pairs.",
+    "The roster has exactly 23 campers this week.",
+    "Head counts are done by buddy pairs calling out numbers.",
+    "Swimming is not allowed after the dinner bell.",
+    "The camp has no mobile signal."
+  ],
+  "cast": [
+    {
+      "name": "Daisy Ferreira",
+      "role": "junior counsellor",
+      "traits": [
+        "seventeen",
+        "counts on her fingers",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Marcus Oyelaran",
+      "role": "senior counsellor",
+      "traits": [
+        "jokes when nervous",
+        "carries a whistle",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Tolly Brigg",
+      "role": "camper",
+      "traits": [
+        "eleven",
+        "insists the lake is \"listening\"",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Aunt Rhoda",
+      "role": "camp cook",
+      "traits": [
+        "seen it all",
+        "never goes near the water",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "roster-23",
+      "fact": "The roster has 23 campers.",
+      "contradicts": [
+        "\\broster\\b[^.]{0,40}\\b(?:2[0-24-9]|1\\d|twenty(?:-(?:one|two|four|five|six)))\\b"
+      ],
+      "violationExample": "The roster listed 25 names in Daisy's handwriting."
+    },
+    {
+      "id": "no-violence",
+      "fact": "No camper is harmed on the page.",
+      "contradicts": [
+        "\\b(?:dragged|pulled) (?:him|her|them) under\\b",
+        "\\b(?:drowned|died|dead body)\\b"
+      ],
+      "violationExample": "Something pulled him under and he drowned."
+    },
+    {
+      "id": "open-ending",
+      "fact": "The identity of the extra camper is never revealed.",
+      "contradicts": [
+        "\\bthe extra camper (?:was|turned out to be)\\b"
+      ],
+      "violationExample": "The extra camper turned out to be a boy who drowned in 1962."
+    }
+  ],
+  "probes": [
+    {
+      "id": "count-24",
+      "question": "Does the head count come to 24 against a roster of 23?",
+      "evidence": [
+        "\\b(?:24|twenty-four)\\b"
+      ],
+      "contradicts": [],
+      "passExample": "The count came back twenty-four, again."
+    },
+    {
+      "id": "camp-name",
+      "question": "Is the camp still Lantern Pine on Wexley Lake?",
+      "evidence": [
+        "\\bLantern Pine\\b",
+        "\\bWexley\\b"
+      ],
+      "contradicts": [],
+      "passExample": "Mist sat low over Wexley Lake below Camp Lantern Pine."
+    },
+    {
+      "id": "rhoda-water",
+      "question": "Does Aunt Rhoda stay away from the water?",
+      "evidence": [
+        "\\bRhoda\\b[^.]{0,80}\\b(?:never|wouldn't|won't|stayed away|kept away)\\b"
+      ],
+      "contradicts": [
+        "\\bRhoda\\b[^.]{0,40}\\b(?:paddled|swam|waded|rowed)\\b"
+      ],
+      "passExample": "Aunt Rhoda never went near the water, and said so.",
+      "failExample": "Aunt Rhoda paddled out to the buoy."
+    }
+  ],
+  "targetLength": {
+    "words": 1200,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "horror-lite",
+    "middle-grade"
+  ],
+  "knownNames": [
+    "Camp",
+    "Lantern",
+    "Pine",
+    "Lantern Pine",
+    "Wexley",
+    "Lake",
+    "Rhoda",
+    "Aunt",
+    "Daisy",
+    "Tolly",
+    "Marcus"
+  ]
+}

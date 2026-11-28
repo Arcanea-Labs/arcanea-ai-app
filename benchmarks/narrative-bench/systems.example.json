@@ -1,0 +1,104 @@
+{
+  "$comment": "Copy this file outside the repo and edit it. Configs hold env-var NAMES only, never keys. Prices are USD per million tokens; leave pricing out when unknown and receipts record usdEstimate: null. Model ids and base URLs here are examples to replace with what you actually run. type \"cli\" runs an official CLI on your own subscription (ADR-006): no API keys (API-key env vars are stripped from the child unless keepApiKeyEnv is true), the prompt goes on stdin or as one argv element (promptVia: \"arg\"), never through a shell, and receipts record usdEstimate: null with pricingSource: \"subscription\". Check the flags against the CLI version you have installed.",
+  "systems": [
+    {
+      "id": "mock",
+      "type": "mock",
+      "variant": "faithful"
+    },
+    {
+      "$comment": "Claude Code on your Claude subscription. `claude -p` reads the prompt from stdin when no prompt argument is given.",
+      "id": "claude-cli",
+      "type": "cli",
+      "command": "claude",
+      "args": [
+        "-p",
+        "--output-format",
+        "text"
+      ],
+      "promptVia": "stdin",
+      "model": "claude-cli-default",
+      "timeoutMs": 600000
+    },
+    {
+      "$comment": "OpenAI Codex CLI on your ChatGPT subscription. The trailing `-` makes `codex exec` read the prompt from stdin.",
+      "id": "codex-cli",
+      "type": "cli",
+      "command": "codex",
+      "args": [
+        "exec",
+        "--skip-git-repo-check",
+        "-"
+      ],
+      "promptVia": "stdin",
+      "model": "codex-cli-default",
+      "timeoutMs": 600000
+    },
+    {
+      "$comment": "Gemini CLI on your Google account. `-p` takes the prompt as its value, so promptVia is \"arg\": the prompt is passed as one argv element right after -p.",
+      "id": "gemini-cli",
+      "type": "cli",
+      "command": "gemini",
+      "args": [
+        "-p"
+      ],
+      "promptVia": "arg",
+      "model": "gemini-cli-default",
+      "timeoutMs": 600000
+    },
+    {
+      "id": "frontier",
+      "type": "openai-compatible",
+      "baseUrl": "https://ai-gateway.vercel.sh/v1",
+      "model": "provider/frontier-model-id",
+      "apiKeyEnv": "AI_GATEWAY_API_KEY",
+      "maxTokens": 4096,
+      "temperature": 0.8
+    },
+    {
+      "id": "hybrid",
+      "type": "hybrid",
+      "planner": {
+        "baseUrl": "https://ai-gateway.vercel.sh/v1",
+        "model": "provider/frontier-model-id",
+        "apiKeyEnv": "AI_GATEWAY_API_KEY"
+      },
+      "writer": {
+        "baseUrl": "https://ai-gateway.vercel.sh/v1",
+        "model": "provider/other-frontier-model-id",
+        "apiKeyEnv": "AI_GATEWAY_API_KEY"
+      }
+    },
+    {
+      "id": "hybrid-arcanea",
+      "type": "hybrid-arcanea",
+      "chapters": 3,
+      "planner": {
+        "baseUrl": "https://ai-gateway.vercel.sh/v1",
+        "model": "provider/frontier-model-id",
+        "apiKeyEnv": "AI_GATEWAY_API_KEY",
+        "maxTokens": 8192,
+        "temperature": 0.7
+      },
+      "extractor": {
+        "type": "workers-ai",
+        "model": "@cf/deepseek-ai/deepseek-v4.1-flash-1017"
+      },
+      "continuity": {
+        "stopOnError": false
+      }
+    }
+  ],
+  "judges": {
+    "provider": "workers-ai",
+    "models": [
+      "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+      "@cf/openai/gpt-oss-120b"
+    ],
+    "spreadThreshold": 3
+  },
+  "safetyClassifier": {
+    "type": "workers-ai",
+    "model": "@cf/meta/llama-guard-3-8b"
+  }
+}

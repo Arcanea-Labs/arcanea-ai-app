@@ -1,0 +1,126 @@
+{
+  "id": "kids-01-moth-postman",
+  "title": "The Moth Who Delivered the Night Post",
+  "brief": "Write a picture-book style story for ages 4-7 about a small moth who delivers letters to night animals. Short sentences, gentle repetition, a problem solved by kindness. Read-aloud rhythm matters.",
+  "worldBible": [
+    "The moth's name is Pip and his satchel is made from a leaf.",
+    "Pip can only fly while the moon is up.",
+    "Letters are written on petals.",
+    "The owl, Grandmother Hoot, sorts the post in a hollow oak.",
+    "Nobody in the story is ever scary or mean for long.",
+    "The story ends with everyone asleep at sunrise."
+  ],
+  "cast": [
+    {
+      "name": "Pip",
+      "role": "moth postman",
+      "traits": [
+        "small",
+        "brave",
+        "worries about getting lost",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Grandmother Hoot",
+      "role": "owl",
+      "traits": [
+        "wise",
+        "wears spectacles",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Bramble",
+      "role": "hedgehog",
+      "traits": [
+        "grumpy at first",
+        "waiting for a letter from his cousin",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Luna",
+      "role": "glow-worm",
+      "traits": [
+        "helps Pip find the way",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "leaf-satchel",
+      "fact": "Pip carries a satchel made from a leaf.",
+      "contradicts": [
+        "\\bPip(?:'s)?\\b[^.]{0,40}\\b(?:leather|cloth|paper|plastic) (?:satchel|bag)\\b"
+      ],
+      "violationExample": "Pip slung his leather satchel over his shoulder."
+    },
+    {
+      "id": "moon-up",
+      "fact": "Pip only flies while the moon is up.",
+      "contradicts": [
+        "\\bPip (?:flew|fluttered)\\b[^.]{0,40}\\b(?:in the (?:sunshine|daytime)|at noon|all day)\\b"
+      ],
+      "violationExample": "Pip flew home in the sunshine."
+    },
+    {
+      "id": "sleep-at-sunrise",
+      "fact": "Everyone is asleep at sunrise at the end.",
+      "contradicts": [
+        "\\bat sunrise\\b[^.]{0,60}\\b(?:woke up|set off|started (?:his|her) day)\\b"
+      ],
+      "violationExample": "At sunrise Pip woke up and set off again."
+    }
+  ],
+  "probes": [
+    {
+      "id": "petal-letters",
+      "question": "Are letters written on petals?",
+      "evidence": [
+        "\\bpetals?\\b"
+      ],
+      "contradicts": [],
+      "passExample": "Each letter was written on a petal, soft and pink."
+    },
+    {
+      "id": "hoot-oak",
+      "question": "Does Grandmother Hoot sort the post in a hollow oak?",
+      "evidence": [
+        "\\bhollow oak\\b"
+      ],
+      "contradicts": [
+        "\\bGrandmother Hoot\\b[^.]{0,60}\\b(?:barn|pine|chimney|willow)\\b"
+      ],
+      "passExample": "Grandmother Hoot sorted petals in the hollow oak.",
+      "failExample": "Grandmother Hoot sorted the post in the old barn."
+    },
+    {
+      "id": "short-sentences",
+      "question": "Are most sentences short (read-aloud)?",
+      "evidence": [
+        "\\.\\s+\\S+(?:\\s+\\S+){0,6}\\."
+      ],
+      "contradicts": [],
+      "passExample": "Pip flew. The wind blew. The stars came out."
+    }
+  ],
+  "targetLength": {
+    "words": 600,
+    "tolerance": 0.3
+  },
+  "tags": [
+    "childrens",
+    "picture-book",
+    "read-aloud"
+  ],
+  "knownNames": [
+    "Pip",
+    "Grandmother",
+    "Hoot",
+    "Grandmother Hoot",
+    "Bramble",
+    "Luna"
+  ]
+}

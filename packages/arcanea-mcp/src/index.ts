@@ -29,6 +29,7 @@ import { registerWorldGraphTools } from "./registrations/world-graph.js";
 import { registerWorldIntelligenceTools } from "./registrations/world-intelligence.js";
 import { registerWorldPersistenceTools } from "./registrations/world-persistence.js";
 import { registerVisualPromptTools } from "./registrations/visual-prompts.js";
+import { registerNarrativeTools } from "./tools/narrative-registration.js";
 import { RUNTIME_INFO } from "./runtime-info.js";
 import { catalogServer, resolveToolsets } from "./toolsets.js";
 
@@ -55,6 +56,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
   registerProductionTools(target);
   registerReferences(target);
   registerWebVaultTools(target);
+  registerNarrativeTools(target);
   return server;
 }
 

@@ -1077,6 +1077,10 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/narrative-diagnostics: {}
+
+  packages/narrative-planner: {}
+
   packages/orchestrator:
     dependencies:
       '@arcanea/router-spec':

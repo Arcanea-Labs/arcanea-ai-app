@@ -1,0 +1,132 @@
+{
+  "id": "if-01-gallery-heist",
+  "title": "Night at the Hollin Gallery",
+  "brief": "Write an interactive-fiction passage for a light heist caper. Open with the crew inside a small museum after hours, then offer three labelled choices (\"Option 1: the skylight\", \"Option 2: the guard's keys\", \"Option 3: wait for the 02:00 patrol\"). Write each option as 200-350 words ending in a different state. The crew are thieves of a stolen painting returning it to its owner; no one is hurt.",
+  "worldBible": [
+    "The Hollin Gallery is a two-floor museum with one night guard.",
+    "The painting, \"Girl with a Lantern\", was stolen from its owner forty years ago.",
+    "The guard patrols on the hour; the patrol takes 12 minutes.",
+    "Cameras on the first floor have been dead since a storm.",
+    "The crew's rule: nobody gets hurt, and nothing else is taken.",
+    "The painting must be left in the director's office with a letter."
+  ],
+  "cast": [
+    {
+      "name": "Sunny Akintola",
+      "role": "planner",
+      "traits": [
+        "retired insurance investigator",
+        "colour-blind",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Dex Morrow",
+      "role": "climber",
+      "traits": [
+        "afraid of dogs",
+        "talks to himself in third person",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Wilhelmina Grau",
+      "role": "the painting's owner (offstage)",
+      "traits": [
+        "ninety-one",
+        "waiting at home",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Errol Pike",
+      "role": "night guard",
+      "traits": [
+        "kind",
+        "listens to cricket on the radio",
+        "he/him"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "nobody-hurt",
+      "fact": "Nobody is hurt in any option.",
+      "contradicts": [
+        "\\b(?:knocked (?:him|Errol|the guard) (?:out|unconscious)|hit (?:him|Errol|the guard)|punched|stabbed|shot)\\b"
+      ],
+      "violationExample": "Dex knocked the guard out with a torch."
+    },
+    {
+      "id": "nothing-taken",
+      "fact": "Nothing else is taken from the gallery.",
+      "contradicts": [
+        "\\b(?:pocketed|swiped|took|stole) (?:a|the|another|one) (?:\\w+ ){0,2}(?:statue|vase|necklace|coin|painting) (?:as well|too|for (?:himself|herself|good measure))"
+      ],
+      "violationExample": "Dex pocketed a silver coin for good measure."
+    },
+    {
+      "id": "patrol-12",
+      "fact": "Each patrol takes 12 minutes.",
+      "contradicts": [
+        "\\bpatrol (?:takes|took|lasted|lasts) (?:about )?(?:[1-9]|1[013-9]|[2-9]\\d|five|ten|twenty|thirty) minutes\\b"
+      ],
+      "violationExample": "The patrol took twenty minutes."
+    }
+  ],
+  "probes": [
+    {
+      "id": "three-options",
+      "question": "Are all three labelled options present?",
+      "evidence": [
+        "Option 1[\\s\\S]{0,5000}Option 2[\\s\\S]{0,5000}Option 3"
+      ],
+      "contradicts": [],
+      "passExample": "Option 1: the skylight. Option 2: the guard's keys. Option 3: wait for the 02:00 patrol."
+    },
+    {
+      "id": "painting-title",
+      "question": "Is the painting still \"Girl with a Lantern\"?",
+      "evidence": [
+        "Girl with a Lantern"
+      ],
+      "contradicts": [
+        "Girl with a (?!Lantern)(?:Lamp|Candle|Torch)"
+      ],
+      "passExample": "Girl with a Lantern leaned against the wall in its blanket.",
+      "failExample": "Girl with a Candle leaned against the wall."
+    },
+    {
+      "id": "sunny-colour-blind",
+      "question": "Is Sunny still colour-blind?",
+      "evidence": [
+        "\\bcolou?r-?blind\\b"
+      ],
+      "contradicts": [
+        "\\bSunny\\b[^.]{0,60}\\b(?:the red wire|by its colou?r)\\b"
+      ],
+      "passExample": "Sunny, colour-blind since birth, read the labels instead of the colours.",
+      "failExample": "Sunny cut the red wire, picking it out by its colour."
+    }
+  ],
+  "targetLength": {
+    "words": 1200,
+    "tolerance": 0.3
+  },
+  "tags": [
+    "interactive-fiction",
+    "branching",
+    "caper"
+  ],
+  "knownNames": [
+    "Hollin",
+    "Gallery",
+    "Hollin Gallery",
+    "Girl",
+    "Lantern",
+    "Option",
+    "Errol",
+    "Sunny",
+    "Dex"
+  ]
+}

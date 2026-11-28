@@ -1,0 +1,118 @@
+{
+  "id": "hor-01-thermostat",
+  "title": "Set Point",
+  "brief": "Write a horror-lite story about a smart thermostat in a rented flat that keeps resetting itself to 17.5 °C every night at 03:17, though the tenant has unplugged it. Unsettling, ambiguous, no gore, no monster reveal.",
+  "worldBible": [
+    "The flat is on the fourth floor of a converted wool mill.",
+    "The thermostat display shows only numbers, never words.",
+    "The previous tenant left abruptly in winter.",
+    "The landlord communicates only by text message.",
+    "The building's heating is communal and cannot actually be controlled from the flat."
+  ],
+  "cast": [
+    {
+      "name": "Joss Arkwright",
+      "role": "tenant",
+      "traits": [
+        "sound engineer",
+        "insomniac",
+        "they/them"
+      ]
+    },
+    {
+      "name": "Mr Dunleavy",
+      "role": "landlord",
+      "traits": [
+        "only texts",
+        "never answers questions directly",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Femi Adeyemi",
+      "role": "downstairs neighbour",
+      "traits": [
+        "night-shift nurse",
+        "knew the previous tenant",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "time-0317",
+      "fact": "The reset happens at 03:17.",
+      "contradicts": [
+        "\\breset\\w*\\b[^.]{0,40}\\b(?:at )?(?:0?3:(?:0\\d|1[0-689]|[2-5]\\d)|0?[124]:\\d\\d)\\b"
+      ],
+      "violationExample": "It reset itself at 03:45 again."
+    },
+    {
+      "id": "numbers-only",
+      "fact": "The display shows only numbers, never words.",
+      "contradicts": [
+        "\\b(?:display|screen) (?:read|said|spelled|showed the word)s? [\"“'](?:[A-Za-z]{2,})"
+      ],
+      "violationExample": "The display read \"HELLO\" in green."
+    },
+    {
+      "id": "no-monster",
+      "fact": "No creature or ghost is shown on the page.",
+      "contradicts": [
+        "\\b(?:a|the) (?:ghost|creature|demon|figure) (?:stood|crouched|lunged|appeared|stepped out)\\b"
+      ],
+      "violationExample": "A figure stepped out of the airing cupboard."
+    }
+  ],
+  "probes": [
+    {
+      "id": "temp-17-5",
+      "question": "Is the set point still 17.5 °C?",
+      "evidence": [
+        "\\b17\\.5\\b",
+        "\\bseventeen and a half\\b"
+      ],
+      "contradicts": [
+        "\\breset\\w*\\b[^.]{0,40}\\b(?:to )?(?:18|16|21|20)(?:\\.\\d)?\\s?°?C?\\b"
+      ],
+      "passExample": "At 03:17 the display blinked back to 17.5.",
+      "failExample": "It reset itself to 21 degrees."
+    },
+    {
+      "id": "unplugged",
+      "question": "Is the thermostat unplugged while it keeps resetting?",
+      "evidence": [
+        "\\bunplugged\\b",
+        "\\b(?:no|without) power\\b"
+      ],
+      "contradicts": [],
+      "passExample": "The thermostat had been unplugged for two days."
+    },
+    {
+      "id": "fourth-floor",
+      "question": "Is the flat on the fourth floor?",
+      "evidence": [
+        "\\bfourth floor\\b"
+      ],
+      "contradicts": [
+        "\\b(?:second|third|fifth|ground|top) floor flat\\b"
+      ],
+      "passExample": "Four flights up, on the fourth floor, the mill was always cold.",
+      "failExample": "Joss climbed to the third floor flat."
+    }
+  ],
+  "targetLength": {
+    "words": 1200,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "horror-lite",
+    "ambiguous"
+  ],
+  "knownNames": [
+    "Dunleavy",
+    "Mr",
+    "Joss",
+    "Femi"
+  ]
+}

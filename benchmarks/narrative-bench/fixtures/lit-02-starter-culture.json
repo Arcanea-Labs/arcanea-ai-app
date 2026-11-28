@@ -1,0 +1,122 @@
+{
+  "id": "lit-02-starter-culture",
+  "title": "Starter",
+  "brief": "Write a literary story told across seven mornings, one paragraph-cluster per morning, in which a woman keeps alive the sourdough starter her estranged brother left behind when he moved away. The brother never appears. The starter is not a metaphor anyone states aloud.",
+  "worldBible": [
+    "The starter lives in a chipped blue jar labelled \"Gus\" in the brother's handwriting.",
+    "It must be fed flour and water every morning.",
+    "The brother moved to another country and has not called.",
+    "The story spans exactly seven consecutive mornings, Monday to Sunday.",
+    "She bakes only once, on the last morning."
+  ],
+  "cast": [
+    {
+      "name": "Noor Haddad",
+      "role": "protagonist",
+      "traits": [
+        "night-shift radiographer",
+        "does not cook",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Sami Haddad",
+      "role": "her brother (absent)",
+      "traits": [
+        "left without saying goodbye",
+        "named the starter Gus",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Mrs Okonedo",
+      "role": "downstairs neighbour",
+      "traits": [
+        "eighty",
+        "gives unsolicited bread advice",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "sami-absent",
+      "fact": "Sami never appears in person.",
+      "contradicts": [
+        "\\bSami (?:walked in|knocked|arrived|stood in the doorway|hugged her|was waiting)\\b"
+      ],
+      "violationExample": "On Sunday Sami knocked at the door."
+    },
+    {
+      "id": "blue-jar",
+      "fact": "The starter is kept in a chipped blue jar labelled Gus.",
+      "contradicts": [
+        "\\b(?:green|red|yellow|white|clear) jar (?:labelled|marked) Gus\\b",
+        "\\bGus\\b[^.]{0,40}\\b(?:green|red|yellow|clear plastic) (?:jar|tub)\\b"
+      ],
+      "violationExample": "She lifted the clear jar marked Gus to the light."
+    },
+    {
+      "id": "bake-once",
+      "fact": "Noor bakes bread only on the seventh morning.",
+      "contradicts": [
+        "\\b(?:Monday|Tuesday|Wednesday|first|second|third) morning\\b[^.]{0,60}\\b(?:baked|loaf came out)\\b"
+      ],
+      "violationExample": "On the second morning she baked a loaf that came out flat."
+    }
+  ],
+  "probes": [
+    {
+      "id": "seven-mornings",
+      "question": "Does the story span seven mornings?",
+      "evidence": [
+        "\\b(?:seventh|Sunday) morning\\b",
+        "\\bseven mornings\\b"
+      ],
+      "contradicts": [
+        "\\b(?:eighth|ninth|tenth) morning\\b"
+      ],
+      "passExample": "On the seventh morning she lit the oven.",
+      "failExample": "On the tenth morning she lit the oven."
+    },
+    {
+      "id": "jar-label",
+      "question": "Is the starter still called Gus?",
+      "evidence": [
+        "\\bGus\\b"
+      ],
+      "contradicts": [],
+      "passExample": "Gus had risen to the rubber band overnight."
+    },
+    {
+      "id": "no-stated-metaphor",
+      "question": "Does the story avoid stating the starter is a metaphor for the relationship?",
+      "evidence": [
+        "\\bflour\\b"
+      ],
+      "contradicts": [
+        "\\b(?:like|just like) (?:their|our) (?:relationship|bond|family)\\b",
+        "\\bthe starter was (?:their|her) (?:relationship|brother|family)\\b"
+      ],
+      "passExample": "She stirred the flour in and pressed the lid down.",
+      "failExample": "The starter was just like their relationship, needing to be fed."
+    }
+  ],
+  "targetLength": {
+    "words": 1400,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "literary",
+    "structure-constrained"
+  ],
+  "knownNames": [
+    "Gus",
+    "Noor",
+    "Sami",
+    "Okonedo",
+    "Mrs",
+    "Monday",
+    "Sunday"
+  ]
+}

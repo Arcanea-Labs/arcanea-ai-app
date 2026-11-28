@@ -20,6 +20,16 @@ node packages/arcanea-mcp/dist/cli.js --version
 node packages/arcanea-mcp/dist/cli.js --help
 ```
 
+The narrative tools (`narrative_plan_story`, `narrative_check_continuity`, `narrative_score_diversity`) load `@arcanea/world-engine` and `@arcanea/narrative-planner` lazily. Their build output (`packages/world-engine/dist/continuity/`, `packages/narrative-planner/dist/`) is git-ignored, so on a fresh checkout those tools answer `engine_unavailable` until you build the engines once from the repository root:
+
+```sh
+pnpm --filter @arcanea/mcp-server build:engines
+# without pnpm: node packages/arcanea-mcp/scripts/build-narrative-engines.mjs
+# check only:   node packages/arcanea-mcp/scripts/build-narrative-engines.mjs --check
+```
+
+The `engine_unavailable` error message and its `buildCommand` field name the same command. Outside the monorepo, install the engine packages next to `@arcanea/mcp-server`.
+
 Start a local stdio server by giving your MCP host an absolute path to the built CLI. Replace the example paths with paths on your machine:
 
 ```json

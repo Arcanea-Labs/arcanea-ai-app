@@ -11,4 +11,7 @@ export { analyzeElementalBalance, detectRoles, detectGaps, generateConflict, wea
 export { ELEMENT_AESTHETICS, RANK_VISUAL, ART_DIRECTION, characterToImagePrompt, locationToImagePrompt, creatureToImagePrompt, } from "./visual.js";
 export { LINGUISTIC_FAMILIES, CANONICAL_REALMS, CANONICAL_EPOCHS, CANONICAL_GUARDIANS, GATE_TOLL_REGISTRY, MONOMYTH_STAGES, getCanonicalRealms, getLinguisticFamilies, getCanonicalEpochs, getCanonicalGuardians, getMonomythStages, getMonomythStage, calculateCorridorResonance, calculateSandersonianMagicToll, generateRealmName, traceEntityProvenance, } from "./temporal-multiverse-engine.js";
 export type { MagicTollResult, MonomythStage, CanonicalGuardianEntity, } from "./temporal-multiverse-engine.js";
+export { projectAtlasStaging, atlasAtMoment } from "./geography.js";
+export type { AtlasStagingInput, AtlasFeature, AtlasPresence, GeographicAtlas, } from "./geography.js";
+export * from "./continuity/index.js";
 //# sourceMappingURL=index.d.ts.map

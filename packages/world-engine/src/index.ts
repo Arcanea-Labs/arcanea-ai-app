@@ -118,3 +118,7 @@ export type {
   AtlasPresence,
   GeographicAtlas,
 } from "./geography.js";
+
+// Narrative continuity (plans, character ledger, timeline, world rules,
+// diversity metrics, promotion guard) — pure, model-independent.
+export * from "./continuity/index.js";

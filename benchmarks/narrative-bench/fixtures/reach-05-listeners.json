@@ -1,0 +1,174 @@
+{
+  "id": "reach-05-listeners",
+  "title": "What the Listeners Hear",
+  "brief": "Write a horror-lite story in the Saltglass Reach. On a still night, Doran Varga hears a bell ringing under the water off Rook Spit, though no one on land is ringing one. Keep the dread suggestive, no gore, suitable for teenagers.",
+  "worldBible": [
+    "The Saltglass Reach is nine islands joined only by ferries; no bridge can stand because the seabed shifts every spring.",
+    "Saltglass forms on the tidal flats after spring tides; a saltglass lamp burns without oil for exactly one night and then goes dark for good.",
+    "By Warden law no bell may be rung after sunset; a bell after dark is said to draw the Listeners up from deep water.",
+    "Money is tallies: notched driftwood sticks, one notch for one day of labour.",
+    "The Warden council meets on Cobber's Hold, the oldest island.",
+    "No ferry runs on the night of the dark moon.",
+    "Sound carries strangely over the flats at low tide; voices can be heard from a mile off."
+  ],
+  "cast": [
+    {
+      "name": "Doran Varga",
+      "role": "lamp-seller",
+      "traits": [
+        "stammers only when he lies",
+        "keeps tallies in his boot",
+        "younger brother of Ilse",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Pell Tamsin",
+      "role": "Harbour Warden",
+      "traits": [
+        "old",
+        "blind in his right eye",
+        "walks with a blackthorn cane",
+        "he/him"
+      ]
+    },
+    {
+      "name": "Wren Osei",
+      "role": "ferrywoman",
+      "traits": [
+        "left-handed",
+        "a heron tattooed on her left forearm",
+        "cannot swim",
+        "she/her"
+      ]
+    },
+    {
+      "name": "Juno Alder",
+      "role": "lighthouse keeper on Rook Spit",
+      "traits": [
+        "dry humour",
+        "keeps a logbook of every ship",
+        "she/her"
+      ]
+    }
+  ],
+  "mustHold": [
+    {
+      "id": "world-no-bridges",
+      "scope": "world",
+      "fact": "The islands are joined only by ferries; no bridge can stand between them.",
+      "contradicts": [
+        "(?<!\\bno )(?<!\\bnever a )\\bbridges? (?:between|across|linking|connecting|joining) (?:the |two |both )?(?:islands|isles)",
+        "\\b(?:walked|crossed|ran|drove|hurried) (?:over|across) (?:the|a|an old|the old) bridge\\b",
+        "\\bbridge (?:to|from) (?:Cobber's Hold|Gannet Isle|Lowmarsh|Rook Spit)"
+      ],
+      "violationExample": "They walked across the old bridge to Cobber's Hold before dawn."
+    },
+    {
+      "id": "world-lamp-one-night",
+      "scope": "world",
+      "fact": "A saltglass lamp burns for exactly one night and then goes dark for good.",
+      "contradicts": [
+        "saltglass lamps? (?:\\w+ ){0,3}(?:burned|burns|burning|glowed|glows|glowing|lit) (?:\\w+ ){0,3}(?:for )?(?:two|three|four|five|several|many|a week of) nights",
+        "\\brelit (?:the|a|her|his|their) (?:old )?saltglass lamp",
+        "(?:second|third|fourth) night (?:\\w+ ){0,4}(?:same )?saltglass lamp (?:was )?(?:still )?(?:burning|burned|glowing|glowed|lit)"
+      ],
+      "violationExample": "Her saltglass lamp burned for three nights without dimming."
+    },
+    {
+      "id": "world-bell-law",
+      "scope": "world",
+      "fact": "By Warden law no bell may be rung after sunset.",
+      "contradicts": [
+        "\\bno (?:law|rule) against (?:ringing )?(?:the )?bells?",
+        "\\b(?:allowed|permitted|free) to ring (?:\\w+ ){0,2}bells? (?:\\w+ ){0,2}(?:after|at) (?:sunset|dark|nightfall|night)",
+        "\\bbells? (?:were|was) (?:allowed|permitted) (?:after|at) (?:sunset|dark|nightfall|night)"
+      ],
+      "violationExample": "There was no law against ringing bells, so the children rang them all night."
+    },
+    {
+      "id": "no-gore",
+      "fact": "Nobody is graphically injured or killed on the page.",
+      "contradicts": [
+        "\\b(?:blood (?:sprayed|gushed|pooled)|entrails|disembowel\\w*|severed head)\\b"
+      ],
+      "violationExample": "Blood sprayed across the rocks as the thing pulled him under."
+    }
+  ],
+  "probes": [
+    {
+      "id": "bell-under-water",
+      "question": "Is the bell heard from under the water rather than rung by someone on land?",
+      "evidence": [
+        "\\bbell\\b[^.]{0,80}\\b(?:under|beneath|below) (?:the )?(?:water|waves|sea|surface)",
+        "\\b(?:under|beneath|below) (?:the )?(?:water|waves|sea)\\b[^.]{0,60}\\bbell\\b"
+      ],
+      "contradicts": [
+        "\\b(?:Doran|Juno|Pell|Wren) (?:rang|was ringing|pulled the rope of) (?:the|a) bell\\b"
+      ],
+      "passExample": "Somewhere beneath the water a bell was ringing, slow and patient, though every bell on the island hung still.",
+      "failExample": "Juno rang the bell to warn the boats."
+    },
+    {
+      "id": "pell-right-eye",
+      "question": "Is Pell's blind eye still the right one?",
+      "evidence": [
+        "\\bPell\\b[^.]{0,80}\\b(?:blind|milky|clouded|dead) right eye\\b",
+        "\\bPell\\b[^.]{0,80}\\bright eye\\b[^.]{0,30}\\b(?:blind|sightless|saw nothing)"
+      ],
+      "contradicts": [
+        "\\bPell\\b[^.]{0,80}\\b(?:blind|milky|clouded|dead) left eye\\b",
+        "\\bPell\\b[^.]{0,80}\\bleft eye\\b[^.]{0,20}\\b(?:blind|sightless|saw nothing)"
+      ],
+      "passExample": "Pell turned his blind right eye toward the sea, the way he did when he was thinking.",
+      "failExample": "Pell squinted with his good right eye; the left eye was blind."
+    },
+    {
+      "id": "doran-stammer",
+      "question": "Does Doran stammer only when lying (if he stammers at all)?",
+      "evidence": [
+        "\\bDoran\\b[^.]{0,80}\\b(?:stammer\\w*|st-)",
+        "\\bstammer\\w*\\b[^.]{0,60}\\b(?:lie|lying)\\b"
+      ],
+      "contradicts": [
+        "\\bDoran\\b[^.]{0,60}\\b(?:always|constantly) stammer\\w*"
+      ],
+      "passExample": "Doran said he was not afraid, and stammered on every word of it.",
+      "failExample": "Doran always stammered, whatever he was saying."
+    }
+  ],
+  "targetLength": {
+    "words": 1200,
+    "tolerance": 0.25
+  },
+  "tags": [
+    "horror-lite",
+    "shared-world",
+    "saltglass-reach",
+    "teen"
+  ],
+  "continuityGroup": "saltglass-reach",
+  "knownNames": [
+    "Saltglass",
+    "Reach",
+    "Saltglass Reach",
+    "Listeners",
+    "Listener",
+    "Warden",
+    "Wardens",
+    "Harbour",
+    "Cobber's",
+    "Cobber",
+    "Hold",
+    "Cobber's Hold",
+    "Gannet",
+    "Gannet Isle",
+    "Isle",
+    "Lowmarsh",
+    "Teller",
+    "Tellers",
+    "Rook",
+    "Rook Spit",
+    "Spit"
+  ]
+}
