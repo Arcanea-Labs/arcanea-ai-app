@@ -1,0 +1,272 @@
+.maison {
+  --ground: var(--arc-story-night, var(--arc-cosmic-void));
+  --paper: var(--arc-story-paper, var(--arc-text-primary));
+  --accent: var(--arc-gold-light, var(--arc-brand-arcanean-gold));
+  --quiet: color-mix(in srgb, var(--paper) 76%, var(--ground));
+  --rule: color-mix(in srgb, var(--paper) 22%, transparent);
+  --panel: color-mix(in srgb, var(--paper) 5%, var(--ground));
+  position: relative;
+  background: var(--ground);
+  color: var(--paper);
+  font: 400 1rem/1.6 var(--arc-font-body, system-ui);
+  padding: 0 clamp(1.25rem, 5vw, 6rem);
+}
+.maison h1,
+.maison h2,
+.maison h3,
+.maison p,
+.maison figure {
+  margin: 0;
+}
+.maison a {
+  color: inherit;
+}
+.maison :is(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.mast,
+.hero,
+.section,
+.foot {
+  width: min(100%, 96rem);
+  margin-inline: auto;
+}
+.mast {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2rem 1.5rem;
+  min-height: 4.3rem;
+  border-bottom: 1px solid var(--rule);
+}
+.mast a,
+.foot a {
+  text-decoration: none;
+}
+.mast a:hover,
+.foot a:hover {
+  text-decoration: underline;
+}
+.wordmark {
+  font: 400 1.75rem/1 var(--arc-font-editorial, Georgia);
+}
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1.15rem;
+}
+.nav a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  font-size: 0.88rem;
+  color: var(--quiet);
+}
+.nav a[aria-current="page"] {
+  color: var(--accent);
+}
+.hero {
+  padding-block: clamp(2.2rem, 5vw, 6.4rem);
+}
+.heroSplit {
+  display: grid;
+  gap: clamp(1.6rem, 3.25vw, 4.5rem);
+  align-items: center;
+}
+.kicker {
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+}
+.maison h1,
+.maison h2,
+.maison h3 {
+  font-family: var(--arc-font-editorial, Georgia);
+  font-weight: 400;
+}
+.maison h1 {
+  max-width: 11ch;
+  margin-block: 0.85rem 1.25rem;
+  font-size: clamp(3.55rem, 7.1vw, 8.2rem);
+  line-height: 0.88;
+  letter-spacing: -0.043em;
+}
+.maison h1 em {
+  color: var(--accent);
+  font-weight: 400;
+}
+.lede {
+  max-width: 44ch;
+  color: var(--quiet);
+  font-size: clamp(1rem, 1.15vw, 1.23rem);
+}
+.heroArt {
+  align-self: stretch;
+  display: grid;
+  align-content: center;
+  min-width: 0;
+}
+.heroArt a {
+  display: block;
+  overflow: hidden;
+}
+.heroArt img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.2rem 1rem;
+  color: var(--quiet);
+  padding-top: 0.65rem;
+  font-size: 0.8rem;
+}
+.caption a {
+  text-underline-offset: 0.23em;
+  text-decoration: underline;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 1.15rem;
+  margin-top: 1.5rem;
+}
+.maison .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 46px;
+  padding: 0.55rem 0.95rem;
+  color: var(--ground);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  font: 600 0.91rem/1.35 var(--arc-font-body, system-ui);
+  text-decoration: none;
+  cursor: pointer;
+}
+.maison .button:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+}
+.maison .textLink {
+  text-underline-offset: 0.28em;
+  text-decoration-color: var(--accent);
+}
+.section {
+  padding-block: clamp(2.1rem, 4.5vw, 5rem);
+  border-top: 1px solid var(--rule);
+}
+.section h2 {
+  font-size: clamp(2.4rem, 4.4vw, 4.65rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  margin-block: 0.35rem 0.7rem;
+}
+.section h3 {
+  font-size: clamp(1.75rem, 2.8vw, 3rem);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.section p {
+  max-width: 61ch;
+  color: var(--quiet);
+}
+.section .kicker {
+  color: var(--accent);
+}
+.split {
+  display: grid;
+  gap: 1.65rem 3rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem clamp(0.8rem, 2.3vw, 2rem);
+  margin-top: 1.7rem;
+}
+.work {
+  display: block;
+  min-width: 0;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.5rem;
+  text-decoration: none;
+}
+.work figure {
+  overflow: hidden;
+  background: var(--panel);
+}
+.work img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.work span {
+  display: block;
+  margin: 0.55rem 0 0.3rem;
+  color: var(--quiet);
+  font-size: 0.73rem;
+}
+.work strong {
+  display: block;
+  font: 400 clamp(1.3rem, 2.4vw, 2.1rem)/1 var(--arc-font-editorial, Georgia);
+}
+.work:hover strong {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.note {
+  padding: 1rem 1.1rem;
+  border-left: 1px solid var(--accent);
+  background: var(--panel);
+}
+.note p + p {
+  margin-top: 0.65rem;
+}
+.facts {
+  display: grid;
+  gap: 0.75rem;
+  margin-block: 1.2rem 0;
+  padding: 0;
+  list-style: none;
+}
+.facts li {
+  border-top: 1px solid var(--rule);
+  padding-block: 0.55rem 0;
+}
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--rule);
+  padding-block: 1.25rem 2.4rem;
+  color: var(--quiet);
+  font-size: 0.86rem;
+}
+@media (min-width: 50rem) {
+  .heroSplit {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  }
+  .split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .work img {
+    transition: transform 0.24s ease-out;
+  }
+  .work:hover img {
+    transform: scale(1.025);
+  }
+}
