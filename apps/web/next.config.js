@@ -107,6 +107,18 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/alljsqnj/image/upload/*/arcanea/bestiary/mythic-commons/volume-01/published/*.webp',
+        search: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'openaccess-cdn.clevelandart.org',
+        pathname: '/1986.2.1/1986.2.1_web.jpg',
+        search: '',
+      },
+      {
+        protocol: 'https',
         hostname: 'media.starlightintelligence.org',
       },
       {

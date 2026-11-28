@@ -1,0 +1,514 @@
+.shell {
+  --paper: color-mix(
+    in srgb,
+    var(--arc-text-primary) 93%,
+    var(--arc-brand-arcanean-gold)
+  );
+  --brass: color-mix(
+    in srgb,
+    var(--arc-brand-arcanean-gold) 57%,
+    var(--arc-text-secondary)
+  );
+  --muted: color-mix(
+    in srgb,
+    var(--arc-text-primary) 64%,
+    var(--arc-cosmic-overlay)
+  );
+  --rule: color-mix(in srgb, var(--paper) 20%, transparent);
+  --ink: var(--arc-cosmic-void);
+  color: var(--paper);
+  background: var(--ink);
+  padding: 0 max(6vw, calc((100vw - 1440px) / 2));
+  font-family: var(--arc-font-body);
+  color-scheme: dark;
+}
+.shell * {
+  box-sizing: border-box;
+}
+.shell h1,
+.shell h2,
+.shell h3,
+.shell p,
+.shell figure,
+.shell dl,
+.shell dd {
+  margin: 0;
+}
+.shell a {
+  color: inherit;
+  text-decoration: none;
+}
+.shell a:focus-visible,
+.shell button:focus-visible,
+.shell summary:focus-visible,
+.shell input:focus-visible {
+  outline: 3px solid var(--arc-brand-atlantean-teal);
+  outline-offset: 5px;
+}
+.shell .kicker,
+.label,
+.filename {
+  font: 500 0.69rem/1.5 var(--arc-font-mono);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.shell .kicker {
+  color: var(--brass);
+}
+.top,
+.footer,
+.heroArt figcaption,
+.collectionHeader,
+.actions,
+.top nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.4rem;
+}
+.top {
+  border-bottom: 1px solid var(--rule);
+  min-height: 4.3rem;
+}
+.brand {
+  font: 500 1.1rem var(--arc-font-body);
+  letter-spacing: -0.045em;
+}
+.brand span,
+.heroArt figcaption i {
+  color: var(--brass);
+  font-weight: 400;
+  padding: 0 0.3rem;
+}
+.top nav,
+.footer {
+  color: var(--muted);
+  font-size: 0.83rem;
+}
+.top a,
+.footer a {
+  padding: 0.7rem 0;
+}
+.top nav a:hover,
+.footer a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.hero {
+  display: grid;
+  grid-template-columns: 0.9fr 1.2fr;
+  align-items: center;
+  gap: 2vw;
+  padding: clamp(2rem, 4.5vw, 5rem) 0 clamp(2rem, 4.4vw, 4rem);
+}
+.heroCopy {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 2.5rem;
+}
+.shell .heroTitle {
+  font: 400 clamp(3.6rem, 6.6vw, 7.75rem)/0.96 var(--arc-font-display);
+  letter-spacing: -0.078em;
+  margin: 1.3rem 0;
+}
+.heroTitle em,
+.subtitle {
+  font: italic 400 1.14em/0.95 var(--font-editorial, var(--arc-font-editorial));
+  letter-spacing: -0.05em;
+  color: var(--paper);
+}
+.lede,
+.notice > p,
+.drawer p,
+.related > p,
+.collectionHeader > p {
+  color: var(--muted);
+  font-size: clamp(0.99rem, 1.22vw, 1.2rem);
+  line-height: 1.65;
+  max-width: 32rem;
+}
+.heroCopy .lede {
+  max-width: 24rem;
+}
+.actions {
+  justify-content: flex-start;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+  margin-top: 1.7rem;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  min-height: 2.9rem;
+  border: 1px solid var(--paper);
+  border-radius: 0.17rem;
+  padding: 0.75rem 1.05rem;
+  background: var(--paper);
+  color: var(--ink) !important;
+  font: 600 0.87rem/1.4 var(--arc-font-body);
+  cursor: pointer;
+}
+.button:hover {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+.button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+.shell .textLink,
+.drawer summary {
+  font: 500 0.88rem/1.55 var(--arc-font-body);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+button.textLink {
+  background: none;
+  color: var(--paper);
+  border: 0;
+}
+.heroArt {
+  position: relative;
+  min-width: 0;
+}
+.fan {
+  position: relative;
+  isolation: isolate;
+  height: clamp(20rem, 34vw, 33rem);
+  background: radial-gradient(
+    ellipse at 52% 59%,
+    color-mix(in srgb, var(--brass) 14%, transparent),
+    transparent 69%
+  );
+}
+.fan > * {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 1px;
+  box-shadow: 0 15px 32px color-mix(in srgb, var(--ink) 65%, transparent);
+  aspect-ratio: 2 / 3;
+}
+.fan img,
+.singleArt img,
+.mount img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.backLeft {
+  height: 66%;
+  top: 17%;
+  left: 9%;
+  transform: rotate(-12deg);
+  filter: brightness(0.72);
+}
+.backRight {
+  height: 67%;
+  top: 15%;
+  right: 7%;
+  transform: rotate(12deg);
+  filter: brightness(0.78);
+}
+.front {
+  height: 84%;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%) rotate(2deg);
+  transition: transform 200ms var(--arc-ease-expo-out);
+}
+.front:hover {
+  transform: translateX(-50%) rotate(0deg);
+}
+.heroArt figcaption {
+  border-top: 1px solid var(--rule);
+  margin: 0 5%;
+  padding: 0.8rem 0;
+  font: 400 0.67rem/1.5 var(--arc-font-mono);
+  color: var(--muted);
+}
+.index {
+  border-top: 1px solid var(--rule);
+  padding: 3rem 0;
+  scroll-margin-top: 5rem;
+}
+.collectionHeader {
+  align-items: flex-end;
+  margin-bottom: 1.7rem;
+}
+.collectionHeader h2,
+.detailCopy h1,
+.reading h1 {
+  font: 400 clamp(2.6rem, 5vw, 5.8rem)/1.06
+    var(--font-editorial, var(--arc-font-editorial));
+  letter-spacing: -0.045em;
+  margin-top: 0.45rem;
+}
+.collectionHeader > p {
+  max-width: 22rem;
+  font-size: 0.96rem;
+}
+.plateGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2.2rem 1.2rem;
+}
+.mount,
+.singleArt {
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--paper) 6%, var(--ink));
+  border: 1px solid var(--rule);
+}
+.mount {
+  padding: 10%;
+  aspect-ratio: 0.75;
+  transition: background-color 180ms var(--arc-ease-expo-out);
+}
+.plateCard:hover .mount {
+  background: color-mix(in srgb, var(--brass) 17%, var(--ink));
+}
+.cardText {
+  padding: 0.75rem 0;
+}
+.label {
+  color: var(--muted);
+}
+.cardText h3 {
+  font: 400 clamp(1.5rem, 2.1vw, 2.1rem)/1.15
+    var(--font-editorial, var(--arc-font-editorial));
+  margin: 0.15rem 0;
+}
+.cardText p {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.footer {
+  padding: 1.65rem 0;
+  border-top: 1px solid var(--rule);
+}
+.detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 6vw;
+  padding: 3rem 0 4rem;
+}
+.singleArt {
+  padding: clamp(1rem, 3vw, 3rem);
+}
+.singleArt img {
+  max-height: 78vh;
+}
+.detailCopy .kicker,
+.reading .kicker {
+  margin: 2.1rem 0 0.6rem;
+}
+.shell .subtitle {
+  font-size: clamp(1.6rem, 3vw, 3.1rem);
+  color: var(--brass);
+  margin: 0.4rem 0 1.4rem;
+}
+.data {
+  margin-top: 1.6rem !important;
+}
+.data div {
+  padding: 0.65rem 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.85rem;
+}
+.data dt {
+  color: var(--muted);
+}
+.data dd {
+  text-align: right;
+}
+.drawer {
+  border-block: 1px solid var(--rule);
+  margin: 0.5rem 0 1rem;
+}
+.drawer summary {
+  padding: 0.85rem 0;
+}
+.drawer p,
+.related > p {
+  font-size: 0.91rem;
+}
+.drawer code {
+  font: 0.77rem/1.6 var(--arc-font-mono);
+  overflow-wrap: anywhere;
+  display: block;
+  padding: 0.75rem 0;
+}
+.drawer a {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.related {
+  margin-top: 1.6rem;
+}
+.related h2,
+.notice h2,
+.shelf h2 {
+  font: 400 clamp(1.4rem, 2.4vw, 2.1rem)/1.18
+    var(--font-editorial, var(--arc-font-editorial));
+  margin: 0.45rem 0;
+}
+.reading {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 3rem 0 5rem;
+}
+.reading .lede {
+  margin: 1.25rem 0;
+  max-width: 40rem;
+}
+.notice,
+.shelf li {
+  border-top: 1px solid var(--rule);
+  padding: 1.2rem 0;
+  margin: 1rem 0;
+}
+.notice > p {
+  max-width: 40rem;
+}
+.filename {
+  overflow-wrap: anywhere;
+  margin: 0.8rem 0 !important;
+  text-transform: none;
+}
+.license {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.form fieldset {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem 0;
+}
+.form legend {
+  padding-right: 0.75rem;
+}
+.form label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  color: var(--muted);
+  line-height: 1.55;
+  cursor: pointer;
+}
+.form input {
+  accent-color: var(--brass);
+}
+.shelf {
+  padding: 0;
+  list-style: none;
+}
+@media (max-width: 980px) {
+  .plateGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .hero {
+    grid-template-columns: 1fr 1fr;
+  }
+  .shell {
+    padding-inline: 5vw;
+  }
+}
+@media (max-width: 700px) {
+  .shell {
+    padding-inline: 5vw;
+  }
+  .top {
+    min-height: 3.6rem;
+  }
+  .top nav {
+    gap: 1rem;
+    font-size: 0.77rem;
+  }
+  .brand {
+    font-size: 1rem;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 2rem 0 1rem;
+  }
+  .heroCopy {
+    padding: 0;
+  }
+  .shell .heroTitle {
+    font-size: clamp(3.5rem, 14vw, 5.7rem);
+    margin: 0.75rem 0;
+  }
+  .heroCopy .lede {
+    max-width: 31rem;
+  }
+  .actions {
+    margin-top: 1.15rem;
+  }
+  .heroArt {
+    margin-top: 0.85rem !important;
+  }
+  .fan {
+    height: clamp(16rem, 70vw, 26rem);
+  }
+  .backLeft {
+    left: 15%;
+  }
+  .backRight {
+    right: 14%;
+  }
+  .collectionHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .index {
+    padding: 1.6rem 0;
+  }
+  .plateGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem 0.8rem;
+  }
+  .detail {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    padding: 1.5rem 0 2rem;
+  }
+  .singleArt img {
+    max-height: 65vh;
+  }
+  .reading {
+    padding: 2rem 0 3rem;
+  }
+  .footer {
+    font-size: 0.78rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .front,
+  .mount {
+    transition: none;
+  }
+  .front:hover {
+    transform: translateX(-50%) rotate(2deg);
+  }
+}
+
+.related img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0.7rem 0;
+}
