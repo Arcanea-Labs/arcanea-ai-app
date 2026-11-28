@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>Arcanea · The Living Art Collection</title>
+    <link rel="stylesheet" href="/gallery/living-art/tokens.css" />
+    <link rel="stylesheet" href="/gallery/living-art/review.css" />
+    <script defer src="/gallery/living-art/catalog.js"></script>
+    <script defer src="/gallery/living-art/review.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="brand" href="#/gallery" aria-label="Arcanea collection home"
+        ><span class="mark" aria-hidden="true">Λ</span> ARCANEA</a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#/gallery">Gallery</a
+        ><a href="#/collections/mythic-commons">Exhibitions</a
+        ><a href="#/atlas">Atlas</a><a href="#/studio/visual">Studio</a>
+      </nav>
+      <a class="index-link" href="#/inventory"
+        >Contact sheet <span aria-hidden="true">↗︎</span></a
+      >
+    </header>
+    <main id="main" tabindex="-1"></main>
+    <footer>
+      <a class="brand" href="#/gallery">ARCANEA</a
+      ><span>The Living Art Collection</span
+      ><a href="#/inventory">Master contact sheet ↗︎</a>
+    </footer>
+    <dialog id="viewer" aria-labelledby="zoom-title">
+      <div class="viewerbar">
+        <strong id="zoom-title"></strong>
+        <div>
+          <button id="zoom-toggle">Zoom in</button
+          ><button id="full-view">Fullscreen</button
+          ><button id="close-viewer">Close</button>
+        </div>
+      </div>
+      <div class="zoomstage" tabindex="0" aria-label="Artwork zoom area"></div>
+    </dialog>
+    <div class="sr" role="status" id="status"></div>
+    <noscript>Enable JavaScript to open the interactive collection.</noscript>
+  </body>
+</html>
