@@ -2,6 +2,7 @@
 
 import { type FormEvent, useId, useRef, useState } from "react";
 import { submitWaitlist } from "@/lib/waitlist/submit";
+import { trackWaitlistJoin } from "@/lib/analytics/track";
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
@@ -23,6 +24,7 @@ export function NewsletterForm() {
     try {
       const result = await submitWaitlist(email, "community_footer");
       if (result.success) {
+        trackWaitlistJoin({ product: "arcanea", source: "community_footer" });
         form.reset();
         setStatus("success");
         setMessage("Your interest in Arcanea updates is saved.");
