@@ -1,0 +1,230 @@
+{
+  "name": "Arcanea — Observe recent Art Blocks projects",
+  "active": false,
+  "nodes": [
+    {
+      "name": "Every six hours",
+      "id": "ed415e0a-ee10-53bb-a94f-9603f459bd12",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "7 */6 * * *"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Manual canary",
+      "id": "6b2b0254-f93e-53f0-98e0-73a74b722e3c",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 180],
+      "parameters": {}
+    },
+    {
+      "name": "Read Art Blocks",
+      "id": "31ac96c6-b1af-5e10-bbb4-ad4882e7c05f",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 80],
+      "parameters": {
+        "method": "POST",
+        "url": "https://data.artblocks.io/v1/graphql",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"query\": \"query RecentArtBlocksProjects {\\n  projects_metadata(\\n    where: {chain_id: {_eq: 1}, active: {_eq: true}, activated_at: {_is_null: false}}\\n    order_by: [{activated_at: desc}, {id: asc}]\\n    limit: 20\\n  ) { id chain_id name activated_at invocations max_invocations }\\n}\"}",
+        "options": {
+          "timeout": 15000,
+          "response": {
+            "response": {
+              "responseFormat": "text",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
+    },
+    {
+      "name": "Validate sample",
+      "id": "8393ced7-34a0-5fd7-aad3-e5140e3f06f4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 80],
+      "parameters": {
+        "jsCode": "const body = $input.first().json.data;\nif (typeof body !== 'string' || Buffer.byteLength(body) > 65536) throw Error('Invalid response size');\nconst response = JSON.parse(body);\nconst rows = response.data?.projects_metadata;\nif (response.errors || !Array.isArray(rows) || rows.length === 0 || rows.length > 20)\n  throw Error('Missing or partial project data');\nconst seen = new Set();\nconst now = new Date();\nfor (const row of rows) {\n  const count = value => (Number.isSafeInteger(value) && value >= 0) ||\n    (typeof value === 'string' && /^(0|[1-9][0-9]{0,14})$/.test(value));\n  if (!row || row.chain_id !== 1 || !/^0x[0-9a-f]{40}-[0-9]+$/i.test(row.id) ||\n      seen.has(row.id.toLowerCase()) || typeof row.name !== 'string' ||\n      !row.name.trim() || row.name.length > 512 || !count(row.invocations) ||\n      !count(row.max_invocations) || Number(row.invocations) > Number(row.max_invocations) ||\n      typeof row.activated_at !== 'string' || !Number.isFinite(Date.parse(row.activated_at)) ||\n      Date.parse(row.activated_at) > now.getTime()) throw Error('Invalid project observation');\n  seen.add(row.id.toLowerCase());\n}\nconst slot = new Date(Math.floor(now.getTime() / 21600000) * 21600000).toISOString();\nreturn [{json: {body, slot, observed: now.toISOString(), size: rows.length},\n  binary: {data: {data: Buffer.from(body, 'utf8').toString('base64'),\n    mimeType: 'application/json', fileName: 'response.json'}}}];"
+      }
+    },
+    {
+      "name": "Fingerprint response",
+      "id": "f42c6020-e258-5b19-9cc2-8a25717cd8c3",
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [680, 80],
+      "parameters": {
+        "action": "hash",
+        "type": "SHA256",
+        "value": "={{ $json.body }}",
+        "dataPropertyName": "sha",
+        "encoding": "hex"
+      }
+    },
+    {
+      "name": "Archive response",
+      "id": "ff07ba96-a35a-53c9-8398-d3e4ff1bcb1f",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [900, 80],
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "bucketName": "starlight-mission-artifacts",
+        "fileName": "={{ 'arcanea/collector/v1/' + $json.sha + '.json' }}",
+        "binaryData": true,
+        "binaryPropertyName": "data",
+        "additionalFields": {}
+      }
+    },
+    {
+      "name": "Record observation",
+      "id": "4054ed2f-c95e-5bd7-adf6-d476b73d4309",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1120, 80],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH capture AS (\n  SELECT $1::text AS body, $2::text AS slot, $3::timestamptz AS observed,\n         $4::text AS sha, $5::text AS run_ref\n), inserted AS (\n  INSERT INTO public.campaign_signals\n    (platform, source_id, signal_type, status, content, metadata, detected_at, engagement_score)\n  SELECT 'artblocks', 'eth-recent-v1/' || slot, 'market_trend', 'processed',\n    'Recently activated Ethereum projects. Invocations measure mints; sales and buyer counts are unknown.',\n    jsonb_build_object('schema','arcanea.collector.sample.v1','category','generative_art',\n      'source_url','https://data.artblocks.io/v1/graphql','selection','20 most recently activated active Ethereum projects',\n      'observed_at',observed,'slot_utc',slot,'source_sha256',sha,'run_ref',run_ref,\n      'archive','r2://starlight-mission-artifacts/arcanea/collector/v1/' || sha || '.json',\n      'projects', body::jsonb #> '{data,projects_metadata}'), observed, NULL\n  FROM capture WHERE sha = encode(sha256(convert_to(body,'UTF8')),'hex')\n  ON CONFLICT (platform, source_id) DO NOTHING\n  RETURNING id\n)\nSELECT CASE WHEN (SELECT sha FROM capture) <> encode(sha256(convert_to($1,'UTF8')),'hex')\n    THEN 'hash_mismatch' WHEN EXISTS (SELECT FROM inserted) THEN 'inserted'\n    ELSE 'slot_already_recorded' END AS outcome, (SELECT id FROM inserted) AS new_id;",
+        "options": {
+          "queryReplacement": "={{ [ $('Fingerprint response').first().json.body, $('Fingerprint response').first().json.slot, $('Fingerprint response').first().json.observed, $('Fingerprint response').first().json.sha, 'n8n:' + $execution.id ] }}"
+        }
+      }
+    },
+    {
+      "name": "Read committed slot",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "id": "df9a19c0-5b54-44f0-8bf8-24739030576a",
+      "position": [1340, 80],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT (SELECT jsonb_build_object('id', id, 'sha', metadata->>'source_sha256', 'run_ref', metadata->>'run_ref') FROM public.campaign_signals WHERE platform = 'artblocks' AND source_id = 'eth-recent-v1/' || $1::text) AS accepted;",
+        "options": {
+          "queryReplacement": "={{ [ $('Fingerprint response').first().json.slot ] }}"
+        }
+      }
+    },
+    {
+      "name": "Verify receipt",
+      "id": "9b72d28f-c05e-5aab-a577-4abe3e505538",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 80],
+      "parameters": {
+        "jsCode": "const write = $('Record observation').first().json;\nconst observed = $('Fingerprint response').first().json;\nconst accepted = $input.first().json.accepted;\nif (!['inserted','slot_already_recorded'].includes(write.outcome) || !accepted?.id ||\n    !/^[a-f0-9]{64}$/.test(accepted.sha)) throw Error('Unverified DB receipt');\nif (write.outcome === 'inserted' && (write.new_id !== accepted.id || accepted.sha !== observed.sha))\n  throw Error('Readback mismatch');\nreturn [{json: {outcome:write.outcome, acceptedId:accepted.id, acceptedSourceHash:accepted.sha,\n  observedSourceHash:observed.sha, sameEvidence:observed.sha === accepted.sha,\n  slot:observed.slot, runRef:'n8n:'+$execution.id, originalRunRef:accepted.run_ref}}];"
+      }
+    }
+  ],
+  "connections": {
+    "Every six hours": {
+      "main": [
+        [
+          {
+            "node": "Read Art Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual canary": {
+      "main": [
+        [
+          {
+            "node": "Read Art Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Art Blocks": {
+      "main": [
+        [
+          {
+            "node": "Validate sample",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate sample": {
+      "main": [
+        [
+          {
+            "node": "Fingerprint response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fingerprint response": {
+      "main": [
+        [
+          {
+            "node": "Archive response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Archive response": {
+      "main": [
+        [
+          {
+            "node": "Record observation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record observation": {
+      "main": [
+        [
+          {
+            "node": "Read committed slot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read committed slot": {
+      "main": [
+        [
+          {
+            "node": "Verify receipt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "UTC",
+    "executionTimeout": 90
+  }
+}
