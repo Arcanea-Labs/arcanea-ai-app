@@ -41,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/frankxai/arcanea-ai-app.git",
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app.git",
     "directory": "packages/skill-registry"
   },
   "devDependencies": {
@@ -49,7 +49,7 @@
     "typescript": "^5.9.3"
   },
   "bugs": {
-    "url": "https://github.com/frankxai/arcanea-ai-app/issues"
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app/issues"
   },
-  "homepage": "https://github.com/frankxai/arcanea-ai-app/tree/main/packages/skill-registry"
+  "homepage": "https://github.com/Arcanea-Labs/arcanea-ai-app/tree/main/packages/skill-registry"
 }

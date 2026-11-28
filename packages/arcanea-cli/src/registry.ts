@@ -32,8 +32,10 @@ export interface Registry {
   items: RegistryItem[];
 }
 
-const REMOTE_REGISTRY_URL = "https://raw.githubusercontent.com/frankxai/arcanea-ai-app/main/oss/skills/registry.json";
-const REMOTE_RAW_BASE = "https://raw.githubusercontent.com/frankxai/arcanea-ai-app/main/oss/";
+const REMOTE_REGISTRY_URL =
+  "https://raw.githubusercontent.com/Arcanea-Labs/arcanea-ai-app/main/oss/skills/registry.json";
+const REMOTE_RAW_BASE =
+  "https://raw.githubusercontent.com/Arcanea-Labs/arcanea-ai-app/main/oss/";
 
 /**
  * Finds the local registry path if run within the monorepo.
@@ -93,7 +95,9 @@ export async function getFileContent(filePath: string): Promise<string> {
   const remoteUrl = `${REMOTE_RAW_BASE}${filePath}`;
   const response = await fetch(remoteUrl);
   if (!response.ok) {
-    throw new Error(`Failed to fetch remote file ${filePath}: ${response.statusText}`);
+    throw new Error(
+      `Failed to fetch remote file ${filePath}: ${response.statusText}`,
+    );
   }
   return await response.text();
 }

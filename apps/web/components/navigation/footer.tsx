@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useId } from "react";
 import { submitWaitlist } from "@/lib/waitlist/submit";
+import { trackWaitlistJoin } from "@/lib/analytics/track";
 import { ArcaneanMark } from "@/components/brand/arcanea-mark";
 
 const footerLinks = {
@@ -20,7 +21,6 @@ const footerLinks = {
       { href: "/cinema-studio", label: "Cinema Studio" },
       { href: "/canvas", label: "Canvas" },
       { href: "/forge", label: "Forge" },
-      { href: "/agent", label: "Arcanea Agent" },
       { href: "/agents", label: "Agents" },
     ],
   },
@@ -102,6 +102,7 @@ export function Footer() {
     });
     pending.current = false;
     if (result.success) {
+      trackWaitlistJoin({ product: "arcanea", source: "footer" });
       setStatus("success");
       setMessage("Your email is on the updates list.");
       setEmail("");

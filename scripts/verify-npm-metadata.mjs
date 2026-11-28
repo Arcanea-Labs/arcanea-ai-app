@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const repository = "https://github.com/frankxai/arcanea-ai-app";
+const repository = "https://github.com/Arcanea-Labs/arcanea-ai-app";
 
 export function metadataErrors(pkg, directory) {
   const errors = [];

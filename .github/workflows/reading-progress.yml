@@ -71,6 +71,8 @@ jobs:
         with:
           node-version: "24"
       - run: pnpm install --frozen-lockfile
+      - name: Verify library headings and landmark ownership
+        run: node --test scripts/tests/world-landmarks.test.cjs
       - run: node --test scripts/tests/reading-progress-account.test.cjs
       - run: node --test scripts/tests/reading-progress-auth-admission.test.cjs
       - run: PRIVATE_CONFIGURATION_RUNNER=scripts/run-reading-scene-auth-fixture.mjs node --test scripts/tests/provider-fixture-private-config.test.cjs
@@ -105,10 +107,11 @@ jobs:
       - name: Retain exact-source captures and provenance
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: reading-progress-${{ env.SOURCE_COMMIT }}-attempt-${{ github.run_attempt }}
           path: screenshots/reading-progress/
-          retention-days: 7
+          retention-days: 1
           if-no-files-found: error
 
   authenticated-recovery:
@@ -158,8 +161,9 @@ jobs:
       - name: Retain authenticated acceptance and provenance
         if: always()
         uses: actions/upload-artifact@v7.0.2
+        continue-on-error: true
         with:
           name: reading-progress-auth-${{ env.SOURCE_COMMIT }}-attempt-${{ github.run_attempt }}
           path: screenshots/reading-progress-auth/
-          retention-days: 7
+          retention-days: 1
           if-no-files-found: error

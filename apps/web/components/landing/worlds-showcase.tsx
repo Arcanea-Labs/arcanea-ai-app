@@ -12,23 +12,26 @@ const SHOWCASE_WORLDS = [
   {
     name: "Arcanea Prime",
     tagline: "The original world of Luminors, Guardians, and living mythology",
-    gradient: "linear-gradient(135deg, var(--arc-brand-atlantean-teal), var(--arc-brand-cosmic-blue), var(--arc-brand-arcanean-gold))",
+    gradient:
+      "linear-gradient(135deg, var(--arc-brand-atlantean-teal), var(--arc-brand-cosmic-blue), var(--arc-brand-arcanean-gold))",
     elements: ["Fire", "Water", "Earth", "Wind", "Void"],
     href: "/lore",
   },
   {
     name: "The Shadowfen",
     tagline: "Where Malachar's corruption seeps through fractured reality",
-    gradient: "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-cosmic-void), var(--arc-earth))",
+    gradient:
+      "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-cosmic-void), var(--arc-earth))",
     elements: ["Void", "Fire"],
-    href: "/lore",
+    href: "/lore/malachar",
   },
   {
     name: "Starweave Academy",
     tagline: "Seven houses and a thousand stories waiting to unfold",
-    gradient: "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-arcanean-gold), var(--arc-brand-atlantean-teal))",
+    gradient:
+      "linear-gradient(135deg, var(--arc-brand-cosmic-blue), var(--arc-brand-arcanean-gold), var(--arc-brand-atlantean-teal))",
     elements: ["Spirit", "Water", "Wind"],
-    href: "/lore",
+    href: "/academy/houses",
   },
 ];
 
@@ -62,12 +65,11 @@ export function WorldsShowcase() {
             The Multiverse
           </p>
           <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight mb-5">
-            Explore{" "}
-            <span className="text-gradient-cosmic">living worlds</span>
+            Explore <span className="text-gradient-cosmic">living worlds</span>
           </h2>
           <p className="text-white/40 max-w-2xl mx-auto text-lg font-body">
-            Discover universes built by creators. Fork, star, and build on each
-            other&apos;s worlds — or create your own from scratch.
+            Explore the worlds of Arcanea&apos;s own lore — or create your own
+            from scratch.
           </p>
         </m.div>
 
@@ -100,7 +102,10 @@ export function WorldsShowcase() {
                           <span
                             key={el}
                             className="w-2 h-2 rounded-full ring-1 ring-white/10"
-                            style={{ backgroundColor: ELEMENT_HEX[el] ?? neutralFallback }}
+                            style={{
+                              backgroundColor:
+                                ELEMENT_HEX[el] ?? neutralFallback,
+                            }}
                             title={el}
                           />
                         ))}

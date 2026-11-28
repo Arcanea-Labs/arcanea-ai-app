@@ -23,12 +23,6 @@ const PERF_STATS = [
     color: "var(--arc-brand-arcanean-gold)",
     delay: 0.16,
   },
-  {
-    value: "1M+",
-    label: "vectors indexed per world",
-    color: "var(--arc-void)",
-    delay: 0.24,
-  },
 ];
 
 const TECH_NOTES = [
@@ -67,7 +61,7 @@ export function StoragePerformance() {
           />
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 p-8 rounded-3xl bg-white/[0.02] border border-white/[0.06]">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-16 p-8 rounded-3xl bg-white/[0.02] border border-white/[0.06]">
             {PERF_STATS.map((stat) => (
               <StatCard
                 key={stat.label}

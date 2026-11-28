@@ -37,7 +37,7 @@ test("actual live acceptance rejects missing, forged and mismatched review befor
       medium: [],
     });
     const receipt = {
-      repository: "frankxai/arcanea-ai-app",
+      repository: "Arcanea-Labs/arcanea-ai-app",
       pr: 561,
       headSha: head,
       maker: "codex",
@@ -52,7 +52,7 @@ test("actual live acceptance rejects missing, forged and mismatched review befor
     };
     writeFileSync(
       preload,
-      `import cp from 'node:child_process';import {syncBuiltinESMExports} from 'node:module';import {writeFileSync} from 'node:fs';cp.execFileSync=(command,args)=>{if(command==='git'){if(args[0]==='rev-parse')return process.env.TEST_HEAD+'\\n';if(args[0]==='diff')return 'fixture.ts\\n';if(args[0]==='show')return Buffer.from(process.env.TEST_SOURCE);}if(command==='docker'){writeFileSync(process.env.TEST_MARKER,'Reached offline container boundary');throw Error('Offline container boundary');}throw Error('Unexpected subprocess');};syncBuiltinESMExports();globalThis.fetch=async url=>{if(!String(url).startsWith('https://api.github.com/repos/frankxai/arcanea-ai-app/issues/561/comments?'))throw Error('Unexpected provider request');return {ok:true,json:async()=>JSON.parse(process.env.TEST_COMMENTS)};};`,
+      `import cp from 'node:child_process';import {syncBuiltinESMExports} from 'node:module';import {writeFileSync} from 'node:fs';cp.execFileSync=(command,args)=>{if(command==='git'){if(args[0]==='rev-parse')return process.env.TEST_HEAD+'\\n';if(args[0]==='diff')return 'fixture.ts\\n';if(args[0]==='show')return Buffer.from(process.env.TEST_SOURCE);}if(command==='docker'){writeFileSync(process.env.TEST_MARKER,'Reached offline container boundary');throw Error('Offline container boundary');}throw Error('Unexpected subprocess');};syncBuiltinESMExports();globalThis.fetch=async url=>{if(!String(url).startsWith('https://api.github.com/repos/Arcanea-Labs/arcanea-ai-app/issues/561/comments?'))throw Error('Unexpected provider request');return {ok:true,json:async()=>JSON.parse(process.env.TEST_COMMENTS)};};`,
     );
     const comment = (r = receipt, id = 132689939) => ({
       user: { id },
@@ -61,6 +61,7 @@ test("actual live acceptance rejects missing, forged and mismatched review befor
     const cases = [
       [],
       [comment(receipt, 7)],
+      [comment({ ...receipt, repository: "frankxai/arcanea-ai-app" })],
       [comment({ ...receipt, headSha: "b".repeat(40) })],
       [comment({ ...receipt, reviewSha256: "0".repeat(64) })],
       [comment({ ...receipt, sourceHashes: { "fixture.ts": "0".repeat(64) } })],
@@ -83,7 +84,7 @@ test("actual live acceptance rejects missing, forged and mismatched review befor
             PATH: process.env.PATH,
             SystemRoot: process.env.SystemRoot || "",
             GITHUB_ACTIONS: "true",
-            GITHUB_REPOSITORY: "frankxai/arcanea-ai-app",
+            GITHUB_REPOSITORY: "Arcanea-Labs/arcanea-ai-app",
             GITHUB_REF_NAME: "agent/codex/world-creator-recovery-20261010",
             GITHUB_SHA: head,
             RUNNER_TEMP: dir,

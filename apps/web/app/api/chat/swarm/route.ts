@@ -19,6 +19,9 @@
  *   { type: 'done', totalMs, totalTokens, traceId? }
  *   { type: 'error', message, scope?: 'planner'|'luminor'|'synthesis'|'route', luminorId? }
  *
+ * Requires a signed-in Supabase session (401 otherwise) and is rate limited
+ * per user: every request spends the platform Anthropic key.
+ *
  * Feature flag: ARCANEA_SWARM_MODE env must NOT equal 'disabled'.
  * Gate further via ?swarm=1 or body.force=true during rollout.
  *
@@ -42,10 +45,20 @@ import {
   refusalNoticeTransform,
 } from "@/lib/ai/claude-safeguards";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/server";
+import {
+  getClientIdentifier,
+  checkRateLimit,
+} from "@/lib/rate-limit/rate-limiter";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
+
+// Each request fans out to several platform-key model calls.
+const SWARM_RATE_LIMIT = { maxRequests: 5, windowMs: 60_000 };
+
+export const swarmRouteDeps = { createClient };
 
 // ---------------------------------------------------------------------------
 // Types
@@ -98,6 +111,39 @@ type SwarmEvent =
 export async function POST(req: NextRequest) {
   const started = Date.now();
 
+  // This route spends the platform ANTHROPIC_API_KEY, and /api/chat is a
+  // public prefix in proxy.ts, so the session check has to happen here.
+  let supabaseClient: SupabaseClient | null = null;
+  let userId: string | null = null;
+  try {
+    const client = await swarmRouteDeps.createClient();
+    const { data } = await client.auth.getUser();
+    supabaseClient = client as SupabaseClient;
+    userId = data?.user?.id ?? null;
+  } catch {
+    userId = null;
+  }
+  if (!userId) {
+    return plainError("Sign in to use the swarm.", 401);
+  }
+
+  const rl = checkRateLimit(
+    `chat:swarm:${getClientIdentifier(req, userId)}`,
+    SWARM_RATE_LIMIT,
+  );
+  if (!rl.allowed) {
+    return new Response(
+      JSON.stringify({ error: "Rate limit exceeded. Try again in a minute." }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "Retry-After": String(Math.ceil((rl.resetTime - Date.now()) / 1000)),
+        },
+      },
+    );
+  }
+
   // Feature flag
   const flag = (process.env.ARCANEA_SWARM_MODE ?? "enabled").toLowerCase();
   const url = new URL(req.url);
@@ -127,9 +173,6 @@ export async function POST(req: NextRequest) {
     return plainError("ANTHROPIC_API_KEY not configured", 503);
   }
   const anthropic = createAnthropic({ apiKey });
-
-  // Optional Supabase context for tools
-  const { supabaseClient, userId } = await resolveSupabase(req);
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -592,50 +635,4 @@ async function persistTrace(
   }
 
   return (data as { id: string } | null)?.id;
-}
-
-async function resolveSupabase(req: NextRequest): Promise<{
-  supabaseClient: SupabaseClient | null;
-  userId: string | null;
-}> {
-  try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!supabaseUrl || !supabaseAnonKey)
-      return { supabaseClient: null, userId: null };
-
-    const cookieHeader = req.headers.get("cookie") ?? "";
-    const accessToken = cookieHeader
-      .split(";")
-      .map((c) => c.trim())
-      .find((c) => c.startsWith("sb-") && c.includes("-auth-token"))
-      ?.split("=")
-      .slice(1)
-      .join("=");
-
-    if (!accessToken) return { supabaseClient: null, userId: null };
-
-    let jwt = accessToken;
-    try {
-      const decoded = JSON.parse(decodeURIComponent(accessToken));
-      if (decoded?.access_token) jwt = decoded.access_token;
-      else if (Array.isArray(decoded) && decoded[0]?.access_token)
-        jwt = decoded[0].access_token;
-    } catch {
-      // raw JWT — use as-is
-    }
-
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: `Bearer ${jwt}` } },
-    });
-
-    const { data } = await supabase.auth.getUser();
-    return {
-      supabaseClient: supabase as SupabaseClient,
-      userId: data?.user?.id ?? null,
-    };
-  } catch {
-    return { supabaseClient: null, userId: null };
-  }
 }

@@ -69,13 +69,6 @@
       "finding": "The route makes a server-key-backed image call without a visible authentication, credit, durable rate, or campaign receipt boundary. It also hard-codes a preview model that must be revalidated before promotion. Legacy named-style references were replaced with observable rendering language, and the Gemini key moved from the URL query to the x-goog-api-key header; both are protected by regression assertions."
     },
     {
-      "id": "studio-image-demo",
-      "classification": "inactive-demo-surface",
-      "executionState": "placeholder-only-direct-provider-blocks-commented",
-      "paths": ["apps/web/app/api/studio/generate-image/route.ts"],
-      "finding": "The active path returns a random Picsum placeholder after a delay; commented Stability and DALL-E blocks are not an approved production design."
-    },
-    {
       "id": "book-forge-callers",
       "classification": "project-specific-migration-required",
       "executionState": "direct-call-hold-for-new-identity-work",
