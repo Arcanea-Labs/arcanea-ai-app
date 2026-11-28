@@ -31,12 +31,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/frankxai/arcanea-ai-app.git",
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app.git",
     "directory": "packages/arcanea-registry-mcp"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
-    "@supabase/supabase-js": "^2.117.2",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@supabase/supabase-js": "^2.118.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -45,5 +45,9 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app/issues"
+  },
+  "homepage": "https://github.com/Arcanea-Labs/arcanea-ai-app/tree/main/packages/arcanea-registry-mcp"
 }

@@ -2,6 +2,7 @@
 
 import { useId, useRef, useState, type FormEvent } from "react";
 import { submitWaitlist } from "@/lib/waitlist/submit";
+import { trackWaitlistJoin } from "@/lib/analytics/track";
 import {
   CANON_SOURCE_URL,
   READER_CLIENTS,
@@ -49,6 +50,7 @@ export function McpCommandCenter() {
     const result = await submitWaitlist(email, "mcp_reader");
     pending.current = false;
     if (result.success) {
+      trackWaitlistJoin({ product: "mcp_reader", source: "mcp_reader" });
       setStatus("done");
     } else {
       setStatus("error");

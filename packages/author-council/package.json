@@ -61,10 +61,19 @@
     "access": "public"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0"
+    "@modelcontextprotocol/sdk": "^1.32.2"
   },
   "devDependencies": {
     "@types/node": "^20.19.43",
     "typescript": "^5.9.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app.git",
+    "directory": "packages/author-council"
+  },
+  "bugs": {
+    "url": "https://github.com/Arcanea-Labs/arcanea-ai-app/issues"
+  },
+  "homepage": "https://github.com/Arcanea-Labs/arcanea-ai-app/tree/main/packages/author-council"
 }

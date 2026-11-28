@@ -33,7 +33,7 @@ This policy defines:
 
 ## Repo Policies
 
-### 1. `frankxai/arcanea-ai-app`
+### 1. `Arcanea-Labs/arcanea-ai-app`
 
 Role:
 

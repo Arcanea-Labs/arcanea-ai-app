@@ -173,19 +173,23 @@ function WorldCardComponent({ world }: { world: WorldCard }) {
             </span>
           </div>
 
-          {/* Stats row */}
+          {/* Stats row — stars and forks only when a world actually has them */}
           <div className="flex items-center gap-4 text-xs text-white/35 mb-4">
-            <span className="flex items-center gap-1">
-              <Star
-                className="w-3.5 h-3.5 text-[var(--arc-brand-arcanean-gold)]/70"
-                weight="fill"
-              />
-              {world.stars.toLocaleString()}
-            </span>
-            <span className="flex items-center gap-1">
-              <GitBranch className="w-3.5 h-3.5" />
-              {world.forks}
-            </span>
+            {world.stars > 0 && (
+              <span className="flex items-center gap-1">
+                <Star
+                  className="w-3.5 h-3.5 text-[var(--arc-brand-arcanean-gold)]/70"
+                  weight="fill"
+                />
+                {world.stars.toLocaleString()}
+              </span>
+            )}
+            {world.forks > 0 && (
+              <span className="flex items-center gap-1">
+                <GitBranch className="w-3.5 h-3.5" />
+                {world.forks}
+              </span>
+            )}
             <span className="flex items-center gap-1">
               <Users className="w-3.5 h-3.5" />
               {world.characters}

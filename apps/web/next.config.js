@@ -140,6 +140,14 @@ const nextConfig = {
   async headers() {
     const { scriptHash } = await import('../../packages/arcanea-creator-starters/scripts/build.mjs');
     const starterScriptHash = await scriptHash();
+    const ddRumEnabled = Boolean(
+      process.env.NEXT_PUBLIC_DD_RUM_APPLICATION_ID?.trim() &&
+        process.env.NEXT_PUBLIC_DD_RUM_CLIENT_TOKEN?.trim(),
+    );
+    const ddScriptSuffix = ddRumEnabled ? ' https://www.datadoghq-browser-agent.com' : '';
+    const ddConnectSuffix = ddRumEnabled
+      ? ' https://browser-intake-datadoghq.eu https://*.browser-intake-datadoghq.eu'
+      : '';
     return [
       {
         source: '/(.*)',
@@ -154,12 +162,12 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vercel.live",
+              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vercel.live${ddScriptSuffix}`,
               "style-src 'self' 'unsafe-inline'",
               `img-src 'self' data: blob: https://imgen.x.ai https://*.supabase.co https://avatars.githubusercontent.com https://lh3.googleusercontent.com https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ''}`,
               `media-src 'self' https://*.supabase.co https://*.public.blob.vercel-storage.com https://media.starlightintelligence.org https://arcanea.ai https://www.arcanea.ai${localSupabaseOrigin ? ` ${localSupabaseOrigin}` : ''}`,
               "font-src 'self' data:",
-              `connect-src 'self' https://imgen.x.ai https://*.supabase.co wss://*.supabase.co https://generativelanguage.googleapis.com https://openrouter.ai https://api.anthropic.com https://va.vercel-scripts.com https://vercel.live${localSupabaseOrigin ? ` ${localSupabaseOrigin} ${localSupabaseWebSocket}` : ''}`,
+              `connect-src 'self' https://imgen.x.ai https://*.supabase.co wss://*.supabase.co https://generativelanguage.googleapis.com https://openrouter.ai https://api.anthropic.com https://va.vercel-scripts.com https://vercel.live${localSupabaseOrigin ? ` ${localSupabaseOrigin} ${localSupabaseWebSocket}` : ''}${ddConnectSuffix}`,
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

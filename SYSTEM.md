@@ -1,7 +1,7 @@
 # Arcanea system
 
 Arcanea is a BYOK-first creative intelligence workspace and an original creative
-world. Product work belongs to [programme 276](https://github.com/frankxai/arcanea-ai-app/issues/276)
+world. Product work belongs to [programme 276](https://github.com/Arcanea-Labs/arcanea-ai-app/issues/276)
 and its existing owning issues. Follow [AGENTS.md](AGENTS.md) and the newest
 execution records before making architectural changes.
 
@@ -9,7 +9,7 @@ execution records before making architectural changes.
 
 | Boundary              | Verified source or owner                                                        |
 | --------------------- | ------------------------------------------------------------------------------- |
-| Canonical repository  | `frankxai/arcanea-ai-app`                                                       |
+| Canonical repository  | `Arcanea-Labs/arcanea-ai-app`                                                   |
 | Operating unit / team | `arcanea` / `arcanea-creative-worlds-team`                                      |
 | Application           | `apps/web`, Next.js; workspace package `@arcanea/web`                           |
 | Vercel project        | `arcanea-ai-app`, `prj_90OIWsAmfeswv8IG8WxqEAFefTOV`                            |

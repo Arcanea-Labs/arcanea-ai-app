@@ -36,7 +36,7 @@ async function execute({
   const process = {
     env: {
       READING_SCENE_HEAD: head,
-      GITHUB_REPOSITORY: "frankxai/arcanea-ai-app",
+      GITHUB_REPOSITORY: "Arcanea-Labs/arcanea-ai-app",
       READING_SCENE_REVIEW_BUDGET_USD: "1",
       GEMINI_API_KEY: "disposable-test-value",
       GITHUB_ACTOR: "frankxai",
@@ -131,6 +131,7 @@ test("review requires explicit budget, actor, branch and immutable head before a
   for (const env of [
     { READING_SCENE_REVIEW_BUDGET_USD: "" },
     { GITHUB_ACTOR: "foreign" },
+    { GITHUB_REPOSITORY: "frankxai/arcanea-ai-app" },
     { GITHUB_REF_NAME: "main" },
     { READING_SCENE_HEAD: base },
   ]) {

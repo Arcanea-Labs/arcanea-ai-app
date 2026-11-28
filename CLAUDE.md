@@ -83,7 +83,7 @@ All independent operations MUST be concurrent in a single message. Spawn ALL age
 
 ## Repos
 
-- Production: https://github.com/frankxai/arcanea-ai-app
+- Production: https://github.com/Arcanea-Labs/arcanea-ai-app
 - OSS: https://github.com/frankxai/arcanea
 
 ---

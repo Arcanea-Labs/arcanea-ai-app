@@ -34,8 +34,8 @@ const TEMPLATE_WORLDS: WorldCard[] = [
     name: "Eldria Prime",
     tagline: "The Celestine Heartland atop Mount Solaris — 1111 Hz Source Gate",
     creator: "Assembly of Luminors",
-    stars: 124,
-    forks: 38,
+    stars: 0,
+    forks: 0,
     characters: 28,
     mood: "mythological",
     elements: [
@@ -51,8 +51,8 @@ const TEMPLATE_WORLDS: WorldCard[] = [
     name: "Veldoria",
     tagline: "The Singing Valleys of acoustic chalk-stone — 528 Hz Voice Gate",
     creator: "Alera",
-    stars: 96,
-    forks: 24,
+    stars: 0,
+    forks: 0,
     characters: 18,
     mood: "fantasy",
     elements: [
@@ -69,8 +69,8 @@ const TEMPLATE_WORLDS: WorldCard[] = [
     tagline:
       "Thermal ironstone mesas and solar-tempered steppes — 396 Hz Fire Gate",
     creator: "Draconia",
-    stars: 82,
-    forks: 19,
+    stars: 0,
+    forks: 0,
     characters: 16,
     mood: "fantasy",
     elements: [
@@ -87,8 +87,8 @@ const TEMPLATE_WORLDS: WorldCard[] = [
     tagline:
       "Subterranean bioluminescent sea and 5-realm aquifer — 285 Hz Flow Gate",
     creator: "Leyla",
-    stars: 110,
-    forks: 31,
+    stars: 0,
+    forks: 0,
     characters: 22,
     mood: "mythological",
     elements: [
@@ -105,8 +105,8 @@ const TEMPLATE_WORLDS: WorldCard[] = [
     tagline:
       "Sunken obsidian arches and petrified cedar groves — 174 Hz Foundation Gate",
     creator: "Malachar / Sealed Archive",
-    stars: 75,
-    forks: 42,
+    stars: 0,
+    forks: 0,
     characters: 14,
     mood: "horror",
     elements: [
