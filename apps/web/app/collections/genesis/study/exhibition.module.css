@@ -1,0 +1,430 @@
+.frame {
+  --paper: var(--arc-story-paper);
+  --soft: color-mix(
+    in srgb,
+    var(--arc-story-paper) 75%,
+    var(--arc-story-night)
+  );
+  --ink: var(--arc-story-night);
+  --rule: color-mix(
+    in srgb,
+    var(--arc-story-paper) 23%,
+    var(--arc-story-night)
+  );
+  --accent: color-mix(
+    in srgb,
+    var(--arc-gold-light) 50%,
+    var(--arc-story-rule)
+  );
+  color: var(--paper);
+  background: var(--ink);
+  font-family: var(--arc-font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+.frame * {
+  box-sizing: border-box;
+}
+.frame :is(h1, h2, h3, p, figure) {
+  margin: 0;
+}
+.frame a {
+  color: inherit;
+  text-decoration: none;
+}
+.frame a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+.frame :is(a, summary):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+.mast,
+.hero,
+.index,
+.artwork,
+.footer {
+  width: min(100%, 1590px);
+  margin: auto;
+  padding-inline: clamp(20px, 4.7vw, 84px);
+}
+.mast {
+  height: 69px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.94rem;
+}
+.wordmark {
+  font:
+    1.56rem Georgia,
+    serif;
+  letter-spacing: -0.035em;
+}
+.wordmark span {
+  margin-left: 0.65rem;
+  padding-left: 0.7rem;
+  border-left: 1px solid var(--rule);
+  font:
+    normal 0.75rem Arial,
+    sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: var(--accent);
+}
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  align-items: center;
+  gap: clamp(22px, 3vw, 70px);
+  padding-block: clamp(38px, 6.4vw, 110px);
+}
+.label,
+.detailHead,
+.rank,
+.footer,
+.heroArt figcaption,
+.fullPlate figcaption,
+.paging small {
+  font-family: var(--arc-font-body);
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.label {
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.1rem !important;
+}
+.heroText h1,
+.index h2,
+.reading h1,
+.caption h3,
+.paging a {
+  font-family: var(--arc-font-editorial);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+.heroText h1 {
+  font-size: clamp(4rem, 6.65vw, 7.65rem);
+  line-height: 0.88;
+}
+.heroText h1 em {
+  color: var(--accent);
+  font-weight: 400;
+}
+.intro {
+  color: var(--soft);
+  max-width: 39ch;
+  margin-block: 1.7rem !important;
+  font-size: clamp(1rem, 1.12vw, 1.23rem);
+}
+.action {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0.7rem 1.25rem;
+  border: 1px solid var(--soft);
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 0.93rem;
+}
+.heroArt {
+  min-width: 0;
+}
+.heroArt a,
+.heroArt img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.heroArt figcaption,
+.fullPlate figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--soft);
+  letter-spacing: 0.012em;
+  font-weight: 400;
+  font-size: 0.84rem;
+  padding-block: 0.75rem;
+}
+.heroArt figcaption i {
+  color: var(--accent);
+  padding: 0 0.2em;
+}
+.index {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(35px, 4vw, 66px) 4.5rem;
+  scroll-margin-top: 5rem;
+}
+.indexHead {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2.5rem;
+  margin-bottom: 2.2rem;
+}
+.index h2 {
+  font-size: clamp(2.5rem, 4.2vw, 4.6rem);
+  line-height: 1;
+}
+.indexHead .label {
+  margin-bottom: 0.6rem !important;
+}
+.indexHead > p {
+  font-size: 1rem;
+  color: var(--soft);
+  max-width: 44ch;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.5vw, 40px);
+}
+.mount {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.35;
+  background: var(--arc-cosmic-void);
+  overflow: hidden;
+}
+.mount img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  min-height: 0;
+}
+.caption {
+  display: flex;
+  gap: 15px;
+  padding: 14px 0 16px;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+.rank {
+  color: var(--accent);
+  font-weight: 400;
+}
+.caption h3 {
+  font-size: clamp(1.35rem, 2.1vw, 2.25rem);
+  line-height: 1.1;
+}
+.caption p {
+  font-size: 0.85rem;
+  color: var(--soft);
+  margin-top: 0.35em;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid var(--rule);
+  padding-block: 1.4rem;
+  font-weight: 400;
+  color: var(--soft);
+  letter-spacing: 0.025em;
+}
+.artwork {
+  padding-bottom: 2rem;
+}
+.detailHead {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 1.25rem;
+  color: var(--soft);
+}
+.detailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: clamp(28px, 4.3vw, 76px);
+  align-items: center;
+}
+.fullPlate img {
+  display: block;
+  width: 100%;
+  height: min(65vh, 670px);
+  object-fit: contain;
+  background: var(--arc-cosmic-void);
+}
+.reading h1 {
+  font-size: clamp(3rem, 4.65vw, 5.45rem);
+  line-height: 1;
+}
+.subtitle {
+  margin-top: 0.45rem !important;
+  font:
+    italic 1.55rem Georgia,
+    serif;
+  color: var(--accent);
+}
+.observation {
+  font:
+    1.3rem/1.5 Georgia,
+    serif;
+  margin-block: 1.5rem !important;
+}
+.note {
+  border-top: 1px solid var(--rule);
+  padding: 0.72rem 0;
+}
+.note h2 {
+  font:
+    600 0.94rem Arial,
+    sans-serif;
+  margin-bottom: 0.22rem;
+}
+.note p,
+.details p {
+  font-size: 0.94rem;
+  color: var(--soft);
+}
+.details {
+  padding: 0.8rem 0;
+  border-block: 1px solid var(--rule);
+}
+.details summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+}
+.details p {
+  margin-block: 0.7rem;
+}
+.details code {
+  display: block;
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+.sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.1rem;
+  font-size: 0.87rem;
+}
+.sources a {
+  text-decoration: underline;
+}
+.paging {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--rule);
+  margin-top: 2.4rem;
+  padding-top: 1rem;
+}
+.paging a {
+  font-size: 1.4rem;
+}
+.paging a:last-child {
+  text-align: right;
+}
+.paging small {
+  font-weight: 400;
+  display: block;
+  color: var(--soft);
+  letter-spacing: 0;
+}
+.empty {
+  padding: 3rem;
+}
+@media (max-width: 760px) {
+  .mast {
+    height: 56px;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 23px;
+    padding-block: 27px 24px;
+  }
+  .heroText h1 {
+    font-size: 3.65rem;
+    line-height: 0.98;
+  }
+  .heroText h1 br {
+    display: none;
+  }
+  .heroText h1 em:before {
+    content: " ";
+  }
+  .intro {
+    margin-block: 0.75rem 1rem !important;
+    font-size: 0.98rem;
+  }
+  .heroArt figcaption {
+    font-size: 0.8rem;
+  }
+  .indexHead {
+    display: block;
+    margin-bottom: 1.3rem;
+  }
+  .indexHead > p {
+    margin-top: 0.8rem;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+  }
+  .caption {
+    gap: 6px;
+    padding: 9px 0 14px;
+    align-items: start;
+  }
+  .rank {
+    font-size: 0.75rem;
+  }
+  .caption h3 {
+    font-size: 1.23rem;
+  }
+  .caption p {
+    font-size: 0.76rem;
+  }
+  .detailGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .fullPlate img {
+    height: auto;
+    max-height: 65svh;
+  }
+  .fullPlate figcaption {
+    padding-bottom: 0;
+  }
+  .reading h1 {
+    font-size: 3.1rem;
+  }
+  .observation {
+    margin-block: 0.9rem !important;
+  }
+  .label {
+    margin-bottom: 0.65rem !important;
+  }
+  .detailHead {
+    padding-block: 1rem;
+  }
+  .footer {
+    font-size: 0.75rem;
+    align-items: center;
+  }
+  .footer span:last-child {
+    text-align: right;
+  }
+  .mount {
+    aspect-ratio: 1.12;
+  }
+}
+@media (max-width: 365px) {
+  .heroText h1 {
+    font-size: 3rem;
+  }
+  .caption {
+    display: block;
+  }
+  .grid {
+    gap: 10px;
+  }
+}
