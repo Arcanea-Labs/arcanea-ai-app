@@ -1,0 +1,265 @@
+{
+  "generated": "2026-11-08",
+  "project": "hcfhyssdzphudaqatxbk",
+  "method": "create table/function names in each repo-only migration checked against live pg_class/pg_proc",
+  "note": "APPLIED-EQUIV = every object exists in production under another migration version; PARTIAL/MISSING need a decision before any db push",
+  "migrations": {
+    "20250101000001_initial_schema.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "comments",
+        "luminor_conversations",
+        "luminor_messages",
+        "luminor_relationships",
+        "generate_arcanean_id",
+        "increment_creation_count",
+        "set_arcanean_id",
+        "update_creation_comment_count",
+        "update_creation_like_count",
+        "update_follower_counts"
+      ]
+    },
+    "20250101000002_rls_policies.sql": {
+      "status": "MISSING",
+      "missing": [
+        "is_creation_owner",
+        "is_creation_public"
+      ]
+    },
+    "20250101000003_storage_buckets.sql": {
+      "status": "MISSING",
+      "missing": [
+        "generate_unique_filename",
+        "get_file_extension",
+        "validate_file_size"
+      ]
+    },
+    "20250101000004_utility_functions.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "add_key_memory",
+        "add_message_to_conversation",
+        "archive_creation",
+        "check_bond_level_up",
+        "follow_user",
+        "get_or_create_conversation",
+        "get_user_feed",
+        "get_user_stats",
+        "increment_creation_views",
+        "mark_notification_read",
+        "publish_creation",
+        "toggle_like",
+        "unfollow_user",
+        "update_last_active"
+      ]
+    },
+    "20250109000000_vector_and_tools.sql": {
+      "status": "MISSING",
+      "missing": [
+        "lore_fragments",
+        "match_lore"
+      ]
+    },
+    "20260223000001_prompt_books.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "pb_auto_version",
+        "pb_search_prompts",
+        "pb_update_collection_count"
+      ]
+    },
+    "20260307000001_luminor_council.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20260317000001_arcanea_claw_tables.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20260322000001_chat_sessions.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20260324000001_credits_system.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "credit_balances",
+        "forge_subscriptions",
+        "handle_credits_updated_at",
+        "reset_daily_credits"
+      ]
+    },
+    "20260325000001_living_lore.sql": {
+      "status": "MISSING",
+      "missing": [
+        "crew_bonds",
+        "living_lore_progress",
+        "increment_xp"
+      ]
+    },
+    "20260329000001_chat_projects_graph.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "project_memory_links"
+      ]
+    },
+    "20260329000002_project_graph_enrichment.sql": {
+      "status": "MISSING",
+      "missing": [
+        "project_graph_edges",
+        "project_graph_summaries"
+      ]
+    },
+    "20260331000001_custom_agents.sql": {
+      "status": "MISSING",
+      "missing": [
+        "agent_uses",
+        "custom_agents"
+      ]
+    },
+    "20260401000001_agent_treasury.sql": {
+      "status": "MISSING",
+      "missing": [
+        "agent_production_ledger",
+        "agent_wallets",
+        "handle_agent_wallets_updated_at"
+      ]
+    },
+    "20260402000001_project_docs.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20260403000002_worlds.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "update_worlds_updated_at"
+      ]
+    },
+    "20260410000001_open_library.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20260413000001_add_song_of_van_linh.sql": {
+      "status": "NO-OBJECTS",
+      "missing": []
+    },
+    "20260414000001_author_drafts.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "update_draft_timestamp"
+      ]
+    },
+    "20260520000001_arcanea_applications.sql": {
+      "status": "MISSING",
+      "missing": [
+        "arcanea_applications"
+      ]
+    },
+    "20260605000001_genesis_world_graph.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "world_assets",
+        "world_lore",
+        "world_memories",
+        "can_read_world",
+        "match_character_memories",
+        "owns_world"
+      ]
+    },
+    "20260816000001_world_graph_missing_tables.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20260816000002_handle_new_user_drops_email.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20260816000003_world_forks_backfill_corrections.sql": {
+      "status": "NO-OBJECTS",
+      "missing": []
+    },
+    "20260912120000_world_policy_recursion.sql": {
+      "status": "PARTIAL",
+      "missing": [
+        "arcanea_world_access"
+      ]
+    },
+    "20260926000001_waitlists.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20261005000001_billing_kernel.sql": {
+      "status": "MISSING",
+      "missing": [
+        "billing_accounts",
+        "billing_events",
+        "credit_ledger",
+        "billing_account_json",
+        "billing_ensure_account",
+        "billing_grant_credits",
+        "billing_mark_event",
+        "billing_record_event",
+        "billing_release_reservation",
+        "billing_reserve_credits",
+        "billing_set_plan",
+        "billing_settle_reservation",
+        "billing_touch"
+      ]
+    },
+    "20261010000001_billing_recovery.sql": {
+      "status": "MISSING",
+      "missing": [
+        "billing_operations",
+        "billing_apply_event",
+        "billing_complete_operation",
+        "billing_ensure_account",
+        "billing_grant_credits",
+        "billing_operation_json",
+        "billing_recovery_ready",
+        "billing_release_reservation",
+        "billing_request_release",
+        "billing_reserve_credits",
+        "billing_settle_reservation",
+        "billing_stage_result"
+      ]
+    },
+    "20261010000002_author_draft_recovery.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20261010124756_author_draft_recovery_revision_clock.sql": {
+      "status": "APPLIED-EQUIV",
+      "missing": []
+    },
+    "20261010133546_author_lookup_read_permissions.sql": {
+      "status": "NO-OBJECTS",
+      "missing": []
+    },
+    "20261010142500_author_membership_scope.sql": {
+      "status": "NO-OBJECTS",
+      "missing": []
+    },
+    "20261012000003_generation_jobs.sql": {
+      "status": "MISSING",
+      "missing": [
+        "generation_jobs"
+      ]
+    },
+    "20261012030707_atomic_chat_snapshots.sql": {
+      "status": "MISSING",
+      "missing": [
+        "chat_snapshot_revision",
+        "chat_snapshot_state",
+        "load_chat_snapshots",
+        "save_chat_snapshot"
+      ]
+    },
+    "20261013000001_creation_engine_assets.sql": {
+      "status": "MISSING",
+      "missing": [
+        "asset_links",
+        "assets"
+      ]
+    }
+  }
+}

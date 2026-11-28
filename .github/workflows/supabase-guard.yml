@@ -1,0 +1,84 @@
+name: Supabase guard
+
+# Two cheap checks that catch what the build cannot while Supabase clients are
+# typed `any`: code that queries objects production lacks, and regressions in
+# the client trust boundaries fixed on 2026-11-08.
+
+on:
+  pull_request:
+    paths:
+      - apps/web/app/**
+      - apps/web/lib/**
+      - apps/web/components/**
+      - apps/web/hooks/**
+      - supabase/**
+      - scripts/supabase-references.mjs
+      - scripts/supabase-drift.mjs
+      - .github/workflows/supabase-guard.yml
+  push:
+    branches: [main]
+    paths:
+      - apps/web/app/**
+      - apps/web/lib/**
+      - apps/web/components/**
+      - apps/web/hooks/**
+      - supabase/**
+      - scripts/supabase-references.mjs
+      - .github/workflows/supabase-guard.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-guard-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production-references:
+    name: No new references to objects production lacks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Scan .from() and .rpc() against supabase/production-objects.json
+        run: node scripts/supabase-references.mjs --list
+      - name: Report repo vs production migration drift (informational)
+        run: node scripts/supabase-drift.mjs || true
+
+  trust-boundaries:
+    name: Client trust boundaries on disposable PostgreSQL 17.6
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: trust_fixture
+          POSTGRES_DB: trust_disposable
+        ports: ["127.0.0.1:5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 12
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Apply the 20261108 fixes to the production shape and probe every boundary
+        env:
+          PGHOST: 127.0.0.1
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: trust_fixture
+          PGDATABASE: trust_disposable
+        run: psql -X -v trust_disposable=1 -f supabase/tests/client-trust-boundaries.sql 2>&1 | tee trust-postgres.log
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: trust-postgres-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: trust-postgres.log
+          if-no-files-found: error

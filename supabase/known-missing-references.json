@@ -1,0 +1,31 @@
+{
+  "note": "Known references to objects production lacks. Shrink this list; never grow it to make CI pass without a decision.",
+  "references": [
+    "rpc:billing_release_reservation",
+    "rpc:billing_request_release",
+    "rpc:billing_reserve_credits",
+    "rpc:billing_settle_reservation",
+    "rpc:increment_page_views",
+    "rpc:increment_xp",
+    "rpc:load_chat_snapshots",
+    "rpc:match_lore",
+    "rpc:pb_search_prompts",
+    "rpc:save_chat_snapshot",
+    "table:assets",
+    "table:attribution_events",
+    "table:billing_operations",
+    "table:credit_balances",
+    "table:crew_bonds",
+    "table:custom_agents",
+    "table:forge_subscriptions",
+    "table:generation_jobs",
+    "table:living_lore_progress",
+    "table:lore_fragments",
+    "table:luminor_bonds",
+    "table:pages",
+    "table:project_graph_edges",
+    "table:project_graph_summaries",
+    "table:project_memory_links",
+    "table:user_profiles"
+  ]
+}
