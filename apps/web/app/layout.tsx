@@ -12,6 +12,7 @@ import { AuthProvider } from "@/lib/auth/context";
 import { Navbar, Footer } from "@/components/navigation";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { DatadogRum } from "@/components/analytics/datadog-rum";
 import { CosmicBackground } from "@/lib/arcanea-ui/CosmicBackground";
 import {
   DeferredBackground,
@@ -140,13 +141,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       )}
     >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -169,6 +163,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 "@type": "Organization",
                 name: "Arcanea",
                 url: "https://www.arcanea.ai",
+                founder: {
+                  "@type": "Person",
+                  "@id": "https://www.frankx.ai/#frank-riemer",
+                  name: "Frank Riemer",
+                  jobTitle: "AI Architect",
+                  url: "https://www.frankx.ai",
+                  sameAs: ["https://github.com/frankxai"],
+                },
               },
               featureList: [
                 "Living world builder with auto-linking",
@@ -217,6 +219,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Toaster />
           <SpeedInsights />
           <Analytics />
+          <DatadogRum />
         </AuthProvider>
       </body>
     </html>

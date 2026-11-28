@@ -1,35 +1,192 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-import { Metadata } from 'next';
-import Link from 'next/link';
+import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: 'Agent Certification | Arcanea Academy',
-  description: 'Earn certifications through the Ten Gates. For humans and AI agents. Prove mastery, unlock capabilities, join the marketplace.',
+  title: "Design for Agent Certification | Arcanea Academy",
+  description:
+    "A design for evaluating agents against Gate rubrics. Not an available certification: no badge is issued and nothing is unlocked.",
   openGraph: {
-    title: 'Agent Certification — Arcanea Academy',
-    description: 'The first certification system designed for both humans and AI agents. Ten Gates. Ten levels of mastery.',
+    title: "Design for Agent Certification — Arcanea Academy",
+    description:
+      "A design for evaluating agents against Gate rubrics. Not an available certification.",
   },
 };
 
 const GATES = [
-  { n: 1, name: 'Foundation', domain: 'Basics', skills: ['File operations', 'Git workflow', 'Project structure', 'Environment setup'], color: 'var(--arc-brand-atlantean-teal)', humanSkill: 'Set up a creative workspace', agentSkill: 'Initialize a project from template' },
-  { n: 2, name: 'Flow', domain: 'Creativity', skills: ['Prompt engineering', 'Style transfer', 'Creative writing', 'Ideation'], color: 'var(--arc-brand-atlantean-teal)', humanSkill: 'Write a compelling story opening', agentSkill: 'Generate 5 distinct creative variations' },
-  { n: 3, name: 'Fire', domain: 'Power', skills: ['Multi-agent orchestration', 'Swarm patterns', 'Parallel execution', 'Error recovery'], color: 'var(--arc-fire)', humanSkill: 'Lead a multi-agent coding sprint', agentSkill: 'Coordinate 3+ agents to complete a feature' },
-  { n: 4, name: 'Heart', domain: 'Empathy', skills: ['User intent parsing', 'Error messages', 'Accessibility', 'Inclusive design'], color: 'var(--arc-void)', humanSkill: 'Design for users with disabilities', agentSkill: 'Generate WCAG-compliant UI components' },
-  { n: 5, name: 'Voice', domain: 'Expression', skills: ['Documentation', 'Commit messages', 'API design', 'Technical writing'], color: 'var(--arc-brand-atlantean-teal)', humanSkill: 'Write documentation that teaches', agentSkill: 'Generate comprehensive API docs from code' },
-  { n: 6, name: 'Sight', domain: 'Vision', skills: ['Architecture', 'System design', 'Performance analysis', 'Code review'], color: 'var(--arc-void)', humanSkill: 'Design a scalable system architecture', agentSkill: 'Identify and fix performance bottlenecks' },
-  { n: 7, name: 'Crown', domain: 'Mastery', skills: ['Performance optimization', 'Security hardening', 'Advanced patterns', 'Mentoring'], color: 'var(--arc-brand-arcanean-gold)', humanSkill: 'Optimize a page to 95+ Lighthouse', agentSkill: 'Reduce bundle size by 50%+ through analysis' },
-  { n: 8, name: 'Starweave', domain: 'Perspective', skills: ['Multi-model routing', 'Evaluation design', 'A/B testing', 'Meta-cognition'], color: 'var(--arc-void)', humanSkill: 'Design an agent evaluation rubric', agentSkill: 'Self-evaluate and improve own output' },
-  { n: 9, name: 'Unity', domain: 'Collaboration', skills: ['Team coordination', 'PR review', 'Conflict resolution', 'Knowledge sharing'], color: 'var(--arc-brand-cosmic-blue)', humanSkill: 'Run a productive code review session', agentSkill: 'Merge 5 agent outputs into coherent result' },
-  { n: 10, name: 'Source', domain: 'Meta', skills: ['Self-improvement', 'Teaching others', 'Framework design', 'Ecosystem thinking'], color: 'var(--arc-text-primary)', humanSkill: 'Create a skill that others adopt', agentSkill: 'Train a new agent to pass Gate 3' },
+  {
+    n: 1,
+    name: "Foundation",
+    domain: "Basics",
+    skills: [
+      "File operations",
+      "Git workflow",
+      "Project structure",
+      "Environment setup",
+    ],
+    color: "var(--arc-brand-atlantean-teal)",
+    humanSkill: "Set up a creative workspace",
+    agentSkill: "Initialize a project from template",
+  },
+  {
+    n: 2,
+    name: "Flow",
+    domain: "Creativity",
+    skills: [
+      "Prompt engineering",
+      "Style transfer",
+      "Creative writing",
+      "Ideation",
+    ],
+    color: "var(--arc-brand-atlantean-teal)",
+    humanSkill: "Write a compelling story opening",
+    agentSkill: "Generate 5 distinct creative variations",
+  },
+  {
+    n: 3,
+    name: "Fire",
+    domain: "Power",
+    skills: [
+      "Multi-agent orchestration",
+      "Swarm patterns",
+      "Parallel execution",
+      "Error recovery",
+    ],
+    color: "var(--arc-fire)",
+    humanSkill: "Lead a multi-agent coding sprint",
+    agentSkill: "Coordinate 3+ agents to complete a feature",
+  },
+  {
+    n: 4,
+    name: "Heart",
+    domain: "Empathy",
+    skills: [
+      "User intent parsing",
+      "Error messages",
+      "Accessibility",
+      "Inclusive design",
+    ],
+    color: "var(--arc-void)",
+    humanSkill: "Design for users with disabilities",
+    agentSkill: "Generate WCAG-compliant UI components",
+  },
+  {
+    n: 5,
+    name: "Voice",
+    domain: "Expression",
+    skills: [
+      "Documentation",
+      "Commit messages",
+      "API design",
+      "Technical writing",
+    ],
+    color: "var(--arc-brand-atlantean-teal)",
+    humanSkill: "Write documentation that teaches",
+    agentSkill: "Generate comprehensive API docs from code",
+  },
+  {
+    n: 6,
+    name: "Sight",
+    domain: "Vision",
+    skills: [
+      "Architecture",
+      "System design",
+      "Performance analysis",
+      "Code review",
+    ],
+    color: "var(--arc-void)",
+    humanSkill: "Design a scalable system architecture",
+    agentSkill: "Identify and fix performance bottlenecks",
+  },
+  {
+    n: 7,
+    name: "Crown",
+    domain: "Mastery",
+    skills: [
+      "Performance optimization",
+      "Security hardening",
+      "Advanced patterns",
+      "Mentoring",
+    ],
+    color: "var(--arc-brand-arcanean-gold)",
+    humanSkill: "Optimize a page to 95+ Lighthouse",
+    agentSkill: "Reduce bundle size by 50%+ through analysis",
+  },
+  {
+    n: 8,
+    name: "Starweave",
+    domain: "Perspective",
+    skills: [
+      "Multi-model routing",
+      "Evaluation design",
+      "A/B testing",
+      "Meta-cognition",
+    ],
+    color: "var(--arc-void)",
+    humanSkill: "Design an agent evaluation rubric",
+    agentSkill: "Self-evaluate and improve own output",
+  },
+  {
+    n: 9,
+    name: "Unity",
+    domain: "Collaboration",
+    skills: [
+      "Team coordination",
+      "PR review",
+      "Conflict resolution",
+      "Knowledge sharing",
+    ],
+    color: "var(--arc-brand-cosmic-blue)",
+    humanSkill: "Run a productive code review session",
+    agentSkill: "Merge 5 agent outputs into coherent result",
+  },
+  {
+    n: 10,
+    name: "Source",
+    domain: "Meta",
+    skills: [
+      "Self-improvement",
+      "Teaching others",
+      "Framework design",
+      "Ecosystem thinking",
+    ],
+    color: "var(--arc-text-primary)",
+    humanSkill: "Create a skill that others adopt",
+    agentSkill: "Train a new agent to pass Gate 3",
+  },
 ];
 
 const RANKS = [
-  { range: '0-2', rank: 'Apprentice', color: 'var(--arc-earth)', badge: 'Seeker' },
-  { range: '3-4', rank: 'Mage', color: 'var(--arc-brand-cosmic-blue)', badge: 'Builder' },
-  { range: '5-6', rank: 'Master', color: 'var(--arc-void)', badge: 'Architect' },
-  { range: '7-8', rank: 'Archmage', color: 'var(--arc-brand-arcanean-gold)', badge: 'Visionary' },
-  { range: '9-10', rank: 'Luminor', color: 'var(--arc-brand-arcanean-gold)', badge: 'Luminor' },
+  {
+    range: "0-2",
+    rank: "Apprentice",
+    color: "var(--arc-earth)",
+    badge: "Seeker",
+  },
+  {
+    range: "3-4",
+    rank: "Mage",
+    color: "var(--arc-brand-cosmic-blue)",
+    badge: "Builder",
+  },
+  {
+    range: "5-6",
+    rank: "Master",
+    color: "var(--arc-void)",
+    badge: "Architect",
+  },
+  {
+    range: "7-8",
+    rank: "Archmage",
+    color: "var(--arc-brand-arcanean-gold)",
+    badge: "Visionary",
+  },
+  {
+    range: "9-10",
+    rank: "Luminor",
+    color: "var(--arc-brand-arcanean-gold)",
+    badge: "Luminor",
+  },
 ];
 
 export default function CertificationPage() {
@@ -43,23 +200,37 @@ export default function CertificationPage() {
           </p>
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             <span className="bg-gradient-to-r from-white via-white/90 to-[var(--arc-brand-atlantean-teal)]/80 bg-clip-text text-transparent">
-              Agent Certification
+              Design for Agent Certification
             </span>
           </h1>
           <p className="text-lg text-white/40 max-w-2xl mx-auto leading-relaxed">
-            The first certification system designed for both humans and AI agents.
-            Ten Gates. Ten levels of mastery. Prove your capability, unlock the marketplace.
+            A design for evaluating agents against Gate rubrics. It is not an
+            available certification. No badge is issued and nothing is unlocked.
           </p>
         </section>
 
         {/* How it works */}
         <section className="mb-16">
-          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">How It Works</h2>
+          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">
+            How the Design Works
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { step: '1', title: 'Challenge', desc: 'Complete practical challenges for each Gate. Agents submit code. Humans submit projects.' },
-              { step: '2', title: 'Evaluate', desc: 'Automated rubrics score your output on 5 dimensions: correctness, completeness, quality, efficiency, safety.' },
-              { step: '3', title: 'Certify', desc: 'Pass the Gate threshold (7.5/10) to earn your badge. Badges unlock marketplace listing and premium features.' },
+              {
+                step: "1",
+                title: "Challenge",
+                desc: "The design sets practical challenges for each Gate. Agents would submit code and humans would submit projects. Nothing can be submitted today.",
+              },
+              {
+                step: "2",
+                title: "Evaluate",
+                desc: "Each draft challenge lists weighted criteria. The rubric is written down. No automated scoring runs.",
+              },
+              {
+                step: "3",
+                title: "Threshold",
+                desc: "Each draft challenge names a pass mark. Meeting it issues no badge and unlocks nothing.",
+              },
             ].map((item) => (
               <div
                 key={item.step}
@@ -68,8 +239,12 @@ export default function CertificationPage() {
                 <div className="w-8 h-8 rounded-lg bg-[var(--arc-brand-atlantean-teal)]/10 text-[var(--arc-brand-atlantean-teal)] text-sm font-bold flex items-center justify-center mb-3">
                   {item.step}
                 </div>
-                <h3 className="text-sm font-semibold text-white/80 mb-2">{item.title}</h3>
-                <p className="text-[13px] text-white/35 leading-relaxed">{item.desc}</p>
+                <h3 className="text-sm font-semibold text-white/80 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-[13px] text-white/35 leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -77,7 +252,9 @@ export default function CertificationPage() {
 
         {/* The Ten Gates */}
         <section className="mb-16">
-          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">The Ten Gates</h2>
+          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">
+            Draft Challenges by Gate
+          </h2>
           <div className="space-y-3">
             {GATES.map((gate) => (
               <div
@@ -88,21 +265,31 @@ export default function CertificationPage() {
                   {/* Gate number */}
                   <div
                     className="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold shrink-0"
-                    style={{ backgroundColor: `${gate.color}15`, color: gate.color }}
+                    style={{
+                      backgroundColor: `${gate.color}15`,
+                      color: gate.color,
+                    }}
                   >
                     {gate.n}
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-sm font-semibold text-white/80">{gate.name}</h3>
-                      <span className="text-[10px] text-white/25 px-1.5 py-0.5 rounded bg-white/[0.04]">{gate.domain}</span>
+                      <h3 className="text-sm font-semibold text-white/80">
+                        {gate.name}
+                      </h3>
+                      <span className="text-[10px] text-white/25 px-1.5 py-0.5 rounded bg-white/[0.04]">
+                        {gate.domain}
+                      </span>
                     </div>
 
                     {/* Skills */}
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {gate.skills.map((skill) => (
-                        <span key={skill} className="text-[10px] text-white/30 px-2 py-0.5 rounded-full border border-white/[0.06]">
+                        <span
+                          key={skill}
+                          className="text-[10px] text-white/30 px-2 py-0.5 rounded-full border border-white/[0.06]"
+                        >
                           {skill}
                         </span>
                       ))}
@@ -111,12 +298,20 @@ export default function CertificationPage() {
                     {/* Dual track */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <div className="rounded-lg bg-white/[0.02] px-3 py-2">
-                        <span className="text-[9px] uppercase tracking-wider text-white/20 block mb-0.5">Human Challenge</span>
-                        <span className="text-[11px] text-white/50">{gate.humanSkill}</span>
+                        <span className="text-[9px] uppercase tracking-wider text-white/20 block mb-0.5">
+                          Human Challenge
+                        </span>
+                        <span className="text-[11px] text-white/50">
+                          {gate.humanSkill}
+                        </span>
                       </div>
                       <div className="rounded-lg bg-[var(--arc-brand-atlantean-teal)]/[0.03] px-3 py-2">
-                        <span className="text-[9px] uppercase tracking-wider text-[var(--arc-brand-atlantean-teal)]/40 block mb-0.5">Agent Challenge</span>
-                        <span className="text-[11px] text-[var(--arc-brand-atlantean-teal)]/60">{gate.agentSkill}</span>
+                        <span className="text-[9px] uppercase tracking-wider text-[var(--arc-brand-atlantean-teal)]/40 block mb-0.5">
+                          Agent Challenge
+                        </span>
+                        <span className="text-[11px] text-[var(--arc-brand-atlantean-teal)]/60">
+                          {gate.agentSkill}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -128,7 +323,9 @@ export default function CertificationPage() {
 
         {/* Ranks */}
         <section className="mb-16">
-          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">Ranks</h2>
+          <h2 className="text-xl font-display font-semibold text-white/80 mb-6">
+            Ranks
+          </h2>
           <div className="flex flex-wrap gap-3">
             {RANKS.map((rank) => (
               <div
@@ -136,11 +333,22 @@ export default function CertificationPage() {
                 className="rounded-xl border border-white/[0.06] px-5 py-4 text-center min-w-[140px]"
                 style={{ borderColor: `${rank.color}30` }}
               >
-                <div className="text-2xl font-display font-bold mb-1" style={{ color: rank.color }}>
+                <div
+                  className="text-2xl font-display font-bold mb-1"
+                  style={{ color: rank.color }}
+                >
                   {rank.rank}
                 </div>
-                <div className="text-[11px] text-white/25">Gates {rank.range}</div>
-                <div className="text-[10px] mt-2 px-2 py-0.5 rounded-full inline-block" style={{ backgroundColor: `${rank.color}15`, color: rank.color }}>
+                <div className="text-[11px] text-white/25">
+                  Gates {rank.range}
+                </div>
+                <div
+                  className="text-[10px] mt-2 px-2 py-0.5 rounded-full inline-block"
+                  style={{
+                    backgroundColor: `${rank.color}15`,
+                    color: rank.color,
+                  }}
+                >
                   {rank.badge}
                 </div>
               </div>
@@ -152,10 +360,12 @@ export default function CertificationPage() {
         <section className="text-center">
           <div className="rounded-2xl bg-gradient-to-br from-[var(--arc-brand-atlantean-teal)]/10 via-[var(--arc-brand-cosmic-blue)]/5 to-[var(--arc-brand-cosmic-blue)]/10 border border-[var(--arc-brand-atlantean-teal)]/15 p-8">
             <h2 className="text-xl font-display font-semibold text-white/80 mb-3">
-              Ready to Begin?
+              What Exists Today
             </h2>
             <p className="text-sm text-white/35 mb-6 max-w-md mx-auto">
-              Start your journey through the Ten Gates. Whether you are a human creator or an AI agent, the path to mastery begins here.
+              This page describes a design. There is no challenge submission, no
+              scoring run and no badge. The Gate pages describe the Gates
+              themselves.
             </p>
             <div className="flex items-center justify-center gap-3">
               <Link

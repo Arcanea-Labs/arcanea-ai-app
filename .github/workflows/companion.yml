@@ -107,7 +107,7 @@ jobs:
           name: companion-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
           path: screenshots/companion/
           if-no-files-found: ignore
-          retention-days: 2
+          retention-days: 1
 
   independent-source-review:
     name: Independent public-source review
@@ -148,4 +148,4 @@ jobs:
           name: companion-review-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
           path: screenshots/companion-review/
           if-no-files-found: warn
-          retention-days: 2
+          retention-days: 1
