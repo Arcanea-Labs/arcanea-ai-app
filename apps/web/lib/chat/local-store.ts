@@ -441,7 +441,12 @@ export function mergeChatSessions(
         messages: normalized.messages.length
           ? normalized.messages
           : existing.messages,
-        projectId: normalized.projectId ?? existing.projectId ?? null,
+        // Missing metadata can retain local context; explicit null is a
+        // confirmed removal and must not resurrect the previous project.
+        projectId:
+          session.projectId === undefined
+            ? (existing.projectId ?? null)
+            : normalized.projectId,
       };
       // A metadata-only response is not an acknowledgement of messages or
       // project context retained from the device's complete copy.
@@ -586,8 +591,11 @@ export function clearProjectFromSessions(
   projectId: string,
   scope: ChatStorageScope = guestChatStorageScope,
 ): void {
+  const updatedAt = new Date().toISOString();
   const sessions = readSessions(scope).map((session) =>
-    session.projectId === projectId ? { ...session, projectId: null } : session,
+    session.projectId === projectId
+      ? { ...session, projectId: null, cloudDirty: true, updatedAt }
+      : session,
   );
   writeSessions(sessions, scope);
 }

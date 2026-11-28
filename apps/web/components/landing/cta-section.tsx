@@ -4,7 +4,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { track } from "@vercel/analytics";
+import { trackCtaClick } from "@/lib/analytics/track";
 import navLogo from "@/assets/brand/arcanea-mark.jpg";
 import { PhArrowRight, PhCheck } from "@/lib/phosphor-icons";
 
@@ -80,7 +80,12 @@ export function CTASection() {
                 <div className="flex flex-wrap gap-4">
                   <Link
                     href="/chat"
-                    onClick={() => track("home_final_cta", { target: "/chat" })}
+                    onClick={() =>
+                      trackCtaClick({
+                        cta: "start_creating",
+                        location: "home_final",
+                      })
+                    }
                     className="group relative px-8 py-4 rounded-2xl font-semibold text-base overflow-hidden btn-glow"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-[var(--arc-brand-cosmic-blue)] via-[var(--arc-brand-cosmic-blue)] to-[var(--arc-brand-atlantean-teal)] transition-opacity duration-300" />
@@ -98,7 +103,10 @@ export function CTASection() {
                   <Link
                     href="/library"
                     onClick={() =>
-                      track("home_final_cta", { target: "/library" })
+                      trackCtaClick({
+                        cta: "explore_library",
+                        location: "home_final",
+                      })
                     }
                     className="px-8 py-4 rounded-2xl border border-white/[0.10] text-white font-semibold text-base hover:bg-white/[0.06] hover:border-white/[0.15] hover:scale-[1.02] active:scale-[0.98] transition-[background-color,border-color,transform] duration-300"
                   >

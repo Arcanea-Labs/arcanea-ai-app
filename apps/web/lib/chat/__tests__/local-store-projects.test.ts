@@ -202,4 +202,116 @@ test("mergeChatSessions preserves an unsaved local project and manuscript", () =
   assert.equal(retained?.messages[0].content, "Unsaved original");
 });
 
+test("a deleted project assignment cannot return from a stale cloud copy", () => {
+  resetStorage();
+  saveChatSession(
+    "creative_draft",
+    [
+      {
+        id: "m1",
+        role: "user",
+        content: "Keep this scene and its continuity notes.",
+      },
+    ],
+    { projectId: "removed_project" },
+  );
+  const saved = loadChatSession("creative_draft")!;
+  acknowledgeChatSnapshot(
+    "creative_draft",
+    "a".repeat(64),
+    chatSnapshotContentKey(saved),
+    guestChatStorageScope,
+  );
+  const clean = loadChatSession("creative_draft")!;
+  clearProjectFromSessions("removed_project");
+  const detached = loadChatSession("creative_draft")!;
+  assert.equal(detached.cloudDirty, true);
+  assert.equal(detached.cloudRevision, clean.cloudRevision);
+  mergeChatSessions([{ ...clean, updatedAt: "2099-01-01T00:00:00.000Z" }]);
+  const retained = loadChatSession("creative_draft")!;
+  assert.equal(retained.projectId, null);
+  assert.deepEqual(retained.messages, saved.messages);
+});
+
+test("an explicit remote project removal replaces a clean local assignment", () => {
+  resetStorage();
+  saveChatSession(
+    "creative_draft",
+    [{ id: "m1", role: "assistant", content: "A scene ready to keep." }],
+    { projectId: "old_project" },
+  );
+  const saved = loadChatSession("creative_draft")!;
+  acknowledgeChatSnapshot(
+    "creative_draft",
+    "a".repeat(64),
+    chatSnapshotContentKey(saved),
+    guestChatStorageScope,
+  );
+  mergeChatSessions([
+    {
+      ...saved,
+      projectId: null,
+      cloudDirty: false,
+      cloudRevision: "b".repeat(64),
+      updatedAt: "2099-01-01T00:00:00.000Z",
+    },
+  ]);
+  const retained = loadChatSession("creative_draft")!;
+  assert.equal(retained.projectId, null);
+  assert.equal(retained.cloudDirty, false);
+  assert.deepEqual(retained.messages, saved.messages);
+});
+
+test("removing a project leaves other clean conversations unchanged", () => {
+  resetStorage();
+  saveChatSession(
+    "other_draft",
+    [{ id: "m1", role: "user", content: "An unrelated world." }],
+    { projectId: "other_project" },
+  );
+  const saved = loadChatSession("other_draft")!;
+  acknowledgeChatSnapshot(
+    "other_draft",
+    "a".repeat(64),
+    chatSnapshotContentKey(saved),
+    guestChatStorageScope,
+  );
+  const clean = loadChatSession("other_draft")!;
+  clearProjectFromSessions("removed_project");
+  assert.deepEqual(loadChatSession("other_draft"), clean);
+});
+
+test("metadata without a project field retains context as unacknowledged local work", () => {
+  resetStorage();
+  saveChatSession(
+    "creative_draft",
+    [
+      {
+        id: "m1",
+        role: "user",
+        content: "Keep project context on summary recovery.",
+      },
+    ],
+    { projectId: "current_project" },
+  );
+  const saved = loadChatSession("creative_draft")!;
+  acknowledgeChatSnapshot(
+    "creative_draft",
+    "a".repeat(64),
+    chatSnapshotContentKey(saved),
+    guestChatStorageScope,
+  );
+  const { projectId: _projectId, ...withoutProject } = saved;
+  mergeChatSessions([
+    {
+      ...withoutProject,
+      cloudDirty: false,
+      updatedAt: "2099-01-01T00:00:00.000Z",
+    },
+  ]);
+  const retained = loadChatSession("creative_draft")!;
+  assert.equal(retained.projectId, "current_project");
+  assert.equal(retained.cloudDirty, true);
+});
+
 finish();
