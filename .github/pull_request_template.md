@@ -36,3 +36,13 @@ PR Discipline (May 2026):
 <!-- Links to: issues, prior PRs, decision docs in docs/ops/ or planning-with-files/. -->
 
 -
+
+## Evidence
+
+- Tests: `<N> pass, 0 fail` (command run: ...)
+- Checks: lint / typecheck / build results, or why not run
+- UI changes: screenshots committed under docs/design/<scope>/screens/ at 1440, 768, 390 px, or 'no UI change'
+- Design lock: path to docs/design/<scope>/design-lock.md, or 'no UI change'
+- Stacks on: #<PR> / <branch>, or 'main'
+- Independent review: requested from <Cloudflare Starlight Review | Grok | Codex> on <head sha>
+- Risk: what could break, and how it was checked

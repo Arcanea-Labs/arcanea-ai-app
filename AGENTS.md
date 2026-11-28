@@ -250,6 +250,10 @@ pnpm run verify:project-workspaces
 pnpm --dir apps/web test:media
 ```
 
+- Every PR fills the Evidence section of `.github/pull_request_template.md`.
+- UI PRs commit a design lock and screenshots.
+- State test counts as `N pass, 0 fail`.
+
 ## Planning With Files
 
 Use `planning-with-files/` as the execution control plane:
