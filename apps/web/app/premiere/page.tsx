@@ -33,14 +33,16 @@ export default async function PremierePage() {
         <div className="mx-auto grid max-w-6xl gap-10 px-4 pt-24 pb-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-32 lg:pb-24">
           <div>
             <p className="font-mono text-xs text-amber-300">
-              Arcanea First Drop · {legends.length} Legends · {totalWords.toLocaleString()} words on disk
+              Arcanea First Drop · {legends.length} Legends ·{" "}
+              {totalWords.toLocaleString()} words on disk
             </p>
             <h1 className="mt-4 font-serif text-4xl font-semibold tracking-tight text-white sm:text-6xl">
               Enter through a finished world, not a promise.
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-zinc-300 sm:text-lg">
-              Read the canonical opening movements of <em>Legends of Arcanea</em> directly from the
-              source manuscripts, audition the 174 Hz - 1111 Hz Solfeggio intervals, and inspect the
+              Read the canonical opening movements of{" "}
+              <em>Legends of Arcanea</em> directly from the source manuscripts,
+              audition the 174 Hz - 1111 Hz Solfeggio intervals, and inspect the
               human-led rules behind Arcanea Records.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -79,10 +81,12 @@ export default async function PremierePage() {
                 className="h-16 w-16 shrink-0 rounded-xl object-cover"
               />
               <div>
-                <p className="font-mono text-xs text-teal-300">Locked Canon · Primordial Duality</p>
+                <p className="font-mono text-xs text-teal-300">
+                  Locked Canon · Primordial Duality
+                </p>
                 <p className="mt-1 text-xs leading-relaxed text-zinc-300">
-                  Lumina (Form-Giver) and Nero (Fertile Unknown — never evil). All darkness traces to
-                  Malachar&apos;s corruption of the Void.
+                  Lumina (Form-Giver) and Nero (Fertile Unknown — never evil).
+                  All darkness traces to Malachar&apos;s corruption of the Void.
                 </p>
               </div>
             </div>

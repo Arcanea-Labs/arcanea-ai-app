@@ -9,14 +9,27 @@ import { ARTIST_CLIMATES, HOUSE_CODEX_PROMISE } from "../house-codex";
 
 async function run() {
   const legends = await loadFirstDropLegends();
-  assert.equal(legends.length, 3, "Expected Legends I, II, and III to load from disk.");
+  assert.equal(
+    legends.length,
+    3,
+    "Expected Legends I, II, and III to load from disk.",
+  );
 
   const totalWords = legends.reduce((sum, legend) => sum + legend.wordCount, 0);
-  assert.ok(totalWords > 4000, `Expected substantial canonical prose (>4000 words), got ${totalWords}.`);
+  assert.ok(
+    totalWords > 4000,
+    `Expected substantial canonical prose (>4000 words), got ${totalWords}.`,
+  );
 
   for (const legend of legends) {
-    assert.ok(legend.sections.length >= 2, `${legend.fileName} should parse into multiple sections.`);
-    assert.ok(legend.epigraph.length > 20, `${legend.fileName} should preserve its epigraph.`);
+    assert.ok(
+      legend.sections.length >= 2,
+      `${legend.fileName} should parse into multiple sections.`,
+    );
+    assert.ok(
+      legend.epigraph.length > 20,
+      `${legend.fileName} should preserve its epigraph.`,
+    );
   }
 
   // Exact CANON_LOCKED.md invariants
@@ -32,11 +45,18 @@ async function run() {
   assert.equal(sourceGate?.frequencyHz, 1111);
 
   assert.equal(CANON_SEVEN_WISDOMS.length, 7);
-  assert.equal(CANON_MAGIC_RANKS[CANON_MAGIC_RANKS.length - 1]?.rank, "Luminor");
+  assert.equal(
+    CANON_MAGIC_RANKS[CANON_MAGIC_RANKS.length - 1]?.rank,
+    "Luminor",
+  );
 
   // Guard against forbidden non-canon drift
   const serializedGates = JSON.stringify(CANON_TEN_GATES);
-  assert.equal(serializedGates.includes("Amaterasu"), false, "Pre-2026-03-30 Godbeast name must not appear.");
+  assert.equal(
+    serializedGates.includes("Amaterasu"),
+    false,
+    "Pre-2026-03-30 Godbeast name must not appear.",
+  );
   assert.equal(ARTIST_CLIMATES.length, 4);
   assert.ok(HOUSE_CODEX_PROMISE.rule.includes("Frank writes"));
 

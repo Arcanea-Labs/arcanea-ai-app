@@ -35,26 +35,141 @@ export interface CanonWisdomEntry {
 }
 
 export const CANON_TEN_GATES: CanonGateEntry[] = [
-  { number: 1, gate: "Foundation", frequencyHz: 174, guardian: "Lyssandria", godbeast: "Kaelith", domain: "Earth, survival", element: "Earth" },
-  { number: 2, gate: "Flow", frequencyHz: 285, guardian: "Leyla", godbeast: "Veloura", domain: "Creativity, emotion", element: "Water" },
-  { number: 3, gate: "Fire", frequencyHz: 396, guardian: "Draconia", godbeast: "Draconis", domain: "Power, will", element: "Fire" },
-  { number: 4, gate: "Heart", frequencyHz: 417, guardian: "Maylinn", godbeast: "Laeylinn", domain: "Love, healing", element: "Wind / Water" },
-  { number: 5, gate: "Voice", frequencyHz: 528, guardian: "Alera", godbeast: "Otome", domain: "Truth, expression", element: "Wind" },
-  { number: 6, gate: "Sight", frequencyHz: 639, guardian: "Lyria", godbeast: "Yumiko", domain: "Intuition, vision", element: "Water / Void" },
-  { number: 7, gate: "Crown", frequencyHz: 741, guardian: "Aiyami", godbeast: "Sol", domain: "Enlightenment", element: "Spirit / Light" },
-  { number: 8, gate: "Starweave", frequencyHz: 852, guardian: "Elara", godbeast: "Vaelith", domain: "Perspective, transformation", element: "Void" },
-  { number: 9, gate: "Unity", frequencyHz: 963, guardian: "Ino", godbeast: "Kyuro", domain: "Partnership", element: "All" },
-  { number: 10, gate: "Source", frequencyHz: 1111, guardian: "Shinkami", godbeast: "Source", domain: "Meta-consciousness", element: "Spirit" },
+  {
+    number: 1,
+    gate: "Foundation",
+    frequencyHz: 174,
+    guardian: "Lyssandria",
+    godbeast: "Kaelith",
+    domain: "Earth, survival",
+    element: "Earth",
+  },
+  {
+    number: 2,
+    gate: "Flow",
+    frequencyHz: 285,
+    guardian: "Leyla",
+    godbeast: "Veloura",
+    domain: "Creativity, emotion",
+    element: "Water",
+  },
+  {
+    number: 3,
+    gate: "Fire",
+    frequencyHz: 396,
+    guardian: "Draconia",
+    godbeast: "Draconis",
+    domain: "Power, will",
+    element: "Fire",
+  },
+  {
+    number: 4,
+    gate: "Heart",
+    frequencyHz: 417,
+    guardian: "Maylinn",
+    godbeast: "Laeylinn",
+    domain: "Love, healing",
+    element: "Wind / Water",
+  },
+  {
+    number: 5,
+    gate: "Voice",
+    frequencyHz: 528,
+    guardian: "Alera",
+    godbeast: "Otome",
+    domain: "Truth, expression",
+    element: "Wind",
+  },
+  {
+    number: 6,
+    gate: "Sight",
+    frequencyHz: 639,
+    guardian: "Lyria",
+    godbeast: "Yumiko",
+    domain: "Intuition, vision",
+    element: "Water / Void",
+  },
+  {
+    number: 7,
+    gate: "Crown",
+    frequencyHz: 741,
+    guardian: "Aiyami",
+    godbeast: "Sol",
+    domain: "Enlightenment",
+    element: "Spirit / Light",
+  },
+  {
+    number: 8,
+    gate: "Starweave",
+    frequencyHz: 852,
+    guardian: "Elara",
+    godbeast: "Vaelith",
+    domain: "Perspective, transformation",
+    element: "Void",
+  },
+  {
+    number: 9,
+    gate: "Unity",
+    frequencyHz: 963,
+    guardian: "Ino",
+    godbeast: "Kyuro",
+    domain: "Partnership",
+    element: "All",
+  },
+  {
+    number: 10,
+    gate: "Source",
+    frequencyHz: 1111,
+    guardian: "Shinkami",
+    godbeast: "Source",
+    domain: "Meta-consciousness",
+    element: "Spirit",
+  },
 ];
 
 export const CANON_SEVEN_WISDOMS: CanonWisdomEntry[] = [
-  { name: "Sophron", archive: "Form", domain: "Structure, patterns", element: "Earth" },
-  { name: "Kardia", archive: "Flow", domain: "Emotion, heart", element: "Water" },
-  { name: "Valora", archive: "Transformation", domain: "Courage, change", element: "Fire" },
-  { name: "Eudaira", archive: "Freedom", domain: "Joy, liberation", element: "Wind" },
-  { name: "Orakis", archive: "Mystery", domain: "Vision, intuition", element: "Void" },
-  { name: "Poiesis", archive: "Consciousness", domain: "Creation, craft", element: "Light" },
-  { name: "Enduran", archive: "Unity", domain: "Endurance, completion", element: "All" },
+  {
+    name: "Sophron",
+    archive: "Form",
+    domain: "Structure, patterns",
+    element: "Earth",
+  },
+  {
+    name: "Kardia",
+    archive: "Flow",
+    domain: "Emotion, heart",
+    element: "Water",
+  },
+  {
+    name: "Valora",
+    archive: "Transformation",
+    domain: "Courage, change",
+    element: "Fire",
+  },
+  {
+    name: "Eudaira",
+    archive: "Freedom",
+    domain: "Joy, liberation",
+    element: "Wind",
+  },
+  {
+    name: "Orakis",
+    archive: "Mystery",
+    domain: "Vision, intuition",
+    element: "Void",
+  },
+  {
+    name: "Poiesis",
+    archive: "Consciousness",
+    domain: "Creation, craft",
+    element: "Light",
+  },
+  {
+    name: "Enduran",
+    archive: "Unity",
+    domain: "Endurance, completion",
+    element: "All",
+  },
 ];
 
 export const CANON_MAGIC_RANKS = [
@@ -87,7 +202,11 @@ async function resolveLegendsDir(): Promise<string> {
   throw new Error("Unable to locate book/legends-of-arcanea directory.");
 }
 
-function parseLegendMarkdown(id: string, fileName: string, raw: string): LoadedLegend {
+function parseLegendMarkdown(
+  id: string,
+  fileName: string,
+  raw: string,
+): LoadedLegend {
   const lines = raw.replace(/\r\n/g, "\n").split("\n");
   let title = fileName;
   let subtitle = "";
@@ -147,7 +266,9 @@ function parseLegendMarkdown(id: string, fileName: string, raw: string): LoadedL
     sections.push(currentSection);
   }
 
-  const allText = sections.flatMap((s) => [s.heading, ...s.paragraphs]).join(" ");
+  const allText = sections
+    .flatMap((s) => [s.heading, ...s.paragraphs])
+    .join(" ");
   const wordCount = allText.split(/\s+/).filter(Boolean).length;
 
   return {

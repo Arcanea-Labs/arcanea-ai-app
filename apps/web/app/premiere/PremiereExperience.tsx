@@ -63,11 +63,20 @@ function cleanProseParagraph(raw: string): string {
   return raw.replace(/\*\*/g, "").replace(/\*/g, "");
 }
 
-export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperienceProps) {
-  const [selectedLegendId, setSelectedLegendId] = useState<string>(legends[0]?.id ?? "first-dawn");
+export function PremiereExperience({
+  legends,
+  gates,
+  wisdoms,
+}: PremiereExperienceProps) {
+  const [selectedLegendId, setSelectedLegendId] = useState<string>(
+    legends[0]?.id ?? "first-dawn",
+  );
   const [selectedGateIndex, setSelectedGateIndex] = useState<number>(0);
-  const [elementClimate, setElementClimate] = useState<ElementClimate>("void-spirit");
-  const [fontScale, setFontScale] = useState<"compact" | "reading" | "large">("reading");
+  const [elementClimate, setElementClimate] =
+    useState<ElementClimate>("void-spirit");
+  const [fontScale, setFontScale] = useState<"compact" | "reading" | "large">(
+    "reading",
+  );
   const [bookmarkNote, setBookmarkNote] = useState<string>("");
   const [playingFreq, setPlayingFreq] = useState<number | null>(null);
   const [playingMotif, setPlayingMotif] = useState<boolean>(false);
@@ -100,7 +109,10 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
         setBookmarkNote("No saved reading bookmark on this device yet.");
         return;
       }
-      const parsed = JSON.parse(raw) as { legendId?: string; elementClimate?: ElementClimate };
+      const parsed = JSON.parse(raw) as {
+        legendId?: string;
+        elementClimate?: ElementClimate;
+      };
       if (parsed.legendId && legends.some((l) => l.id === parsed.legendId)) {
         setSelectedLegendId(parsed.legendId);
       }
@@ -138,7 +150,10 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
 
   function ensureAudioContext(): AudioContext | null {
     if (typeof window === "undefined") return null;
-    const Ctor = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    const Ctor =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
     if (!Ctor) return null;
     if (!audioCtxRef.current || audioCtxRef.current.state === "closed") {
       audioCtxRef.current = new Ctor();
@@ -204,7 +219,9 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
     };
 
     setPlayingFreq(gate.frequencyHz);
-    setAudioStatus(`Auditioning Gate ${gate.number} (${gate.gate} · ${gate.frequencyHz} Hz — ${gate.guardian} & ${gate.godbeast}).`);
+    setAudioStatus(
+      `Auditioning Gate ${gate.number} (${gate.gate} · ${gate.frequencyHz} Hz — ${gate.guardian} & ${gate.godbeast}).`,
+    );
   }
 
   function playAgainMotif() {
@@ -235,7 +252,10 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
       osc.frequency.setValueAtTime(note.freq, now + note.start);
       gain.gain.setValueAtTime(0.0001, now + note.start);
       gain.gain.exponentialRampToValueAtTime(0.08, now + note.start + 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + note.start + note.duration);
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        now + note.start + note.duration,
+      );
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(now + note.start);
@@ -260,10 +280,13 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
     };
 
     setPlayingMotif(true);
-    setAudioStatus("Playing AGAIN aria rising-fourth motif cell (D4 -> G4 -> open fifth).");
+    setAudioStatus(
+      "Playing AGAIN aria rising-fourth motif cell (D4 -> G4 -> open fifth).",
+    );
   }
 
-  const activeLegend = legends.find((l) => l.id === selectedLegendId) ?? legends[0];
+  const activeLegend =
+    legends.find((l) => l.id === selectedLegendId) ?? legends[0];
   const activeGate = gates[selectedGateIndex] ?? gates[0];
   const activeClimate = ELEMENT_CLIMATES[elementClimate];
   const textSizeClass =
@@ -279,8 +302,13 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
       <section aria-labelledby="canon-reader-heading" className="space-y-8">
         <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/10 pb-6">
           <div>
-            <p className="font-mono text-xs text-amber-300">Legends of Arcanea · Unabridged Edition Prose</p>
-            <h2 id="canon-reader-heading" className="mt-2 font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            <p className="font-mono text-xs text-amber-300">
+              Legends of Arcanea · Unabridged Edition Prose
+            </p>
+            <h2
+              id="canon-reader-heading"
+              className="mt-2 font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+            >
               Read the First Three Legends
             </h2>
           </div>
@@ -331,7 +359,10 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
           </div>
         </div>
         {bookmarkNote ? (
-          <output className="block font-mono text-xs text-teal-200" aria-live="polite">
+          <output
+            className="block font-mono text-xs text-teal-200"
+            aria-live="polite"
+          >
             {bookmarkNote}
           </output>
         ) : null}
@@ -350,17 +381,24 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
                   : "border-white/10 bg-white/[0.02] text-zinc-300 hover:border-white/25"
               }`}
             >
-              <span className="font-mono text-xs text-amber-300">Legend {String(index + 1).padStart(2, "0")}</span>
-              <span className="mt-1 block font-serif text-xl font-semibold text-white">{legend.title}</span>
+              <span className="font-mono text-xs text-amber-300">
+                Legend {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="mt-1 block font-serif text-xl font-semibold text-white">
+                {legend.title}
+              </span>
               <span className="mt-1 block font-mono text-xs text-zinc-400">
-                {legend.wordCount.toLocaleString()} words · ~{legend.readingMinutes} min read
+                {legend.wordCount.toLocaleString()} words · ~
+                {legend.readingMinutes} min read
               </span>
             </button>
           ))}
         </fieldset>
 
         {activeLegend ? (
-          <article className={`rounded-3xl border bg-[#0b0d14] p-6 sm:p-10 ${activeClimate.borderClass}`}>
+          <article
+            className={`rounded-3xl border bg-[#0b0d14] p-6 sm:p-10 ${activeClimate.borderClass}`}
+          >
             <header className="mx-auto max-w-3xl border-b border-white/10 pb-8">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className={`font-mono text-xs ${activeClimate.badgeClass}`}>
@@ -378,7 +416,9 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
                 {activeLegend.title}
               </h3>
               {activeLegend.epigraph ? (
-                <blockquote className={`mt-5 border-l-2 pl-4 font-serif text-base italic text-amber-100/90 ${activeClimate.quoteClass}`}>
+                <blockquote
+                  className={`mt-5 border-l-2 pl-4 font-serif text-base italic text-amber-100/90 ${activeClimate.quoteClass}`}
+                >
                   {cleanProseParagraph(activeLegend.epigraph)}
                 </blockquote>
               ) : null}
@@ -387,14 +427,25 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
             <div className="mx-auto mt-8 max-w-3xl space-y-8">
               {activeLegend.id === "ten-guardians" ? (
                 <p className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-xs text-zinc-300">
-                  Historical Legend II manuscript preserved verbatim below; canonical post-lock updates (Gate VII Crown 741 Hz, Gate VIII Starweave / Elara &amp; Vaelith, Gate X Shinkami &amp; Source) are enforced in the interactive Codex section.
+                  Historical Legend II manuscript preserved verbatim below;
+                  canonical post-lock updates (Gate VII Crown 741 Hz, Gate VIII
+                  Starweave / Elara &amp; Vaelith, Gate X Shinkami &amp; Source)
+                  are enforced in the interactive Codex section.
                 </p>
               ) : null}
               {activeLegend.sections.map((section, sectionIndex) => (
-                <div key={`${activeLegend.id}-${sectionIndex}-${section.heading}`} className="space-y-4">
-                  <h4 className="font-serif text-2xl font-medium text-amber-200">{section.heading}</h4>
+                <div
+                  key={`${activeLegend.id}-${sectionIndex}-${section.heading}`}
+                  className="space-y-4"
+                >
+                  <h4 className="font-serif text-2xl font-medium text-amber-200">
+                    {section.heading}
+                  </h4>
                   {section.paragraphs.map((para, idx) => (
-                    <p key={`${activeLegend.id}-${sectionIndex}-${idx}`} className={`${textSizeClass} text-zinc-200`}>
+                    <p
+                      key={`${activeLegend.id}-${sectionIndex}-${idx}`}
+                      className={`${textSizeClass} text-zinc-200`}
+                    >
                       {cleanProseParagraph(para)}
                     </p>
                   ))}
@@ -408,13 +459,18 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
       {/* Ten Gates & Extended Solfeggio Codex */}
       <section aria-labelledby="gates-codex-heading" className="space-y-8">
         <div className="border-b border-white/10 pb-6">
-          <p className="font-mono text-xs text-teal-300">Canonical Reference · 174 Hz - 1111 Hz</p>
-          <h2 id="gates-codex-heading" className="mt-2 font-serif text-3xl font-semibold text-white sm:text-4xl">
+          <p className="font-mono text-xs text-teal-300">
+            Canonical Reference · 174 Hz - 1111 Hz
+          </p>
+          <h2
+            id="gates-codex-heading"
+            className="mt-2 font-serif text-3xl font-semibold text-white sm:text-4xl"
+          >
             The Ten Gates &amp; Extended Solfeggio Codex
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-zinc-300">
-            Select any Gate to inspect its canonical Guardian, bonded Godbeast, and audition its synthesized
-            Solfeggio harmonic tone.
+            Select any Gate to inspect its canonical Guardian, bonded Godbeast,
+            and audition its synthesized Solfeggio harmonic tone.
           </p>
         </div>
 
@@ -435,8 +491,12 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
                 <span className="font-mono text-[11px] text-teal-300">
                   {String(gate.number).padStart(2, "0")} · {gate.frequencyHz} Hz
                 </span>
-                <span className="mt-1 block text-sm font-semibold text-white">{gate.gate}</span>
-                <span className="block text-xs text-zinc-400">{gate.guardian}</span>
+                <span className="mt-1 block text-sm font-semibold text-white">
+                  {gate.gate}
+                </span>
+                <span className="block text-xs text-zinc-400">
+                  {gate.guardian}
+                </span>
               </button>
             ))}
           </div>
@@ -482,12 +542,16 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
                 </button>
               </div>
               {audioStatus ? (
-                <output className="mt-3 block font-mono text-xs text-teal-200" aria-live="polite">
+                <output
+                  className="mt-3 block font-mono text-xs text-teal-200"
+                  aria-live="polite"
+                >
                   {audioStatus}
                 </output>
               ) : null}
               <p className="mt-4 text-xs text-zinc-400">
-                Synthesized Web Audio harmonic reference (pure sine + open fifth overtone). Studio masters release through Arcanea Records.
+                Synthesized Web Audio harmonic reference (pure sine + open fifth
+                overtone). Studio masters release through Arcanea Records.
               </p>
             </div>
           ) : null}
@@ -496,9 +560,16 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
         {/* Seven Wisdoms */}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-7">
           {wisdoms.map((w) => (
-            <div key={w.name} className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5">
-              <p className="font-serif text-base font-semibold text-white">{w.name}</p>
-              <p className="font-mono text-[11px] text-amber-300">{w.archive}</p>
+            <div
+              key={w.name}
+              className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5"
+            >
+              <p className="font-serif text-base font-semibold text-white">
+                {w.name}
+              </p>
+              <p className="font-mono text-[11px] text-amber-300">
+                {w.archive}
+              </p>
               <p className="mt-1 text-xs text-zinc-400">{w.domain}</p>
             </div>
           ))}
@@ -508,8 +579,13 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
       {/* Arcanea Records House Codex */}
       <section aria-labelledby="records-codex-heading" className="space-y-8">
         <div className="border-b border-white/10 pb-6">
-          <p className="font-mono text-xs text-amber-300">Arcanea Records · House Codex</p>
-          <h2 id="records-codex-heading" className="mt-2 font-serif text-3xl font-semibold text-white sm:text-4xl">
+          <p className="font-mono text-xs text-amber-300">
+            Arcanea Records · House Codex
+          </p>
+          <h2
+            id="records-codex-heading"
+            className="mt-2 font-serif text-3xl font-semibold text-white sm:text-4xl"
+          >
             {HOUSE_CODEX_PROMISE.rule}
           </h2>
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-300">
@@ -519,9 +595,14 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
 
         <div className="grid gap-4 md:grid-cols-2">
           {ARTIST_CLIMATES.map((artist) => (
-            <article key={artist.id} className="rounded-2xl border border-white/10 bg-[#0b0d14] p-5">
+            <article
+              key={artist.id}
+              className="rounded-2xl border border-white/10 bg-[#0b0d14] p-5"
+            >
               <p className="font-mono text-xs text-teal-300">{artist.motif}</p>
-              <h3 className="mt-1 font-serif text-2xl font-semibold text-white">{artist.artist}</h3>
+              <h3 className="mt-1 font-serif text-2xl font-semibold text-white">
+                {artist.artist}
+              </h3>
               <p className="mt-2 text-sm text-zinc-200">{artist.climate}</p>
               <p className="mt-2 text-xs text-zinc-400">{artist.notes}</p>
             </article>
@@ -530,21 +611,37 @@ export function PremiereExperience({ legends, gates, wisdoms }: PremiereExperien
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
           {HOUSE_CODEX_STAGES.map((stage) => (
-            <div key={stage.step} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-              <p className="font-mono text-xs text-amber-300">{stage.step} · {stage.name}</p>
-              <p className="mt-2 text-xs leading-relaxed text-zinc-300">{stage.rule}</p>
+            <div
+              key={stage.step}
+              className="rounded-xl border border-white/10 bg-white/[0.02] p-4"
+            >
+              <p className="font-mono text-xs text-amber-300">
+                {stage.step} · {stage.name}
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-zinc-300">
+                {stage.rule}
+              </p>
             </div>
           ))}
         </div>
 
         <div className="flex flex-wrap gap-4 pt-2 text-sm">
-          <Link href="/library" className="rounded-full bg-white px-5 py-2.5 font-semibold text-zinc-950 transition motion-reduce:transition-none hover:bg-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300">
+          <Link
+            href="/library"
+            className="rounded-full bg-white px-5 py-2.5 font-semibold text-zinc-950 transition motion-reduce:transition-none hover:bg-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300"
+          >
             Browse the library
           </Link>
-          <Link href="/records" className="rounded-full border border-white/20 px-5 py-2.5 font-medium text-white transition motion-reduce:transition-none hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300">
+          <Link
+            href="/records"
+            className="rounded-full border border-white/20 px-5 py-2.5 font-medium text-white transition motion-reduce:transition-none hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300"
+          >
             Open Arcanea Records
           </Link>
-          <Link href="/lore" className="rounded-full border border-white/20 px-5 py-2.5 font-medium text-white transition motion-reduce:transition-none hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300">
+          <Link
+            href="/lore"
+            className="rounded-full border border-white/20 px-5 py-2.5 font-medium text-white transition motion-reduce:transition-none hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300"
+          >
             Inspect full lore
           </Link>
         </div>
