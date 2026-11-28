@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-expressions, @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-function-type, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/rules-of-hooks, react-hooks/purity, react-hooks/refs, react-hooks/static-components, react-hooks/immutability, react-hooks/preserve-manual-memoization, jsx-a11y/alt-text, @next/next/no-img-element, @next/next/no-html-link-for-pages, react/no-unescaped-entities */
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState } from "react";
+import Link from "next/link";
 import {
   MusicNotes,
   Play,
@@ -16,10 +16,10 @@ import {
   Lightning,
   Radio,
   Waves,
-} from '@phosphor-icons/react';
-import type { PhosphorIcon as PhIcon } from '@phosphor-icons/react';
-import { MotionProvider, m } from '@/lib/motion';
-import { SyntheticContentNotice } from '@/components/compliance/synthetic-content-notice';
+} from "@phosphor-icons/react";
+import type { PhosphorIcon as PhIcon } from "@phosphor-icons/react";
+import { MotionProvider, m } from "@/lib/motion";
+import { SyntheticContentNotice } from "@/components/compliance/synthetic-content-notice";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -51,105 +51,140 @@ interface Collection {
 
 const FEATURED_RELEASES: Release[] = [
   {
-    id: 'gate-frequencies',
-    title: 'Gate Frequencies Vol. I',
-    artist: 'FrankX',
-    element: 'Spirit',
+    id: "gate-frequencies",
+    title: "Gate Frequencies Vol. I",
+    artist: "FrankX",
+    element: "Spirit",
     elementIcon: Sun,
-    gradient: 'from-amber-500/30 via-yellow-600/20 to-orange-500/10',
-    accent: 'text-amber-400',
-    border: 'border-amber-500/30',
+    gradient: "from-amber-500/30 via-yellow-600/20 to-orange-500/10",
+    accent: "text-amber-400",
+    border: "border-amber-500/30",
     tracks: 10,
-    duration: '47:23',
-    description: 'Ten tracks aligned to each Gate frequency. Consciousness-expanding ambient compositions from 174 Hz to 1111 Hz.',
+    duration: "47:23",
+    description:
+      "Ten tracks aligned to each Gate frequency. Consciousness-expanding ambient compositions from 174 Hz to 1111 Hz.",
   },
   {
-    id: 'guardian-anthems',
-    title: 'Guardian Anthems',
-    artist: 'FrankX',
-    element: 'Fire',
+    id: "guardian-anthems",
+    title: "Guardian Anthems",
+    artist: "FrankX",
+    element: "Fire",
     elementIcon: Fire,
-    gradient: 'from-red-600/30 via-orange-500/20 to-amber-400/10',
-    accent: 'text-orange-400',
-    border: 'border-orange-500/30',
+    gradient: "from-red-600/30 via-orange-500/20 to-amber-400/10",
+    accent: "text-orange-400",
+    border: "border-orange-500/30",
     tracks: 10,
-    duration: '52:10',
-    description: 'Each Guardian receives their anthem. Epic orchestral themes that capture the essence of every Gate keeper.',
+    duration: "52:10",
+    description:
+      "Each Guardian receives their anthem. Epic orchestral themes that capture the essence of every Gate keeper.",
   },
   {
-    id: 'void-meditations',
-    title: 'Void Meditations',
-    artist: 'FrankX',
-    element: 'Void',
+    id: "void-meditations",
+    title: "Void Meditations",
+    artist: "FrankX",
+    element: "Void",
     elementIcon: Moon,
-    gradient: 'from-violet-600/30 via-purple-700/20 to-indigo-800/10',
-    accent: 'text-violet-400',
-    border: 'border-violet-500/30',
+    gradient: "from-violet-600/30 via-purple-700/20 to-indigo-800/10",
+    accent: "text-violet-400",
+    border: "border-violet-500/30",
     tracks: 7,
-    duration: '63:45',
-    description: 'Deep ambient journeys into the primordial darkness. Nero-aligned frequencies for meditation and inner exploration.',
+    duration: "63:45",
+    description:
+      "Deep ambient journeys into the primordial darkness. Nero-aligned frequencies for meditation and inner exploration.",
   },
   {
-    id: 'elemental-battles',
-    title: 'Elemental Battles',
-    artist: 'FrankX',
-    element: 'Wind',
+    id: "elemental-battles",
+    title: "Elemental Battles",
+    artist: "FrankX",
+    element: "Wind",
     elementIcon: Wind,
-    gradient: 'from-sky-500/30 via-cyan-600/20 to-blue-700/10',
-    accent: 'text-sky-400',
-    border: 'border-sky-500/30',
+    gradient: "from-sky-500/30 via-cyan-600/20 to-blue-700/10",
+    accent: "text-sky-400",
+    border: "border-sky-500/30",
     tracks: 8,
-    duration: '38:56',
-    description: 'High-energy compositions for the arena. Where elemental forces collide in sonic warfare.',
+    duration: "38:56",
+    description:
+      "High-energy compositions for the arena. Where elemental forces collide in sonic warfare.",
   },
 ];
 
 const COLLECTIONS: Collection[] = [
   {
-    id: 'gate-freq',
-    name: 'Gate Frequencies',
-    description: 'Ambient tracks aligned to each Gate\'s sacred frequency, from 174 Hz Foundation to 1111 Hz Source.',
+    id: "gate-freq",
+    name: "Gate Frequencies",
+    description:
+      "Ambient tracks aligned to each Gate's sacred frequency, from 174 Hz Foundation to 1111 Hz Source.",
     icon: Waves,
     count: 10,
-    accent: 'text-[var(--arc-brand-atlantean-teal)]',
-    gradient: 'from-[var(--arc-brand-atlantean-teal)]/20 to-transparent',
+    accent: "text-[var(--arc-brand-atlantean-teal)]",
+    gradient: "from-[var(--arc-brand-atlantean-teal)]/20 to-transparent",
   },
   {
-    id: 'guardian-anthems',
-    name: 'Guardian Anthems',
-    description: 'Epic orchestral themes for each of the ten Guardians. The sonic identity of Arcanea.',
+    id: "guardian-anthems",
+    name: "Guardian Anthems",
+    description:
+      "Epic orchestral themes for each of the ten Guardians. The sonic identity of Arcanea.",
     icon: Radio,
     count: 10,
-    accent: 'text-[var(--arc-brand-arcanean-gold)]',
-    gradient: 'from-[var(--arc-brand-arcanean-gold)]/20 to-transparent',
+    accent: "text-[var(--arc-brand-arcanean-gold)]",
+    gradient: "from-[var(--arc-brand-arcanean-gold)]/20 to-transparent",
   },
   {
-    id: 'meditation-journeys',
-    name: 'Meditation Journeys',
-    description: 'Extended ambient compositions for deep practice. Void-touched soundscapes for inner exploration.',
+    id: "meditation-journeys",
+    name: "Meditation Journeys",
+    description:
+      "Extended ambient compositions for deep practice. Void-touched soundscapes for inner exploration.",
     icon: Moon,
     count: 7,
-    accent: 'text-violet-400',
-    gradient: 'from-violet-500/20 to-transparent',
+    accent: "text-violet-400",
+    gradient: "from-violet-500/20 to-transparent",
   },
   {
-    id: 'battle-hymns',
-    name: 'Battle Hymns',
-    description: 'High-energy elemental compositions. Fire and Wind clash in sonic storms of creative intensity.',
+    id: "battle-hymns",
+    name: "Battle Hymns",
+    description:
+      "High-energy elemental compositions. Fire and Wind clash in sonic storms of creative intensity.",
     icon: Lightning,
     count: 12,
-    accent: 'text-orange-400',
-    gradient: 'from-orange-500/20 to-transparent',
+    accent: "text-orange-400",
+    gradient: "from-orange-500/20 to-transparent",
   },
 ];
 
-const ELEMENT_BADGES: Record<string, { bg: string; text: string; border: string }> = {
-  Fire: { bg: 'bg-red-500/15', text: 'text-red-400', border: 'border-red-500/30' },
-  Water: { bg: 'bg-blue-500/15', text: 'text-blue-400', border: 'border-blue-500/30' },
-  Earth: { bg: 'bg-emerald-500/15', text: 'text-emerald-400', border: 'border-emerald-500/30' },
-  Wind: { bg: 'bg-sky-500/15', text: 'text-sky-400', border: 'border-sky-500/30' },
-  Void: { bg: 'bg-violet-500/15', text: 'text-violet-400', border: 'border-violet-500/30' },
-  Spirit: { bg: 'bg-amber-500/15', text: 'text-amber-400', border: 'border-amber-500/30' },
+const ELEMENT_BADGES: Record<
+  string,
+  { bg: string; text: string; border: string }
+> = {
+  Fire: {
+    bg: "bg-red-500/15",
+    text: "text-red-400",
+    border: "border-red-500/30",
+  },
+  Water: {
+    bg: "bg-blue-500/15",
+    text: "text-blue-400",
+    border: "border-blue-500/30",
+  },
+  Earth: {
+    bg: "bg-emerald-500/15",
+    text: "text-emerald-400",
+    border: "border-emerald-500/30",
+  },
+  Wind: {
+    bg: "bg-sky-500/15",
+    text: "text-sky-400",
+    border: "border-sky-500/30",
+  },
+  Void: {
+    bg: "bg-violet-500/15",
+    text: "text-violet-400",
+    border: "border-violet-500/30",
+  },
+  Spirit: {
+    bg: "bg-amber-500/15",
+    text: "text-amber-400",
+    border: "border-amber-500/30",
+  },
 };
 
 // ─── Components ─────────────────────────────────────────────────────────────
@@ -169,12 +204,14 @@ function ReleaseCard({ release, index }: { release: Release; index: number }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Cover art placeholder — gradient */}
-      <div className={`relative aspect-square bg-gradient-to-br ${release.gradient} overflow-hidden`}>
+      <div
+        className={`relative aspect-square bg-gradient-to-br ${release.gradient} overflow-hidden`}
+      >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.06),transparent_60%)]" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative">
             <MusicNotes
-              className={`w-20 h-20 ${release.accent} opacity-20 transition-transform duration-500 ${isHovered ? 'scale-110' : ''}`}
+              className={`w-20 h-20 ${release.accent} opacity-20 transition-transform duration-500 ${isHovered ? "scale-110" : ""}`}
               weight="thin"
             />
           </div>
@@ -189,7 +226,9 @@ function ReleaseCard({ release, index }: { release: Release; index: number }) {
 
         {/* Element badge */}
         <div className="absolute top-3 right-3">
-          <span className={`inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full ${badge.bg} ${badge.text} border ${badge.border} backdrop-blur-sm`}>
+          <span
+            className={`inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full ${badge.bg} ${badge.text} border ${badge.border} backdrop-blur-sm`}
+          >
             <Icon className="w-3 h-3" weight="fill" />
             {release.element}
           </span>
@@ -228,7 +267,6 @@ export default function RecordsPage() {
         </div>
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
           {/* ── Hero ─────────────────────────────────────────────────── */}
           <section className="mb-20">
             <m.div
@@ -243,7 +281,10 @@ export default function RecordsPage() {
 
               <div className="relative max-w-3xl">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--arc-brand-atlantean-teal)]/30 bg-[var(--arc-brand-atlantean-teal)]/10 mb-8">
-                  <MusicNotes className="w-4 h-4 text-[var(--arc-brand-atlantean-teal)]" weight="fill" />
+                  <MusicNotes
+                    className="w-4 h-4 text-[var(--arc-brand-atlantean-teal)]"
+                    weight="fill"
+                  />
                   <span className="text-xs font-mono tracking-widest uppercase text-[var(--arc-brand-atlantean-teal)]">
                     Arcanea Records
                   </span>
@@ -257,12 +298,16 @@ export default function RecordsPage() {
                 </h1>
 
                 <p className="text-lg text-white/50 leading-relaxed max-w-2xl mb-4">
-                  Original compositions tuned to the ten Gate frequencies. Each track is crafted
-                  to align with the Arcanean progression system — from the grounding 174 Hz of Foundation
-                  to the transcendent 1111 Hz of Source.
+                  Original compositions tuned to the ten Gate frequencies. Each
+                  track is crafted to align with the Arcanean progression system
+                  — from the grounding 174 Hz of Foundation to the transcendent
+                  1111 Hz of Source.
                 </p>
 
-                <SyntheticContentNotice medium="music" className="max-w-2xl mb-10" />
+                <SyntheticContentNotice
+                  medium="music"
+                  className="max-w-2xl mb-10"
+                />
 
                 <div className="flex flex-wrap gap-4">
                   <a
@@ -275,11 +320,14 @@ export default function RecordsPage() {
                     Listen on Spotify
                   </a>
                   <Link
-                    href="/studio/music"
+                    href="/music-studio"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 text-white font-semibold hover:bg-white/10 transition-all"
                   >
-                    <Sparkle className="w-4 h-4 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
-                    Create Your Own
+                    <Sparkle
+                      className="w-4 h-4 text-[var(--arc-brand-arcanean-gold)]"
+                      weight="fill"
+                    />
+                    Plan a music release
                   </Link>
                 </div>
 
@@ -296,9 +344,15 @@ export default function RecordsPage() {
           <section className="mb-20">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <p className="text-xs font-mono text-white/30 uppercase tracking-widest mb-2">Section 01</p>
-                <h2 className="text-2xl font-display font-bold text-white">Featured Releases</h2>
-                <p className="text-white/40 text-sm mt-1">Original compositions from the Arcanea universe</p>
+                <p className="text-xs font-mono text-white/30 uppercase tracking-widest mb-2">
+                  Section 01
+                </p>
+                <h2 className="text-2xl font-display font-bold text-white">
+                  Featured Releases
+                </h2>
+                <p className="text-white/40 text-sm mt-1">
+                  Original compositions from the Arcanea universe
+                </p>
               </div>
               <Link
                 href="/records/all"
@@ -318,9 +372,15 @@ export default function RecordsPage() {
           {/* ── Collections ──────────────────────────────────────────── */}
           <section className="mb-20">
             <div className="mb-10">
-              <p className="text-xs font-mono text-white/30 uppercase tracking-widest mb-2">Section 02</p>
-              <h2 className="text-2xl font-display font-bold text-white">Collections</h2>
-              <p className="text-white/40 text-sm mt-1">Browse by genre and purpose</p>
+              <p className="text-xs font-mono text-white/30 uppercase tracking-widest mb-2">
+                Section 02
+              </p>
+              <h2 className="text-2xl font-display font-bold text-white">
+                Collections
+              </h2>
+              <p className="text-white/40 text-sm mt-1">
+                Browse by genre and purpose
+              </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-5">
@@ -334,11 +394,16 @@ export default function RecordsPage() {
                     transition={{ delay: i * 0.08, duration: 0.4 }}
                     className="group relative rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.14] transition-all p-6"
                   >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${col.gradient} opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none`} />
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${col.gradient} opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none`}
+                    />
 
                     <div className="relative flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/[0.06] flex items-center justify-center shrink-0">
-                        <Icon className={`w-6 h-6 ${col.accent}`} weight="duotone" />
+                        <Icon
+                          className={`w-6 h-6 ${col.accent}`}
+                          weight="duotone"
+                        />
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-3 mb-2">
@@ -349,7 +414,9 @@ export default function RecordsPage() {
                             {col.count} tracks
                           </span>
                         </div>
-                        <p className="text-sm text-white/40 leading-relaxed">{col.description}</p>
+                        <p className="text-sm text-white/40 leading-relaxed">
+                          {col.description}
+                        </p>
                       </div>
                     </div>
                   </m.div>
@@ -370,7 +437,10 @@ export default function RecordsPage() {
 
               <div className="relative">
                 <div className="flex items-center gap-3 mb-6">
-                  <Waves className="w-5 h-5 text-[var(--arc-brand-atlantean-teal)]" weight="duotone" />
+                  <Waves
+                    className="w-5 h-5 text-[var(--arc-brand-atlantean-teal)]"
+                    weight="duotone"
+                  />
                   <h3 className="text-sm font-mono tracking-widest uppercase text-[var(--arc-brand-atlantean-teal)]">
                     Gate Frequency Guide
                   </h3>
@@ -378,19 +448,69 @@ export default function RecordsPage() {
 
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                   {[
-                    { gate: 'Foundation', hz: '174', color: 'bg-amber-500/20 text-amber-400 border-amber-500/20' },
-                    { gate: 'Flow', hz: '285', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/20' },
-                    { gate: 'Fire', hz: '396', color: 'bg-red-500/20 text-red-400 border-red-500/20' },
-                    { gate: 'Heart', hz: '417', color: 'bg-pink-500/20 text-pink-400 border-pink-500/20' },
-                    { gate: 'Voice', hz: '528', color: 'bg-sky-500/20 text-sky-400 border-sky-500/20' },
-                    { gate: 'Sight', hz: '639', color: 'bg-violet-500/20 text-violet-400 border-violet-500/20' },
-                    { gate: 'Crown', hz: '741', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/20' },
-                    { gate: 'Starweave', hz: '852', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/20' },
-                    { gate: 'Unity', hz: '963', color: 'bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/20' },
-                    { gate: 'Source', hz: '1111', color: 'bg-white/10 text-white/80 border-white/20' },
+                    {
+                      gate: "Foundation",
+                      hz: "174",
+                      color:
+                        "bg-amber-500/20 text-amber-400 border-amber-500/20",
+                    },
+                    {
+                      gate: "Flow",
+                      hz: "285",
+                      color: "bg-cyan-500/20 text-cyan-400 border-cyan-500/20",
+                    },
+                    {
+                      gate: "Fire",
+                      hz: "396",
+                      color: "bg-red-500/20 text-red-400 border-red-500/20",
+                    },
+                    {
+                      gate: "Heart",
+                      hz: "417",
+                      color: "bg-pink-500/20 text-pink-400 border-pink-500/20",
+                    },
+                    {
+                      gate: "Voice",
+                      hz: "528",
+                      color: "bg-sky-500/20 text-sky-400 border-sky-500/20",
+                    },
+                    {
+                      gate: "Sight",
+                      hz: "639",
+                      color:
+                        "bg-violet-500/20 text-violet-400 border-violet-500/20",
+                    },
+                    {
+                      gate: "Crown",
+                      hz: "741",
+                      color:
+                        "bg-yellow-500/20 text-yellow-400 border-yellow-500/20",
+                    },
+                    {
+                      gate: "Starweave",
+                      hz: "852",
+                      color:
+                        "bg-emerald-500/20 text-emerald-400 border-emerald-500/20",
+                    },
+                    {
+                      gate: "Unity",
+                      hz: "963",
+                      color:
+                        "bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/20",
+                    },
+                    {
+                      gate: "Source",
+                      hz: "1111",
+                      color: "bg-white/10 text-white/80 border-white/20",
+                    },
                   ].map((g) => (
-                    <div key={g.gate} className={`rounded-lg border px-3 py-2.5 text-center ${g.color}`}>
-                      <p className="text-[10px] font-mono uppercase tracking-wider opacity-70">{g.gate}</p>
+                    <div
+                      key={g.gate}
+                      className={`rounded-lg border px-3 py-2.5 text-center ${g.color}`}
+                    >
+                      <p className="text-[10px] font-mono uppercase tracking-wider opacity-70">
+                        {g.gate}
+                      </p>
                       <p className="text-lg font-display font-bold">{g.hz}</p>
                       <p className="text-[10px] font-mono opacity-50">Hz</p>
                     </div>
@@ -408,15 +528,19 @@ export default function RecordsPage() {
 
               <div className="relative px-8 py-16 sm:px-14 text-center">
                 <div className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center bg-[var(--arc-brand-atlantean-teal)]/10 border border-[var(--arc-brand-atlantean-teal)]/20">
-                  <MusicNote className="w-7 h-7 text-[var(--arc-brand-atlantean-teal)]" weight="duotone" />
+                  <MusicNote
+                    className="w-7 h-7 text-[var(--arc-brand-atlantean-teal)]"
+                    weight="duotone"
+                  />
                 </div>
 
                 <h2 className="text-3xl sm:text-4xl font-display font-bold text-white mb-4">
                   Create your own frequency
                 </h2>
                 <p className="text-white/40 text-lg max-w-xl mx-auto mb-8 leading-relaxed">
-                  Every creator carries a unique frequency. Use the Arcanea Studio
-                  to compose music aligned with your creative journey through the Gates.
+                  Every creator carries a unique frequency. Use the Arcanea
+                  Studio to compose music aligned with your creative journey
+                  through the Gates.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -430,11 +554,14 @@ export default function RecordsPage() {
                     Listen on Spotify
                   </a>
                   <Link
-                    href="/studio/music"
+                    href="/music-studio"
                     className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-white font-semibold hover:bg-white/10 transition-all"
                   >
-                    <Sparkle className="w-4 h-4 text-[var(--arc-brand-arcanean-gold)]" weight="fill" />
-                    Create Your Own
+                    <Sparkle
+                      className="w-4 h-4 text-[var(--arc-brand-arcanean-gold)]"
+                      weight="fill"
+                    />
+                    Plan a music release
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </Link>
                 </div>

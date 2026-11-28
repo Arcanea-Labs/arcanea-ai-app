@@ -482,10 +482,10 @@ export default function ArcaneaCodePage() {
                   View on GitHub
                 </Link>
                 <Link
-                  href="/workflows"
+                  href="/templates"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl liquid-glass border border-white/[0.06] text-text-primary font-semibold hover:border-atlantean-teal-aqua/30 transition-all duration-200"
                 >
-                  See Workflow Templates
+                  Explore code blueprints
                   <PhChevronRight weight="thin" size={18} />
                 </Link>
               </div>

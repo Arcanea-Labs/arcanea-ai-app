@@ -142,7 +142,7 @@ export default async function ModelsArenaPage() {
               <strong className="text-[var(--arc-brand-atlantean-teal)]">
                 {freeCount}
               </strong>{" "}
-              100% free
+              Zero-price routes
             </span>
             <span className="w-1 h-1 rounded-full bg-white/20" />
             <span className="flex items-center gap-1.5">
@@ -210,6 +210,20 @@ export default async function ModelsArenaPage() {
             </a>
           </div>
         </header>
+
+        <p className="mx-auto mb-10 max-w-3xl text-center text-sm leading-relaxed text-white/70">
+          The curated picks and WorldCraft scores reflect Arcanea editorial
+          judgment. In the explorer, provider prices and context limits come
+          from the catalog feed when available. Verify quotas and availability
+          before choosing a route.{" "}
+          <a
+            href="#data-provenance"
+            className="text-[var(--arc-brand-atlantean-teal)] underline underline-offset-4"
+          >
+            See how each source is used
+          </a>
+          .
+        </p>
 
         {/* 1. Curated Best Showcase (The 5 Crown Models) */}
         <CuratedBestShowcase />
